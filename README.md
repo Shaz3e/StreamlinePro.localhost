@@ -6,8 +6,6 @@
 
 Contributing in this repo are welcome please make sure to create pull requrest with single commit.
 
-#### Contributing
-
 * If you have any suggestions please let us know : https://github.com/Shaz3e/StreamlinePro/pulls.
 * Please help us improve code https://github.com/Shaz3e/StreamlinePro/pulls
 
