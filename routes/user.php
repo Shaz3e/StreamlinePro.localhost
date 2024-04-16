@@ -45,6 +45,6 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     // User Dashboard
-    Route::get('dashboard', [DashboardController::class, 'dashboard'])
+    Route::get('/', [DashboardController::class, 'dashboard'])
         ->name('dashboard');
 });
