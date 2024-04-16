@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Auditable as AuditingAuditable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements Auditable
+class Admin extends Authenticatable implements Auditable
 {
     use HasFactory, Notifiable, AuditingAuditable, SoftDeletes;
 
@@ -24,7 +24,7 @@ class User extends Authenticatable implements Auditable
         'email',
         'password',
         'is_active',
-        'company_id',
+        'admin_id',
     ];
 
     // SoftDeletes
@@ -62,11 +62,16 @@ class User extends Authenticatable implements Auditable
         $this->auditInclude = $columns;
     }
 
-    /**
-     * Company Relationship
-     */
-    public function company()
+    protected $casts = [
+        'department_id' => 'array', // Tells Laravel to cast the column to an array
+    ];
+
+    public function departments()
     {
-        return $this->belongsTo(Company::class);
+        if ($this->department_id !== null) {
+            return Department::whereIn('id', $this->department_id)->pluck('name', 'id');
+        } else {
+            return [];
+        }
     }
 }
