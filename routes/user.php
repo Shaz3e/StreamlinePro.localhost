@@ -7,6 +7,10 @@ use App\Http\Controllers\User\Auth\RegisterController;
 use App\Http\Controllers\User\Auth\LoginController;
 use App\Http\Controllers\User\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\Auth\ResetPasswordController;
+use App\Http\Controllers\User\Auth\LogoutController;
+
+// Dashboard
+use App\Http\Controllers\User\DashboardController;
 
 Route::middleware('guest')->group(function () {
 
@@ -37,10 +41,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     // Logout
-    Route::get('/logout', function () {
-    })->name('logout');
+    Route::post('/logout', [LogoutController::class, 'logout'])
+        ->name('logout');
 
     // User Dashboard
-    Route::get('dashboard', function () {
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'dashboard'])
+        ->name('dashboard');
 });

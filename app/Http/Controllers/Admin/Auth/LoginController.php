@@ -42,7 +42,6 @@ class LoginController extends Controller
         // Authenticate and Login
         Auth::guard('admin')->login($admin);
         session()->flash('success', 'Welcome ' . $admin->name);
-        return back();
         return redirect()->route('admin.dashboard');
     }
 }

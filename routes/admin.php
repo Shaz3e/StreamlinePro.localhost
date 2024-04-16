@@ -7,8 +7,10 @@ use App\Http\Controllers\Admin\Auth\RegisterController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\Auth\ResetPasswordController;
+use App\Http\Controllers\Admin\Auth\LogoutController;
 
 // Admin Dashboard
+use App\Http\Controllers\Admin\DashboardController;
 
 // Todos
 
@@ -73,12 +75,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('auth:admin')->group(function () {
 
         // Logout
-        Route::get('logout', function () {
-        })->name('logout');
+        Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
         // Dashboard
-        Route::get('dashboard', function () {
-        })->name('dashboard');
+        Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
         /**
          * Todos
