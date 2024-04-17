@@ -55,7 +55,7 @@
                 {{-- /.card-header --}}
 
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table" id="#audit-log-table">
                         <thead>
                             <tr>
                                 <th>Audit</th>
@@ -72,16 +72,24 @@
                                     <td>{{ $audit->created_at }}</td>
                                     <td>
                                         <button type="button"
-                                            class="btn btn-primary waves-effect waves-light show-audit-modal"
+                                            class="btn btn-primary btn-sm waves-effect waves-light show-audit-modal"
                                             data-bs-toggle="modal" data-bs-target=".auditLog"
                                             data-audit-id="{{ $audit->id }}">
-                                            View
+                                            <i class="ri-history-line"></i>
+                                        </button>
+
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm waves-effect waves-light delete-audit-log"
+                                            data-audit-id="{{ $audit->id }}">
+                                            <i class="ri-delete-bin-line"></i>
                                         </button>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+
+                    {{ $audits->links('pagination::bootstrap-5') }}
                 </div>
                 {{-- /.card-body --}}
             </div>
@@ -112,8 +120,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            // Audit Log
-            // Show Modal
+            // Audit Log Show Modal
             $('.show-audit-modal').click(function(e) {
                 e.preventDefault();
                 const userId = $(this).data('audit-id');
@@ -129,6 +136,46 @@
                     },
                     error: function(error) {
                         console.error('Error:', error);
+                    }
+                });
+            });
+            $('.delete-audit-log').click(function(e) {
+                e.preventDefault();
+                const userId = $(this).data('audit-id');
+
+                // Show confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this audit log!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If user confirms, proceed with deletion
+                        $.ajax({
+                            url: `{{ route('admin.users.audit.delete', ':id') }}`.replace(
+                                ':id', userId),
+                            type: 'GET',
+                            success: function(data) {
+                                // Show success message
+                                Swal.fire('Deleted!',
+                                    'Your audit log has been deleted.', 'success');
+                                    // reload page
+                                location.reload();
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                                // Show error message if deletion fails
+                                Swal.fire('Error!', 'Failed to delete audit log or it has been deleted',
+                                    'error');
+                            }
+                        });
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // If user cancels, show message that the history is safe
+                        Swal.fire('Cancelled', 'Your audit log is safe :)', 'info');
                     }
                 });
             });

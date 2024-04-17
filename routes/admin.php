@@ -154,6 +154,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Audit
         Route::get('/users-audit/{id}', [UserController::class, 'audit'])
             ->name('users.audit');
+        Route::get('/users-audit/delete/{id}', [UserController::class, 'deleteAudit'])
+            ->name('users.audit.delete');
         // Restore users
         Route::post('/users/restore/{id}', [UserController::class, 'restore'])
             ->name('users.restore');

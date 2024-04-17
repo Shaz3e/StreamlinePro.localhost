@@ -53,7 +53,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $audits = $user->audits;
+        $audits = $user->audits()
+            ->latest()
+            ->paginate(10);
+
+        // ajax request to refresh audit log after delete
+        if (request()->ajax()) {
+            return response()->json($audits);
+        }
 
         return view('admin.user.show', [
             'user' => $user,
@@ -90,7 +97,7 @@ class UserController extends Controller
         $user->update($validated);
 
         // Send password to user
-        if($request->filled('password')){
+        if ($request->filled('password')) {
             $mailData = [
                 'url' => config('app.url'),
                 'name' => $user->name,
@@ -148,5 +155,20 @@ class UserController extends Controller
             session()->flash('error', 'Log not available');
             return redirect()->route('admin.users');
         }
+    }
+
+    /**
+     * Delete Audit Log
+     */
+    public function deleteAudit(Request $request)
+    {
+        if (request()->ajax()) {
+            $auditLog = Audit::find($request->id);
+            $auditLog->delete();
+            return response()->json(['status' => 1]);
+        }
+
+        session()->flash('success', 'Log deleted successfully');
+        return redirect()->route('admin.users');
     }
 }
