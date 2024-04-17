@@ -23,6 +23,9 @@ class UserList extends Component
     // record to delete
     public $recordToDelete;
 
+    // Show deleted records
+    public $showDeleted = false;
+
     /**
      * Main Blade Render
      */
@@ -40,6 +43,11 @@ class UserList extends Component
                     $q->orWhere($column, 'like', '%' . $this->search . '%');
                 }
             });
+        }
+
+        // Apply filter for deleted records if the option is selected
+        if ($this->showDeleted) {
+            $query->onlyTrashed();
         }
 
         $users = $query->orderBy('id', 'desc')->paginate($this->perPage);
@@ -105,10 +113,10 @@ class UserList extends Component
             $this->dispatch('error');
             return;
         }
-        
+
         // get id
         $user = User::find($this->recordToDelete);
-        
+
         // Check record exists
         if (!$user) {
             $this->dispatch('error');
@@ -120,5 +128,41 @@ class UserList extends Component
 
         // Reset the record to delete
         $this->recordToDelete = null;
+    }
+
+    /**
+     * Confirm Restore
+     */
+    public function confirmRestore($userId)
+    {
+        $this->recordToDelete = $userId;
+        $this->dispatch('confirmRestore');
+    }
+
+    /**
+     * Restore record
+     */
+    #[On('restored')]
+    public function restore()
+    {
+        User::withTrashed()->find($this->recordToDelete)->restore();
+    }
+
+    /**
+     * Confirm force delete
+     */
+    public function confirmForceDelete($userId)
+    {
+        $this->recordToDelete = $userId;
+        $this->dispatch('confirmForceDelete');
+    }
+
+    /**
+     * Force delete record
+     */
+    #[On('forceDeleted')]
+    public function forceDelete()
+    {
+        User::withTrashed()->find($this->recordToDelete)->forceDelete();
     }
 }

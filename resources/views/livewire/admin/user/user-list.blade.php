@@ -9,7 +9,7 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-9 col-sm-12 mb-2">
+        <div class="col-md-7 col-sm-12 mb-2">
             <input type="search" wire:model.live="search" class="form-control form-control-sm" placeholder="Search...">
         </div>
         {{-- .col --}}
@@ -19,6 +19,14 @@
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-2 col-sm-12 mb-2">
+            <select wire:model.live="showDeleted" class="form-control form-control-sm form-control-border">
+                <option value="" selected="selected">Filters</option>
+                <option value="">Show Active Record</option>
+                <option value="true">Show Deleted Record</option>
+            </select>
         </div>
         {{-- /.col --}}
     </div>
@@ -35,7 +43,9 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Company</th>
-                                <th>Status</th>
+                                @if (!$showDeleted)
+                                    <th>Status</th>
+                                @endif
                                 <th></th>
                             </tr>
                         </thead>
@@ -50,27 +60,42 @@
                                             {{ $user->company->name }}
                                         @endif
                                     </td>
-                                    <td>
-                                        <input type="checkbox" wire:change="toggleStatus({{ $user->id }})"
-                                            id="is_active_{{ $user->id }}" switch="bool"
-                                            {{ $user->is_active ? 'checked' : '' }} />
-                                        <label for="is_active_{{ $user->id }}" data-on-label="Yes"
-                                            data-off-label="No"></label>
-                                    </td>
+                                    @if (!$showDeleted)
+                                        <td>
+                                            <input type="checkbox" wire:change="toggleStatus({{ $user->id }})"
+                                                id="is_active_{{ $user->id }}" switch="bool"
+                                                {{ $user->is_active ? 'checked' : '' }} />
+                                            <label for="is_active_{{ $user->id }}" data-on-label="Yes"
+                                                data-off-label="No"></label>
+                                        </td>
+                                    @endif
                                     <td class="text-right">
-                                        <a href="{{ route('admin.users.show', $user->id) }}"
-                                            class="btn btn-sm btn-outline-info">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                        <a href="{{ route('admin.users.edit', $user->id) }}"
-                                            class="btn btn-sm btn-outline-success">
-                                            <i class="ri-pencil-line"></i>
-                                        </a>
-                                        <button wire:click="confirmDelete({{ $user->id }})"
-                                            class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                            data-target="#deleteModal">
-                                            <i class="ri-delete-bin-line"></i>
-                                        </button>
+                                        @if ($showDeleted)
+                                            <button wire:click="confirmRestore({{ $user->id }})"
+                                                class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                                <i class="ri-arrow-go-back-line"></i>
+                                            </button>
+                                            <button wire:click="confirmForceDelete({{ $user->id }})"
+                                                class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                                <i class="ri-delete-bin-7-line"></i>
+                                            </button>
+                                        @else
+                                            <a href="{{ route('admin.users.show', $user->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                            <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                class="btn btn-sm btn-outline-success">
+                                                <i class="ri-pencil-line"></i>
+                                            </a>
+                                            <button wire:click="confirmDelete({{ $user->id }})"
+                                                class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -87,6 +112,7 @@
 </div>
 @script
     <script>
+        // Status Changed
         document.addEventListener('statusChanged', () => {
             Toast.fire({
                 icon: 'success',
@@ -94,7 +120,7 @@
             })
         })
 
-
+        // Error
         document.addEventListener('error', () => {
             Toast.fire({
                 icon: 'error',
@@ -102,10 +128,11 @@
             })
         })
 
+        // Show Delete Confirmation
         document.addEventListener('showDeleteConfirmation', () => {
             Swal.fire({
                 title: "Are you sure?",
-                text: "You won't be able to revert this!",
+                text: "You want to delete this record!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",
@@ -123,6 +150,62 @@
                     Swal.fire(
                         'Cancelled',
                         'This record is safe :)',
+                        'error'
+                    );
+                }
+            });
+        })
+
+        // Show Restore Confirmation
+        document.addEventListener('confirmRestore', () => {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to restore this record!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, restore it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $wire.dispatch('restored');
+                    Swal.fire({
+                        title: "Restored!",
+                        text: "The record has been restored.",
+                        icon: "success"
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Cancelled',
+                        'This record is still deleted :)',
+                        'error'
+                    );
+                }
+            });
+        })
+
+        // Show Force Delete Confirmation
+        document.addEventListener('confirmForceDelete', () => {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $wire.dispatch('forceDeleted');
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "The record has been deleted.",
+                        icon: "success"
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Cancelled',
+                        'This record is deleted but can be restore later :)',
                         'error'
                     );
                 }

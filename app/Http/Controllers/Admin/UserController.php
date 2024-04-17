@@ -116,31 +116,6 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     * Using livewire check livewire component
-     */
-    // public function destroy(User $user)
-    // {
-    //     //
-    // }
-
-    /**
-     * Restore the specified resource from storage.
-     */
-    public function restore(User $user)
-    {
-        //
-    }
-
-    /**
-     * Permanent Remove the specified resource from storage.
-     */
-    public function forceDelete(User $user)
-    {
-        //
-    }
-
-    /**
      * Show Audit Log
      */
     public function audit(Request $request)
