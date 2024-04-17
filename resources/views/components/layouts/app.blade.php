@@ -15,6 +15,8 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}">
+
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -25,20 +27,23 @@
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
-    <!-- Scripts -->
+    {{-- Livewire Styles --}}
+    @livewireStyles
+
+    <!-- vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body data-topbar="light">
 
     <!-- Loader -->
-    <div id="preloader">
+    {{-- <div id="preloader">
         <div id="status">
             <div class="spinner">
                 <i class="ri-loader-line spin-icon"></i>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -69,22 +74,7 @@
             </div>
             <!-- End Page-content -->
 
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script> © Upcube.
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <x-footer />
 
         </div>
         <!-- end main content-->
@@ -103,39 +93,50 @@
 
     <script src="{{ asset('assets/js/pages/materialdesign.init.js') }}"></script>
 
-    @stack('scripts')
+    <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script>
-        document.addEventListener('livewire:init', () => {
-            // close modal when user created
-            Livewire.on('created', (event) => {
-                $('#createModal').modal('hide');
-            });
-            // close modal when user updated
-            Livewire.on('updated', (event) => {
-                $('#updateModal').modal('hide');
-            });
-            // close mdal when user not found
-            Livewire.on('not-found', (event) => {
-                $('#createModal').modal('hide');
-                $('#updateModal').modal('hide');
-            });
-            // close modal when user is delete
-            Livewire.on('deleted', (event) => {
-                $('#deleteModal').modal('hide');
-            });
-            // show confirm modal
-            Livewire.on('showDeleteConfirmation', (event) => {
-                $('#deleteModal').modal('show');
-            });
-            // show cancel deletion action modal
-            Livewire.on('hideDeleteConfirmation', (event) => {
-                $('#deleteModal').modal('hide');
-            });
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
         });
     </script>
+    @if (Session::has('success'))
+        <script>
+            Toast.fire({
+                icon: 'success',
+                title: "{{ session('success') }}",
+            })
+        </script>
+    @endif
+    @if (Session::has('info'))
+        <script>
+            Toast.fire({
+                icon: 'info',
+                title: "{{ session('info') }}",
+            })
+        </script>
+    @endif
+    @if (Session::has('warning'))
+        <script>
+            Toast.fire({
+                icon: 'warning',
+                title: "{{ session('warning') }}",
+            })
+        </script>
+    @endif
+
+
+    @stack('scripts')
+
+    <script src="assets/libs/parsleyjs/parsley.min.js"></script>
 
     <x-appjs />
+
+    {{-- Livewire Scripts --}}
+    @livewireScripts
 
 </body>
 

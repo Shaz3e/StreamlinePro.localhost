@@ -1,4 +1,20 @@
 <script>
+    // parsleyjs
+    ! function() {
+        "use strict";
+        window.addEventListener("load", function() {
+            var t = document.getElementsByClassName("needs-validation");
+            Array.prototype.filter.call(t, function(e) {
+                e.addEventListener("submit", function(t) {
+                    !1 === e.checkValidity() && (t.preventDefault(), t.stopPropagation()), e
+                        .classList.add("was-validated")
+                }, !1)
+            })
+        }, !1)
+    }(), $(document).ready(function() {
+        $(".custom-validation").parsley()
+    });
+
     ! function(n) {
         "use strict";
 
@@ -73,7 +89,7 @@
                         Element.ALLOW_KEYBOARD_INPUT)
             }), document.addEventListener("fullscreenchange", e), document.addEventListener("webkitfullscreenchange",
                 e), document.addEventListener("mozfullscreenchange", e), n(".right-bar-toggle").on("click", function(
-            e) {
+                e) {
                 n("body").toggleClass("right-bar-enabled")
             }), n(document).on("click", "body", function(e) {
                 0 < n(e.target).closest(".right-bar-toggle, .right-bar").length || n("body").removeClass(

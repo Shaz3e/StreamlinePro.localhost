@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\DashboardController;
 // Task Status
 
 // Users
+use App\Http\Controllers\Admin\UserController;
 
 // Companies
 
@@ -75,10 +76,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('auth:admin')->group(function () {
 
         // Logout
-        Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
+        Route::post('logout', [LogoutController::class, 'logout'])
+            ->name('logout');
 
         // Dashboard
-        Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/', [DashboardController::class, 'dashboard'])
+            ->name('dashboard');
 
         /**
          * Todos
@@ -147,18 +150,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Users
          */
-        // User List
-        Route::get('users', function () {
-        })->name('users');
-        // User Create
-        Route::get('user/create', function () {
-        })->name('users.create');
-        // User Edit
-        Route::get('user/{id}/edit', function () {
-        })->name('users.edit');
-        // User Show
-        Route::get('user/{id}', function () {
-        })->name('users.show');
+        Route::resource('users', UserController::class);
 
         /**
          * Companies

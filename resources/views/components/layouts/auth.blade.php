@@ -37,6 +37,8 @@
 
     @stack('scripts')
 
+    <script src="assets/libs/parsleyjs/parsley.min.js"></script>
+
     <x-appjs />
 </body>
 
