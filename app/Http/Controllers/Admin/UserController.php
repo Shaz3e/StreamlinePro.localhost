@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
 
-use function Ramsey\Uuid\v1;
-
 class UserController extends Controller
 {
     /**
