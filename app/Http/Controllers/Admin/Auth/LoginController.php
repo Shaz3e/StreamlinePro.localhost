@@ -7,8 +7,6 @@ use App\Http\Requests\Admin\Auth\LoginRequest;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 
-use function Symfony\Component\String\b;
-
 class LoginController extends Controller
 {
     public function view()
