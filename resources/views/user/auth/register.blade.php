@@ -25,33 +25,33 @@
                     <x-alert-message />
                 </div>
 
-                <form action="{{ route('register.store') }}" method="POST">
+                <form action="{{ route('register.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <div class="row mx-5">
 
                         <div class="col-12 mb-2">
                             <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                value="{{ old('name') }}">
+                                value="{{ old('name') }}" required>
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mb-2">
-                            <input type="email" name="email" class="form-control" placeholder="Email"
-                                value="{{ old('email') }}">
+                            <input class="form-control input-mask" data-inputmask="'alias':'email'" placeholder="Email"
+                                value="{{ old('email') }}" required>
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mb-2">
-                            <input type="password" name="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mb-2">
                             <input type="password" name="confirm_password" class="form-control"
-                                placeholder="Confirm Password">
+                                placeholder="Confirm Password" required>
                             @error('confirm_password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -80,4 +80,10 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".input-mask").inputmask()
+        });
+    </script>
 @endpush

@@ -25,20 +25,19 @@
                     <x-alert-message />
                 </div>
 
-                <form action="{{ route('admin.login.store') }}" method="POST">
+                <form action="{{ route('admin.login.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
 
                     <div class="row mx-5">
                         <div class="col-12 mb-2">
-                            <input type="email" name="email" class="form-control input-mask"
-                                data-inputmask="'alias': 'email'" placeholder="Email">
+                            <input name="email" class="form-control input-mask" data-inputmask="'alias': 'email'"
+                                placeholder="Email" required>
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mb-2">
-                            <input type="password" name="password" class="form-control"
-                                placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -72,4 +71,10 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".input-mask").inputmask()
+        });
+    </script>
 @endpush

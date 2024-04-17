@@ -23,20 +23,20 @@
 
                 <x-alert-message />
 
-                <form action="{{ route('password.reset.store') }}" method="POST">
+                <form action="{{ route('password.reset.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <input type="hidden" name="token" value="{{ request('token') }}">
                     <input type="hidden" name="email" value="{{ request('email') }}">
                     <div class="row mx-5">
                         <div class="col-12 mb-2">
-                            <input type="password" name="password" class="form-control" placeholder="password">
+                            <input type="password" name="password" class="form-control" placeholder="password" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mb-2">
                             <input type="password" name="confirm_password" class="form-control"
-                                placeholder="Confirm Password">
+                                placeholder="Confirm Password" required>
                             @error('confirm_password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
