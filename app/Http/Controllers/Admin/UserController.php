@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Http\Requests\Admin\User\UpdateUserRequest;
+use App\Mail\Admin\User\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
+
+use function Ramsey\Uuid\v1;
 
 class UserController extends Controller
 {
@@ -24,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user.create');
     }
 
     /**
@@ -32,7 +36,16 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->is_active = $request->is_active;
+        $user->save();
+
+        session()->flash('success', 'User created successfully!');
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -40,7 +53,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $audits = $user->audits;
+
+        return view('admin.user.show', [
+            'user' => $user,
+            'audits' => $audits,
+        ]);
     }
 
     /**
@@ -48,7 +66,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('admin.user.edit', [
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -56,49 +76,77 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        // Validate data
+        $validated = $request->validated();
+
+        // Check if pasword is filled
+        if ($request->filled('password')) {
+            $validated['password'] = bcrypt($request->password);
+        } else {
+            unset($validated['password']);
+        }
+
+        // Update record in database
+        $user->update($validated);
+
+        // Send password to user
+        if($request->filled('password')){
+            $mailData = [
+                'url' => config('app.url'),
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $request->password,
+            ];
+
+            Mail::to($mailData['email'])->send(new PasswordReset($mailData));
+        }
+
+        // Flash message
+        session()->flash('success', 'User updated successfully!');
+
+        // Redirect to index
+        return redirect()->route('admin.users.index');
     }
 
     /**
      * Remove the specified resource from storage.
+     * Using livewire check livewire component
      */
-    public function destroy(User $user)
+    // public function destroy(User $user)
+    // {
+    //     //
+    // }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(User $user)
     {
         //
     }
 
     /**
-     * Restore the specified resource from storage.
-     */
-    // public function restore(Request $request)
-    // public function restore(User $user)
-    // {
-    //     //
-    // }
-
-    /**
      * Permanent Remove the specified resource from storage.
      */
-    // public function forceDelete(Request $request)
-    // public function forceDelete(User $user)
-    // {
-    //     //
-    // }
+    public function forceDelete(User $user)
+    {
+        //
+    }
 
     /**
      * Show Audit Log
      */
-    // public function audit(Request $request)
-    // {
-    //     if (request()->ajax()) {
-    //         $auditLog = Audit::find($request->id);
+    public function audit(Request $request)
+    {
+        if (request()->ajax()) {
+            $auditLog = Audit::find($request->id);
 
-    //         return view('admin.user.audit', [
-    //             'auditLog' => $auditLog,
-    //         ]);
-    //     } else {
-    //         session()->flash('error', 'Log not available');
-    //         return redirect()->route('admin.users');
-    //     }
-    // }
+            return view('admin.user.audit', [
+                'auditLog' => $auditLog,
+            ]);
+        } else {
+            session()->flash('error', 'Log not available');
+            return redirect()->route('admin.users');
+        }
+    }
 }

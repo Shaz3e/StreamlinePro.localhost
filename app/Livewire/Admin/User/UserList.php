@@ -24,13 +24,6 @@ class UserList extends Component
     public $recordToDelete;
 
     /**
-     * Render placeholder
-     */
-    // public function placeholder()
-    // {
-    // }
-
-    /**
      * Main Blade Render
      */
     public function render()

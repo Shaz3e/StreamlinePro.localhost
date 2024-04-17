@@ -2,6 +2,9 @@
 
 StreamlinePro is a comprehensive Laravel application designed to elevate organizational efficiency by integrating essential management functions into a single, user-friendly platform. With a focus on simplicity and effectiveness, StreamlinePro empowers businesses to streamline their operations and enhance productivity across various domains.
 
+### Mission
+Our mission is to write minimal effective code.
+
 ## Key Features:
 
 1. **Support Tickets:** Seamlessly manage customer inquiries, issues, and support requests with our intuitive ticketing system.

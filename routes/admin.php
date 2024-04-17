@@ -151,6 +151,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Users
          */
         Route::resource('users', UserController::class);
+        // Audit
+        Route::get('/users-audit/{id}', [UserController::class, 'audit'])
+            ->name('users.audit');
+        // Restore users
+        Route::post('/users/restore/{id}', [UserController::class, 'restore'])
+            ->name('users.restore');
+        // Force Delete users
+        Route::post('/users/force-delete/{id}', [UserController::class, 'forceDelete'])
+            ->name('users.forceDelete');
 
         /**
          * Companies
