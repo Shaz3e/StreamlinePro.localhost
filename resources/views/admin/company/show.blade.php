@@ -2,11 +2,11 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'User Profile',
+        'title' => 'Company',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'Users', 'link' => route('admin.users.index')],
-            ['text' => 'User Profile', 'link' => null],
+            ['text' => 'Companies', 'link' => route('admin.companies.index')],
+            ['text' => 'View Company', 'link' => null],
         ],
     ])
 
@@ -14,31 +14,56 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    Company Details
+                </div>
                 <div class="card-body">
                     <table class="table">
                         <tr>
-                            <td>Name</td>
-                            <td>Company</td>
-                            <td>Email</td>
-                            <td>Status</td>
-                            <td>Created At</td>
+                            <td>Logo</td>
+                            <td>Logo</td>
                         </tr>
                         <tr>
-                            <td>{{ $user->name }}</td>
+                            <td>Name</td>
+                            <td>{{ $company->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>{{ $company->email }}</td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>{{ $company->phone }}</td>
+                        </tr>
+                        <tr>
+                            <td>Website</td>
+                            <td>{{ $company->website }}</td>
+                        </tr>
+                        <tr>
+                            <td>Country</td>
+                            <td>{{ $company->country }}</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>{{ $company->address }}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
                             <td>
-                                @if ($user->company != null)
-                                    {{ $user->company->name }}
-                                @endif
-                            </td>
-                            <td>{{ $user->email }}</td>
-                            <td>
-                                @if ($user->is_active)
+                                @if ($company->is_active)
                                     <span class="badge bg-success">Active</span>
                                 @else
                                     <span class="badge bg-danger">Inactive</span>
                                 @endif
                             </td>
-                            <td>{{ $user->created_at->format('l, F j, Y') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Created On</td>
+                            <td>{{ $company->created_at->format('l, F j, Y') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Updated On</td>
+                            <td>{{ $company->updated_at->format('l, F j, Y') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -49,12 +74,50 @@
     </div>
     {{-- /.row --}}
 
+    <!-- User list -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-header">Company Clients</div>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Joined</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($company->users as $user)
+                                <tr wire:key="{{ $user->id }}">
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->created_at->format('D, d M Y') }}</td>
+                                    <th>
+                                        <a href="{{ route('admin.users.show', $user->id) }}">
+                                            View
+                                        </a>
+                                    </th>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    {{-- /.row --}}
+
     {{-- Show Audit History --}}
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Audit History</h4>
+                    Audit History
                 </div>
                 {{-- /.card-header --}}
 
@@ -130,7 +193,7 @@
                 const userId = $(this).data('audit-id');
                 // Fetch details via AJAX
                 $.ajax({
-                    url: `{{ route('admin.users.audit', ':id') }}`.replace(':id', userId),
+                    url: `{{ route('admin.companies.audit', ':id') }}`.replace(':id', userId),
                     type: 'GET',
                     success: function(data) {
                         // Populate modal content with fetched data
@@ -160,8 +223,9 @@
                     if (result.isConfirmed) {
                         // If user confirms, proceed with deletion
                         $.ajax({
-                            url: `{{ route('admin.users.audit.delete', ':id') }}`.replace(
-                                ':id', userId),
+                            url: `{{ route('admin.companies.audit.delete', ':id') }}`
+                                .replace(
+                                    ':id', userId),
                             type: 'GET',
                             success: function(data) {
                                 // Show success message

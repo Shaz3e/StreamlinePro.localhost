@@ -12,7 +12,16 @@ class Company extends Model implements Auditable
 {
     use HasFactory, AuditingAuditable, SoftDeletes;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'logo',
+        'email',
+        'phone',
+        'website',
+        'country',
+        'address',
+        'is_active',
+    ];
 
     // SoftDeletes
     protected $dates = ['deleted_at'];

@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 
 // Companies
+use App\Http\Controllers\Admin\CompanyController;
 
 // Promotions
 
@@ -152,26 +153,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::resource('users', UserController::class);
         // Audit
-        Route::get('/users-audit/{id}', [UserController::class, 'audit'])
+        Route::get('users-audit/{id}', [UserController::class, 'audit'])
             ->name('users.audit');
-        Route::get('/users-audit/delete/{id}', [UserController::class, 'deleteAudit'])
+        Route::get('users-audit/delete/{id}', [UserController::class, 'deleteAudit'])
             ->name('users.audit.delete');
 
         /**
          * Companies
          */
-        // Company List
-        Route::get('companies', function () {
-        })->name('companies');
-        // Company Create
-        Route::get('companies/create', function () {
-        })->name('companies.create');
-        // Company Edit
-        Route::get('companies/{id}/edit', function () {
-        })->name('companies.edit');
-        // Company Show
-        Route::get('companies/{id}', function () {
-        })->name('companies.show');
+        Route::resource('companies', CompanyController::class);
+        // Audit
+        Route::get('/companies-audit/{id}', [CompanyController::class, 'audit'])
+            ->name('companies.audit');
+        Route::get('/companies-audit/delete/{id}', [CompanyController::class, 'deleteAudit'])
+            ->name('companies.audit.delete');
 
         /**
          * Promotions
