@@ -31,16 +31,11 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
-        // Create Record
-        $company = new Company();
-        $company->name = $request->name;
-        $company->email = $request->email;
-        $company->phone = $request->phone;
-        $company->website = $request->website;
-        $company->country = $request->country;
-        $company->address = $request->address;
-        $company->is_active = $request->is_active;
-        $company->save();
+        // Validate data
+        $validated = $request->validated();
+        
+        // Update record in database
+        Company::create($validated);
 
         session()->flash('success', 'Company created successfully!');
 

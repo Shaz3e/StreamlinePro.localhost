@@ -57,7 +57,9 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @if ($user->company != null)
-                                            {{ $user->company->name }}
+                                            <a href="{{ route('admin.companies.show', $user->company->id) }}">
+                                                {{ $user->company->name }}
+                                            </a>
                                         @endif
                                     </td>
                                     @if (!$showDeleted)
