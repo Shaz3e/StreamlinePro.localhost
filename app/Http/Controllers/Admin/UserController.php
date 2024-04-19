@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
-use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Mail\Admin\User\PasswordReset;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -26,7 +26,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create');
+        $companies = Company::where('is_active', 1)->get();
+
+        return view('admin.user.create',[
+            'companies' => $companies,
+        ]);
     }
 
     /**
@@ -34,12 +38,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->is_active = $request->is_active;
-        $user->save();
+        // Validate data
+        $validated = $request->validated();
+        
+        // Update record in database
+        User::create($validated);
 
         session()->flash('success', 'User created successfully!');
 
@@ -71,15 +74,18 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $companies = Company::where('is_active', 1)->get();
+
         return view('admin.user.edit', [
             'user' => $user,
+            'companies' => $companies,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(StoreUserRequest $request, User $user)
     {
         // Validate data
         $validated = $request->validated();
@@ -126,7 +132,7 @@ class UserController extends Controller
             ]);
         } else {
             session()->flash('error', 'Log not available');
-            return redirect()->route('admin.users');
+            return redirect()->route('admin.users.index');
         }
     }
 
@@ -142,6 +148,6 @@ class UserController extends Controller
         }
 
         session()->flash('success', 'Log deleted successfully');
-        return redirect()->route('admin.users');
+        return redirect()->route('admin.users.index');
     }
 }

@@ -41,6 +41,23 @@
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
+                            <label for="company_id" class="col-sm-2 col-form-label">Company</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2" name="company_id" id="company_id">
+                                    <option value="">Select</option>
+                                    @foreach ($companies as $company)
+                                        <option value="{{ $company->id }}"
+                                            {{ $company->id == $user->company_id ? 'selected' : '' }}>{{ $company->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('company_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- /.row --}}
+                        <div class="row mb-3">
                             <label for="password" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-10">
                                 <input type="password" name="password" id="password" class="form-control">
@@ -66,7 +83,8 @@
                             <label for="is_active" class="col-sm-2 col-form-label">Can Login?</label>
                             <div class="col-sm-10">
                                 <select class="form-control" name="is_active" required>
-                                    <option value="1" {{ old('is_active', $user->is_active) ? '1' : 'selected' }}>Yes -
+                                    <option value="1" {{ old('is_active', $user->is_active) ? '1' : 'selected' }}>Yes
+                                        -
                                         User can login</option>
                                     <option value="0" {{ old('is_active', $user->is_active) ? '0' : 'selected' }}>No -
                                         User cannot login</option>
@@ -81,7 +99,7 @@
                     {{-- /.card-body --}}
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-save-line align-middle me-2"></i> Success
+                            <i class="ri-save-line align-middle me-2"></i> Update
                         </button>
                     </div>
                     {{-- /.card-footer --}}
@@ -95,13 +113,16 @@
 @endsection
 
 @push('styles')
+    <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
     <script>
         // Input mask
         $(document).ready(function() {
+            $('.select2').select2();
             $(".input-mask").inputmask()
         });
     </script>
