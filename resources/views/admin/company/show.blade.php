@@ -21,7 +21,14 @@
                     <table class="table">
                         <tr>
                             <td>Logo</td>
-                            <td>Logo</td>
+                            <td>
+                                @if ($company->logo != null)
+                                    <a href="{{ asset('storage/' . $company->logo) }}" class="image-popup-no-margins">
+                                        <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }}"
+                                            class="img-fluid avatar-sm">
+                                    </a>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td>Name</td>
@@ -190,9 +197,15 @@
 @endsection
 
 @push('styles')
+    <!-- Lightbox css -->
+    <link href="{{ asset('assets/libs/magnific-popup/magnific-popup.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @push('scripts')
+    <!-- Magnific Popup-->
+    <script src="{{ asset('assets/libs/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+    <!-- lightbox init js-->
+    <script src="{{ asset('assets/js/pages/lightbox.init.js') }}"></script>
     <script>
         $(document).ready(function() {
             // Audit Log Show Modal

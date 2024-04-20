@@ -42,16 +42,8 @@ class StoreCompanyRequest extends BaseFormRequest
             ],
             'logo' => [
                 'nullable',
-                'image',  // Ensure it is an image file
                 'mimes:jpeg,png',  // Allow only JPEG and PNG mime types
                 'max:2048',  // Maximum file size of 2 MB
-                function ($attribute, $value, $fail) {
-                    // Custom validation rule to check if the image is square
-                    list($width, $height) = getimagesize($value);
-                    if ($width !== $height) {
-                        $fail('The logo must be a square image with dimensions exactly 150x150 pixels works best');
-                    }
-                },
             ],
         ];
     }

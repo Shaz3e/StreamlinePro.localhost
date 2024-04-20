@@ -33,9 +33,17 @@ class CompanyController extends Controller
     {
         // Validate data
         $validated = $request->validated();
-        
+
+        // Upload logo if provided
+
+        if ($request->hasFile('logo')) {
+            $filename = time() . '.' . $request->file('logo')->extension();
+            $validated['logo'] = $request->file('logo')->storeAs('companies/logos', $filename, 'public');
+        }
+
         // Update record in database
         Company::create($validated);
+
 
         session()->flash('success', 'Company created successfully!');
 
