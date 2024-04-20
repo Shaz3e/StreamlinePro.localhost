@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Company\StoreCompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use OwenIt\Auditing\Models\Audit;
 
 class CompanyController extends Controller
@@ -87,6 +88,19 @@ class CompanyController extends Controller
     {
         // Validate data
         $validated = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            // Remove old logo file
+            if ($company->logo) {
+                File::delete('storage/' . $company->logo);
+            }
+            // Upload new logo
+            $filename = time() . '.' . $request->file('logo')->extension();
+            $validated['logo'] = $request->file('logo')->storeAs('companies/logos', $filename, 'public');
+        } else {
+            // Unset logo key from validated array
+            unset($validated['logo']);
+        };
 
         // Update record in database
         $company->update($validated);

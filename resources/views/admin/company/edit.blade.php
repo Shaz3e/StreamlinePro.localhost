@@ -14,7 +14,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.companies.update', $company->id) }}" method="POST" class="needs-validation" novalidate>
+                <form action="{{ route('admin.companies.update', $company->id) }}" method="POST" class="needs-validation"
+                    novalidate enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <div class="card-body">
@@ -88,9 +89,10 @@
                             <label for="logo" class="col-sm-2 col-form-label">Logo</label>
                             <div class="col-sm-10">
                                 <div class="input-group">
-                                    <input type="file" name="logo" id="logo" class="form-control"
-                                        id="customFile">
+                                    <input type="file" name="logo" id="logo"
+                                        value="{{ old('logo', $company->logo) }}" class="form-control" id="customFile">
                                 </div>
+                                <small class="d-block text-muted">Only JPG, PNG with max 2MB file size allowed.</small>
                                 @error('logo')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

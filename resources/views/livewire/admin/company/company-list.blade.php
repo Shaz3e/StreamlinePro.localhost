@@ -36,69 +36,78 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                    <table id="data" class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Website</th>
-                                <th>Country</th>
-                                @if (!$showDeleted)
-                                    <th>Status</th>
-                                @endif
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($companies as $company)
-                                <tr wire:key="{{ $company->id }}">
-                                    <td>{{ $company->name }}</td>
-                                    <td>{{ $company->email }}</td>
-                                    <td>{{ $company->phone }}</td>
-                                    <td>{{ $company->website }}</td>
-                                    <td>{{ $company->country }}</td>
+                        <table id="data" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Website</th>
+                                    <th>Country</th>
                                     @if (!$showDeleted)
-                                        <td>
-                                            <input type="checkbox" wire:change="toggleStatus({{ $company->id }})"
-                                                id="is_active_{{ $company->id }}" switch="bool"
-                                                {{ $company->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $company->id }}" data-on-label="Yes"
-                                                data-off-label="No"></label>
-                                        </td>
+                                        <th>Status</th>
                                     @endif
-                                    <td class="text-right">
-                                        @if ($showDeleted)
-                                            <button wire:click="confirmRestore({{ $company->id }})"
-                                                class="btn btn-sm btn-outline-info" data-toggle="modal"
-                                                data-target="#deleteModal">
-                                                <i class="ri-arrow-go-back-line"></i>
-                                            </button>
-                                            <button wire:click="confirmForceDelete({{ $company->id }})"
-                                                class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                data-target="#deleteModal">
-                                                <i class="ri-delete-bin-7-line"></i>
-                                            </button>
-                                        @else
-                                            <a href="{{ route('admin.companies.show', $company->id) }}"
-                                                class="btn btn-sm btn-outline-info">
-                                                <i class="ri-eye-line"></i>
-                                            </a>
-                                            <a href="{{ route('admin.companies.edit', $company->id) }}"
-                                                class="btn btn-sm btn-outline-success">
-                                                <i class="ri-pencil-line"></i>
-                                            </a>
-                                            <button wire:click="confirmDelete({{ $company->id }})"
-                                                class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                data-target="#deleteModal">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </button>
-                                        @endif
-                                    </td>
+                                    <th></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($companies as $company)
+                                    <tr wire:key="{{ $company->id }}">
+                                        <td>
+                                            @if ($company->logo != null)
+                                                <a href="{{ asset('storage/' . $company->logo) }}"
+                                                    class="image-popup-no-margins">
+                                                    <img src="{{ asset('storage/' . $company->logo) }}"
+                                                        alt="{{ $company->name }}" class="img-fluid avatar-sm">
+                                                </a>
+                                            @endif
+                                            {{ $company->name }}
+                                        </td>
+                                        <td>{{ $company->email }}</td>
+                                        <td>{{ $company->phone }}</td>
+                                        <td>{{ $company->website }}</td>
+                                        <td>{{ $company->country }}</td>
+                                        @if (!$showDeleted)
+                                            <td>
+                                                <input type="checkbox" wire:change="toggleStatus({{ $company->id }})"
+                                                    id="is_active_{{ $company->id }}" switch="bool"
+                                                    {{ $company->is_active ? 'checked' : '' }} />
+                                                <label for="is_active_{{ $company->id }}" data-on-label="Yes"
+                                                    data-off-label="No"></label>
+                                            </td>
+                                        @endif
+                                        <td class="text-right">
+                                            @if ($showDeleted)
+                                                <button wire:click="confirmRestore({{ $company->id }})"
+                                                    class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                                    data-target="#deleteModal">
+                                                    <i class="ri-arrow-go-back-line"></i>
+                                                </button>
+                                                <button wire:click="confirmForceDelete({{ $company->id }})"
+                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                    data-target="#deleteModal">
+                                                    <i class="ri-delete-bin-7-line"></i>
+                                                </button>
+                                            @else
+                                                <a href="{{ route('admin.companies.show', $company->id) }}"
+                                                    class="btn btn-sm btn-outline-info">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="{{ route('admin.companies.edit', $company->id) }}"
+                                                    class="btn btn-sm btn-outline-success">
+                                                    <i class="ri-pencil-line"></i>
+                                                </a>
+                                                <button wire:click="confirmDelete({{ $company->id }})"
+                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                    data-target="#deleteModal">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     {{ $companies->links() }}
                 </div>
