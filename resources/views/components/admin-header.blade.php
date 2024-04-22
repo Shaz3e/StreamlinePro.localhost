@@ -60,7 +60,8 @@
                 </div>
             </div>
 
-            <div class="dropdown d-none d-sm-inline-block">
+            {{-- Language Panel --}}
+            {{-- <div class="dropdown d-none d-sm-inline-block">
                 <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <img class="" src="{{ asset('assets/images/flags/us.jpg') }}" alt="Header Language"
@@ -92,9 +93,10 @@
                             height="12"> <span class="align-middle">Russian</span>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="dropdown d-none d-lg-inline-block ms-1">
+            {{-- Quick Action Panel --}}
+            {{-- <div class="dropdown d-none d-lg-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <i class="ri-apps-2-line"></i>
@@ -144,7 +146,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
@@ -254,7 +256,7 @@
                     <a class="dropdown-item" href="#"><i class="ri-user-line align-middle me-1"></i>
                         Profile</a>
                     <a class="dropdown-item" href="#"><i class="ri-wallet-2-line align-middle me-1"></i> My
-                        Wallet</a>
+                        Todo</a>
                     <a class="dropdown-item d-block" href="#"><span
                             class="badge bg-success float-end mt-1">11</span><i
                             class="ri-settings-2-line align-middle me-1"></i> Settings</a>
