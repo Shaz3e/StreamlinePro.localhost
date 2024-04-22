@@ -36,13 +36,24 @@ use App\Http\Controllers\Admin\CompanyController;
 
 // Support Tickets
 
-// Admins
+// Staff
+use App\Http\Controllers\Admin\StaffController;
 
 // Departments
 
 // Invoice
 
 // Invoice Status
+
+/**
+ * Settings
+ */
+// Permission
+use App\Http\Controllers\Admin\RolePermission\PermissionController;
+
+// Roles
+use App\Http\Controllers\Admin\RolePermission\RoleController;
+
 
 // if route is /admin redirect to admin/dashboard
 
@@ -257,17 +268,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Admins as Staff
          */
         // Staff List
-        Route::get('/staff', function () {
-        })->name('staff');
-        // Staff Create
-        Route::get('/staff/create', function () {
-        })->name('staff.create');
-        // Staff Edit
-        Route::get('/staff/{id}/edit', function () {
-        })->name('staff.edit');
-        // Staff Show
-        Route::get('/staff/{id}', function () {
-        })->name('staff.show');
+        Route::resource('/staff', StaffController::class);
+        // Audit
+        Route::get('staff-audit/{id}', [UserController::class, 'audit'])
+            ->name('staff.audit');
+        Route::get('staff-audit/delete/{id}', [UserController::class, 'deleteAudit'])
+            ->name('staff.audit.delete');
 
         /**
          * Departments
@@ -318,5 +324,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Invoice Status Show
         Route::get('/invoice-status/{id}', function () {
         })->name('invoice-status.show');
+
+        /**
+         * Roles & Permissions
+         */
+        Route::prefix('roles-permissions')->name('roles-permissions.')->group(function () {
+            // Permissions
+            Route::resource('permissions', PermissionController::class);
+            // Roles
+            Route::resource('roles', RoleController::class);
+        });
     });
 });

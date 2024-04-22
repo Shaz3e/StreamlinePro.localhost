@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\User;
+namespace App\Http\Requests\Admin\Staff;
 
 use App\Http\Requests\BaseFormRequest;
-use App\Models\Company;
-use App\Models\User;
 use Illuminate\Validation\Rule;
 
-class StoreUserRequest extends BaseFormRequest
+class StoreStaffRequest extends BaseFormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -22,11 +20,17 @@ class StoreUserRequest extends BaseFormRequest
             ],
             'email' => [
                 'required', 'string', 'email', 'max:255',
-                Rule::unique('users', 'email')->ignore($this->user),
+                Rule::unique('admins', 'email')->ignore($this->staff),
             ],
-            'company_id' => [
+            'department_id' => [
                 'nullable',
+                'array',
                 Rule::exists('companies', 'id'),
+            ],
+            'roles' => [
+                'required',
+                'array',
+                Rule::exists('roles', 'name'),
             ],
             'is_active' => [
                 'required', 'boolean',

@@ -14,19 +14,19 @@
         </div>
         {{-- .col --}}
         <div class="col-md-2 col-sm-12 mb-2">
+            <div class="d-grid">
+                <a href="{{ route('admin.staff.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                    <i class="ri-add-fill align-middle me-2"></i> Create
+                </a>
+            </div>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-2 col-sm-12 mb-2">
             <select wire:model.live="showDeleted" class="form-control form-control-sm form-control-border">
                 <option value="" selected="selected">Filters</option>
                 <option value="">Show Active Record</option>
                 <option value="true">Show Deleted Record</option>
             </select>
-        </div>
-        {{-- /.col --}}
-        <div class="col-md-2 col-sm-12 mb-2">
-            <div class="d-grid">
-                <a href="{{ route('admin.users.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
-                    <i class="ri-add-fill align-middle me-2"></i> Create
-                </a>
-            </div>
         </div>
         {{-- /.col --}}
     </div>
@@ -42,7 +42,8 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Company</th>
+                                <th>Departments</th>
+                                <th>Roles</th>
                                 @if (!$showDeleted)
                                     <th>Status</th>
                                 @endif
@@ -50,63 +51,60 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                                <tr wire:key="{{ $user->id }}">
-                                    <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
+                            @foreach ($admins as $admin)
+                                <tr wire:key="{{ $admin->id }}">
+                                    <td>{{ $admin->id }}</td>
+                                    <td>{{ $admin->name }}</td>
+                                    <td>{{ $admin->email }}</td>
                                     <td>
-                                        @if ($user->company != null)
-                                            <a href="{{ route('admin.companies.show', $user->company->id) }}">
-                                                {{ $user->company->name }}
-                                            </a>
+                                        @if ($admin->departments() !== null)
+                                            @foreach ($admin->departments() as $id => $name)
+                                                <span class="badge bg-info">{{ $name }}</span>
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (!empty($admin->getRoleNames()))
+                                            @foreach ($admin->getRoleNames() as $role)
+                                                <span class="badge bg-success">{{ $role }}</span>
+                                            @endforeach
                                         @endif
                                     </td>
                                     @if (!$showDeleted)
                                         <td>
-                                            <input type="checkbox" wire:change="toggleStatus({{ $user->id }})"
-                                                id="is_active_{{ $user->id }}" switch="bool"
-                                                {{ $user->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $user->id }}" data-on-label="Yes"
+                                            <input type="checkbox" wire:change="toggleStatus({{ $admin->id }})"
+                                                id="is_active_{{ $admin->id }}" switch="bool"
+                                                {{ $admin->is_active ? 'checked' : '' }} />
+                                            <label for="is_active_{{ $admin->id }}" data-on-label="Yes"
                                                 data-off-label="No"></label>
                                         </td>
                                     @endif
                                     <td class="text-right">
                                         @if ($showDeleted)
-                                            @can('user.restore')
-                                                <button wire:click="confirmRestore({{ $user->id }})"
-                                                    class="btn btn-sm btn-outline-info" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-arrow-go-back-line"></i>
-                                                </button>
-                                            @endcan
-                                            @can('user.force.delete')
-                                                <button wire:click="confirmForceDelete({{ $user->id }})"
-                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-delete-bin-7-line"></i>
-                                                </button>
-                                            @endcan
+                                            <button wire:click="confirmRestore({{ $admin->id }})"
+                                                class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                                <i class="ri-arrow-go-back-line"></i>
+                                            </button>
+                                            <button wire:click="confirmForceDelete({{ $admin->id }})"
+                                                class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                                <i class="ri-delete-bin-7-line"></i>
+                                            </button>
                                         @else
-                                            @can('user.read')
-                                                <a href="{{ route('admin.users.show', $user->id) }}"
-                                                    class="btn btn-sm btn-outline-info">
-                                                    <i class="ri-eye-line"></i>
-                                                </a>
-                                            @endcan
-                                            @can('user.update')
-                                                <a href="{{ route('admin.users.edit', $user->id) }}"
-                                                    class="btn btn-sm btn-outline-success">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                            @endcan
-                                            @can('user.delete')
-                                                <button wire:click="confirmDelete({{ $user->id }})"
-                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
-                                            @endcan
+                                            <a href="{{ route('admin.staff.show', $admin->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                            <a href="{{ route('admin.staff.edit', $admin->id) }}"
+                                                class="btn btn-sm btn-outline-success">
+                                                <i class="ri-pencil-line"></i>
+                                            </a>
+                                            <button wire:click="confirmDelete({{ $admin->id }})"
+                                                class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -114,7 +112,7 @@
                         </tbody>
                     </table>
 
-                    {{ $users->links() }}
+                    {{ $admins->links() }}
                 </div>
             </div>
         </div>

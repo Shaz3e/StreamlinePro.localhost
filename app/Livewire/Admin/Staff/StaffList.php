@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\User;
+namespace App\Livewire\Admin\Staff;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class UserList extends Component
+class StaffList extends Component
 {
     use WithPagination;
 
@@ -32,10 +31,10 @@ class UserList extends Component
      */
     public function render()
     {
-        $query = User::query();
+        $query = Admin::query();
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('users');
+        $columns = Schema::getColumnListing('admins');
 
         // Filter records based on search query
         if ($this->search !== '') {
@@ -51,10 +50,10 @@ class UserList extends Component
             $query->onlyTrashed();
         }
 
-        $users = $query->orderBy('id', 'desc')->paginate($this->perPage);
+        $admins = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        return view('livewire.admin.user.user-list', [
-            'users' => $users
+        return view('livewire.admin.staff.staff-list', [
+            'admins' => $admins
         ]);
     }
 
@@ -75,22 +74,22 @@ class UserList extends Component
     }
 
     /**
-     * Toggle User Status
+     * Toggle Status
      */
     public function toggleStatus($userId)
     {
-        // Get user data
-        $user = User::find($userId);
+        // Get data
+        $user = Admin::find($userId);
 
-        // Check user exists
+        // Check record exists
         if (!$user) {
-            $this->dispatch('error', 'User not found!');
+            $this->dispatch('error', 'Staff not found!');
             return;
         }
 
         // Change Status
         $user->update(['is_active' => !$user->is_active]);
-        // 'success', 'User status has been updated successfully!'
+        
         $this->dispatch('statusChanged');
     }
 
@@ -116,16 +115,16 @@ class UserList extends Component
         }
 
         // get id
-        $user = User::find($this->recordToDelete);
+        $admin = Admin::find($this->recordToDelete);
 
         // Check record exists
-        if (!$user) {
+        if (!$admin) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $user->delete();
+        $admin->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;
@@ -134,9 +133,9 @@ class UserList extends Component
     /**
      * Confirm Restore
      */
-    public function confirmRestore($userId)
+    public function confirmRestore($adminId)
     {
-        $this->recordToDelete = $userId;
+        $this->recordToDelete = $adminId;
         $this->dispatch('confirmRestore');
     }
 
@@ -146,15 +145,15 @@ class UserList extends Component
     #[On('restored')]
     public function restore()
     {
-        User::withTrashed()->find($this->recordToDelete)->restore();
+        Admin::withTrashed()->find($this->recordToDelete)->restore();
     }
 
     /**
      * Confirm force delete
      */
-    public function confirmForceDelete($userId)
+    public function confirmForceDelete($adminId)
     {
-        $this->recordToDelete = $userId;
+        $this->recordToDelete = $adminId;
         $this->dispatch('confirmForceDelete');
     }
 
@@ -164,6 +163,6 @@ class UserList extends Component
     #[On('forceDeleted')]
     public function forceDelete()
     {
-        User::withTrashed()->find($this->recordToDelete)->forceDelete();
+        Admin::withTrashed()->find($this->recordToDelete)->forceDelete();
     }
 }

@@ -58,23 +58,51 @@
                         </div>
 
                     </div>
+                    {{-- /.row --}}
                 </form>
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="d-grid">
+                            @env('local')
+                            <div class="mb-2">
+                                <x-login-link label="Login as SuperAdmin" email="superadmin@shaz3e.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
+                            </div>
+                            <div class="mb-2">
+                                <x-login-link label="Login as Admin" email="admin@shaz3e.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
+                            </div>
+                            <div class="mb-2">
+                                <x-login-link label="Login as Manager" email="manager@shaz3e.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
+                            </div>
+                            <div class="mb-2">
+                                <x-login-link label="Login as Staff" email="staff@shaz3e.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
+                                @endenv
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- /.container --}}
             </div>
-            {{-- /.container --}}
+            {{-- /.s3-authbox --}}
         </div>
-        {{-- /.s3-authbox --}}
-    </div>
-    {{-- /.s3-container --}}
-@endsection
+        {{-- /.s3-container --}}
+    @endsection
 
-@push('styles')
-@endpush
+    @push('styles')
+    @endpush
 
-@push('scripts')
-    <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $(".input-mask").inputmask()
-        });
-    </script>
-@endpush
+    @push('scripts')
+        <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $(".input-mask").inputmask()
+            });
+        </script>
+    @endpush

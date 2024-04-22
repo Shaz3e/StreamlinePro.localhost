@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Mail\Admin\User\PasswordReset;
+use App\Models\Admin;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
 
@@ -18,6 +21,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        // Check Authorize
+        Gate::authorize('user.list');
+
         return view('admin.user.index');
     }
 
@@ -26,9 +32,12 @@ class UserController extends Controller
      */
     public function create()
     {
+        // Check Authorize
+        Gate::authorize('user.create');
+        
         $companies = Company::where('is_active', 1)->get();
 
-        return view('admin.user.create',[
+        return view('admin.user.create', [
             'companies' => $companies,
         ]);
     }
@@ -38,9 +47,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        // Check Authorize
+        Gate::authorize('user.create');
+
         // Validate data
         $validated = $request->validated();
-        
+
         // Update record in database
         User::create($validated);
 
@@ -54,6 +66,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        // Check Authorize
+        Gate::authorize('user.read');
+
         $audits = $user->audits()
             ->latest()
             ->paginate(10);
@@ -74,6 +89,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        // Check Authorize
+        Gate::authorize('user.update');
+
         $companies = Company::where('is_active', 1)->get();
 
         return view('admin.user.edit', [
@@ -87,6 +105,9 @@ class UserController extends Controller
      */
     public function update(StoreUserRequest $request, User $user)
     {
+        // Check Authorize
+        Gate::authorize('user.update');
+
         // Validate data
         $validated = $request->validated();
 
@@ -124,6 +145,9 @@ class UserController extends Controller
      */
     public function audit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('user.read');
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
@@ -140,7 +164,10 @@ class UserController extends Controller
      * Delete Audit Log
      */
     public function deleteAudit(Request $request)
-    {
+    {        
+        // Check Authorize
+        Gate::authorize('user.read');
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
             $auditLog->delete();

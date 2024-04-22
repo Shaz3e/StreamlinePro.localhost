@@ -9,10 +9,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Auditable as AuditingAuditable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable implements Auditable
 {
-    use HasFactory, Notifiable, AuditingAuditable, SoftDeletes;
+    use HasFactory, Notifiable, HasRoles, AuditingAuditable, SoftDeletes;
+
+    protected $guard = 'admin';
 
     /**
      * The attributes that are mass assignable.

@@ -31,7 +31,11 @@ class DatabaseSeeder extends Seeder
             // Local
             ProductSeeder::class,
             CompanySeeder::class,
+            DepartmentSeeder::class,
             UserSeeder::class,
+
+            // Run this seeder at the end
+            RolePermissionSeeder::class,
         ]);
     }
 }
