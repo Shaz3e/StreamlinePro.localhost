@@ -58,6 +58,9 @@ class StaffController extends Controller
         // Update record in database
         $staff = Admin::create($validated);
 
+        $staff->department_id = $request->department_id;
+        $staff->save();
+
         // Sync Role
         $staff->syncRoles($request->roles);
 
@@ -153,17 +156,9 @@ class StaffController extends Controller
         // Sync Role
         $staff->syncRoles($request->roles);
 
-        // Send password to staff if required create this functionality
-        // if ($request->filled('password')) {
-        //     $mailData = [
-        //         'url' => config('app.url'),
-        //         'name' => $staff->name,
-        //         'email' => $staff->email,
-        //         'password' => $request->password,
-        //     ];
-
-        //     // Mail::to($mailData['email'])->send(new PasswordReset($mailData));
-        // }
+        // Update Department
+        $staff->department_id = $request->department_id;
+        $staff->save();
 
         // Flash message
         session()->flash('success', 'Staff updated successfully!');

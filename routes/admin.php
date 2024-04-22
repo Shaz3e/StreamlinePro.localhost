@@ -40,6 +40,7 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\StaffController;
 
 // Departments
+use App\Http\Controllers\Admin\DepartmentController;
 
 // Invoice
 
@@ -278,18 +279,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Departments
          */
-        // Department List
-        Route::get('/departments', function () {
-        })->name('departments');
-        // Department Create
-        Route::get('/departments/create', function () {
-        })->name('departments.create');
-        // Department Edit
-        Route::get('/departments/{id}/edit', function () {
-        })->name('departments.edit');
-        // Department Show
-        Route::get('/departments/{id}', function () {
-        })->name('departments.show');
+        Route::resource('/departments', DepartmentController::class);
+        // Audit
+        Route::get('departments-audit/{id}', [DepartmentController::class, 'audit'])
+            ->name('departments.audit');
+        Route::get('departments-audit/delete/{id}', [DepartmentController::class, 'deleteAudit'])
+            ->name('departments.audit.delete');
 
         /**
          * Invoice

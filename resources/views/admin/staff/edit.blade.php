@@ -41,13 +41,14 @@
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
-                            <label for="department_id" class="col-sm-2 col-form-label">Company</label>
+                            <label for="department_id" class="col-sm-2 col-form-label">Departments</label>
                             <div class="col-sm-10">
                                 <select class="form-control select2" multiple name="department_id[]" id="department_id">
                                     <option value="">Select</option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->id }}"
-                                            {{ $department->id == $staff->department_id ? 'selected' : '' }}>{{ $department->name }}
+                                            @if (in_array($department->id, $staff->department_id)) selected @endif>
+                                            {{ $department->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -63,10 +64,8 @@
                                 <select class="form-control select2" multiple name="roles[]" id="roles">
                                     <option value="">Select</option>
                                     @foreach ($roles as $role)
-                                        <option 
-                                        value="{{ $role }}"
-                                        {{ in_array($role, $staffRoles) ? 'selected' : '' }}
-                                        >
+                                        <option value="{{ $role }}"
+                                            {{ in_array($role, $staffRoles) ? 'selected' : '' }}>
                                             {{ $role }}
                                         </option>
                                     @endforeach
@@ -106,7 +105,8 @@
                                     <option value="1" {{ old('is_active', $staff->is_active) ? '1' : 'selected' }}>Yes
                                         -
                                         User can login</option>
-                                    <option value="0" {{ old('is_active', $staff->is_active) ? '0' : 'selected' }}>No -
+                                    <option value="0" {{ old('is_active', $staff->is_active) ? '0' : 'selected' }}>No
+                                        -
                                         User cannot login</option>
                                 </select>
                                 @error('is_active')

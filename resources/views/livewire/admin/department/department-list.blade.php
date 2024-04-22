@@ -15,7 +15,7 @@
         {{-- .col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.companies.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.departments.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -40,10 +40,6 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Website</th>
-                                    <th>Country</th>
                                     @if (!$showDeleted)
                                         <th>Status</th>
                                     @endif
@@ -51,62 +47,49 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($companies as $company)
-                                    <tr wire:key="{{ $company->id }}">
-                                        <td>
-                                            @if ($company->logo != null)
-                                                <a href="{{ asset('storage/' . $company->logo) }}"
-                                                    class="image-popup-no-margins">
-                                                    <img src="{{ asset('storage/' . $company->logo) }}"
-                                                        alt="{{ $company->name }}" class="img-fluid avatar-sm">
-                                                </a>
-                                            @endif
-                                            {{ $company->name }}
-                                        </td>
-                                        <td>{{ $company->email }}</td>
-                                        <td>{{ $company->phone }}</td>
-                                        <td>{{ $company->website }}</td>
-                                        <td>{{ $company->country }}</td>
+                                @foreach ($departments as $department)
+                                    <tr wire:key="{{ $department->id }}">
+                                        <td>{{ $department->name }}</td>
                                         @if (!$showDeleted)
                                             <td>
-                                                <input type="checkbox" wire:change="toggleStatus({{ $company->id }})"
-                                                    id="is_active_{{ $company->id }}" switch="bool"
-                                                    {{ $company->is_active ? 'checked' : '' }} />
-                                                <label for="is_active_{{ $company->id }}" data-on-label="Yes"
+                                                <input type="checkbox" wire:change="toggleStatus({{ $department->id }})"
+                                                    id="is_active_{{ $department->id }}" switch="bool"
+                                                    {{ $department->is_active ? 'checked' : '' }} />
+                                                <label for="is_active_{{ $department->id }}" data-on-label="Yes"
                                                     data-off-label="No"></label>
                                             </td>
                                         @endif
                                         <td class="text-right">
                                             @if ($showDeleted)
-                                                @can('company.restore')
-                                                    <button wire:click="confirmRestore({{ $company->id }})"
+                                                @can('department.restore')
+                                                    <button wire:click="confirmRestore({{ $department->id }})"
                                                         class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                         data-target="#deleteModal">
                                                         <i class="ri-arrow-go-back-line"></i>
                                                     </button>
                                                 @endcan
-                                                @can('company.force.delete')
-                                                    <button wire:click="confirmForceDelete({{ $company->id }})"
+                                                @can('department.force.delete')
+                                                    <button wire:click="confirmForceDelete({{ $department->id }})"
                                                         class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                         data-target="#deleteModal">
                                                         <i class="ri-delete-bin-7-line"></i>
                                                     </button>
                                                 @endcan
                                             @else
-                                                @can('company.read')
-                                                    <a href="{{ route('admin.companies.show', $company->id) }}"
+                                                @can('department.read')
+                                                    <a href="{{ route('admin.departments.show', $department->id) }}"
                                                         class="btn btn-sm btn-outline-info">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
                                                 @endcan
-                                                @can('company.update')
-                                                    <a href="{{ route('admin.companies.edit', $company->id) }}"
+                                                @can('department.update')
+                                                    <a href="{{ route('admin.departments.edit', $department->id) }}"
                                                         class="btn btn-sm btn-outline-success">
                                                         <i class="ri-pencil-line"></i>
                                                     </a>
                                                 @endcan
-                                                @can('company.delete')
-                                                    <button wire:click="confirmDelete({{ $company->id }})"
+                                                @can('department.delete')
+                                                    <button wire:click="confirmDelete({{ $department->id }})"
                                                         class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                         data-target="#deleteModal">
                                                         <i class="ri-delete-bin-line"></i>
@@ -119,7 +102,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $companies->links() }}
+                    {{ $departments->links() }}
                 </div>
             </div>
         </div>
@@ -128,15 +111,9 @@
     {{-- /.row --}}
 </div>
 @push('styles')
-    <!-- Lightbox css -->
-    <link href="{{ asset('assets/libs/magnific-popup/magnific-popup.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @push('scripts')
-    <!-- Magnific Popup-->
-    <script src="{{ asset('assets/libs/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
-    <!-- lightbox init js-->
-    <script src="{{ asset('assets/js/pages/lightbox.init.js') }}"></script>
 @endpush
 @script
     <script>

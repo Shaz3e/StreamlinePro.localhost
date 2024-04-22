@@ -68,6 +68,13 @@
                                             Staff
                                         </a>
                                     </li>
+                                    {{-- Departments --}}
+                                    <li class="{{ request()->routeIs('admin.departments.*') ? 'mm-active' : '' }}">
+                                        <a href="{{ route('admin.departments.index') }}"
+                                            class="{{ request()->routeIs('admin.departments.*') ? 'active' : '' }}">
+                                            Departments
+                                        </a>
+                                    </li>
                                     {{-- Permissions --}}
                                     <li
                                         class="{{ request()->routeIs('admin.roles-permissions.roles.*') ? 'mm-active' : '' }}">

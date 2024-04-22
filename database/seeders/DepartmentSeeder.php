@@ -15,10 +15,10 @@ class DepartmentSeeder extends Seeder
     public function run(): void
     {
         $departments = [
-            ['name' => 'Department 1'],
-            ['name' => 'Department 2'],
-            ['name' => 'Department 3'],
-            ['name' => 'Department 4'],
+            ['name' => 'Department 1', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Department 2', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Department 3', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Department 4', 'created_at' => now(), 'updated_at' => now()],
         ];
 
         DB::table('departments')->insert($departments);
