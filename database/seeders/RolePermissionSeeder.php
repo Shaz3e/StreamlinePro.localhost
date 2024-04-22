@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -24,9 +25,24 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'manager'],
             ['guard_name' => 'admin', 'name' => 'staff'],
         ];
-
+        
         foreach ($roles as $role) {
-            Role::create($role);
+            $newRole = Role::create($role);
+
+            // Assign Roles to Users
+            if ($newRole->name === 'superadmin') {
+                $admin = Admin::where('email', 'superadmin@shaz3e.com')->first();
+                $admin->assignRole($newRole);
+            } elseif ($newRole->name === 'admin') {
+                $admin = Admin::where('email', 'admin@shaz3e.com')->first();
+                $admin->assignRole($newRole);
+            } elseif ($newRole->name === 'manager') {
+                $admin = Admin::where('email', 'manager@shaz3e.com')->first();
+                $admin->assignRole($newRole);
+            } elseif ($newRole->name === 'staff') {
+                $admin = Admin::where('email', 'staff@shaz3e.com')->first();
+                $admin->assignRole($newRole);
+            }
         }
 
         // Create all permissions
