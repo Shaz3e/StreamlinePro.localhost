@@ -166,7 +166,7 @@ class UserController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('user.read');
+        Gate::authorize('user.delete');
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
