@@ -77,7 +77,7 @@
                                         </a>
                                     </li>
                                     {{-- Roles --}}
-                                    @can('superadmin')
+                                    @if(auth()->user()->id === 1)
                                         <li
                                             class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'mm-active' : '' }}">
                                             <a href="{{ route('admin.roles-permissions.permissions.index') }}"
@@ -85,7 +85,7 @@
                                                 Permissions
                                             </a>
                                         </li>
-                                    @endcan
+                                    @endif
                                 </ul>
                             </li>
                         </ul>

@@ -31,7 +31,8 @@ class StaffList extends Component
      */
     public function render()
     {
-        $query = Admin::query();
+        $query = Admin::query()
+            ->where('id', '!=', 1);
 
         // Get all columns in the required table
         $columns = Schema::getColumnListing('admins');
@@ -50,7 +51,7 @@ class StaffList extends Component
             $query->onlyTrashed();
         }
 
-        $admins = $query->orderBy('id', 'desc')->paginate($this->perPage);
+        $admins = $query->orderBy('id', 'asc')->paginate($this->perPage);
 
         return view('livewire.admin.staff.staff-list', [
             'admins' => $admins
@@ -76,20 +77,25 @@ class StaffList extends Component
     /**
      * Toggle Status
      */
-    public function toggleStatus($userId)
+    public function toggleStatus($staffId)
     {
         // Get data
-        $user = Admin::find($userId);
+        $staff = Admin::find($staffId);
+
+        if ($staff->id === 1) {
+            session()->flash('error', 'You cannot change status of super admin!');
+            return redirect()->route('admin.staff.index');
+        }
 
         // Check record exists
-        if (!$user) {
+        if (!$staff) {
             $this->dispatch('error', 'Staff not found!');
             return;
         }
 
         // Change Status
-        $user->update(['is_active' => !$user->is_active]);
-        
+        $staff->update(['is_active' => !$staff->is_active]);
+
         $this->dispatch('statusChanged');
     }
 
@@ -115,16 +121,21 @@ class StaffList extends Component
         }
 
         // get id
-        $admin = Admin::find($this->recordToDelete);
+        $staff = Admin::find($this->recordToDelete);
+
+        if ($staff->id === 1) {
+            session()->flash('error', 'You cannot delete the super admin!');
+            return redirect()->route('admin.staff.index');
+        }
 
         // Check record exists
-        if (!$admin) {
+        if (!$staff) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $admin->delete();
+        $staff->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;

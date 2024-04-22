@@ -12,8 +12,14 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
+                <div class="card-header">
+                    <a href="{{ route('admin.roles-permissions.permissions.create') }}" class="btn btn-success btn-sm">
+                        Add Permission
+                    </a>
+                </div>
+                {{-- /.card-header --}}
                 <div class="card-body">
-                    <div class="">
+                    <div class="table-responsive mb-0 fixed-solution">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

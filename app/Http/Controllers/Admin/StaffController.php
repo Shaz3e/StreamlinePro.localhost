@@ -61,6 +61,11 @@ class StaffController extends Controller
      */
     public function show(Admin $staff)
     {
+        if($staff->id === 1){
+            session()->flash('error', 'You cannot view super admin!');
+            return redirect()->route('admin.staff.index');
+        }
+
         $audits = $staff->audits()
             ->latest()
             ->paginate(10);
@@ -81,6 +86,11 @@ class StaffController extends Controller
      */
     public function edit(Admin $staff)
     {
+        if($staff->id === 1){
+            session()->flash('error', 'You cannot edit the super admin!');
+            return redirect()->route('admin.staff.index');
+        }
+
         // Get active departments
         $departments = Department::where('is_active', 1)->get();
 
@@ -103,6 +113,11 @@ class StaffController extends Controller
      */
     public function update(StoreStaffRequest $request, Admin $staff)
     {
+        if($staff->id === 1){
+            session()->flash('error', 'You cannot edit the super admin!');
+            return redirect()->route('admin.staff.index');
+        }
+        
         // Validate data
         $validated = $request->validated();
 

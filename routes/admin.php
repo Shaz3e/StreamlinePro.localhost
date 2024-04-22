@@ -330,7 +330,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::prefix('roles-permissions')->name('roles-permissions.')->group(function () {
             // Permissions
-            Route::resource('permissions', PermissionController::class);
+            Route::resource('permissions', PermissionController::class)->middleware('can:superadmin');
             // Roles
             Route::resource('roles', RoleController::class);
         });
