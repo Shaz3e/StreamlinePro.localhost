@@ -111,6 +111,14 @@
             })
         </script>
     @endif
+    @if (Session::has('error'))
+        <script>
+            Toast.fire({
+                icon: 'error',
+                title: "{{ session('error') }}",
+            })
+        </script>
+    @endif
     @if (Session::has('info'))
         <script>
             Toast.fire({
