@@ -69,20 +69,23 @@
                                         </a>
                                     </li>
                                     {{-- Permissions --}}
-                                    <li class="{{ request()->routeIs('admin.roles-permissions.roles.*') ? 'mm-active' : '' }}">
+                                    <li
+                                        class="{{ request()->routeIs('admin.roles-permissions.roles.*') ? 'mm-active' : '' }}">
                                         <a href="{{ route('admin.roles-permissions.roles.index') }}"
                                             class="{{ request()->routeIs('admin.roles-permissions.roles.*') ? 'active' : '' }}">
                                             Roles
                                         </a>
                                     </li>
                                     {{-- Roles --}}
-                                    <li
-                                        class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'mm-active' : '' }}">
-                                        <a href="{{ route('admin.roles-permissions.permissions.index') }}"
-                                            class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'active' : '' }}">
-                                            Permissions
-                                        </a>
-                                    </li>
+                                    @can('superadmin')
+                                        <li
+                                            class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'mm-active' : '' }}">
+                                            <a href="{{ route('admin.roles-permissions.permissions.index') }}"
+                                                class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'active' : '' }}">
+                                                Permissions
+                                            </a>
+                                        </li>
+                                    @endcan
                                 </ul>
                             </li>
                         </ul>

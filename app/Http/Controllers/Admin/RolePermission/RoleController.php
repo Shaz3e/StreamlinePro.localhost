@@ -16,7 +16,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        // All rolex except superadmin
+        $roles = Role::where('name', '!=', 'superadmin')->get();
 
         return view('admin.role-permission.role.index', [
             'roles' => $roles
@@ -58,7 +59,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        return redirect()->route('admin.roles-permissions.permissions.edit', $role->id);
+        return redirect()->route('admin.roles-permissions.roles.edit', $role->id);
     }
 
     /**
@@ -66,6 +67,12 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        // Restricted to edit super admin role
+        if($role->name === 'superadmin'){
+            session()->flash('error', 'You cannot edit the superadmin role');
+            return redirect()->route('admin.roles-permissions.roles.index');
+        }
+        
         $permissions = Permission::all();
 
         $rolePermissions = DB::table('role_has_permissions')
@@ -85,6 +92,12 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        // Restricted to edit super admin role
+        if($role->name === 'superadmin'){
+            session()->flash('error', 'You cannot edit the superadmin role');
+            return redirect()->route('admin.roles-permissions.roles.index');
+        }
+
         if ($request->has('syncPermissions')) {
             $request->validate([
                 'permissions' => 'required',
@@ -118,6 +131,12 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        // Restricted to edit super admin role
+        if($role->name === 'superadmin'){
+            session()->flash('error', 'You cannot edit the superadmin role');
+            return redirect()->route('admin.roles-permissions.roles.index');
+        }
+        
         if ($role) {
             $role->delete();
             session()->flash('success', 'Role has been deleted successfully');
