@@ -12,19 +12,21 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <a href="{{ route('admin.roles-permissions.roles.create') }}" class="btn btn-success btn-sm">
-                        Add Role
-                    </a>
-                </div>
-                {{-- /.card-header --}}
+                @can('role.create')
+                    <div class="card-header">
+                        <a href="{{ route('admin.roles-permissions.roles.create') }}" class="btn btn-success btn-sm">
+                            Add Role
+                        </a>
+                    </div>
+                    {{-- /.card-header --}}
+                @endcan
                 <div class="card-body">
                     <div class="table-responsive mb-0 fixed-solution">
-                        <table class="table table-bordered">
+                        <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Action</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -32,19 +34,23 @@
                                     <tr>
                                         <td>{{ $role->name }}</td>
                                         <td>
-                                            <a href="{{ route('admin.roles-permissions.roles.edit', $role->id) }}"
-                                                class="btn btn-sm btn-outline-success">
-                                                <i class="ri-pencil-line"></i>
-                                            </a>
-                                            <form action="{{ route('admin.roles-permissions.roles.destroy', $role->id) }}"
-                                                method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" onclick="DeleteFormSubmit(this)"
-                                                    class="btn btn-sm btn-outline-danger">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
-                                            </form>
+                                            @can('role.update')
+                                                <a href="{{ route('admin.roles-permissions.roles.edit', $role->id) }}"
+                                                    class="btn btn-sm btn-outline-success">
+                                                    <i class="ri-pencil-line"></i>
+                                                </a>
+                                            @endcan
+                                            @can('role.delete')
+                                                <form action="{{ route('admin.roles-permissions.roles.destroy', $role->id) }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" onclick="DeleteFormSubmit(this)"
+                                                        class="btn btn-sm btn-outline-danger">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

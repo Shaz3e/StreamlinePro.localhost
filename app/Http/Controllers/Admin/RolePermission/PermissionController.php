@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Admin\RolePermission;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+    public function __construct()
+    {
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('superadmin') ? true : null;
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */

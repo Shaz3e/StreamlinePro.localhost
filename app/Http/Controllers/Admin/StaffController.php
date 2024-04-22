@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Staff\StoreStaffRequest;
 use App\Models\Admin;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 use Spatie\Permission\Models\Role;
 
@@ -17,6 +18,9 @@ class StaffController extends Controller
      */
     public function index()
     {
+        // Check Authorize
+        Gate::authorize('staff.list');
+
         return view('admin.staff.index');
     }
 
@@ -25,6 +29,9 @@ class StaffController extends Controller
      */
     public function create()
     {
+        // Check Authorize
+        Gate::authorize('staff.create');
+
         // Get active departments
         $departments = Department::where('is_active', 1)->get();
 
@@ -42,6 +49,9 @@ class StaffController extends Controller
      */
     public function store(StoreStaffRequest $request)
     {
+        // Check Authorize
+        Gate::authorize('staff.create');
+
         // Validate data
         $validated = $request->validated();
 
@@ -61,6 +71,9 @@ class StaffController extends Controller
      */
     public function show(Admin $staff)
     {
+        // Check Authorize
+        Gate::authorize('staff.read');
+
         if($staff->id === 1){
             session()->flash('error', 'You cannot view super admin!');
             return redirect()->route('admin.staff.index');
@@ -86,6 +99,9 @@ class StaffController extends Controller
      */
     public function edit(Admin $staff)
     {
+        // Check Authorize
+        Gate::authorize('staff.update');
+
         if($staff->id === 1){
             session()->flash('error', 'You cannot edit the super admin!');
             return redirect()->route('admin.staff.index');
@@ -113,6 +129,9 @@ class StaffController extends Controller
      */
     public function update(StoreStaffRequest $request, Admin $staff)
     {
+        // Check Authorize
+        Gate::authorize('staff.update');
+
         if($staff->id === 1){
             session()->flash('error', 'You cannot edit the super admin!');
             return redirect()->route('admin.staff.index');
@@ -158,6 +177,9 @@ class StaffController extends Controller
      */
     public function audit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('staff.read');
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
@@ -175,6 +197,9 @@ class StaffController extends Controller
      */
     public function deleteAudit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('staff.delete');
+        
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
             $auditLog->delete();

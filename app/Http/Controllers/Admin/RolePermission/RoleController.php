@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\RolePermission;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -16,6 +16,9 @@ class RoleController extends Controller
      */
     public function index()
     {
+        // Check Authorize
+        Gate::authorize('role.list');
+
         // All rolex except superadmin
         $roles = Role::where('name', '!=', 'superadmin')->get();
 
@@ -29,6 +32,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        // Check Authorize
+        Gate::authorize('role.create');
+
         return view('admin.role-permission.role.create');
     }
 
@@ -37,6 +43,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('role.create');
+
         $validated = $request->validate([
             'name' => [
                 'required',
@@ -67,6 +76,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        // Check Authorize
+        Gate::authorize('role.update');
+
         // Restricted to edit super admin role
         if($role->name === 'superadmin'){
             session()->flash('error', 'You cannot edit the superadmin role');
@@ -92,6 +104,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        // Check Authorize
+        Gate::authorize('role.update');
+
         // Restricted to edit super admin role
         if($role->name === 'superadmin'){
             session()->flash('error', 'You cannot edit the superadmin role');
@@ -131,6 +146,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        // Check Authorize
+        Gate::authorize('role.delete');
+
         // Restricted to edit super admin role
         if($role->name === 'superadmin'){
             session()->flash('error', 'You cannot edit the superadmin role');

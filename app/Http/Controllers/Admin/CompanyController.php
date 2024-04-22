@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Company\StoreCompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class CompanyController extends Controller
@@ -16,6 +17,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        // Check Authorize
+        Gate::authorize('company.list');
+
         return view('admin.company.index');
     }
 
@@ -24,6 +28,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
+        // Check Authorize
+        Gate::authorize('company.create');
+        
         return view('admin.company.create');
     }
 
@@ -32,6 +39,9 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
+        // Check Authorize
+        Gate::authorize('company.create');
+        
         // Validate data
         $validated = $request->validated();
 
@@ -56,6 +66,9 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
+        // Check Authorize
+        Gate::authorize('company.read');
+        
         $audits = $company->audits()
             ->latest()
             ->paginate(10);
@@ -76,6 +89,9 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
+        // Check Authorize
+        Gate::authorize('company.update');
+
         return view('admin.company.edit', [
             'company' => $company,
         ]);
@@ -86,6 +102,9 @@ class CompanyController extends Controller
      */
     public function update(StoreCompanyRequest $request, Company $company)
     {
+        // Check Authorize
+        Gate::authorize('company.update');
+        
         // Validate data
         $validated = $request->validated();
 
@@ -117,6 +136,9 @@ class CompanyController extends Controller
      */
     public function audit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('company.read');
+        
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
@@ -134,6 +156,9 @@ class CompanyController extends Controller
      */
     public function deleteAudit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('company.delete');
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
             $auditLog->delete();

@@ -78,30 +78,40 @@
                                         @endif
                                         <td class="text-right">
                                             @if ($showDeleted)
-                                                <button wire:click="confirmRestore({{ $company->id }})"
-                                                    class="btn btn-sm btn-outline-info" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-arrow-go-back-line"></i>
-                                                </button>
-                                                <button wire:click="confirmForceDelete({{ $company->id }})"
-                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-delete-bin-7-line"></i>
-                                                </button>
+                                                @can('company.restore')
+                                                    <button wire:click="confirmRestore({{ $company->id }})"
+                                                        class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                        <i class="ri-arrow-go-back-line"></i>
+                                                    </button>
+                                                @endcan
+                                                @can('company.force.delete')
+                                                    <button wire:click="confirmForceDelete({{ $company->id }})"
+                                                        class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                        <i class="ri-delete-bin-7-line"></i>
+                                                    </button>
+                                                @endcan
                                             @else
-                                                <a href="{{ route('admin.companies.show', $company->id) }}"
-                                                    class="btn btn-sm btn-outline-info">
-                                                    <i class="ri-eye-line"></i>
-                                                </a>
-                                                <a href="{{ route('admin.companies.edit', $company->id) }}"
-                                                    class="btn btn-sm btn-outline-success">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                                <button wire:click="confirmDelete({{ $company->id }})"
-                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
+                                                @can('company.read')
+                                                    <a href="{{ route('admin.companies.show', $company->id) }}"
+                                                        class="btn btn-sm btn-outline-info">
+                                                        <i class="ri-eye-line"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('company.update')
+                                                    <a href="{{ route('admin.companies.edit', $company->id) }}"
+                                                        class="btn btn-sm btn-outline-success">
+                                                        <i class="ri-pencil-line"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('company-delete')
+                                                    <button wire:click="confirmDelete({{ $company->id }})"
+                                                        class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                @endcan
                                             @endif
                                         </td>
                                     </tr>
