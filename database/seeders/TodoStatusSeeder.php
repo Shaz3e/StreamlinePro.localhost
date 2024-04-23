@@ -14,16 +14,16 @@ class TodoStatusSeeder extends Seeder
     public function run(): void
     {
         $todo_statuses = [
-            ['name' => 'Pending', 'is_active' => 1],
-            ['name' => 'In Progress', 'is_active' => 1],
-            ['name' => 'Completed', 'is_active' => 1],
-            ['name' => 'On Hold', 'is_active' => 1],
-            ['name' => 'Cancelled', 'is_active' => 1],
-            ['name' => 'Deferred', 'is_active' => 1],
-            ['name' => 'Not Started', 'is_active' => 1],
-            ['name' => 'Urgent', 'is_active' => 1],
-            ['name' => 'High Priority', 'is_active' => 1],
-            ['name' => 'Low Priority', 'is_active' => 1],
+            ['name' => 'Pending', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'In Progress', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Completed', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'On Hold', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Cancelled', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Deferred', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Not Started', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Urgent', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'High Priority', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Low Priority', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now()],
         ];
 
         DB::table('todo_statuses')->insert($todo_statuses);

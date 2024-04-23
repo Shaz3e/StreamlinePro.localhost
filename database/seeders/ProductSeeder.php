@@ -14,11 +14,11 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $products = [
-            ['name' => 'Product 1', 'price' => 100],
-            ['name' => 'Product 2', 'price' => 100],
-            ['name' => 'Product 3', 'price' => 100],
-            ['name' => 'Product 4', 'price' => 100],
-            ['name' => 'Product 5', 'price' => 100],
+            ['name' => 'Product 1', 'price' => 100, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product 2', 'price' => 200, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product 3', 'price' => 300, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product 4', 'price' => 400, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product 5', 'price' => 500, 'created_at' => now(), 'updated_at' => now()],
         ];
         DB::table('products')->insert($products);
     }

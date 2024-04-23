@@ -95,6 +95,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'permission.delete'],
             ['guard_name' => 'admin', 'name' => 'permission.restore'],
             ['guard_name' => 'admin', 'name' => 'permission.force.delete'],
+            // Todo Status
+            ['guard_name' => 'admin', 'name' => 'todo-status.list'],
+            ['guard_name' => 'admin', 'name' => 'todo-status.create'],
+            ['guard_name' => 'admin', 'name' => 'todo-status.read'],
+            ['guard_name' => 'admin', 'name' => 'todo-status.update'],
+            ['guard_name' => 'admin', 'name' => 'todo-status.delete'],
+            ['guard_name' => 'admin', 'name' => 'todo-status.restore'],
+            ['guard_name' => 'admin', 'name' => 'todo-status.force.delete'],
             // Add more permissions here...
         ];
 

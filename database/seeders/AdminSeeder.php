@@ -20,24 +20,32 @@ class AdminSeeder extends Seeder
                 'email' => 'superadmin@shaz3e.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Admin',
                 'email' => 'admin@shaz3e.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'manager',
                 'email' => 'manager@shaz3e.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'staff',
                 'email' => 'staff@shaz3e.com',
                 'password' => Hash::make('123456789'),
                 'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ];
 
