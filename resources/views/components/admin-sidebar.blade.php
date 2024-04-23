@@ -75,7 +75,7 @@
                                             Departments
                                         </a>
                                     </li>
-                                    {{-- Permissions --}}
+                                    {{-- Roles --}}
                                     <li
                                         class="{{ request()->routeIs('admin.roles-permissions.roles.*') ? 'mm-active' : '' }}">
                                         <a href="{{ route('admin.roles-permissions.roles.index') }}"
@@ -83,8 +83,8 @@
                                             Roles
                                         </a>
                                     </li>
-                                    {{-- Roles --}}
-                                    @if(auth()->user()->id === 1)
+                                    {{-- Permissions --}}
+                                    @if (auth()->user()->id === 1)
                                         <li
                                             class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'mm-active' : '' }}">
                                             <a href="{{ route('admin.roles-permissions.permissions.index') }}"
@@ -93,6 +93,25 @@
                                             </a>
                                         </li>
                                     @endif
+                                </ul>
+                            </li>
+                            {{-- Manage Status --}}
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    {{-- <i class="ri-profile-line"></i> --}}
+                                    <i class="ri-equalizer-line"></i>
+                                    <span>Manage Status</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    {{-- Todo Status --}}
+                                    @can('todo-status.list')
+                                        <li class="{{ request()->routeIs('admin.todo-status.*') ? 'mm-active' : '' }}">
+                                            <a href="{{ route('admin.todo-status.index') }}"
+                                                class="{{ request()->routeIs('admin.todo-status.*') ? 'active' : '' }}">
+                                                Todo Status
+                                            </a>
+                                        </li>
+                                    @endcan
                                 </ul>
                             </li>
                         </ul>

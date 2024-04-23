@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\TodoController;
 
 // Todo Status
+use App\Http\Controllers\Admin\TodoStatusController;
 
 // Tasks
 
@@ -55,6 +56,7 @@ use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
 // Roles
 use App\Http\Controllers\Admin\RolePermission\RoleController;
+
 
 // if route is /admin redirect to admin/dashboard
 
@@ -106,13 +108,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('todos.audit');
         Route::get('todos-audit/delete/{id}', [TodoController::class, 'deleteAudit'])
             ->name('todos.audit.delete');
-
-        /**
-         * Todo Status
-         */
-
-        // Todo Status List
-        Route::get('todos/status', function () {});
 
         /**
          * Tasks
@@ -286,6 +281,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('permissions', PermissionController::class)->middleware('can:superadmin');
             // Roles
             Route::resource('roles', RoleController::class);
-        });
+        });        
+
+        /**
+         * Todo Status
+         */
+        Route::resource('todo-status', TodoStatusController::class);
     });
 });

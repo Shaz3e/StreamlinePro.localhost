@@ -77,7 +77,7 @@
                     {{-- /.card-body --}}
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-save-line align-middle me-2"></i> Create
+                            <i class="ri-save-line align-middle me-2"></i> Update
                         </button>
                     </div>
                     {{-- /.card-footer --}}
