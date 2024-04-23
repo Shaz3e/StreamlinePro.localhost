@@ -65,7 +65,7 @@ class TodoList extends Component
 
         $todos = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        $getTodoStatus = TodoStatus::all();
+        $getTodoStatus = TodoStatus::where('is_active', 1)->get();
 
         return view('livewire.admin.todo.todo-list', [
             'todos' => $todos,
