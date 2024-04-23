@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Http\Controllers\Admin\DashboardController;
 
 // Todos
+use App\Http\Controllers\Admin\TodoController;
 
 // Todo Status
 
@@ -54,7 +55,6 @@ use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
 // Roles
 use App\Http\Controllers\Admin\RolePermission\RoleController;
-
 
 // if route is /admin redirect to admin/dashboard
 
@@ -100,65 +100,33 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Todos
          */
         // Todo List
-        Route::get('todos', function () {
-        })->name('todos');
-        // Todo Create
-        Route::get('todo/create', function () {
-        })->name('todos.create');
-        // Todo Edit
-        Route::get('todo/{id}/edit', function () {
-        })->name('todos.edit');
-        // Todo Show
-        Route::get('todo/{id}', function () {
-        })->name('todos.show');
+        Route::resource('todos', TodoController::class);
+        // Audit
+        Route::get('todos-audit/{id}', [TodoController::class, 'audit'])
+            ->name('todos.audit');
+        Route::get('todos-audit/delete/{id}', [TodoController::class, 'deleteAudit'])
+            ->name('todos.audit.delete');
 
         /**
          * Todo Status
          */
 
         // Todo Status List
-        Route::get('todos/status', function () {
-        })->name('todo-status');
-        // Todo Status Create
-        Route::get('todo/status/create', function () {
-        })->name('todo-status.create');
-        // Todo Status Edit
-        Route::get('todo/status/{id}/edit', function () {
-        })->name('todo-status.edit');
+        Route::get('todos/status', function () {});
 
         /**
          * Tasks
          */
 
         // Task List
-        Route::get('tasks', function () {
-        })->name('tasks');
-        // // Task Create
-        Route::get('task/create', function () {
-        })->name('tasks.create');
-        // // Task Edit
-        Route::get('task/{id}/edit', function () {
-        })->name('tasks.edit');
-        // // Task Show
-        Route::get('task/{id}', function () {
-        })->name('tasks.show');
+        Route::get('tasks', function () {});
 
         /**
          * Task Status
          */
 
         // Task Status List
-        Route::get('tasks/status', function () {
-        })->name('task-status');
-        // Task Status Create
-        Route::get('task/status/create', function () {
-        })->name('task-status.create');
-        // Task Status Edit
-        Route::get('task/status/{id}/edit', function () {
-        })->name('task-status.edit');
-        // Task Status Show
-        Route::get('task/status/{id}', function () {
-        })->name('task-status.show');
+        Route::get('tasks/status', function () {});
 
         /**
          * Users
@@ -266,27 +234,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         /**
-         * Admins as Staff
-         */
-        // Staff List
-        Route::resource('/staff', StaffController::class);
-        // Audit
-        Route::get('staff-audit/{id}', [UserController::class, 'audit'])
-            ->name('staff.audit');
-        Route::get('staff-audit/delete/{id}', [UserController::class, 'deleteAudit'])
-            ->name('staff.audit.delete');
-
-        /**
-         * Departments
-         */
-        Route::resource('/departments', DepartmentController::class);
-        // Audit
-        Route::get('departments-audit/{id}', [DepartmentController::class, 'audit'])
-            ->name('departments.audit');
-        Route::get('departments-audit/delete/{id}', [DepartmentController::class, 'deleteAudit'])
-            ->name('departments.audit.delete');
-
-        /**
          * Invoice
          */
 
@@ -308,17 +255,28 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
 
         // Invoice Status List
-        Route::get('/invoice-status', function () {
-        })->name('invoice-status');
-        // Invoice Status Create
-        Route::get('/invoice-status/create', function () {
-        })->name('invoice-status.create');
-        // Invoice Status Edit
-        Route::get('/invoice-status/{id}/edit', function () {
-        })->name('invoice-status.edit');
-        // Invoice Status Show
-        Route::get('/invoice-status/{id}', function () {
-        })->name('invoice-status.show');
+        Route::get('/invoice-status', function () {});
+
+                /**
+         * Admins as Staff
+         */
+        // Staff List
+        Route::resource('/staff', StaffController::class);
+        // Audit
+        Route::get('staff-audit/{id}', [UserController::class, 'audit'])
+            ->name('staff.audit');
+        Route::get('staff-audit/delete/{id}', [UserController::class, 'deleteAudit'])
+            ->name('staff.audit.delete');
+
+        /**
+         * Departments
+         */
+        Route::resource('/departments', DepartmentController::class);
+        // Audit
+        Route::get('departments-audit/{id}', [DepartmentController::class, 'audit'])
+            ->name('departments.audit');
+        Route::get('departments-audit/delete/{id}', [DepartmentController::class, 'deleteAudit'])
+            ->name('departments.audit.delete');
 
         /**
          * Roles & Permissions

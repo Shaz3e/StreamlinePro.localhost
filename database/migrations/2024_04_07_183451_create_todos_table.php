@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('set null');
 
             $table->string('title');
-            $table->longText('message');
+            $table->longText('todo_details');
             $table->dateTime('reminder')->nullable();
             $table->softDeletes();
             $table->timestamps();
