@@ -24,6 +24,9 @@ class TodoList extends Component
 
     public $id;
 
+    // Update todo status
+    public $statuses = [];
+
     // record to delete
     public $recordToDelete;
 
@@ -89,7 +92,7 @@ class TodoList extends Component
     /**
      * Toggle Status
      */
-    public function toggleStatus($todoId)
+    public function updateStatus($todoId)
     {
         // Get data
         $todo = Todo::find($todoId);
@@ -99,10 +102,11 @@ class TodoList extends Component
             $this->dispatch('error', 'Todo not found!');
             return;
         }
-
         // Change Status
-        $todo->update(['is_active' => !$todo->is_active]);
-        
+        $todo->update([
+            'todo_status_id' => $this->statuses[$todoId . '_status'],
+        ]);
+
         $this->dispatch('statusChanged');
     }
 

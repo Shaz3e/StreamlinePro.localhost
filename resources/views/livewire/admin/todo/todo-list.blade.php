@@ -49,17 +49,45 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 70%">My Todo</th>
-                                <th style="width: 15%">Status</th>
-                                <th style="width: 15%"></th>
+                                <th style="width: 68%">My Todo</th>
+                                <th style="width: 10%">Status</th>
+                                <th style="width: 10%"></th>
+                                <th style="width: 12%"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($todos as $todo)
                                 <tr wire:key="{{ $todo->id }}">
 
-                                    <td>{{ $todo->title }}</td>
-                                    <td>{{ $todo->status->name }}</td>
+                                    <td>
+                                        @if ($todo->reminder)
+                                            <span class="badge bg-danger">{{ $todo->reminder }}</span>
+                                            <br />
+                                        @endif
+                                        {{ $todo->title }}
+                                        <br />
+                                        {!! $todo->todo_details !!}
+                                    </td>
+                                    <td>
+                                        @if ($todo->todo_status_id)
+                                            <span class="badge"
+                                                style="background-color:{{ $todo->status->bg_color }}; color:{{ $todo->status->text_color }}">
+                                                {{ $todo->status->name }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <select wire:change="updateStatus({{ $todo->id }})"
+                                            wire:model="statuses.{{ $todo->id }}_status"
+                                            class="form-control form-control-sm" id="status_{{ $todo->id }}">
+                                            <option value="">Change</option>
+                                            @foreach ($getTodoStatus as $status)
+                                                <option value="{{ $status->id }}">
+                                                    {{ $status->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
                                     <td class="text-right">
                                         @if ($showDeleted)
                                             @can('todo.restore')

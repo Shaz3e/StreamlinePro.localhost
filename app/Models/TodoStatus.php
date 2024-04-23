@@ -25,4 +25,18 @@ class TodoStatus extends Model implements Auditable
         // Set the $auditInclude property to include all columns
         $this->auditInclude = $columns;
     }
+
+    public function todos()
+    {
+        return $this->hasMany(Todo::class, 'todo_status_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($todoStatus) {
+            $todoStatus->todos()->where('todo_status_id', $todoStatus->id)->update(['todo_status_id' => null]);
+        });
+    }
 }

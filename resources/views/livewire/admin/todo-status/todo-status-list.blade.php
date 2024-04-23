@@ -49,7 +49,12 @@
                         <tbody>
                             @foreach ($todoStatusList as $todoStatus)
                                 <tr wire:key="{{ $todoStatus->id }}">
-                                    <td>{{ $todoStatus->name }}</td>
+                                    <td>
+                                        <span class="badge"
+                                            style="background-color:{{ $todoStatus->bg_color }}; color:{{ $todoStatus->text_color }}">
+                                            {{ $todoStatus->name }}
+                                        </span>
+                                    </td>
                                     @if (!$showDeleted)
                                         <td>
                                             <input type="checkbox" wire:change="toggleStatus({{ $todoStatus->id }})"

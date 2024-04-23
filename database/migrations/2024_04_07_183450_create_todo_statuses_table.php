@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('todo_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('text_color')->nullable()->default('#000000');
+            $table->string('bg_color')->nullable()->default('#ffffff');
             $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();

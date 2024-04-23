@@ -34,7 +34,6 @@
                                     <label for="todo_status_id">Status</label>
                                     <select name="todo_status_id" class="form-control" id="todo_status_id">
                                         @foreach ($todoStatus as $status)
-                                            <option>Select</option>
                                             <option value="{{ $status->id }}">{{ $status->name }}</option>
                                         @endforeach
                                     </select>

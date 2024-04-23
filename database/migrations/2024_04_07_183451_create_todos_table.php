@@ -13,15 +13,19 @@ return new class extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('todo_status_id')->nullable();
-            $table->foreign('todo_status_id')->references('id')->on('todo_statuses')->onDelete('set null');
-            
+            $table->foreignId('todo_status_id')
+                ->nullable();
+            $table->foreign('todo_status_id')
+                ->references('id')
+                ->on('todo_statuses')
+                ->onDelete('set null');
+
             $table->foreignId('admin_id')->nullable();
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('set null');
 
             $table->string('title');
             $table->longText('todo_details');
-            $table->dateTime('reminder')->nullable();
+            $table->timestamp('reminder')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

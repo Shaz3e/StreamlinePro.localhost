@@ -19,6 +19,12 @@ class StoreTodoStatusRequest extends BaseFormRequest
                 'required', 'string', 'max:255',
                 Rule::unique('todo_statuses', 'name')->ignore($this->todo_status),
             ],
+            'text_color' => [
+                'nullable', 'hex_or_alpha',
+            ],
+            'bg_color' => [
+                'nullable', 'hex_or_alpha',
+            ],
             'is_active' => [
                 'required', 'boolean',
             ],
