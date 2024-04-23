@@ -59,14 +59,14 @@
                             <thead>
                                 <tr>
                                     <th>Permission Name</th>
-                                    <th>All</th>
-                                    <th>List View</th>
-                                    <th>Create</th>
-                                    <th>Read</th>
-                                    <th>Update</th>
-                                    <th>Delete</th>
-                                    <th>Restore</th>
-                                    <th>Force Delete</th>
+                                    <th class="text-center">All</th>
+                                    <th class="text-center">List View</th>
+                                    <th class="text-center">Create</th>
+                                    <th class="text-center">Read</th>
+                                    <th class="text-center">Update</th>
+                                    <th class="text-center">Delete</th>
+                                    <th class="text-center">Restore</th>
+                                    <th class="text-center">Force Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,10 +74,12 @@
                                         return explode('.', $permission->name)[0];
                                     }) as $modelName => $modelPermissions)
                                     <tr>
-                                        <td>{{ $modelName }}</td>
-                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            {{ str_replace('-', ' ', strtoupper($modelName)) }}
+                                        </td>
+                                        <td class="text-center"><input type="checkbox"></td>
                                         @foreach (['list', 'create', 'read', 'update', 'delete', 'restore', 'force.delete'] as $action)
-                                            <td>
+                                            <td class="text-center">
                                                 @if (
                                                     $modelPermissions->contains(function ($permission) use ($action) {
                                                         return str_contains($permission->name, $action);
