@@ -26,11 +26,11 @@
                         <tr>
                             <td>{{ $staff->name }}</td>
                             <td>
-                                {{-- @if ($staff->company != null)
-                                    <a href="{{ route('admin.companies.show', $staff->department->id) }}">
-                                        {{ $staff->company->name }}
-                                    </a>
-                                @endif --}}
+                                @if ($staff->departments() !== null)
+                                    @foreach ($staff->departments() as $id => $name)
+                                        <span class="badge bg-info">{{ $name }}</span>
+                                    @endforeach
+                                @endif
                             </td>
                             <td>{{ $staff->email }}</td>
                             <td>

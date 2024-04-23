@@ -51,45 +51,45 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($admins as $admin)
-                                <tr wire:key="{{ $admin->id }}">
-                                    <td>{{ $admin->id }}</td>
-                                    <td>{{ $admin->name }}</td>
-                                    <td>{{ $admin->email }}</td>
+                            @foreach ($staffList as $staff)
+                                <tr wire:key="{{ $staff->id }}">
+                                    <td>{{ $staff->id }}</td>
+                                    <td>{{ $staff->name }}</td>
+                                    <td>{{ $staff->email }}</td>
                                     <td>
-                                        @if ($admin->departments() !== null)
-                                            @foreach ($admin->departments() as $id => $name)
+                                        @if ($staff->departments() !== null)
+                                            @foreach ($staff->departments() as $id => $name)
                                                 <span class="badge bg-info">{{ $name }}</span>
                                             @endforeach
                                         @endif
                                     </td>
                                     <td>
-                                        @if (!empty($admin->getRoleNames()))
-                                            @foreach ($admin->getRoleNames() as $role)
+                                        @if (!empty($staff->getRoleNames()))
+                                            @foreach ($staff->getRoleNames() as $role)
                                                 <span class="badge bg-success">{{ $role }}</span>
                                             @endforeach
                                         @endif
                                     </td>
                                     @if (!$showDeleted)
                                         <td>
-                                            <input type="checkbox" wire:change="toggleStatus({{ $admin->id }})"
-                                                id="is_active_{{ $admin->id }}" switch="bool"
-                                                {{ $admin->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $admin->id }}" data-on-label="Yes"
+                                            <input type="checkbox" wire:change="toggleStatus({{ $staff->id }})"
+                                                id="is_active_{{ $staff->id }}" switch="bool"
+                                                {{ $staff->is_active ? 'checked' : '' }} />
+                                            <label for="is_active_{{ $staff->id }}" data-on-label="Yes"
                                                 data-off-label="No"></label>
                                         </td>
                                     @endif
                                     <td class="text-right">
                                         @if ($showDeleted)
                                             @can('staff.restore')
-                                                <button wire:click="confirmRestore({{ $admin->id }})"
+                                                <button wire:click="confirmRestore({{ $staff->id }})"
                                                     class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-arrow-go-back-line"></i>
                                                 </button>
                                             @endcan
                                             @can('staff.force.delete')
-                                                <button wire:click="confirmForceDelete({{ $admin->id }})"
+                                                <button wire:click="confirmForceDelete({{ $staff->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-7-line"></i>
@@ -97,19 +97,19 @@
                                             @endcan
                                         @else
                                             @can('staff.read')
-                                                <a href="{{ route('admin.staff.show', $admin->id) }}"
+                                                <a href="{{ route('admin.staff.show', $staff->id) }}"
                                                     class="btn btn-sm btn-outline-info">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                             @endcan
                                             @can('staff.update')
-                                                <a href="{{ route('admin.staff.edit', $admin->id) }}"
+                                                <a href="{{ route('admin.staff.edit', $staff->id) }}"
                                                     class="btn btn-sm btn-outline-success">
                                                     <i class="ri-pencil-line"></i>
                                                 </a>
                                             @endcan
                                             @can('staff.delete')
-                                                <button wire:click="confirmDelete({{ $admin->id }})"
+                                                <button wire:click="confirmDelete({{ $staff->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-line"></i>
@@ -122,7 +122,7 @@
                         </tbody>
                     </table>
 
-                    {{ $admins->links() }}
+                    {{ $staffList->links() }}
                 </div>
             </div>
         </div>

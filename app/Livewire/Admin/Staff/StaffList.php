@@ -51,10 +51,10 @@ class StaffList extends Component
             $query->onlyTrashed();
         }
 
-        $admins = $query->orderBy('id', 'asc')->paginate($this->perPage);
+        $staffList = $query->orderBy('id', 'asc')->paginate($this->perPage);
 
         return view('livewire.admin.staff.staff-list', [
-            'admins' => $admins
+            'staffList' => $staffList
         ]);
     }
 
