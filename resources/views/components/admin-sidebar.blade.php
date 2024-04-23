@@ -112,6 +112,15 @@
                                             </a>
                                         </li>
                                     @endcan
+                                    {{-- Ticket Status --}}
+                                    @can('ticket-status.list')
+                                        <li class="{{ request()->routeIs('admin.ticket-status.*') ? 'mm-active' : '' }}">
+                                            <a href="{{ route('admin.ticket-status.index') }}"
+                                                class="{{ request()->routeIs('admin.ticket-status.*') ? 'active' : '' }}">
+                                                Ticket Status
+                                            </a>
+                                        </li>
+                                    @endcan
                                 </ul>
                             </li>
                         </ul>

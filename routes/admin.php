@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\CompanyController;
 // Support Ticket Priority
 
 // Support Ticket Status
+use App\Http\Controllers\Admin\TicketStatusController;
 
 // Support Tickets
 
@@ -56,7 +57,6 @@ use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
 // Roles
 use App\Http\Controllers\Admin\RolePermission\RoleController;
-
 
 // if route is /admin redirect to admin/dashboard
 
@@ -114,14 +114,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
 
         // Task List
-        Route::get('tasks', function () {});
+        Route::get('tasks', function () {
+        });
 
         /**
          * Task Status
          */
 
         // Task Status List
-        Route::get('tasks/status', function () {});
+        Route::get('tasks/status', function () {
+        });
 
         /**
          * Users
@@ -196,22 +198,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             })->name('ticket-priority.show');
 
             /**
-             * Support Ticket Status
-             */
-            // Ticket Status List
-            Route::get('status', function () {
-            })->name('ticket-status');
-            // Ticket Status Create
-            Route::get('status/create', function () {
-            })->name('ticket-status.create');
-            // Ticket Status Edit
-            Route::get('status/{id}/edit', function () {
-            })->name('ticket-status.edit');
-            // Ticket Status Show
-            Route::get('status/{id}', function () {
-            })->name('ticket-status.show');
-
-            /**
              * Support Ticket
              */
             // Support Ticket List
@@ -250,9 +236,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
 
         // Invoice Status List
-        Route::get('/invoice-status', function () {});
+        Route::get('/invoice-status', function () {
+        });
 
-                /**
+        /**
          * Admins as Staff
          */
         // Staff List
@@ -281,11 +268,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('permissions', PermissionController::class)->middleware('can:superadmin');
             // Roles
             Route::resource('roles', RoleController::class);
-        });        
+        });
 
         /**
          * Todo Status
          */
         Route::resource('todo-status', TodoStatusController::class);
+        // Audit
+        Route::get('todo-status-audit/{id}', [TodoStatusController::class, 'audit'])
+            ->name('todo-status.audit');
+        Route::get('todo-status-audit/delete/{id}', [TodoStatusController::class, 'deleteAudit'])
+            ->name('todo-status.audit.delete');
+
+        /**
+         * Support Ticket Status
+         */
+        // Ticket Status List
+        Route::resource('ticket-status', TicketStatusController::class);
+        // Audit
+        Route::get('ticket-status-audit/{id}', [TicketStatusController::class, 'audit'])
+            ->name('ticket-status.audit');
+        Route::get('ticket-status-audit/delete/{id}', [TicketStatusController::class, 'deleteAudit'])
+            ->name('ticket-status.audit.delete');
     });
 });

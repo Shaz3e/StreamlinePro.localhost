@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\TodoStatus\StoreTodoStatusRequest;
-use App\Models\TodoStatus;
+use App\Http\Requests\Admin\TicketStatus\StoreTicketStatusRequest;
+use App\Models\SupportTicketStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
-class TodoStatusController extends Controller
+class TicketStatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class TodoStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('todo-status.list');
+        Gate::authorize('ticket-status.list');
 
-        return view('admin.todo-status.index');
+        return view('admin.ticket-status.index');
     }
 
     /**
@@ -28,39 +28,39 @@ class TodoStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('todo-status.create');
+        Gate::authorize('ticket-status.create');
 
-        return view('admin.todo-status.create');
+        return view('admin.ticket-status.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTodoStatusRequest $request)
+    public function store(StoreTicketStatusRequest $request)
     {
         // Check Authorize
-        Gate::authorize('todo-status.create');
+        Gate::authorize('ticket-status.create');
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        TodoStatus::create($validated);
+        SupportTicketStatus::create($validated);
 
-        session()->flash('success', 'Todo Status has been created successfully!');
+        session()->flash('success', 'Ticket Status has been created successfully!');
 
-        return redirect()->route('admin.todo-status.index');
+        return redirect()->route('admin.ticket-status.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TodoStatus $todoStatus)
+    public function show(SupportTicketStatus $ticketStatus)
     {
         // Check Authorize
-        Gate::authorize('todo-status.read');
+        Gate::authorize('ticket-status.read');
 
-        $audits = $todoStatus->audits()
+        $audits = $ticketStatus->audits()
             ->latest()
             ->paginate(10);
 
@@ -69,8 +69,8 @@ class TodoStatusController extends Controller
             return response()->json($audits);
         }
 
-        return view('admin.todo-status.show', [
-            'todoStatus' => $todoStatus,
+        return view('admin.ticket-status.show', [
+            'ticketStatus' => $ticketStatus,
             'audits' => $audits,
         ]);
     }
@@ -78,35 +78,35 @@ class TodoStatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TodoStatus $todoStatus)
+    public function edit(SupportTicketStatus $ticketStatus)
     {
         // Check Authorize
-        Gate::authorize('todo-status.update');
+        Gate::authorize('ticket-status.update');
 
-        return view('admin.todo-status.edit', [
-            'todoStatus' => $todoStatus,
+        return view('admin.ticket-status.edit', [
+            'ticketStatus' => $ticketStatus,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreTodoStatusRequest $request, TodoStatus $todoStatus)
+    public function update(StoreTicketStatusRequest $request, SupportTicketStatus $ticketStatus)
     {
         // Check Authorize
-        Gate::authorize('todo-status.update');
+        Gate::authorize('ticket-status.update');
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $todoStatus->update($validated);
+        $ticketStatus->update($validated);
 
         // Flash message
-        session()->flash('success', 'Todo Status has been updated successfully!');
+        session()->flash('success', 'Ticket Status has been updated successfully!');
 
         // Redirect to index
-        return redirect()->route('admin.todo-status.index');
+        return redirect()->route('admin.ticket-status.index');
     }
 
     /**
@@ -115,17 +115,17 @@ class TodoStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('todo-status.read');
+        Gate::authorize('ticket-status.read');
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
-            return view('admin.todo-status.audit', [
+            return view('admin.ticket-status.audit', [
                 'auditLog' => $auditLog,
             ]);
         } else {
             session()->flash('error', 'Log not available');
-            return redirect()->route('admin.todo-status.index');
+            return redirect()->route('admin.ticket-status.index');
         }
     }
 
@@ -135,7 +135,7 @@ class TodoStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('todo-status.delete');
+        Gate::authorize('ticket-status.delete');
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

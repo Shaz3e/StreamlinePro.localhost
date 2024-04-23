@@ -2,11 +2,11 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'View Todo Status',
+        'title' => 'View Ticket Status',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'Todo Status List', 'link' => route('admin.todo-status.index')],
-            ['text' => 'View', 'link' => null],
+            ['text' => 'Ticket Status List', 'link' => route('admin.ticket-status.index')],
+            ['text' => 'Create', 'link' => null],
         ],
     ])
 
@@ -18,19 +18,29 @@
                     <table class="table">
                         <tr>
                             <td>Name</td>
-                            <td>Status</td>
-                            <td>Created At</td>
+                            <td>{{ $ticketStatus->name }}</td>
                         </tr>
                         <tr>
-                            <td>{{ $todoStatus->name }}</td>
+                            <td>Description</td>
+                            <td>{{ $ticketStatus->description }}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
                             <td>
-                                @if ($todoStatus->is_active)
+                                @if ($ticketStatus->is_active)
                                     <span class="badge bg-success">Active</span>
                                 @else
                                     <span class="badge bg-danger">Inactive</span>
                                 @endif
                             </td>
-                            <td>{{ $todoStatus->created_at->format('l, F j, Y') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Created At</td>
+                            <td>{{ $ticketStatus->created_at->format('l, F j, Y') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Updated At</td>
+                            <td>{{ $ticketStatus->updated_at->format('l, F j, Y') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -124,7 +134,7 @@
                 const todoStatusId = $(this).data('audit-id');
                 // Fetch details via AJAX
                 $.ajax({
-                    url: `{{ route('admin.todo-status.audit', ':id') }}`.replace(':id',
+                    url: `{{ route('admin.ticket-status.audit', ':id') }}`.replace(':id',
                         todoStatusId),
                     type: 'GET',
                     success: function(data) {
@@ -155,8 +165,9 @@
                     if (result.isConfirmed) {
                         // If user confirms, proceed with deletion
                         $.ajax({
-                            url: `{{ route('admin.todo-status.audit.delete', ':id') }}`.replace(
-                                ':id', todoStatusId),
+                            url: `{{ route('admin.ticket-status.audit.delete', ':id') }}`
+                                .replace(
+                                    ':id', todoStatusId),
                             type: 'GET',
                             success: function(data) {
                                 // Show success message
