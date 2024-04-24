@@ -25,7 +25,7 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'manager'],
             ['guard_name' => 'admin', 'name' => 'staff'],
         ];
-        
+
         foreach ($roles as $role) {
             $newRole = Role::create($role);
 
@@ -119,6 +119,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'ticket-priority.delete'],
             ['guard_name' => 'admin', 'name' => 'ticket-priority.restore'],
             ['guard_name' => 'admin', 'name' => 'ticket-priority.force.delete'],
+            // Ticket Status
+            ['guard_name' => 'admin', 'name' => 'support-ticket.list'],
+            ['guard_name' => 'admin', 'name' => 'support-ticket.create'],
+            ['guard_name' => 'admin', 'name' => 'support-ticket.read'],
+            ['guard_name' => 'admin', 'name' => 'support-ticket.update'],
+            ['guard_name' => 'admin', 'name' => 'support-ticket.delete'],
+            ['guard_name' => 'admin', 'name' => 'support-ticket.restore'],
+            ['guard_name' => 'admin', 'name' => 'support-ticket.force.delete'],
             // Add more permissions here...
         ];
 
@@ -140,8 +148,9 @@ class RolePermissionSeeder extends Seeder
 
         $managerRole = Role::where('guard_name', 'admin')->where('name', 'manager')->first();
         $managerRole->givePermissionTo(
-            Permission::where('name', 'NOT LIKE', '%restore%')
-                ->where('name', 'NOT LIKE', '%delete%')
+            Permission::where('name', 'NOT LIKE', '%delete%')
+                ->where('name', 'NOT LIKE', '%restore%')
+                ->where('name', 'NOT LIKE', '%force.delete%')
                 ->get()
         );
 
