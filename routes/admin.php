@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\CompanyController;
 // Products
 
 // Support Ticket Priority
+use App\Http\Controllers\Admin\TicketPriorityController;
 
 // Support Ticket Status
 use App\Http\Controllers\Admin\TicketStatusController;
@@ -283,12 +284,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Support Ticket Status
          */
-        // Ticket Status List
         Route::resource('ticket-status', TicketStatusController::class);
         // Audit
         Route::get('ticket-status-audit/{id}', [TicketStatusController::class, 'audit'])
             ->name('ticket-status.audit');
         Route::get('ticket-status-audit/delete/{id}', [TicketStatusController::class, 'deleteAudit'])
             ->name('ticket-status.audit.delete');
+
+        /**
+         * Support Ticket Priority
+         */
+        Route::resource('ticket-priority', TicketPriorityController::class);
+        // Audit
+        Route::get('ticket-priority-audit/{id}', [TicketPriorityController::class, 'audit'])
+            ->name('ticket-priority.audit');
+        Route::get('ticket-priority-audit/delete/{id}', [TicketPriorityController::class, 'deleteAudit'])
+            ->name('ticket-priority.audit.delete');
     });
 });

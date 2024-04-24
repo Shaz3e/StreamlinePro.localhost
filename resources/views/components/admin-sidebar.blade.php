@@ -110,7 +110,7 @@
                                 </li>
                             @endcanany
                             {{-- Manage Status --}}
-                            @canany(['todo-status.list', 'ticket-status.list'])
+                            @canany(['todo-status.list', 'ticket-status.list', 'ticket-priority.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                                         {{-- <i class="ri-profile-line"></i> --}}
@@ -133,6 +133,15 @@
                                                 <a href="{{ route('admin.ticket-status.index') }}"
                                                     class="{{ request()->routeIs('admin.ticket-status.*') ? 'active' : '' }}">
                                                     Ticket Status
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        {{-- Ticket Priority --}}
+                                        @can('ticket-priority.list')
+                                            <li class="{{ request()->routeIs('admin.ticket-priority.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.ticket-priority.index') }}"
+                                                    class="{{ request()->routeIs('admin.ticket-priority.*') ? 'active' : '' }}">
+                                                    Ticket Priority
                                                 </a>
                                             </li>
                                         @endcan

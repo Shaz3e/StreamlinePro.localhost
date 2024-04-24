@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->boolean('is_active')->default(1);
+            $table->string('text_color')->nullable()->default('#000000');
+            $table->string('bg_color')->nullable()->default('#ffffff');
             $table->softDeletes();
             $table->timestamps();
         });
