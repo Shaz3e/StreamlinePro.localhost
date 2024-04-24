@@ -39,6 +39,7 @@ use App\Http\Controllers\Admin\TicketPriorityController;
 use App\Http\Controllers\Admin\TicketStatusController;
 
 // Support Tickets
+use App\Http\Controllers\Admin\SupportTicketController;
 
 // Staff
 use App\Http\Controllers\Admin\StaffController;
@@ -58,6 +59,7 @@ use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
 // Roles
 use App\Http\Controllers\Admin\RolePermission\RoleController;
+
 
 // if route is /admin redirect to admin/dashboard
 
@@ -179,41 +181,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         })->name('products.show');
 
         /**
-         * Support Tickets / Status / Priority
+         * Support Tickets
          */
-        Route::prefix('support-tickets')->name('support-tickets.')->group(function () {
-            /**
-             * Support Ticket Priority
-             */
-            // Ticket Priority List
-            Route::get('priority', function () {
-            })->name('ticket-priority');
-            // Ticket Priority Create
-            Route::get('priority/create', function () {
-            })->name('ticket-priority.create');
-            // Ticket Priority Edit
-            Route::get('priority/{id}/edit', function () {
-            })->name('ticket-priority.edit');
-            // Ticket Priority Show
-            Route::get('priority/{id}', function () {
-            })->name('ticket-priority.show');
-
-            /**
-             * Support Ticket
-             */
-            // Support Ticket List
-            Route::get('/', function () {
-            })->name('list');
-            // Support Ticket Create
-            Route::get('/create', function () {
-            })->name('create');
-            // Support Ticket Edit
-            Route::get('/{id}/edit', function () {
-            })->name('edit');
-            // Support Ticket Show
-            Route::get('/{id}', function () {
-            })->name('show');
-        });
+        Route::resource('support-tickets', SupportTicketController::class);
 
         /**
          * Invoice

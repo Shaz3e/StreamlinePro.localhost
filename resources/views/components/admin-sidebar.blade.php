@@ -24,12 +24,22 @@
                             <li class="menu-title">Menu</li>
 
                             <li>
-                                <a href="{{ route('admin.dashboard') }}"
-                                    class="waves-effect {{ request()->routeIs('admin.dashboard') }}">
+                                <a href="{{ route('admin.dashboard') }}" class="waves-effect">
                                     <i class="ri-dashboard-line"></i>
                                     <span>Dashboard</span>
                                 </a>
                             </li>
+
+                            {{-- Support Tickets --}}
+                            @can('support-ticket.list')
+                                <li class="{{ request()->routeIs('admin.support-tickets.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.support-tickets.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.support-tickets.*') ? 'active' : '' }}">
+                                        <i class="ri-questionnaire-line"></i>
+                                        <span>Support Tickets</span>
+                                    </a>
+                                </li>
+                            @endcan
 
                             @canany(['user.list', 'company.list'])
                                 <li>
