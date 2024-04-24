@@ -9,7 +9,6 @@
             ['text' => 'View', 'link' => null],
         ],
     ])
-    ])
 
     {{-- Show Record --}}
     <div class="row">
