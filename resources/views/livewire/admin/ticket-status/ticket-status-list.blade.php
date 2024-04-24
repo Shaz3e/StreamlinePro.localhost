@@ -50,7 +50,10 @@
                             @foreach ($ticketStatusList as $ticketStatus)
                                 <tr wire:key="{{ $ticketStatus->id }}">
                                     <td>
-                                        {{ $ticketStatus->name }}
+                                        <span class="badge"
+                                            style="background-color:{{ $ticketStatus->bg_color }}; color:{{ $ticketStatus->text_color }}">
+                                            {{ $ticketStatus->name }}
+                                        </span>
                                         <br>
                                         <small>{{ $ticketStatus->description }}</small>
                                     </td>

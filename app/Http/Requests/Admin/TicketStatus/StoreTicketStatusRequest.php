@@ -26,6 +26,12 @@ class StoreTicketStatusRequest extends BaseFormRequest
             'description' => [
                 'nullable', 'string',
             ],
+            'text_color' => [
+                'nullable', 'hex_or_alpha',
+            ],
+            'bg_color' => [
+                'nullable', 'hex_or_alpha',
+            ],
             'is_active' => [
                 'required', 'boolean',
             ],
