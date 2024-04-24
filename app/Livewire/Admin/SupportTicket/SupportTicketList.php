@@ -73,19 +73,22 @@ class SupportTicketList extends Component
         $jsonDepartments = json_encode($departments);
 
         // Check if the logged-in admin is a super admin (with admin ID 1)
+        $departments = [];
         if ($adminId == 1) {
             // If admin is super admin, fetch all support tickets
             $query = SupportTicket::query();
         } else {
             // Query support tickets based on the departments assigned to the admin/staff
+            // Query support tickets based on the departments assigned to the admin/staff
+            $departments = Auth::guard('admin')->user()->departments();
             $query = SupportTicket::query()->where(function ($q) use ($departments, $adminId) {
                 $q->whereIn('department_id', $departments)
                     ->orWhere('admin_id', $adminId);
             });
-            // Query support tickets based on the departments assigned to the admin/staff
-            // $query = SupportTicket::query()
-            //     ->whereIn('department_id', $departments)
-            //     ->orWhereJsonContains('admin_id', $jsonDepartments);
+            // $query = SupportTicket::query()->where(function ($q) use ($departments, $adminId) {
+            //     $q->whereIn('department_id', $departments)
+            //         ->orWhere('admin_id', $adminId);
+            // });
         }
 
         // Get all columns in the required table
@@ -123,7 +126,7 @@ class SupportTicketList extends Component
         if ($this->filterByPriorityTickets !== '') {
             $query->where('support_ticket_priority_id', $this->filterByPriorityTickets);
         }
-        
+
         // Apply filter for deleted records if the option is selected
         if ($this->showDeleted) {
             $query->onlyTrashed();

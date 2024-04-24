@@ -47,7 +47,9 @@
                                     <option value="">Select</option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->id }}"
-                                            @if (in_array($department->id, $staff->department_id)) selected @endif>
+                                            @isset($staff->department_id)
+                                                @if (in_array($department->id, $staff->department_id)) selected @endif
+                                            @endisset>
                                             {{ $department->name }}
                                         </option>
                                     @endforeach
