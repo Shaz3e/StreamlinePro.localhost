@@ -14,8 +14,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.support-tickets.update', $supportTicket->id) }}" method="POST" class="needs-validation"
-                    novalidate enctype="multipart/form-data">
+                <form action="{{ route('admin.support-tickets.update', $supportTicket->id) }}" method="POST"
+                    class="needs-validation" novalidate enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <div class="card-body">
@@ -35,7 +35,6 @@
                                 <div class="form-group">
                                     <label for="is_internal">Internal Ticket</label>
                                     <select id="is_internal" name="is_internal" class="form-control">
-                                        <option value="">Select</option>
                                         <option value="0"
                                             {{ old('is_internal', $supportTicket->is_internal) == 0 ? 'selected' : '' }}>No
                                         </option>
@@ -74,9 +73,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="message">Ticket Details</label>
-                                    <textarea id="message" name="message" class="form-control" required>
-                                        {{ old('message', $supportTicket->message) }}
-                                    </textarea>
+                                    <textarea id="message" name="message" class="form-control" required>{{ old('message', $supportTicket->message) }}</textarea>
                                 </div>
                                 @error('message')
                                     <span class="text-danger">{{ $message }}</span>
@@ -176,6 +173,15 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="col-12">
+                                <div id="upload-progress"></div>
+                                <div class="progress">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        <span>0%</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         {{-- /.row --}}
 
@@ -183,7 +189,7 @@
                     {{-- /.card-body --}}
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-save-line align-middle me-2"></i> Create
+                            <i class="ri-save-line align-middle me-2"></i> Update Ticket
                         </button>
                     </div>
                     {{-- /.card-footer --}}
@@ -199,5 +205,56 @@
 @push('styles')
 @endpush
 
+
 @push('scripts')
+    <script>
+        $('#attachments').change(function() {
+            var file = this.files[0];
+            var formData = new FormData();
+            formData.append('attachments', file);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            $.ajax({
+                url: `{{ route('admin.support-tickets.upload-attachments') }}`,
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var progress = Math.round(evt.loaded / evt.total * 100);
+                            console.log(progress);
+                            $('#progress-bar').css('width', progress + '%');
+                            $('#upload-progress').html(''); // Clear previous message
+                            // disable submitButton button wile uploading
+                            $('#submitButton').prop('disabled', true);
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#progress-bar').css('width', '0%'); // Hide progress bar
+                    // hide upload successfull after 1 second
+                    $('#upload-progress').html('Upload successful!');
+                    setTimeout(function() {
+                        $('#upload-progress').html('');
+                    }, 1000);
+                    // enable submitButton when upload finishes
+                    $('#submitButton').prop('disabled', false);
+                },
+                error: function(error) {
+                    console.error(error);
+                    $('#upload-progress').html('Upload failed!');
+                }
+            });
+        });
+    </script>
 @endpush

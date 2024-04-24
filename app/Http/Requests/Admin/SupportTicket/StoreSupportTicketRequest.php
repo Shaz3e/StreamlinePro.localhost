@@ -41,6 +41,9 @@ class StoreSupportTicketRequest extends BaseFormRequest
             'support_ticket_status_id' => [
                 'required', 'integer', 'exists:support_ticket_statuses,id',
             ],
+            'support_ticket_priority_id' => [
+                'required', 'integer', 'exists:support_ticket_priorities,id',
+            ],
         ];
     }
     public function messages()

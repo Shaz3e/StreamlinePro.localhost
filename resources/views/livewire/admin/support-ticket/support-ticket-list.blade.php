@@ -108,9 +108,7 @@
                             <tr>
                                 <th style="width: 10%">Ticket#</th>
                                 <th style="width: 45%">Ticket</th>
-                                @if (!$showDeleted)
-                                    <th style="width: 10%">Status</th>
-                                @endif
+                                <th style="width: 10%">Status</th>
                                 <th style="width: 10%">Priority</th>
                                 <th style="width: 15%"></th>
                             </tr>
@@ -141,26 +139,26 @@
                                             <span class="badge bg-info">Attachments</span>
                                         @endif
                                     </td>
-                                    @if (!$showDeleted)
-                                        <td>
-                                            <input type="checkbox"
-                                                wire:change="toggleStatus({{ $ticket->id }})"
-                                                id="is_active_{{ $ticket->id }}" switch="bool"
-                                                {{ $ticket->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $ticket->id }}" data-on-label="Yes"
-                                                data-off-label="No"></label>
-                                        </td>
-                                    @endif
+                                    <td>
+                                        <span class="badge" style="background-color: {{ $ticket->status->bg_color }}; color: {{ $ticket->status->text_color }}">
+                                            {{ $ticket->status->name }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background-color: {{ $ticket->priority->bg_color }}; color: {{ $ticket->priority->text_color }}">
+                                            {{ $ticket->priority->name }}
+                                        </span>
+                                    </td>
                                     <td class="text-right">
                                         @if ($showDeleted)
-                                            @can('support-tickets.restore')
+                                            @can('support-ticket.restore')
                                                 <button wire:click="confirmRestore({{ $ticket->id }})"
                                                     class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-arrow-go-back-line"></i>
                                                 </button>
                                             @endcan
-                                            @can('support-tickets.force.delete')
+                                            @can('support-ticket.force.delete')
                                                 <button wire:click="confirmForceDelete({{ $ticket->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
@@ -168,19 +166,19 @@
                                                 </button>
                                             @endcan
                                         @else
-                                            @can('support-tickets.read')
+                                            @can('support-ticket.read')
                                                 <a href="{{ route('admin.support-tickets.show', $ticket->id) }}"
                                                     class="btn btn-sm btn-outline-info">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                             @endcan
-                                            @can('support-tickets.update')
+                                            @can('support-ticket.update')
                                                 <a href="{{ route('admin.support-tickets.edit', $ticket->id) }}"
                                                     class="btn btn-sm btn-outline-success">
                                                     <i class="ri-pencil-line"></i>
                                                 </a>
                                             @endcan
-                                            @can('support-tickets.delete')
+                                            @can('support-ticket.delete')
                                                 <button wire:click="confirmDelete({{ $ticket->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">

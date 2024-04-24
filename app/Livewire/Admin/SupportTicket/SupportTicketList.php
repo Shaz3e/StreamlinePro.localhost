@@ -41,7 +41,7 @@ class SupportTicketList extends Component
     public $filterDepartmentTickets = '';
 
     #[Url()]
-    public $filterByStatusTickets = '';
+    public $filterByStatusTickets = 1;
 
     #[Url()]
     public $filterByPriorityTickets = '';
@@ -85,10 +85,6 @@ class SupportTicketList extends Component
                 $q->whereIn('department_id', $departments)
                     ->orWhere('admin_id', $adminId);
             });
-            // $query = SupportTicket::query()->where(function ($q) use ($departments, $adminId) {
-            //     $q->whereIn('department_id', $departments)
-            //         ->orWhere('admin_id', $adminId);
-            // });
         }
 
         // Get all columns in the required table

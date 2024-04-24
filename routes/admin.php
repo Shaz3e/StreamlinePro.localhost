@@ -184,6 +184,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Support Tickets
          */
         Route::resource('support-tickets', SupportTicketController::class);
+        Route::post('support-tickets-reply/{supportTicketId}', [SupportTicketController::class, 'ticketReply'])
+        ->name('support-tickets.reply');
+
+        // Upload attachments for support tickets
+        Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
+            ->name('support-tickets.upload-attachments');
+
+        // Audit
+        Route::get('support-tickets-audit/{id}', [SupportTicketController::class, 'audit'])
+            ->name('support-tickets.audit');
+        Route::get('support-tickets-audit/delete/{id}', [SupportTicketController::class, 'deleteAudit'])
+            ->name('support-tickets.audit.delete');
 
         /**
          * Invoice

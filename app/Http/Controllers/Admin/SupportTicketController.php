@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\Department;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketPriority;
+use App\Models\SupportTicketReply;
 use App\Models\SupportTicketStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -76,13 +77,11 @@ class SupportTicketController extends Controller
         // Provide a ticket number as generated above
         $validated['ticket_number'] = $ticketNumber;
 
-        if ($request->hasFile('attachments')) {
-            $attachments = [];
-            foreach ($request->file('attachments') as $file) {
-                $filename = $ticketNumber . '.' . $file->extension();
-                $attachments[] = $file->storeAs('support-tickets/attachments', $filename, 'public');
-            }
-            $validated['attachments'] = json_encode($attachments); // Serialize the array to a JSON string
+        // Retrieve all the uploaded images from the session variable
+        $uploadedAttachments = session()->get('uploaded_attachments');
+
+        if (!empty($uploadedAttachments)) {
+            $validated['attachments'] = json_encode($uploadedAttachments);
         }
 
         // Update record in database
@@ -101,6 +100,27 @@ class SupportTicketController extends Controller
         // Check Authorize
         Gate::authorize('support-ticket.read');
 
+        // Get attachments
+        $attachments = json_decode($supportTicket->attachments, true);
+
+        // Get all admin/staff
+        $staffList = Admin::where('is_active', 1)->get();
+
+        // Get all departments
+        $departments = Department::where('is_active', 1)->get();
+
+        // Get all support ticket statuses
+        $supportTicketStatus = SupportTicketStatus::where('is_active', 1)->get();
+
+        // Get all support ticket priority
+        $supportTicketPriorities = SupportTicketPriority::where('is_active', 1)->get();
+
+        // Get all support ticket replies
+        $supportTicketReplies = SupportTicketReply::where('support_ticket_id', $supportTicket->id)
+            ->orderBy('id', 'asc')
+            ->get();
+
+        // Authorize check to view audits records
         $audits = $supportTicket->audits()
             ->latest()
             ->paginate(10);
@@ -112,6 +132,12 @@ class SupportTicketController extends Controller
 
         return view('admin.support-ticket.show', [
             'supportTicket' => $supportTicket,
+            'attachments' => $attachments,
+            'staffList' => $staffList,
+            'departments' => $departments,
+            'supportTicketStatus' => $supportTicketStatus,
+            'supportTicketPriorities' => $supportTicketPriorities,
+            'supportTicketReplies' => $supportTicketReplies,
             'audits' => $audits,
         ]);
     }
@@ -161,7 +187,7 @@ class SupportTicketController extends Controller
         $validated = $request->validated();
 
         // Generate a Ticket Number
-        
+
         if ($request->hasFile('attachments')) {
             $ticketNumber = $supportTicket->ticket_number;
             $attachments = [];
@@ -188,7 +214,7 @@ class SupportTicketController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.read');
+        Gate::authorize('support-ticket.force.delete');
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -208,7 +234,7 @@ class SupportTicketController extends Controller
     public function deleteAudit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.delete');
+        Gate::authorize('support-ticket.force.delete');
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -218,5 +244,82 @@ class SupportTicketController extends Controller
 
         session()->flash('success', 'Log deleted successfully');
         return redirect()->route('admin.support-tickets.index');
+    }
+
+    /**
+     * Upload attachments
+     */
+    public function uploadAttachments(Request $request)
+    {
+        // Gate::authorize('support-ticket.force.create');
+        // Gate::authorize('support-ticket.force.update');
+        // Get the uploaded image
+        $image = $request->file('attachments');
+
+        // Store the uploaded image in a session variable
+        session()->push('uploaded_attachments', $image->storeAs('support-tickets/attachments', time() . '.' . $image->extension(), 'public'));
+
+        return response()->json(['message' => 'Image uploaded successfully!']);
+    }
+
+    /**
+     * Support Ticket Reply
+     */
+    public function ticketReply(Request $request, SupportTicket $supportTicketId)
+    {
+        // Check Authorize
+        Gate::authorize('support-ticket.read');
+
+        // Update only status
+        if($request->has('updateStatus')){
+            // Validate data
+            $validated = $request->validate([
+                'admin_id' => 'required|exists:admins,id',
+                'department_id' => 'required|exists:departments,id',
+                'support_ticket_status_id' => 'required|exists:support_ticket_statuses,id',
+                'support_ticket_priority_id' => 'required|exists:support_ticket_priorities,id',
+            ]);
+
+            $supportTicketId->update([
+                'admin_id' => $request->admin_id,
+                'department_id' => $request->department_id,
+                'support_ticket_status_id' => $request->support_ticket_status_id,
+                'support_ticket_priority_id' => $request->support_ticket_priority_id,
+            ]);
+
+            session()->flash('success', 'Support Ticket status been changed successfully!');
+
+            return redirect()->route('admin.support-tickets.show', $supportTicketId->id);
+        }
+
+        // Validate data
+        $validated = $request->validate([
+            'message' => 'required',
+            'attachments' => [
+                'nullable',
+                'array',
+                'validate_each:mimes:jpeg,png',
+                'max:2048',
+            ],
+        ]);
+
+        // Update record in database
+        $supportTicketReply = new SupportTicketReply();
+        $supportTicketReply->support_ticket_id = $supportTicketId->id;
+        $supportTicketReply->staff_reply_by = auth()->guard('admin')->user()->id;
+        $supportTicketReply->message = $request->message;
+        
+        // Retrieve all the uploaded images from the session variable
+        $uploadedAttachments = session()->get('uploaded_attachments');
+
+        if (!empty($uploadedAttachments)) {
+            $validated['attachments'] = json_encode($uploadedAttachments);
+        }
+
+        $supportTicketReply->save();
+
+        session()->flash('success', 'Support Ticket Reply has been created successfully!');
+
+        return redirect()->route('admin.support-tickets.show', $supportTicketId->id);
     }
 }
