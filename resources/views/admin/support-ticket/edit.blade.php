@@ -122,7 +122,7 @@
                                 <div class="form-group">
                                     <label for="support_ticket_status_id">Ticket Status</label>
                                     <select id="support_ticket_status_id" name="support_ticket_status_id"
-                                        class="form-control">
+                                        class="form-control" required>
                                         <option value="">Select</option>
                                         @foreach ($ticketStatuses as $status)
                                             <option value="{{ $status->id }}"
@@ -141,7 +141,7 @@
                                 <div class="form-group">
                                     <label for="support_ticket_priority_id">Ticket Priority</label>
                                     <select id="support_ticket_priority_id" name="support_ticket_priority_id"
-                                        class="form-control">
+                                        class="form-control" required>
                                         <option value="">Select</option>
                                         @foreach ($ticketPriorities as $priority)
                                             <option value="{{ $priority->id }}"
