@@ -77,19 +77,19 @@
                                                 class="btn btn-sm btn-success">
                                                 <i class="ri-timer-line"></i> Start</button>
                                         @else
-                                            <small>{{ $task->start_date->format('l, F j, Y') }}</small>
+                                            <small>{{ date('l, F j, Y h:i A', strtotime($task->start_date)) }}</small>
                                         @endif
                                     </td>
                                     <td>
                                         @if ($task->due_date < now()->format('Y-m-d H:i:s') && $task->due_date !== null)
-                                            <small class="badge badge-danger">Task is Overdue</small>
+                                            <small class="badge bg-danger">Task is Overdue</small>
                                         @elseif ($task->due_date == null)
-                                            <small class="badge badge-info">No Due Date</small>
+                                            <small class="badge bg-info">No Due Date</small>
                                         @else
-                                            <small>{{ $task->due_date }}</small>
+                                            <small>{{ date('l, F j, Y h:i A', strtotime($task->due_date)) }}</small>
                                         @endif
                                     </td>
-                                    <td><small>{{ $task->updated_at }}</small></td>
+                                    <td><small>{{ $task->updated_at->format('l, F j, Y h:i A') }}</small></td>
 
                                     <td class="text-right">
                                         @if ($showDeleted)

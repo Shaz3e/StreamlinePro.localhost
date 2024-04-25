@@ -2,41 +2,114 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'User Profile',
+        'title' => 'View Task',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'My Todo List', 'link' => route('admin.todos.index')],
-            ['text' => 'My Todo', 'link' => null],
+            ['text' => 'Task List', 'link' => route('admin.tasks.index')],
+            ['text' => 'View', 'link' => null],
         ],
     ])
 
-    {{-- Show Record --}}
+    {{-- Show Record Summary --}}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Status</small><br>
+                    <strong class="badge" style="background-color: {{ $task->status->bg_color }}; color: {{ $task->status->text_color }}">
+                        {{ $task->status->name }}
+                    </strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Assigned To</small><br>
+                    <strong>{{ ucwords($task->assignee->name) }}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Created By</small><br>
+                    <strong>{{ ucwords($task->createdBy->name )}}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Closed</small><br>
+                    @if ($task->closed == 0)
+                        <strong class="badge bg-danger">Task Not Closed</strong>
+                    @else
+                        <strong class="badge bg-success">Task Closed</strong>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- /.row --}}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Started At</small><br>
+                    @if ($task->start_date == null)
+                        <strong class="badge bg-danger">Not Started</strong>
+                    @else
+                        <strong>{{ date('l, F j, Y h:i A', strtotime($task->start_date)) }}</strong>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Due Date</small><br>
+                    @if ($task->due_date < now()->format('Y-m-d H:i:s') && $task->due_date !== null)
+                        <strong class="badge bg-danger">Task is Overdue</strong>
+                    @elseif ($task->due_date == null)
+                        <strong class="badge bg-info">No Due Date</strong>
+                    @else
+                        <strong>{{ date('l, F j, Y h:i A', strtotime($task->due_date)) }}</strong>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Created On</small><br>
+                    <strong>{{ $task->created_at->format('l, F j, Y h:i A') }}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <small>Updated On</small><br>
+                    <strong>{{ $task->updated_at->format('l, F j, Y h:i A') }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- /.row --}}
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    {{ $todo->title }}
-                </div>
+            <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>{{ $todo->status->name }}</th>
-                                <td>{{ $todo->created_at->format('l, F j, Y') }}</td>
-                                <td>{{ $todo->updated_at->format('l, F j, Y') }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    {!! $todo->todo_details !!}
+                    <div class="card-title">
+                        <h5>{{ $task->title }}</h5>
+                    </div>
+                    {{-- /.card-title --}}
+                    <div class="card-text">
+                        {!! $task->description !!}
+                    </div>
                 </div>
+                {{-- /.card-body --}}
             </div>
             {{-- /.card --}}
         </div>

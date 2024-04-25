@@ -96,11 +96,16 @@ class TaskController extends Controller
         // Check Authorize
         Gate::authorize('task.update');
 
+        // Get all active task list
         $taskStatusList = TaskStatus::where('is_active', 1)->get();
+
+        // Get all active staff
+        $staffList = Admin::where('is_active', 1)->get();
 
         return view('admin.task.edit', [
             'task' => $task,
-            'taskStatu$taskStatusList' => $taskStatusList,
+            'taskStatusList' => $taskStatusList,
+            'staffList' => $staffList,
         ]);
     }
 

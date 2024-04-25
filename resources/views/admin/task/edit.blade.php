@@ -2,11 +2,11 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'Edit Todo',
+        'title' => 'Edit Task',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'My Todo List', 'link' => route('admin.todos.index')],
-            ['text' => 'Create', 'link' => null],
+            ['text' => 'Task List', 'link' => route('admin.tasks.index')],
+            ['text' => 'Edit', 'link' => null],
         ],
     ])
 
@@ -14,58 +14,71 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.todos.update', $todo->id) }}" method="POST" class="needs-validation" novalidate>
+                <form action="{{ route('admin.tasks.update', $task->id) }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     @method('put')
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="title">Todo Title</label>
+                                    <label for="title">Task Title</label>
                                     <input type="text" name="title" class="form-control" id="title"
-                                        value="{{ $todo->title }}" required>
+                                        value="{{ old('title', $task->title) }}" required>
                                 </div>
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="todo_status_id">Status</label>
-                                    <select name="todo_status_id" class="form-control" id="todo_status_id">
-                                        @foreach ($todoStatus as $status)
+                                    <label for="task_status_id">Status</label>
+                                    <select name="task_status_id" class="form-control" id="task_status_id">
+                                        @foreach ($taskStatusList as $status)
                                             <option value="{{ $status->id }}"
-                                                {{ $todo->todo_status_id == $status->id ? 'selected' : '' }}>
+                                                {{ $task->task_status_id == $status->id ? 'selected' : '' }}>
                                                 {{ $status->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('todo_status_id')
+                                @error('task_status_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="reminder">Reminder?</label>
-                                    <input type="datetime-local" class="form-control" name="reminder" id="reminder"
-                                        value="{{ $todo->reminder }}" min="{{ now()->format('Y-m-d\TH:i') }}"
-                                        max="{{ now()->addDay(90)->format('Y-m-d\TH:i') }}">
+                                    <label for="assigned_to">Assign To</label>
+                                    <select name="assigned_to" class="form-control" id="assigned_to">
+                                        @foreach ($staffList as $staff)
+                                            <option value="{{ $staff->id }}" {{ $task->assigned_to == $staff->id ? 'selected' : '' }}>
+                                                {{ $staff->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                @error('reminder')
+                                @error('assigned_to')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="due_date">Due Date</label>
+                                    <input type="datetime-local" class="form-control" name="due_date" id="due_date"
+                                        value="{{ old('due_date', $task->due_date) }}" min="{{ now()->format('Y-m-d\TH:i') }}">
+                                </div>
+                                @error('due_date')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
                         {{-- /.row --}}
-                        <div class="row mt-5">
+                        <div class="row mt-3">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <textarea id="todo_details" name="todo_details" required>{!! old('todo_details', $todo->todo_details) !!}</textarea>
+                                    <label for="description">Description</label>
+                                    <textarea id="description" name="description" class="form-control" required>{!! old('description', $task->description) !!}</textarea>
                                 </div>
-                                @error('todo_details')
+                                @error('description')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -94,51 +107,53 @@
 
 @push('scripts')
     <!--tinymce js-->
-    <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script> --}}
 
     <!-- init js -->
     <script>
-        $(document).ready(function() {
-            0 < $("#todo_details").length && tinymce.init({
-                selector: "textarea#todo_details",
-                height: 300,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                    "save table contextmenu directionality emoticons template paste textcolor"
-                ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
-                style_formats: [{
-                    title: "Bold text",
-                    inline: "b"
-                }, {
-                    title: "Red text",
-                    inline: "span",
-                    styles: {
-                        color: "#ff0000"
-                    }
-                }, {
-                    title: "Red header",
-                    block: "h1",
-                    styles: {
-                        color: "#ff0000"
-                    }
-                }, {
-                    title: "Example 1",
-                    inline: "span",
-                    classes: "example1"
-                }, {
-                    title: "Example 2",
-                    inline: "span",
-                    classes: "example2"
-                }, {
-                    title: "Table styles"
-                }, {
-                    title: "Table row 1",
-                    selector: "tr",
-                    classes: "tablerow1"
-                }]
-            })
-        });
+        // $(document).ready(function() {
+        //     0 < $("#todo_details").length && tinymce.init({
+        //         selector: "textarea#todo_details",
+        //         height: 300,
+        //         plugins: [
+        //             "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+        //             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+        //             "save table contextmenu directionality emoticons template paste textcolor"
+        //         ],
+        //         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+        //         style_formats: [{
+        //                 title: "Bold text",
+        //                 inline: "b"
+        //             },
+        //             {
+        //                 title: "Red text",
+        //                 inline: "span",
+        //                 styles: {
+        //                     color: "#ff0000"
+        //                 }
+        //             }, {
+        //                 title: "Red header",
+        //                 block: "h1",
+        //                 styles: {
+        //                     color: "#ff0000"
+        //                 }
+        //             }, {
+        //                 title: "Example 1",
+        //                 inline: "span",
+        //                 classes: "example1"
+        //             }, {
+        //                 title: "Example 2",
+        //                 inline: "span",
+        //                 classes: "example2"
+        //             }, {
+        //                 title: "Table styles"
+        //             }, {
+        //                 title: "Table row 1",
+        //                 selector: "tr",
+        //                 classes: "tablerow1"
+        //             }
+        //         ]
+        //     })
+        // });
     </script>
 @endpush

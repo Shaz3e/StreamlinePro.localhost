@@ -124,7 +124,7 @@ class TaskList extends Component
         ]);
 
         // Dispatch a success message
-        $this->dispatch('success', 'Task has been started now!');
+        session()->flash('success', 'Task has been started now!');
     }
 
     /**
