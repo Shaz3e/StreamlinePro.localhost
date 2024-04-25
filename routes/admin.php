@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TodoController;
 use App\Http\Controllers\Admin\TodoStatusController;
 
 // Tasks
+use App\Http\Controllers\Admin\TaskController;
 
 // Task Status
 use App\Http\Controllers\Admin\TaskStatusController;
@@ -112,14 +113,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('todos.audit');
         Route::get('todos-audit/delete/{id}', [TodoController::class, 'deleteAudit'])
             ->name('todos.audit.delete');
-
-        /**
+            /**
          * Tasks
          */
-
-        // Task List
-        Route::get('tasks', function () {
-        });
+        Route::resource('tasks', TaskController::class);
+        // Audit
+        Route::get('tasks-audit/{id}', [TaskController::class, 'audit'])
+            ->name('tasks.audit');
+        Route::get('tasks-audit/delete/{id}', [TaskController::class, 'deleteAudit'])
+            ->name('tasks.audit.delete');
 
 
         /**

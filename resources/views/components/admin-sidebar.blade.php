@@ -10,7 +10,7 @@
                                 class="avatar-md rounded-circle">
                         </div>
                         <div class="mt-3">
-                            <h4 class="font-size-16 mb-1">{{ auth()->guard('admin')->user()->name }}</h4>
+                            <h4 class="font-size-16 mb-1">{{ ucwords(auth()->guard('admin')->user()->name) }}</h4>
                             <span class="text-muted"><i
                                     class="ri-record-circle-line align-middle font-size-14 text-success"></i>
                                 Online</span>
@@ -29,6 +29,15 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li>
+
+                            @can('task.list')
+                                <li>
+                                    <a href="{{ route('admin.tasks.index') }}" class="waves-effect">
+                                        <i class="ri-dashboard-line"></i>
+                                        <span>Tasks</span>
+                                    </a>
+                                </li>
+                            @endcan
 
                             {{-- Support Tickets --}}
                             @can('support-ticket.list')

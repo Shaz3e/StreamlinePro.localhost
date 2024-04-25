@@ -25,8 +25,8 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('admins')->onDelete('set null');
 
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('due_date')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('due_date')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->softDeletes();
             $table->timestamps();

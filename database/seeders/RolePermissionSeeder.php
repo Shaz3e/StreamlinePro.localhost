@@ -103,6 +103,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'todo-status.delete'],
             ['guard_name' => 'admin', 'name' => 'todo-status.restore'],
             ['guard_name' => 'admin', 'name' => 'todo-status.force.delete'],
+            // Task
+            ['guard_name' => 'admin', 'name' => 'task.list'],
+            ['guard_name' => 'admin', 'name' => 'task.create'],
+            ['guard_name' => 'admin', 'name' => 'task.read'],
+            ['guard_name' => 'admin', 'name' => 'task.update'],
+            ['guard_name' => 'admin', 'name' => 'task.delete'],
+            ['guard_name' => 'admin', 'name' => 'task.restore'],
+            ['guard_name' => 'admin', 'name' => 'task.force.delete'],
             // Task Status
             ['guard_name' => 'admin', 'name' => 'task-status.list'],
             ['guard_name' => 'admin', 'name' => 'task-status.create'],
@@ -111,23 +119,7 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'task-status.delete'],
             ['guard_name' => 'admin', 'name' => 'task-status.restore'],
             ['guard_name' => 'admin', 'name' => 'task-status.force.delete'],
-            // Ticket Status
-            ['guard_name' => 'admin', 'name' => 'ticket-status.list'],
-            ['guard_name' => 'admin', 'name' => 'ticket-status.create'],
-            ['guard_name' => 'admin', 'name' => 'ticket-status.read'],
-            ['guard_name' => 'admin', 'name' => 'ticket-status.update'],
-            ['guard_name' => 'admin', 'name' => 'ticket-status.delete'],
-            ['guard_name' => 'admin', 'name' => 'ticket-status.restore'],
-            ['guard_name' => 'admin', 'name' => 'ticket-status.force.delete'],
-            // Ticket Status
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.list'],
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.create'],
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.read'],
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.update'],
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.delete'],
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.restore'],
-            ['guard_name' => 'admin', 'name' => 'ticket-priority.force.delete'],
-            // Ticket Status
+            // Support Ticket
             ['guard_name' => 'admin', 'name' => 'support-ticket.list'],
             ['guard_name' => 'admin', 'name' => 'support-ticket.create'],
             ['guard_name' => 'admin', 'name' => 'support-ticket.read'],
@@ -135,6 +127,22 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'support-ticket.delete'],
             ['guard_name' => 'admin', 'name' => 'support-ticket.restore'],
             ['guard_name' => 'admin', 'name' => 'support-ticket.force.delete'],
+            // Support Ticket Status
+            ['guard_name' => 'admin', 'name' => 'ticket-status.list'],
+            ['guard_name' => 'admin', 'name' => 'ticket-status.create'],
+            ['guard_name' => 'admin', 'name' => 'ticket-status.read'],
+            ['guard_name' => 'admin', 'name' => 'ticket-status.update'],
+            ['guard_name' => 'admin', 'name' => 'ticket-status.delete'],
+            ['guard_name' => 'admin', 'name' => 'ticket-status.restore'],
+            ['guard_name' => 'admin', 'name' => 'ticket-status.force.delete'],
+            // Support Ticket Status
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.list'],
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.create'],
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.read'],
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.update'],
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.delete'],
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.restore'],
+            ['guard_name' => 'admin', 'name' => 'ticket-priority.force.delete'],
             // Add more permissions here...
         ];
 
