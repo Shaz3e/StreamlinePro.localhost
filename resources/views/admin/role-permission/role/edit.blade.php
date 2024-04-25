@@ -55,57 +55,64 @@
                     @csrf
                     @method('put')
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Permission Name</th>
-                                    <th class="text-center">All</th>
-                                    <th class="text-center">List View</th>
-                                    <th class="text-center">Create</th>
-                                    <th class="text-center">Read</th>
-                                    <th class="text-center">Update</th>
-                                    <th class="text-center">Delete</th>
-                                    <th class="text-center">Restore</th>
-                                    <th class="text-center">Force Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($permissions->groupBy(function ($permission) {
-                                        return explode('.', $permission->name)[0];
-                                    }) as $modelName => $modelPermissions)
-                                    <tr>
-                                        <td>
-                                            {{ str_replace('-', ' ', strtoupper($modelName)) }}
-                                        </td>
-                                        <td class="text-center"><input type="checkbox"></td>
-                                        @foreach (['list', 'create', 'read', 'update', 'delete', 'restore', 'force.delete'] as $action)
-                                            <td class="text-center">
-                                                @if (
-                                                    $modelPermissions->contains(function ($permission) use ($action) {
-                                                        return str_contains($permission->name, $action);
-                                                    }))
-                                                    <input type="checkbox" name="permissions[]" class="form-checkbox-input"
-                                                        id="checkPermission-{{ $modelPermissions->first(function ($permission) use ($action) {
-                                                            return str_contains($permission->name, $action);
-                                                        })->id }}"
-                                                        value="{{ $modelPermissions->first(function ($permission) use ($action) {
-                                                            return str_contains($permission->name, $action);
-                                                        })->name }}"
-                                                        {{ in_array(
-                                                            $modelPermissions->first(function ($permission) use ($action) {
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Permission Name</th>
+                                            <th class="text-center">All</th>
+                                            <th class="text-center">List View</th>
+                                            <th class="text-center">Create</th>
+                                            <th class="text-center">Read</th>
+                                            <th class="text-center">Update</th>
+                                            <th class="text-center">Delete</th>
+                                            <th class="text-center">Restore</th>
+                                            <th class="text-center">Force Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($permissions->groupBy(function ($permission) {
+                                                        return explode('.', $permission->name)[0];
+                                                    }) as $modelName => $modelPermissions)
+                                            <tr>
+                                                <td>
+                                                    {{ str_replace('-', ' ', strtoupper($modelName)) }}
+                                                </td>
+                                                <td class="text-center"><input type="checkbox"></td>
+                                                @foreach (['list', 'create', 'read', 'update', 'delete', 'restore', 'force.delete'] as $action)
+                                                    <td class="text-center">
+                                                        @if (
+                                                            $modelPermissions->contains(function ($permission) use ($action) {
                                                                 return str_contains($permission->name, $action);
-                                                            })->id,
-                                                            $rolePermissions,
-                                                        )
-                                                            ? 'checked'
-                                                            : '' }} />
-                                                @endif
-                                            </td>
+                                                            }))
+                                                            <input type="checkbox" name="permissions[]"
+                                                                class="form-checkbox-input"
+                                                                id="checkPermission-{{ $modelPermissions->first(function ($permission) use ($action) {
+                                                                    return str_contains($permission->name, $action);
+                                                                })->id }}"
+                                                                value="{{ $modelPermissions->first(function ($permission) use ($action) {
+                                                                    return str_contains($permission->name, $action);
+                                                                })->name }}"
+                                                                {{ in_array(
+                                                                    $modelPermissions->first(function ($permission) use ($action) {
+                                                                        return str_contains($permission->name, $action);
+                                                                    })->id,
+                                                                    $rolePermissions,
+                                                                )
+                                                                    ? 'checked'
+                                                                    : '' }} />
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                            </tr>
                                         @endforeach
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{-- /.table-responsive --}}
+                        </div>
+                        {{-- /.table-rep-plugin --}}
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
@@ -124,9 +131,12 @@
 @endsection
 
 @push('styles')
+    <link href="{{ asset('assets/libs/admin-resources/rwd-table/rwd-table.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @push('scripts')
+    <!-- Responsive Table js -->
+    <script src="{{ asset('assets/libs/admin-resources/rwd-table/rwd-table.min.js') }}"></script>
     <script>
         // Select all checkboxes in a row when "All" is clicked
         $('tbody tr td:nth-child(2) input[type="checkbox"]').on('click', function() {
