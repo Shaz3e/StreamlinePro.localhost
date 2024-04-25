@@ -15,7 +15,7 @@
         <div class="col-9">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row mb-5">
                         <div class="col-md-3">
                             <strong>Ticket Number</strong><br>
                             <small>{{ $supportTicket->ticket_number }}</small>
@@ -24,11 +24,7 @@
                         <div class="col-md-3">
                             <strong>Client</strong><br>
                             <small>
-                                @if ($supportTicket->user)
-                                    {{ $supportTicket->user->name }}
-                                @else
-                                    N/A
-                                @endif
+                                {{ optional($supportTicket->user)->name ? $supportTicket->user->name : 'N/A' }}
                             </small>
                         </div>
                         {{-- /.col --}}
@@ -42,7 +38,10 @@
                             <small>{{ $supportTicket->priority->name }}</small>
                         </div>
                         {{-- /.col --}}
+                    </div>
+                    {{-- /.row --}}
 
+                    <div class="row">
                         <div class="col-md-3">
                             <strong>Created at</strong><br>
                             <small>{{ $supportTicket->created_at->format('l, F j, Y') }}</small>
