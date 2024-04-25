@@ -18,7 +18,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <label for="name" class="col-sm-2 col-form-label">Ticket Status Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name') }}" required>

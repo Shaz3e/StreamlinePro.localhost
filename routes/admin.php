@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\TodoStatusController;
 // Tasks
 
 // Task Status
+use App\Http\Controllers\Admin\TaskStatusController;
 
 // Users
 use App\Http\Controllers\Admin\UserController;
@@ -120,13 +121,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('tasks', function () {
         });
 
-        /**
-         * Task Status
-         */
-
-        // Task Status List
-        Route::get('tasks/status', function () {
-        });
 
         /**
          * Users
@@ -185,7 +179,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::resource('support-tickets', SupportTicketController::class);
         Route::post('support-tickets-reply/{supportTicketId}', [SupportTicketController::class, 'ticketReply'])
-        ->name('support-tickets.reply');
+            ->name('support-tickets.reply');
 
         // Upload attachments for support tickets
         Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
@@ -282,5 +276,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('ticket-priority.audit');
         Route::get('ticket-priority-audit/delete/{id}', [TicketPriorityController::class, 'deleteAudit'])
             ->name('ticket-priority.audit.delete');
+
+        /**
+         * Task Status
+         */
+        Route::resource('task-status', TaskStatusController::class);
+        // Audit
+        Route::get('task-status-audit/{id}', [TaskStatusController::class, 'audit'])
+            ->name('task-status.audit');
+        Route::get('task-status-audit/delete/{id}', [TaskStatusController::class, 'deleteAudit'])
+            ->name('task-status.audit.delete');
     });
 });

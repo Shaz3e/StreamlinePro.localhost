@@ -73,7 +73,6 @@
                             @canany(['staff.list', 'department.list', 'role.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        {{-- <i class="ri-profile-line"></i> --}}
                                         <i class="ri-equalizer-line"></i>
                                         <span>Manage</span>
                                     </a>
@@ -120,10 +119,10 @@
                                 </li>
                             @endcanany
                             {{-- Manage Status --}}
-                            @canany(['todo-status.list', 'ticket-status.list', 'ticket-priority.list'])
+                            @canany(['todo-status.list', 'task-status.list', 'ticket-status.list',
+                                'ticket-priority.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        {{-- <i class="ri-profile-line"></i> --}}
                                         <i class="ri-equalizer-line"></i>
                                         <span>Manage Status</span>
                                     </a>
@@ -134,6 +133,15 @@
                                                 <a href="{{ route('admin.todo-status.index') }}"
                                                     class="{{ request()->routeIs('admin.todo-status.*') ? 'active' : '' }}">
                                                     Todo Status
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        {{-- Task Status --}}
+                                        @can('task-status.list')
+                                            <li class="{{ request()->routeIs('admin.task-status.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.task-status.index') }}"
+                                                    class="{{ request()->routeIs('admin.task-status.*') ? 'active' : '' }}">
+                                                    Task Status
                                                 </a>
                                             </li>
                                         @endcan

@@ -1,24 +1,24 @@
 @extends('components.layouts.app')
 
 @section('content')
-@include('partials.page-header', [
-    'title' => 'Create New Todo Status',
-    'breadcrumbs' => [
-        ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-        ['text' => 'Todo Status List', 'link' => route('admin.todo-status.index')],
-        ['text' => 'Create', 'link' => null],
-    ],
-])
+    @include('partials.page-header', [
+        'title' => 'Create New Task Status',
+        'breadcrumbs' => [
+            ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
+            ['text' => 'View List', 'link' => route('admin.task-status.index')],
+            ['text' => 'Create', 'link' => null],
+        ],
+    ])
 
     {{-- Create Form --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.todo-status.store') }}" method="POST" class="needs-validation" novalidate>
+                <form action="{{ route('admin.task-status.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <div class="card-body">
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Todo Status Name</label>
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name') }}" required>
@@ -45,9 +45,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="text_color">Text Color</label>
-                                    <input type="text" name="text_color" class="form-control"
-                                        id="colorpicker-text" value="{{ old('text_color') }}"
-                                        required>
+                                    <input type="text" name="text_color" class="form-control" id="colorpicker-text"
+                                        value="{{ old('text_color') }}" required>
                                     @error('text_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -57,9 +56,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="bg_color">Background Color</label>
-                                    <input type="text" name="bg_color" class="form-control"
-                                        id="colorpicker-background" value="{{ old('bg_color') }}"
-                                        required>
+                                    <input type="text" name="bg_color" class="form-control" id="colorpicker-background"
+                                        value="{{ old('bg_color') }}" required>
                                     @error('bg_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
