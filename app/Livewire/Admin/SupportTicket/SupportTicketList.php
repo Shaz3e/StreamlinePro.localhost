@@ -69,20 +69,14 @@ class SupportTicketList extends Component
         $admin = Admin::findOrFail($adminId);
         $departments = $admin->department_id;
 
-        // Convert department IDs to JSON
-        $jsonDepartments = json_encode($departments);
-
         // Check if the logged-in admin is a super admin (with admin ID 1)
-        $departments = [];
-        if ($adminId == 1) {
+        if ($admin->hasRole('superadmin')) {
             // If admin is super admin, fetch all support tickets
             $query = SupportTicket::query();
         } else {
             // Query support tickets based on the departments assigned to the admin/staff
-            // Query support tickets based on the departments assigned to the admin/staff
-            $departments = Auth::guard('admin')->user()->departments();
             $query = SupportTicket::query()->where(function ($q) use ($departments, $adminId) {
-                $q->whereIn('department_id', $departments)
+                $q->whereIn('department_id', (array) $departments)
                     ->orWhere('admin_id', $adminId);
             });
         }
