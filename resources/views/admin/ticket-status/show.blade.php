@@ -131,11 +131,11 @@
             // Audit Log Show Modal
             $('.show-audit-modal').click(function(e) {
                 e.preventDefault();
-                const todoStatusId = $(this).data('audit-id');
+                const ticketStatusId = $(this).data('audit-id');
                 // Fetch details via AJAX
                 $.ajax({
                     url: `{{ route('admin.ticket-status.audit', ':id') }}`.replace(':id',
-                        todoStatusId),
+                        ticketStatusId),
                     type: 'GET',
                     success: function(data) {
                         // Populate modal content with fetched data
@@ -150,7 +150,7 @@
             });
             $('.delete-audit-log').click(function(e) {
                 e.preventDefault();
-                const todoStatusId = $(this).data('audit-id');
+                const ticketStatusId = $(this).data('audit-id');
 
                 // Show confirmation dialog
                 Swal.fire({
@@ -167,7 +167,7 @@
                         $.ajax({
                             url: `{{ route('admin.ticket-status.audit.delete', ':id') }}`
                                 .replace(
-                                    ':id', todoStatusId),
+                                    ':id', ticketStatusId),
                             type: 'GET',
                             success: function(data) {
                                 // Show success message

@@ -211,10 +211,10 @@
             // Audit Log Show Modal
             $('.show-audit-modal').click(function(e) {
                 e.preventDefault();
-                const userId = $(this).data('audit-id');
+                const companyId = $(this).data('audit-id');
                 // Fetch details via AJAX
                 $.ajax({
-                    url: `{{ route('admin.companies.audit', ':id') }}`.replace(':id', userId),
+                    url: `{{ route('admin.companies.audit', ':id') }}`.replace(':id', companyId),
                     type: 'GET',
                     success: function(data) {
                         // Populate modal content with fetched data
@@ -229,7 +229,7 @@
             });
             $('.delete-audit-log').click(function(e) {
                 e.preventDefault();
-                const userId = $(this).data('audit-id');
+                const companyId = $(this).data('audit-id');
 
                 // Show confirmation dialog
                 Swal.fire({
@@ -246,7 +246,7 @@
                         $.ajax({
                             url: `{{ route('admin.companies.audit.delete', ':id') }}`
                                 .replace(
-                                    ':id', userId),
+                                    ':id', companyId),
                             type: 'GET',
                             success: function(data) {
                                 // Show success message
