@@ -19,7 +19,7 @@ class TaskController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('task.list');
+        Gate::authorize('viewAny', Task::class);
 
         return view('admin.task.index');
     }
@@ -30,7 +30,7 @@ class TaskController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('task.create');
+        Gate::authorize('create', Task::class);
 
         // Get all active task list
         $taskStatusList = TaskStatus::where('is_active', 1)->get();
@@ -50,7 +50,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         // Check Authorize
-        Gate::authorize('task.create');
+        Gate::authorize('create', Task::class);
 
         // Validate data
         $validated = $request->validated();
@@ -71,7 +71,7 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         // Check Authorize
-        Gate::authorize('task.read');
+        Gate::authorize('view', $task);
 
         $audits = $task->audits()
             ->latest()
@@ -94,7 +94,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         // Check Authorize
-        Gate::authorize('task.update');
+        Gate::authorize('update', $task);
 
         // Get all active task list
         $taskStatusList = TaskStatus::where('is_active', 1)->get();
@@ -115,7 +115,7 @@ class TaskController extends Controller
     public function update(StoreTaskRequest $request, Task $task)
     {
         // Check Authorize
-        Gate::authorize('task.update');
+        Gate::authorize('update', $task);
 
         // Validate data
         $validated = $request->validated();
@@ -136,7 +136,7 @@ class TaskController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('task.read');
+        Gate::authorize('view', Task::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -156,7 +156,7 @@ class TaskController extends Controller
     public function deleteAudit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('task.delete');
+        Gate::authorize('delete', Task::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
