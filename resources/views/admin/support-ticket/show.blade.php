@@ -17,25 +17,25 @@
                 <div class="card-body">
                     <div class="row mb-5">
                         <div class="col-md-3">
-                            <strong>Ticket Number</strong><br>
-                            <small>{{ $supportTicket->ticket_number }}</small>
+                            <small>Ticket Number</small><br>
+                            <strong>{{ $supportTicket->ticket_number }}</strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <strong>Client</strong><br>
-                            <small>
+                            <small>Client</small><br>
+                            <strong>
                                 {{ optional($supportTicket->user)->name ? $supportTicket->user->name : 'N/A' }}
-                            </small>
+                            </strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <strong>Status</strong><br>
-                            <small>{{ $supportTicket->status->name }}</small>
+                            <small>Status</small><br>
+                            <strong>{{ $supportTicket->status->name }}</strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <strong>Priority</strong><br>
-                            <small>{{ $supportTicket->priority->name }}</small>
+                            <small>Priority</small><br>
+                            <strong>{{ $supportTicket->priority->name }}</strong>
                         </div>
                         {{-- /.col --}}
                     </div>
@@ -43,19 +43,19 @@
 
                     <div class="row">
                         <div class="col-md-3">
-                            <strong>Created at</strong><br>
-                            <small>{{ $supportTicket->created_at->format('l, F j, Y') }}</small>
+                            <small>Created at</small><br>
+                            <strong>{{ $supportTicket->created_at->format('l, F j, Y') }}</strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <strong>Last Updated at</strong><br>
-                            <small>{{ $supportTicket->updated_at->format('l, F j, Y') }}</small>
+                            <small>Last Updated at</small><br>
+                            <strong>{{ $supportTicket->updated_at->format('l, F j, Y') }}</strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <strong>Last Replied By</strong><br>
+                            <small>Last Replied By</small><br>
                             @if ($supportTicket->lastReply)
-                                <small>
+                                <strong>
                                     @if ($supportTicket->lastReply->staff_reply_by)
                                         {{ $supportTicket->lastReply->staff->name }}
                                     @elseif($supportTicket->lastReply->client_reply_by)
@@ -63,15 +63,15 @@
                                     @else
                                         N/A
                                     @endif
-                                </small>
+                                </strong>
                             @endif
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <strong>Last Reply at</strong><br>
-                            <small>
+                            <small>Last Reply at</small><br>
+                            <strong>
                                 {{ optional($supportTicket->lastReply)->created_at ? $supportTicket->lastReply->created_at->format('l, F j, Y') : 'N/A' }}
-                            </small>
+                            </strong>
                         </div>
                         {{-- /.col --}}
                     </div>
@@ -114,7 +114,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        {{ $supportTicket->title }}
+                        Title: {{ $supportTicket->title }}
                     </h3>
                 </div>
                 {{-- /.card-header --}}
@@ -150,7 +150,7 @@
                 </div>
                 {{-- /.card-body --}}
                 <div class="card-footer">
-                    <button onclick="scrollToReply()" class="btn btn-success btn-sm">Response to Ticket</button>
+                    <button onclick="scrollToReply()" class="btn btn-info btn-sm"><i class="ri-reply-line"></i> Response to Ticket</button>
                 </div>
                 {{-- /.card-footer --}}
             </div>

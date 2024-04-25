@@ -89,6 +89,9 @@ class SupportTicketController extends Controller
 
         session()->flash('success', 'Support Ticket has been created successfully!');
 
+        // Clear the uploaded_attachments session variable
+        session()->forget('uploaded_attachments');
+
         return redirect()->route('admin.support-tickets.index');
     }
 
@@ -186,16 +189,11 @@ class SupportTicketController extends Controller
         // Validate data
         $validated = $request->validated();
 
-        // Generate a Ticket Number
+        // Retrieve all the uploaded images from the session variable
+        $uploadedAttachments = session()->get('uploaded_attachments');
 
-        if ($request->hasFile('attachments')) {
-            $ticketNumber = $supportTicket->ticket_number;
-            $attachments = [];
-            foreach ($request->file('attachments') as $file) {
-                $filename = $ticketNumber . '.' . $file->extension();
-                $attachments[] = $file->storeAs('support-tickets/attachments', $filename, 'public');
-            }
-            $validated['attachments'] = json_encode($attachments); // Serialize the array to a JSON string
+        if (!empty($uploadedAttachments)) {
+            $validated['attachments'] = json_encode($uploadedAttachments);
         }
 
         // Update record in database
@@ -203,6 +201,9 @@ class SupportTicketController extends Controller
 
         // Flash message
         session()->flash('success', 'Todo Status has been updated successfully!');
+
+        // Clear the uploaded_attachments session variable
+        session()->forget('uploaded_attachments');
 
         // Redirect to index
         return redirect()->route('admin.support-tickets.index');
@@ -253,11 +254,15 @@ class SupportTicketController extends Controller
     {
         // Gate::authorize('support-ticket.force.create');
         // Gate::authorize('support-ticket.force.update');
+
         // Get the uploaded image
         $image = $request->file('attachments');
 
+        // File Name
+        $filename = rand(1, 9999) . '-' . time() . '.' . $image->extension();
+
         // Store the uploaded image in a session variable
-        session()->push('uploaded_attachments', $image->storeAs('support-tickets/attachments', time() . '.' . $image->extension(), 'public'));
+        session()->push('uploaded_attachments', $image->storeAs('support-tickets/attachments', $filename, 'public'));
 
         return response()->json(['message' => 'Image uploaded successfully!']);
     }
@@ -271,7 +276,7 @@ class SupportTicketController extends Controller
         Gate::authorize('support-ticket.read');
 
         // Update only status
-        if($request->has('updateStatus')){
+        if ($request->has('updateStatus')) {
             // Validate data
             $validated = $request->validate([
                 'admin_id' => 'required|exists:admins,id',
@@ -311,14 +316,18 @@ class SupportTicketController extends Controller
         
         // Retrieve all the uploaded images from the session variable
         $uploadedAttachments = session()->get('uploaded_attachments');
-
+        
         if (!empty($uploadedAttachments)) {
             $validated['attachments'] = json_encode($uploadedAttachments);
+            $supportTicketReply->attachments = implode(',', $uploadedAttachments);
         }
 
         $supportTicketReply->save();
 
         session()->flash('success', 'Support Ticket Reply has been created successfully!');
+
+        // Clear the uploaded_attachments session variable
+        session()->forget('uploaded_attachments');
 
         return redirect()->route('admin.support-tickets.show', $supportTicketId->id);
     }

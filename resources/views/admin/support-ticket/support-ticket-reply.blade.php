@@ -139,8 +139,8 @@
                 </div>
                 {{-- /.card-body --}}
                 <div class="card-footer">
-                    <button type="submit" name="updateStatus" class="btn btn-success waves-effect waves-light">
-                        <i class="ri-save-line align-middle me-2"></i> Update Status
+                    <button type="submit" name="updateStatus" class="btn btn-info waves-effect waves-light">
+                        <i class="ri-refresh-line align-middle me-2"></i> Update Status
                     </button>
                 </div>
                 {{-- /.card-footer --}}
