@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('user.list');
+        Gate::authorize('viewAny', User::class);
 
         return view('admin.user.index');
     }
@@ -33,7 +33,7 @@ class UserController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('user.create');
+        Gate::authorize('create', User::class);
         
         $companies = Company::where('is_active', 1)->get();
 
@@ -48,7 +48,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         // Check Authorize
-        Gate::authorize('user.create');
+        Gate::authorize('create', User::class);
 
         // Validate data
         $validated = $request->validated();
@@ -67,7 +67,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         // Check Authorize
-        Gate::authorize('user.read');
+        Gate::authorize('view', $user);
 
         $audits = $user->audits()
             ->latest()
@@ -90,7 +90,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         // Check Authorize
-        Gate::authorize('user.update');
+        Gate::authorize('update', $user);
 
         $companies = Company::where('is_active', 1)->get();
 
@@ -106,7 +106,7 @@ class UserController extends Controller
     public function update(StoreUserRequest $request, User $user)
     {
         // Check Authorize
-        Gate::authorize('user.update');
+        Gate::authorize('update', $user);
 
         // Validate data
         $validated = $request->validated();
@@ -146,7 +146,7 @@ class UserController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('user.read');
+        Gate::authorize('view', User::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -166,7 +166,7 @@ class UserController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('user.delete');
+        Gate::authorize('delete', User::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

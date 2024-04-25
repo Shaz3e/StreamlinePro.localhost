@@ -17,7 +17,7 @@ class TodoStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('todo-status.list');
+        Gate::authorize('viewAny', TodoStatus::class);
 
         return view('admin.todo-status.index');
     }
@@ -28,7 +28,7 @@ class TodoStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('todo-status.create');
+        Gate::authorize('create', TodoStatus::class);
 
         return view('admin.todo-status.create');
     }
@@ -39,7 +39,7 @@ class TodoStatusController extends Controller
     public function store(StoreTodoStatusRequest $request)
     {
         // Check Authorize
-        Gate::authorize('todo-status.create');
+        Gate::authorize('create', TodoStatus::class);
 
         // Validate data
         $validated = $request->validated();
@@ -58,7 +58,7 @@ class TodoStatusController extends Controller
     public function show(TodoStatus $todoStatus)
     {
         // Check Authorize
-        Gate::authorize('todo-status.read');
+        Gate::authorize('view', $todoStatus);
 
         $audits = $todoStatus->audits()
             ->latest()
@@ -81,7 +81,7 @@ class TodoStatusController extends Controller
     public function edit(TodoStatus $todoStatus)
     {
         // Check Authorize
-        Gate::authorize('todo-status.update');
+        Gate::authorize('update', $todoStatus);
 
         return view('admin.todo-status.edit', [
             'todoStatus' => $todoStatus,
@@ -94,7 +94,7 @@ class TodoStatusController extends Controller
     public function update(StoreTodoStatusRequest $request, TodoStatus $todoStatus)
     {
         // Check Authorize
-        Gate::authorize('todo-status.update');
+        Gate::authorize('view', $todoStatus);
 
         // Validate data
         $validated = $request->validated();
@@ -115,7 +115,7 @@ class TodoStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('todo-status.read');
+        Gate::authorize('view', TodoStatus::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -135,7 +135,7 @@ class TodoStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('todo-status.delete');
+        Gate::authorize('delete', TodoStatus::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

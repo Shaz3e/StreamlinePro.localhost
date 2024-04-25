@@ -17,6 +17,9 @@ class TodoController extends Controller
      */
     public function index()
     {
+        // Check Authorize
+        Gate::authorize('viewAny', Todo::class);
+
         return view('admin.todo.index');
     }
 
@@ -25,6 +28,9 @@ class TodoController extends Controller
      */
     public function create()
     {
+        // Check Authorize
+        Gate::authorize('create', Todo::class);
+        
         $todoStatus = TodoStatus::where('is_active', 1)->get();
 
         return view('admin.todo.create', [
@@ -37,6 +43,9 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
+        // Check Authorize
+        Gate::authorize('create', Todo::class);
+
         // Validate data
         $validated = $request->validated();
 
@@ -55,6 +64,9 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
+        // Check Authorize
+        Gate::authorize('view', $todo);
+        
         $audits = $todo->audits()
             ->latest()
             ->paginate(10);
@@ -75,6 +87,9 @@ class TodoController extends Controller
      */
     public function edit(Todo $todo)
     {
+        // Check Authorize
+        Gate::authorize('update', $todo);
+
         $todoStatus = TodoStatus::where('is_active', 1)->get();
 
         return view('admin.todo.edit', [
@@ -88,6 +103,9 @@ class TodoController extends Controller
      */
     public function update(StoreTodoRequest $request, Todo $todo)
     {
+        // Check Authorize
+        Gate::authorize('update', $todo);
+
         // Validate data
         $validated = $request->validated();
 
@@ -106,6 +124,9 @@ class TodoController extends Controller
      */
     public function audit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('view', Todo::class);
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
@@ -123,6 +144,9 @@ class TodoController extends Controller
      */
     public function deleteAudit(Request $request)
     {
+        // Check Authorize
+        Gate::authorize('delete', Todo::class);
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
             $auditLog->delete();

@@ -23,7 +23,7 @@ class SupportTicketController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('support-ticket.list');
+        Gate::authorize('viewAny', SupportTicket::class);
 
         return view('admin.support-ticket.index');
     }
@@ -34,7 +34,7 @@ class SupportTicketController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('support-ticket.create');
+        Gate::authorize('create', SupportTicket::class);
 
         // Get all active Staff/Admin
         $staffList = Admin::where('is_active', 1)->get();
@@ -66,7 +66,7 @@ class SupportTicketController extends Controller
     public function store(StoreSupportTicketRequest $request)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.create');
+        Gate::authorize('create', SupportTicket::class);
 
         // Validate data
         $validated = $request->validated();
@@ -101,7 +101,7 @@ class SupportTicketController extends Controller
     public function show(SupportTicket $supportTicket)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.read');
+        Gate::authorize('view', $supportTicket);
 
         // Get attachments
         $attachments = json_decode($supportTicket->attachments, true);
@@ -151,7 +151,7 @@ class SupportTicketController extends Controller
     public function edit(SupportTicket $supportTicket)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.update');
+        Gate::authorize('update', $supportTicket);
 
         // Get all active Staff/Admin
         $staffList = Admin::where('is_active', 1)->get();
@@ -184,7 +184,7 @@ class SupportTicketController extends Controller
     public function update(StoreSupportTicketRequest $request, SupportTicket $supportTicket)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.update');
+        Gate::authorize('update', $supportTicket);
 
         // Validate data
         $validated = $request->validated();
@@ -215,7 +215,7 @@ class SupportTicketController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.force.delete');
+        Gate::authorize('view', SupportTicket::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -235,7 +235,7 @@ class SupportTicketController extends Controller
     public function deleteAudit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.force.delete');
+        Gate::authorize('delete', SupportTicket::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -252,9 +252,6 @@ class SupportTicketController extends Controller
      */
     public function uploadAttachments(Request $request)
     {
-        // Gate::authorize('support-ticket.force.create');
-        // Gate::authorize('support-ticket.force.update');
-
         // Get the uploaded image
         $image = $request->file('attachments');
 
@@ -273,7 +270,7 @@ class SupportTicketController extends Controller
     public function ticketReply(Request $request, SupportTicket $supportTicketId)
     {
         // Check Authorize
-        Gate::authorize('support-ticket.read');
+        Gate::authorize('view', $supportTicketId);
 
         // Update only status
         if ($request->has('updateStatus')) {

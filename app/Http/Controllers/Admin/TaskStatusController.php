@@ -8,7 +8,6 @@ use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
-use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class TaskStatusController extends Controller
 {
@@ -18,7 +17,7 @@ class TaskStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('task-status.list');
+        Gate::authorize('viewAny', TaskStatus::class);
 
         return view('admin.task-status.index');
     }
@@ -29,7 +28,7 @@ class TaskStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('task-status.create');
+        Gate::authorize('create', TaskStatus::class);
 
         return view('admin.task-status.create');
     }
@@ -40,7 +39,7 @@ class TaskStatusController extends Controller
     public function store(StoreTaskStatusRequest $request)
     {
         // Check Authorize
-        Gate::authorize('task-status.create');
+        Gate::authorize('create', TaskStatus::class);
 
         // Validate data
         $validated = $request->validated();
@@ -59,7 +58,7 @@ class TaskStatusController extends Controller
     public function show(TaskStatus $taskStatus)
     {
         // Check Authorize
-        Gate::authorize('task-status.read');
+        Gate::authorize('view', $taskStatus);
 
         $audits = $taskStatus->audits()
             ->latest()
@@ -82,7 +81,7 @@ class TaskStatusController extends Controller
     public function edit(TaskStatus $taskStatus)
     {
         // Check Authorize
-        Gate::authorize('task-status.update');
+        Gate::authorize('update', $taskStatus);
 
         return view('admin.task-status.edit', [
             'taskStatus' => $taskStatus,
@@ -95,7 +94,7 @@ class TaskStatusController extends Controller
     public function update(StoreTaskStatusRequest $request, TaskStatus $taskStatus)
     {
         // Check Authorize
-        Gate::authorize('task-status.update');
+        Gate::authorize('update', $taskStatus);
 
         // Validate data
         $validated = $request->validated();
@@ -116,7 +115,7 @@ class TaskStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('task-status.read');
+        Gate::authorize('view', TaskStatus::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -136,7 +135,7 @@ class TaskStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('task-status.delete');
+        Gate::authorize('delete', TaskStatus::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

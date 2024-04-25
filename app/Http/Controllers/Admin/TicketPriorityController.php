@@ -17,7 +17,7 @@ class TicketPriorityController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.list');
+        Gate::authorize('viewAny', SupportTicketPriority::class);
 
         return view('admin.ticket-priority.index');
     }
@@ -28,7 +28,7 @@ class TicketPriorityController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.create');
+        Gate::authorize('create', SupportTicketPriority::class);
 
         return view('admin.ticket-priority.create');
     }
@@ -39,7 +39,7 @@ class TicketPriorityController extends Controller
     public function store(StoreTicketPriorityReqeust $request)
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.create');
+        Gate::authorize('create', SupportTicketPriority::class);
 
         // Validate data
         $validated = $request->validated();
@@ -58,7 +58,7 @@ class TicketPriorityController extends Controller
     public function show(SupportTicketPriority $ticketPriority)
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.read');
+        Gate::authorize('view', $ticketPriority);
 
         $audits = $ticketPriority->audits()
             ->latest()
@@ -81,7 +81,7 @@ class TicketPriorityController extends Controller
     public function edit(SupportTicketPriority $ticketPriority)
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.update');
+        Gate::authorize('update', $ticketPriority);
 
         return view('admin.ticket-priority.edit', [
             'ticketPriority' => $ticketPriority,
@@ -94,7 +94,7 @@ class TicketPriorityController extends Controller
     public function update(StoreTicketPriorityReqeust $request, SupportTicketPriority $ticketPriority)
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.update');
+        Gate::authorize('update', $ticketPriority);
 
         // Validate data
         $validated = $request->validated();
@@ -115,7 +115,7 @@ class TicketPriorityController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('ticket-priority.read');
+        Gate::authorize('view', SupportTicketPriority::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -135,7 +135,7 @@ class TicketPriorityController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('ticket-priority.delete');
+        Gate::authorize('delete', SupportTicketPriority::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

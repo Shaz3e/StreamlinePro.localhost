@@ -17,7 +17,7 @@ class DepartmentController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('company.list');
+        Gate::authorize('viewAny', Department::class);
 
         return view('admin.department.index');
     }
@@ -28,7 +28,7 @@ class DepartmentController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('company.create');
+        Gate::authorize('create', Department::class);
         
         return view('admin.department.create');
     }
@@ -39,7 +39,7 @@ class DepartmentController extends Controller
     public function store(StoreDepartmentRequest $request)
     {
         // Check Authorize
-        Gate::authorize('department.create');
+        Gate::authorize('create', Department::class);
         
         // Validate data
         $validated = $request->validated();
@@ -59,7 +59,7 @@ class DepartmentController extends Controller
     public function show(Department $department)
     {
         // Check Authorize
-        Gate::authorize('department.read');
+        Gate::authorize('read', $department);
         
         $audits = $department->audits()
             ->latest()
@@ -82,7 +82,7 @@ class DepartmentController extends Controller
     public function edit(Department $department)
     {
         // Check Authorize
-        Gate::authorize('department.update');
+        Gate::authorize('update', $department);
 
         return view('admin.department.edit', [
             'department' => $department,
@@ -95,7 +95,7 @@ class DepartmentController extends Controller
     public function update(StoreDepartmentRequest $request, Department $department)
     {
         // Check Authorize
-        Gate::authorize('department.update');
+        Gate::authorize('update', $department);
         
         // Validate data
         $validated = $request->validated();
@@ -116,7 +116,7 @@ class DepartmentController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('department.read');
+        Gate::authorize('view', Department::class);
         
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -136,7 +136,7 @@ class DepartmentController extends Controller
     public function deleteAudit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('department.delete');
+        Gate::authorize('delete', Department::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

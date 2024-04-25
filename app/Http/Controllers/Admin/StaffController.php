@@ -19,7 +19,7 @@ class StaffController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('staff.list');
+        Gate::authorize('viewAny', Admin::class);
 
         return view('admin.staff.index');
     }
@@ -30,7 +30,7 @@ class StaffController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('staff.create');
+        Gate::authorize('create', Admin::class);
 
         // Get active departments
         $departments = Department::where('is_active', 1)->get();
@@ -50,7 +50,7 @@ class StaffController extends Controller
     public function store(StoreStaffRequest $request)
     {
         // Check Authorize
-        Gate::authorize('staff.create');
+        Gate::authorize('create', Admin::class);
 
         // Validate data
         $validated = $request->validated();
@@ -75,7 +75,7 @@ class StaffController extends Controller
     public function show(Admin $staff)
     {
         // Check Authorize
-        Gate::authorize('staff.read');
+        Gate::authorize('read', $staff);
 
         if($staff->id === 1){
             session()->flash('error', 'You cannot view super admin!');
@@ -103,7 +103,7 @@ class StaffController extends Controller
     public function edit(Admin $staff)
     {
         // Check Authorize
-        Gate::authorize('staff.update');
+        Gate::authorize('update', $staff);
 
         if($staff->id === 1){
             session()->flash('error', 'You cannot edit the super admin!');
@@ -133,7 +133,7 @@ class StaffController extends Controller
     public function update(StoreStaffRequest $request, Admin $staff)
     {
         // Check Authorize
-        Gate::authorize('staff.update');
+        Gate::authorize('update', $staff);
 
         if($staff->id === 1){
             session()->flash('error', 'You cannot edit the super admin!');
@@ -173,7 +173,7 @@ class StaffController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('staff.read');
+        Gate::authorize('view', Admin::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -193,7 +193,7 @@ class StaffController extends Controller
     public function deleteAudit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('staff.delete');
+        Gate::authorize('delete', Admin::class);
         
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

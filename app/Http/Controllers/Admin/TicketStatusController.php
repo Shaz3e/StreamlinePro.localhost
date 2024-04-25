@@ -17,7 +17,7 @@ class TicketStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('ticket-status.list');
+        Gate::authorize('viewAny', SupportTicketStatus::class);
 
         return view('admin.ticket-status.index');
     }
@@ -28,7 +28,7 @@ class TicketStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('ticket-status.create');
+        Gate::authorize('create', SupportTicketStatus::class);
 
         return view('admin.ticket-status.create');
     }
@@ -39,7 +39,7 @@ class TicketStatusController extends Controller
     public function store(StoreTicketStatusRequest $request)
     {
         // Check Authorize
-        Gate::authorize('ticket-status.create');
+        Gate::authorize('create', SupportTicketStatus::class);
 
         // Validate data
         $validated = $request->validated();
@@ -58,7 +58,7 @@ class TicketStatusController extends Controller
     public function show(SupportTicketStatus $ticketStatus)
     {
         // Check Authorize
-        Gate::authorize('ticket-status.read');
+        Gate::authorize('view', $ticketStatus);
 
         $audits = $ticketStatus->audits()
             ->latest()
@@ -81,7 +81,7 @@ class TicketStatusController extends Controller
     public function edit(SupportTicketStatus $ticketStatus)
     {
         // Check Authorize
-        Gate::authorize('ticket-status.update');
+        Gate::authorize('update', $ticketStatus);
 
         return view('admin.ticket-status.edit', [
             'ticketStatus' => $ticketStatus,
@@ -94,7 +94,7 @@ class TicketStatusController extends Controller
     public function update(StoreTicketStatusRequest $request, SupportTicketStatus $ticketStatus)
     {
         // Check Authorize
-        Gate::authorize('ticket-status.update');
+        Gate::authorize('update', $ticketStatus);
 
         // Validate data
         $validated = $request->validated();
@@ -115,7 +115,7 @@ class TicketStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('ticket-status.read');
+        Gate::authorize('view', SupportTicketStatus::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -135,7 +135,7 @@ class TicketStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('ticket-status.delete');
+        Gate::authorize('delete', SupportTicketStatus::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);

@@ -95,6 +95,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'permission.delete'],
             ['guard_name' => 'admin', 'name' => 'permission.restore'],
             ['guard_name' => 'admin', 'name' => 'permission.force.delete'],
+            // Todo
+            ['guard_name' => 'admin', 'name' => 'todo.list'],
+            ['guard_name' => 'admin', 'name' => 'todo.create'],
+            ['guard_name' => 'admin', 'name' => 'todo.read'],
+            ['guard_name' => 'admin', 'name' => 'todo.update'],
+            ['guard_name' => 'admin', 'name' => 'todo.delete'],
+            ['guard_name' => 'admin', 'name' => 'todo.restore'],
+            ['guard_name' => 'admin', 'name' => 'todo.force.delete'],
             // Todo Status
             ['guard_name' => 'admin', 'name' => 'todo-status.list'],
             ['guard_name' => 'admin', 'name' => 'todo-status.create'],
@@ -135,7 +143,7 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'ticket-status.delete'],
             ['guard_name' => 'admin', 'name' => 'ticket-status.restore'],
             ['guard_name' => 'admin', 'name' => 'ticket-status.force.delete'],
-            // Support Ticket Status
+            // Support Ticket Priority
             ['guard_name' => 'admin', 'name' => 'ticket-priority.list'],
             ['guard_name' => 'admin', 'name' => 'ticket-priority.create'],
             ['guard_name' => 'admin', 'name' => 'ticket-priority.read'],
