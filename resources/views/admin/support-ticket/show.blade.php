@@ -23,7 +23,13 @@
                         {{-- /.col --}}
                         <div class="col-md-3">
                             <strong>Client</strong><br>
-                            <small>{{ $supportTicket->user->name }}</small>
+                            <small>
+                                @if ($supportTicket->user)
+                                    {{ $supportTicket->user->name }}
+                                @else
+                                    N/A
+                                @endif
+                            </small>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
