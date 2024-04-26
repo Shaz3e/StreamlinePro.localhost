@@ -26,9 +26,6 @@ class TaskList extends Component
 
     public $id;
 
-    // Update todo status
-    public $statuses = [];
-
     // record to delete
     public $recordToDelete;
 
@@ -119,33 +116,36 @@ class TaskList extends Component
 
         // Add start_date
         $task->update([
-            'start_date' => now(),
-            'task_status_id' => 2,
+            'start_time' => now(),
+            'is_started' => 1,
         ]);
 
         // Dispatch a success message
-        session()->flash('success', 'Task has been started now!');
+        $this->dispatch('taskStarted');
     }
 
-    /**
-     * Toggle Status
-     */
-    public function updateStatus($taskId)
+    public function completeTask($taskId)
     {
-        // Get data
-        $todo = Task::find($taskId);
+        // Get task status data
+        $task = Task::find($taskId);
 
-        // Check user exists
-        if (!$todo) {
-            $this->dispatch('error', 'Todo not found!');
+        // Check todo exists
+        if (!$task) {
+            $this->dispatch('error', 'Selected Task not found!');
             return;
         }
-        // Change Status
-        $todo->update([
-            'todo_status_id' => $this->statuses[$taskId . '_status'],
+
+        // Add start_date
+        $task->update([
+            'complete_time' => now(),
+            'is_completed' => 1,
         ]);
 
-        $this->dispatch('statusChanged');
+        // Dispatch a success message
+        $this->dispatch('TaskClosed');
+
+        session()->flash('taskClosed');
+        return redirect()->route('admin.tasks.show', $taskId);
     }
 
     /**

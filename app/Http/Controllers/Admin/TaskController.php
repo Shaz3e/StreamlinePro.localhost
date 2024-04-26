@@ -73,6 +73,24 @@ class TaskController extends Controller
         // Check Authorize
         Gate::authorize('view', $task);
 
+        // Start Task
+        if (!is_null(request()->start) && request()->start == 1 && $task->is_started == 0) {
+            $task->is_started = 1;
+            $task->start_time = now();
+            $task->save();
+            return back()->with('success', 'The Task has been started successfully!');
+        }
+
+        // Complete Task
+        if (!is_null(request()->complete) && request()->complete == 1 && $task->is_completed == 0) {
+            $task->is_completed = 1;
+            $task->complete_time = now();
+            $task->save();
+            return back()->with('success', 'The Task has been completed successfully!');
+        }
+
+        $taskStatusList = TaskStatus::where('is_active', 1)->get();
+
         $audits = $task->audits()
             ->latest()
             ->paginate(10);
@@ -84,6 +102,7 @@ class TaskController extends Controller
 
         return view('admin.task.show', [
             'task' => $task,
+            'taskStatusList' => $taskStatusList,
             'audits' => $audits,
         ]);
     }
@@ -166,5 +185,13 @@ class TaskController extends Controller
 
         session()->flash('success', 'Log deleted successfully');
         return redirect()->route('admin.tasks.index');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $task = Task::find($id);
+        $task->task_status_id = $request->task_status_id;
+        $task->save();
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }

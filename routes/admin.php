@@ -123,10 +123,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('todos.audit');
         Route::get('todos-audit/delete/{id}', [TodoController::class, 'deleteAudit'])
             ->name('todos.audit.delete');
-            /**
+        /**
          * Tasks
          */
         Route::resource('tasks', TaskController::class);
+
+        // Update Status
+        Route::patch('tasks/{id}/update-status', [TaskController::class, 'updateStatus'])
+            ->name('tasks.updatestatus');
+
         // Audit
         Route::get('tasks-audit/{id}', [TaskController::class, 'audit'])
             ->name('tasks.audit');

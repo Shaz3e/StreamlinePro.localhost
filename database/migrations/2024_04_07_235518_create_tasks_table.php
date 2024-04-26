@@ -25,9 +25,11 @@ return new class extends Migration
             $table->foreignId('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('admins')->onDelete('set null');
 
-            $table->timestamp('start_date')->nullable();
+            $table->boolean('is_started')->default(false);
+            $table->timestamp('start_time')->nullable();
+            $table->boolean('is_completed')->default(false);
+            $table->timestamp('complete_time')->nullable();
             $table->timestamp('due_date')->nullable();
-            $table->boolean('is_closed')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

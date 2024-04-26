@@ -46,97 +46,118 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="data" class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tasks</th>
-                                <th>Task Status</th>
-                                <th>Assigned To</th>
-                                <th>Created By</th>
-                                <th>Started At</th>
-                                <th>Due At</th>
-                                <th>Last Updated</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($tasks as $task)
-                                <tr wire:key="{{ $task->id }}">
-                                    <td>{{ $task->title }}</td>
-                                    <td>
-                                        <span class="badge"
-                                            style="background-color:{{ $task->status->bg_color }}; color:{{ $task->status->text_color }}">
-                                            {{ $task->status->name }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $task->assignee->name }}</td>
-                                    <td>{{ $task->createdBy->name }}</td>
-                                    <td>
-                                        @if ($task->start_date == null)
-                                            @if ($task->assigned_to == Auth::user()->id)
+                    <div class="table-responsive">
+                        <table id="data" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 47%">Tasks</th>
+                                    <th style="width: 12%">Started At</th>
+                                    <th style="width: 12%">Completed At</th>
+                                    <th style="width: 12%">Total Time</th>
+                                    <th style="width: 12%">Due At</th>
+                                    <th style="width: 5%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tasks as $task)
+                                    <tr wire:key="{{ $task->id }}">
+                                        <td>
+                                            <h4>{{ $task->title }}</h4>
+                                            <span class="badge"
+                                                style="background-color:{{ $task->status->bg_color }}; color:{{ $task->status->text_color }}">
+                                                {{ $task->status->name }}
+                                            </span>
+                                            <span class="badge bg-success">
+                                                {{ $task->createdBy->name }}
+                                            </span>
+                                            @role('superadmin')
+                                                <span class="badge bg-info">
+                                                    Assigned To: {{ $task->assignee->name }}
+                                                </span>
+                                            @endrole
+                                        </td>
+                                        <td>
+                                            @if ($task->is_started)
+                                                {{ date('d M Y H:i A', strtotime($task->start_time)) }}
+                                            @else
                                                 <button type="submit" wire:click="startTask({{ $task->id }})"
                                                     class="btn btn-sm btn-success">
                                                     <i class="ri-timer-line"></i> Start</button>
-                                            @else
-                                                <small class="badge bg-info">No Start Date</small>
                                             @endif
-                                        @else
-                                            <small>{{ date('l, F j, Y h:i A', strtotime($task->start_date)) }}</small>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($task->due_date < now()->format('Y-m-d H:i:s') && $task->due_date !== null)
-                                            <small class="badge bg-danger">Task is Overdue</small>
-                                        @elseif ($task->due_date == null)
-                                            <small class="badge bg-info">No Due Date</small>
-                                        @else
-                                            <small>{{ date('l, F j, Y h:i A', strtotime($task->due_date)) }}</small>
-                                        @endif
-                                    </td>
-                                    <td><small>{{ $task->updated_at->format('l, F j, Y h:i A') }}</small></td>
-
-                                    <td class="text-right">
-                                        @if ($showDeleted)
-                                            @can('task.restore')
-                                                <button wire:click="confirmRestore({{ $task->id }})"
-                                                    class="btn btn-sm btn-outline-info" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-arrow-go-back-line"></i>
-                                                </button>
-                                            @endcan
-                                            @can('task.force.delete')
-                                                <button wire:click="confirmForceDelete({{ $task->id }})"
-                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-delete-bin-7-line"></i>
-                                                </button>
-                                            @endcan
-                                        @else
-                                            @can('task.read')
-                                                <a href="{{ route('admin.tasks.show', $task->id) }}"
-                                                    class="btn btn-sm btn-outline-info">
-                                                    <i class="ri-eye-line"></i>
-                                                </a>
-                                            @endcan
-                                            @can('task.update')
-                                                <a href="{{ route('admin.tasks.edit', $task->id) }}"
-                                                    class="btn btn-sm btn-outline-success">
-                                                    <i class="ri-pencil-line"></i>
-                                                </a>
-                                            @endcan
-                                            @can('task.delete')
-                                                <button wire:click="confirmDelete({{ $task->id }})"
-                                                    class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
-                                            @endcan
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td>
+                                            @if (!$task->is_started && !$task->is_completed)
+                                                ...
+                                            @elseif($task->is_started && $task->is_completed)
+                                                {{ date('d M Y H:i A', strtotime($task->complete_time)) }}
+                                            @else
+                                                <button type="submit" wire:click="completeTask({{ $task->id }})"
+                                                    class="btn btn-sm btn-success">
+                                                    <i class="ri-timer-flash-line"></i> Finish</button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($task->is_started == 0 || $task->is_completed == 0)
+                                                ...
+                                            @else
+                                                <i class="ri-history-line"></i>
+                                                {{ calcTime($task->start_time, $task->complete_time) }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($task->due_date < now()->format('Y-m-d H:i:s') && $task->due_date !== null)
+                                                <small class="text-danger">Task is Overdue</small>
+                                            @elseif (!is_null($task->due_date))
+                                                <small class="text-primary">
+                                                    {{ date('d M Y H:i A', strtotime($task->due_date)) }}
+                                                </small>
+                                            @else
+                                                <small class="text-muted">No Due Date</small>
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            @if ($showDeleted)
+                                                @can('task.restore')
+                                                    <button wire:click="confirmRestore({{ $task->id }})"
+                                                        class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                        <i class="ri-arrow-go-back-line"></i>
+                                                    </button>
+                                                @endcan
+                                                @can('task.force.delete')
+                                                    <button wire:click="confirmForceDelete({{ $task->id }})"
+                                                        class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                        <i class="ri-delete-bin-7-line"></i>
+                                                    </button>
+                                                @endcan
+                                            @else
+                                                @can('task.read')
+                                                    <a href="{{ route('admin.tasks.show', $task->id) }}"
+                                                        class="btn btn-sm btn-outline-info">
+                                                        <i class="ri-eye-line"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('task.update')
+                                                    <a href="{{ route('admin.tasks.edit', $task->id) }}"
+                                                        class="btn btn-sm btn-outline-success">
+                                                        <i class="ri-pencil-line"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('task.delete')
+                                                    <button wire:click="confirmDelete({{ $task->id }})"
+                                                        class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                @endcan
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $tasks->links() }}
                 </div>
                 {{-- /.card-body --}}
@@ -149,6 +170,19 @@
 </div>
 @script
     <script>
+        // Task Started
+        document.addEventListener('taskStarted', () => {
+            Toast.fire({
+                icon: 'success',
+                title: "The task has been started",
+            })
+        })
+        document.addEventListener('TaskClosed', () => {
+            Toast.fire({
+                icon: 'success',
+                title: "The task has been completed",
+            })
+        })
         // Status Changed
         document.addEventListener('statusChanged', () => {
             Toast.fire({
