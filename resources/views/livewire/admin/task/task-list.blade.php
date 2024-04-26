@@ -42,7 +42,7 @@
     </div>
     {{-- /.row --}}
 
-    <div class="row">
+    <div class="row" wire:poll.60s>
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -73,9 +73,13 @@
                                     <td>{{ $task->createdBy->name }}</td>
                                     <td>
                                         @if ($task->start_date == null)
-                                            <button type="submit" wire:click="startTask({{ $task->id }})"
-                                                class="btn btn-sm btn-success">
-                                                <i class="ri-timer-line"></i> Start</button>
+                                            @if ($task->assigned_to == Auth::user()->id)
+                                                <button type="submit" wire:click="startTask({{ $task->id }})"
+                                                    class="btn btn-sm btn-success">
+                                                    <i class="ri-timer-line"></i> Start</button>
+                                            @else
+                                                <small class="badge bg-info">No Start Date</small>
+                                            @endif
                                         @else
                                             <small>{{ date('l, F j, Y h:i A', strtotime($task->start_date)) }}</small>
                                         @endif

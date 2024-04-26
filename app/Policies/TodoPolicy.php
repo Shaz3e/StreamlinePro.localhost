@@ -12,7 +12,7 @@ class TodoPolicy
      */
     public function viewAny(Admin $admin)
     {
-        if($admin->can('todo.list')){
+        if ($admin->can('todo.list')) {
             return true;
         }
     }
@@ -21,9 +21,9 @@ class TodoPolicy
      */
     public function view(Admin $admin, Todo $todo)
     {
-        if ($admin->can('todo.read')) {
-            return true;
-        }
+        // if ($admin->can('todo.read')) {
+        //     return true;
+        // }
 
         return $admin->id === $todo->admin_id;
     }
@@ -43,9 +43,11 @@ class TodoPolicy
      */
     public function update(Admin $admin, Todo $todo)
     {
-        if ($admin->can('todo.update')) {
-            return true;
-        }
+        // if ($admin->can('todo.update')) {
+        //     return true;
+        // }
+
+        return $admin->id === $todo->admin_id;
     }
 
     /**
@@ -78,4 +80,3 @@ class TodoPolicy
         }
     }
 }
-

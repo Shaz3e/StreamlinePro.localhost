@@ -12,7 +12,7 @@ class TaskPolicy
      */
     public function viewAny(Admin $admin)
     {
-        if($admin->can('task.list')){
+        if ($admin->can('task.list')) {
             return true;
         }
     }
@@ -21,9 +21,9 @@ class TaskPolicy
      */
     public function view(Admin $admin, Task $task)
     {
-        if ($admin->can('task.read')) {
-            return true;
-        }
+        // if ($admin->can('task.read')) {
+        //     return true;
+        // }
 
         return $admin->id === $task->assigned_to;
     }
@@ -43,9 +43,11 @@ class TaskPolicy
      */
     public function update(Admin $admin, Task $task)
     {
-        if ($admin->can('task.update')) {
-            return true;
-        }
+        // if ($admin->can('task.update')) {
+        //     return true;
+        // }
+
+        return $admin->id === $task->assigned_to;
     }
 
     /**

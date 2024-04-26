@@ -21,12 +21,10 @@ class SupportTicketPolicy
      */
     public function view(Admin $admin, SupportTicket $supportTicket)
     {
-        if ($admin->can('support-ticket.read')) {
-            return true;
-        }
-
-        $departmentIds = json_decode($supportTicket->department_id, true);
-        if (in_array($admin->id, $departmentIds)) {
+        // if ($admin->can('support-ticket.read')) {
+        //     return true;
+        // }
+        if (in_array($supportTicket->department_id, $admin->department_id)) {
             return true;
         }
 
