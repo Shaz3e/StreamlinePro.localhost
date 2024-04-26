@@ -30,17 +30,4 @@ class StoreTodoStatusRequest extends BaseFormRequest
             ],
         ];
     }
-
-    /**
-     * Get the validation message that apply to the request.
-     * messages
-     *
-     * @return void
-     */
-    public function messages()
-    {
-        return [
-            'is_active.boolean' => 'User status is not valid',
-        ];
-    }
 }

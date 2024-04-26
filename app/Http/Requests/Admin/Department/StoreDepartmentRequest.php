@@ -24,14 +24,4 @@ class StoreDepartmentRequest extends BaseFormRequest
             ],
         ];
     }
-
-    /**
-     * Get the validation message that apply to the request.
-     */
-    public function messages()
-    {
-        return [
-            'is_active.boolean' => 'Department status is not valid',
-        ];
-    }
 }

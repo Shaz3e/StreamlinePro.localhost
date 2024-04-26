@@ -46,10 +46,4 @@ class StoreSupportTicketRequest extends BaseFormRequest
             ],
         ];
     }
-    public function messages()
-    {
-        return [
-            'is_internal.boolean' => 'Internal Ticket status is not valid',
-        ];
-    }
 }

@@ -50,15 +50,4 @@ class StorePromotionRequest extends BaseFormRequest
         }
         return $rules;
     }
-
-    /**
-     * Get the validation message that apply to the request.
-     */
-    public function messages()
-    {
-        return [
-            'is_active.boolean' => 'Promotion status selection is not valid',
-            'is_featured.boolean' => 'Promotion featured selection is not valid',
-        ];
-    }
 }

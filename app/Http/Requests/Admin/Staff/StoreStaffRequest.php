@@ -59,14 +59,4 @@ class StoreStaffRequest extends BaseFormRequest
 
         return $rules;
     }
-
-    /**
-     * Get the validation message that apply to the request.
-     */
-    public function messages()
-    {
-        return [
-            'is_active.boolean' => 'User status is not valid',
-        ];
-    }
 }

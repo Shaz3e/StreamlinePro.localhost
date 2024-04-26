@@ -30,14 +30,4 @@ class StoreProductRequest extends BaseFormRequest
             ],
         ];
     }
-
-    /**
-     * Get the validation message that apply to the request.
-     */
-    public function messages()
-    {
-        return [
-            'is_active.boolean' => 'Product status selection is not valid',
-        ];
-    }
 }

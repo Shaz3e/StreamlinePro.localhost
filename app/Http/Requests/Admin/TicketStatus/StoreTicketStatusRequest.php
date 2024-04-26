@@ -37,14 +37,4 @@ class StoreTicketStatusRequest extends BaseFormRequest
             ],
         ];
     }
-
-    /**
-     * Get the validation message that apply to the request.
-     */
-    public function messages()
-    {
-        return [
-            'is_active.boolean' => 'Status is not valid',
-        ];
-    }
 }
