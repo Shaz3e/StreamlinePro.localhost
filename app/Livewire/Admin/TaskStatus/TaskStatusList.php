@@ -150,9 +150,9 @@ class TaskStatusList extends Component
     /**
      * Confirm force delete
      */
-    public function confirmForceDelete($userId)
+    public function confirmForceDelete($taskStatusId)
     {
-        $this->recordToDelete = $userId;
+        $this->recordToDelete = $taskStatusId;
         $this->dispatch('confirmForceDelete');
     }
 
