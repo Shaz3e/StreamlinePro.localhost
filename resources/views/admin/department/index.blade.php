@@ -1,7 +1,6 @@
 @extends('components.layouts.app')
 
 @section('content')
-
     @include('partials.page-header', [
         'title' => 'Departments',
         'breadcrumbs' => [
@@ -11,7 +10,6 @@
     ])
 
     @livewire('admin.department.department-list')
-
 @endsection
 
 @push('styles')

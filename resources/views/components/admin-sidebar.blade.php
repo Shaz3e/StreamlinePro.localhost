@@ -50,6 +50,7 @@
                                 </li>
                             @endcan
 
+                            {{-- Clients & Company --}}
                             @canany(['user.list', 'company.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -77,6 +78,17 @@
                                     </ul>
                                 </li>
                             @endcanany
+
+                            {{-- Promotions --}}
+                            @can('promotion.list')
+                                <li class="{{ request()->routeIs('admin.promotions.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.promotions.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.promotions.*') ? 'active' : '' }}">
+                                        <i class="ri-discount-percent-line"></i>
+                                        <span>Promotions</span>
+                                    </a>
+                                </li>
+                            @endcan
 
                             {{-- Manage --}}
                             @canany(['staff.list', 'department.list', 'role.list'])

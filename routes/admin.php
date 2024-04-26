@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CompanyController;
 
 // Promotions
+use App\Http\Controllers\Admin\PromotionController;
 
 // Products
 
@@ -147,18 +148,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Promotions
          */
-        // Promotion List
-        Route::get('promotions', function () {
-        })->name('promotions');
-        // Promotion Create
-        Route::get('promotions/create', function () {
-        })->name('promotions.create');
-        // // Promotion Edit
-        Route::get('promotions/{id}/edit', function () {
-        })->name('promotions.edit');
-        // // Promotion Show
-        Route::get('promotions/{id}', function () {
-        })->name('promotions.show');
+        Route::resource('promotions', PromotionController::class);
+        // Audit
+        Route::get('/promotions-audit/{id}', [CompanyController::class, 'audit'])
+            ->name('promotions.audit');
+        Route::get('/promotions-audit/delete/{id}', [CompanyController::class, 'deleteAudit'])
+            ->name('promotions.audit.delete');
 
         /**
          * Products
