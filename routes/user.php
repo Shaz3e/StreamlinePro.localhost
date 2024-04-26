@@ -8,6 +8,7 @@ use App\Http\Controllers\User\Auth\LoginController;
 use App\Http\Controllers\User\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\Auth\ResetPasswordController;
 use App\Http\Controllers\User\Auth\LogoutController;
+use App\Http\Controllers\User\Auth\LockController;
 
 // Dashboard
 use App\Http\Controllers\User\DashboardController;
@@ -40,6 +41,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    // Lock
+    Route::get('lock', [LockController::class, 'view'])
+        ->name('lock');
+    Route::post('lock', [LockController::class, 'post'])
+        ->name('lock.store');
+
     // Logout
     Route::post('/logout', [LogoutController::class, 'logout'])
         ->name('logout');

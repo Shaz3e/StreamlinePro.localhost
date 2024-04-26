@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\Auth\LogoutController;
+use App\Http\Controllers\Admin\Auth\LockController;
 
 // Admin Dashboard
 use App\Http\Controllers\Admin\DashboardController;
@@ -96,6 +97,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('auth:admin')->group(function () {
+
+        // Lock
+        Route::get('lock', [LockController::class, 'view'])
+            ->name('lock');
+        Route::post('lock', [LockController::class, 'post'])
+            ->name('lock.store');
 
         // Logout
         Route::post('logout', [LogoutController::class, 'logout'])

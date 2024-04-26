@@ -265,7 +265,7 @@
                     <a class="dropdown-item d-block" href="#"><span
                             class="badge bg-success float-end mt-1">11</span><i
                             class="ri-settings-2-line align-middle me-1"></i> Settings</a>
-                    <a class="dropdown-item" href="#"><i class="ri-lock-unlock-line align-middle me-1"></i>
+                    <a class="dropdown-item" href="{{ route('lock') }}"><i class="ri-lock-unlock-line align-middle me-1"></i>
                         Lock screen</a>
                     <div class="dropdown-divider"></div>
                     <a href="javascript:void(0)" class="dropdown-item text-danger"

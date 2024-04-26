@@ -59,6 +59,31 @@
 
                     </div>
                 </form>
+                <div class="row mx-5">
+                    <div class="col-md-12">
+                        <div class="d-grid">
+                            @env('local')
+                            <div class="mb-2">
+                                <x-login-link label="Login as User 1" email="user1@email.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('dashboard') }}" />
+                                <x-login-link label="Login as User 2" email="user2@email.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('dashboard') }}" />
+                                <x-login-link label="Login as User 3" email="user3@email.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('dashboard') }}" />
+                                <x-login-link label="Login as User 4" email="user4@email.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('dashboard') }}" />
+                                <x-login-link label="Login as User 5" email="user5@email.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('dashboard') }}" />
+                                @endenv
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             {{-- /.container --}}
         </div>
