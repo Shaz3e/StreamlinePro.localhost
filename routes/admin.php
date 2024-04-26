@@ -34,6 +34,7 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\PromotionController;
 
 // Products
+use App\Http\Controllers\Admin\ProductController;
 
 // Support Ticket Priority
 use App\Http\Controllers\Admin\TicketPriorityController;
@@ -150,26 +151,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::resource('promotions', PromotionController::class);
         // Audit
-        Route::get('/promotions-audit/{id}', [CompanyController::class, 'audit'])
+        Route::get('/promotions-audit/{id}', [PromotionController::class, 'audit'])
             ->name('promotions.audit');
-        Route::get('/promotions-audit/delete/{id}', [CompanyController::class, 'deleteAudit'])
+        Route::get('/promotions-audit/delete/{id}', [PromotionController::class, 'deleteAudit'])
             ->name('promotions.audit.delete');
 
         /**
          * Products
          */
         // Product List
-        Route::get('products', function () {
-        })->name('products');
-        // Product Create
-        Route::get('products/create', function () {
-        })->name('products.create');
-        // Product Edit
-        Route::get('products/{id}/edit', function () {
-        })->name('products.edit');
-        // Product Show
-        Route::get('products/{id}', function () {
-        })->name('products.show');
+        Route::resource('products', ProductController::class);
+        // Audit
+        Route::get('/products-audit/{id}', [ProductController::class, 'audit'])
+            ->name('products.audit');
+        Route::get('/products-audit/delete/{id}', [ProductController::class, 'deleteAudit'])
+            ->name('products.audit.delete');
 
         /**
          * Support Tickets

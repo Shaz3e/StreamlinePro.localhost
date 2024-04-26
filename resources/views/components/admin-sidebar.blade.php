@@ -84,8 +84,19 @@
                                 <li class="{{ request()->routeIs('admin.promotions.*') ? 'mm-active' : '' }}">
                                     <a href="{{ route('admin.promotions.index') }}"
                                         class="waves-effect {{ request()->routeIs('admin.promotions.*') ? 'active' : '' }}">
-                                        <i class="ri-discount-percent-line"></i>
+                                        <i class="ri-advertisement-line"></i>
                                         <span>Promotions</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            {{-- Products --}}
+                            @can('product.list')
+                                <li class="{{ request()->routeIs('admin.products.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.products.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                                        <i class="ri-store-2-line"></i>
+                                        <span>Products</span>
                                     </a>
                                 </li>
                             @endcan
@@ -144,7 +155,7 @@
                                 'ticket-priority.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="ri-equalizer-line"></i>
+                                        <i class="ri-switch-line"></i>
                                         <span>Manage Status</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
