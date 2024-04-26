@@ -55,6 +55,7 @@ use App\Http\Controllers\Admin\DepartmentController;
 // Invoice
 
 // Invoice Status
+use App\Http\Controllers\Admin\InvoiceStatusController;
 
 /**
  * Settings
@@ -148,9 +149,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::resource('companies', CompanyController::class);
         // Audit
-        Route::get('/companies-audit/{id}', [CompanyController::class, 'audit'])
+        Route::get('companies-audit/{id}', [CompanyController::class, 'audit'])
             ->name('companies.audit');
-        Route::get('/companies-audit/delete/{id}', [CompanyController::class, 'deleteAudit'])
+        Route::get('companies-audit/delete/{id}', [CompanyController::class, 'deleteAudit'])
             ->name('companies.audit.delete');
 
         /**
@@ -158,9 +159,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         Route::resource('promotions', PromotionController::class);
         // Audit
-        Route::get('/promotions-audit/{id}', [PromotionController::class, 'audit'])
+        Route::get('promotions-audit/{id}', [PromotionController::class, 'audit'])
             ->name('promotions.audit');
-        Route::get('/promotions-audit/delete/{id}', [PromotionController::class, 'deleteAudit'])
+        Route::get('promotions-audit/delete/{id}', [PromotionController::class, 'deleteAudit'])
             ->name('promotions.audit.delete');
 
         /**
@@ -169,9 +170,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Product List
         Route::resource('products', ProductController::class);
         // Audit
-        Route::get('/products-audit/{id}', [ProductController::class, 'audit'])
+        Route::get('products-audit/{id}', [ProductController::class, 'audit'])
             ->name('products.audit');
-        Route::get('/products-audit/delete/{id}', [ProductController::class, 'deleteAudit'])
+        Route::get('products-audit/delete/{id}', [ProductController::class, 'deleteAudit'])
             ->name('products.audit.delete');
 
         /**
@@ -196,16 +197,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
 
         // Invoice List
-        Route::get('/invoice', function () {
+        Route::get('invoice', function () {
         })->name('invoices');
         // Invoice Create
-        Route::get('/invoice/create', function () {
+        Route::get('invoice/create', function () {
         })->name('invoices.create');
         // Invoice Edit
-        Route::get('/invoice/{id}/edit', function () {
+        Route::get('invoice/{id}/edit', function () {
         })->name('invoices.edit');
         // Invoice Show
-        Route::get('/invoice/{id}', function () {
+        Route::get('invoice/{id}', function () {
         })->name('invoices.show');
 
         /**
@@ -213,14 +214,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
 
         // Invoice Status List
-        Route::get('/invoice-status', function () {
-        });
+        Route::resource('invoice-status', InvoiceStatusController::class);
+        // Audit
+        Route::get('invoice-status-audit/{id}', [InvoiceStatusController::class, 'audit'])
+            ->name('invoice-status.audit');
+        Route::get('invoice-status-audit/delete/{id}', [InvoiceStatusController::class, 'deleteAudit'])
+            ->name('invoice-status.audit.delete');
 
         /**
          * Admins as Staff
          */
         // Staff List
-        Route::resource('/staff', StaffController::class);
+        Route::resource('staff', StaffController::class);
         // Audit
         Route::get('staff-audit/{id}', [UserController::class, 'audit'])
             ->name('staff.audit');
@@ -230,7 +235,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Departments
          */
-        Route::resource('/departments', DepartmentController::class);
+        Route::resource('departments', DepartmentController::class);
         // Audit
         Route::get('departments-audit/{id}', [DepartmentController::class, 'audit'])
             ->name('departments.audit');

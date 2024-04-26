@@ -167,6 +167,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'ticket-priority.delete'],
             ['guard_name' => 'admin', 'name' => 'ticket-priority.restore'],
             ['guard_name' => 'admin', 'name' => 'ticket-priority.force.delete'],
+            // Invoice Status
+            ['guard_name' => 'admin', 'name' => 'invoice-status.list'],
+            ['guard_name' => 'admin', 'name' => 'invoice-status.create'],
+            ['guard_name' => 'admin', 'name' => 'invoice-status.read'],
+            ['guard_name' => 'admin', 'name' => 'invoice-status.update'],
+            ['guard_name' => 'admin', 'name' => 'invoice-status.delete'],
+            ['guard_name' => 'admin', 'name' => 'invoice-status.restore'],
+            ['guard_name' => 'admin', 'name' => 'invoice-status.force.delete'],
             // Add more permissions here...
         ];
 
