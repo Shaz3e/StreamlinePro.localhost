@@ -33,7 +33,7 @@
                             @can('task.list')
                                 <li>
                                     <a href="{{ route('admin.tasks.index') }}" class="waves-effect">
-                                        <i class="ri-dashboard-line"></i>
+                                        <i class="ri-task-line"></i>
                                         <span>Tasks</span>
                                     </a>
                                 </li>
