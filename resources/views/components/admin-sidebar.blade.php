@@ -49,6 +49,16 @@
                                     </a>
                                 </li>
                             @endcan
+                            {{-- Support Tickets --}}
+                            @can('invoice.list')
+                                <li class="{{ request()->routeIs('admin.invoices.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.invoices.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.invoices.*') ? 'active' : '' }}">
+                                        <i class="ri-questionnaire-line"></i>
+                                        <span>Invoice List</span>
+                                    </a>
+                                </li>
+                            @endcan
 
                             {{-- Clients & Company --}}
                             @canany(['user.list', 'company.list'])

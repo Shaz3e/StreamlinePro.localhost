@@ -53,6 +53,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\DepartmentController;
 
 // Invoice
+use App\Http\Controllers\Admin\InvoiceController;
 
 // Invoice Status
 use App\Http\Controllers\Admin\InvoiceStatusController;
@@ -200,25 +201,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Invoice
          */
-
-        // Invoice List
-        Route::get('invoice', function () {
-        })->name('invoices');
-        // Invoice Create
-        Route::get('invoice/create', function () {
-        })->name('invoices.create');
-        // Invoice Edit
-        Route::get('invoice/{id}/edit', function () {
-        })->name('invoices.edit');
-        // Invoice Show
-        Route::get('invoice/{id}', function () {
-        })->name('invoices.show');
+        Route::resource('invoices', InvoiceController::class);
+        // Audit
+        Route::get('invoices-audit/{id}', [InvoiceController::class, 'audit'])
+            ->name('invoices.audit');
+        Route::get('invoices-audit/delete/{id}', [InvoiceController::class, 'deleteAudit'])
+            ->name('invoices.audit.delete');
 
         /**
          * Invoice Status
          */
-
-        // Invoice Status List
         Route::resource('invoice-status', InvoiceStatusController::class);
         // Audit
         Route::get('invoice-status-audit/{id}', [InvoiceStatusController::class, 'audit'])

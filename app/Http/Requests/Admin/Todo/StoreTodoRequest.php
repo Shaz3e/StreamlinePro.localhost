@@ -8,31 +8,6 @@ use Carbon\Carbon;
 class StoreTodoRequest extends BaseFormRequest
 {
     /**
-     * mutatorReminder
-     *
-     * @param  mixed $value
-     * @return void
-     */
-    public function mutatorReminder($value)
-    {
-        return Carbon::parse($value)->format('Y-m-d H:i:s');
-    }
-    
-    /**
-     * prepareForValidation
-     *
-     * @return void
-     */
-    public function prepareForValidation()
-    {
-        if ($this->reminder) {
-            $this->merge([
-                'reminder' => Carbon::parse($this->reminder)->format('Y-m-d H:i:s'),
-            ]);
-        }
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -51,7 +26,17 @@ class StoreTodoRequest extends BaseFormRequest
             ],
             'reminder' => [
                 'nullable',
-                'date_format:"Y-m-d H:i:s"',
+                function ($attribute, $value, $fail) {
+                    if (!strtotime($value)) {
+                        return $fail(__('Invalid Invoice Date', [
+                            'attribute' => $attribute,
+                            'format' => 'Y-m-d',
+                        ]));
+                    } else {
+                        $date = date('Y-m-d H:i:s', strtotime($value));
+                        request()->merge([$attribute => $date]);
+                    }
+                },
                 'after_or_equal:' . Carbon::now()->format('Y-m-d H:i:s'),
             ],
         ];

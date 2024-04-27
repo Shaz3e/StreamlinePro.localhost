@@ -31,7 +31,7 @@ class Invoice extends Model implements Auditable
      */
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     /**
@@ -42,19 +42,12 @@ class Invoice extends Model implements Auditable
     //     return $this->belongsTo(Product::class);
     // }
 
-    // public function products()
-    // {
-    //     // return $this->belongsToMany(Product::class)->withPivot('product_name','quantity', 'tax', 'price', 'discount');
-    //     return $this->belongsToMany(Product::class, 'invoice_product')
-    //                 ->withPivot('product_name', 'quantity', 'tax', 'price', 'discount');
-    // }
-
     /**
      * Invoice Status Relations
      */
     public function status()
     {
-        return $this->belongsTo(Invoice::class, 'invoice_status_id');
+        return $this->belongsTo(InvoiceStatus::class, 'invoice_status_id');
     }
 
     // $invoice = Invoice::create([...]);

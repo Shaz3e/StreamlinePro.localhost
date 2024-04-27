@@ -82,7 +82,7 @@
     </div>
     <!-- END layout-wrapper -->
 
-    <x-rightsidebar />
+    {{-- <x-rightsidebar /> --}}
 
     <!-- JAVASCRIPT -->
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
@@ -139,7 +139,7 @@
 
     @stack('scripts')
 
-    <script src="assets/libs/parsleyjs/parsley.min.js"></script>
+    <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
 
     <x-appjs />
 

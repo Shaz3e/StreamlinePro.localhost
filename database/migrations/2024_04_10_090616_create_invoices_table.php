@@ -22,12 +22,13 @@ return new class extends Migration
             $table->foreignId('invoice_status_id')->nullable();
             $table->foreign('invoice_status_id')->references('id')->on('invoice_statuses')->onDelete('cascade');
             
+            $table->date('invoice_date')->nullable();
+            $table->date('due_date')->nullable();
+
             $table->decimal('total_tax', 12, 2)->nullable()->default(0.00);
             $table->decimal('total_price', 12, 2)->nullable()->default(0.00);
             $table->decimal('total_discount', 12, 2)->nullable()->default(0.00);
             $table->decimal('total_amount', 12, 2)->nullable()->default(0.00);
-            $table->date('invoice_date')->nullable();
-            $table->date('due_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
