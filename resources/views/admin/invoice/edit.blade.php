@@ -2,11 +2,11 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'Edit Invoice',
+        'title' => 'Update Invoice',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
             ['text' => 'Invoice List', 'link' => route('admin.invoices.index')],
-            ['text' => 'Edit', 'link' => null],
+            ['text' => 'Update', 'link' => null],
         ],
     ])
 
@@ -14,8 +14,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.invoices.update', $invoice->id) }}" method="POST" class="needs-validation" novalidate
-                    enctype="multipart/form-data" id="invoiceForm">
+                <form action="{{ route('admin.invoices.update', $invoice->id) }}" method="POST" class="needs-validation"
+                    novalidate id="invoice-form">
                     @csrf
                     @method('put')
                     <div class="card-body">
@@ -23,16 +23,18 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="company_id">Invoice To</label>
-                                    <select name="company_id" class="form-control select2" id="company_id" required>
+                                    <select name="company_id" class="form-control select2" id="company_id">
                                         <option value="">Select</option>
                                         @foreach ($companies as $company)
                                             <option value="{{ $company->id }}"
-                                                {{ old('company_id') == $company->id ? 'selected' : '' }}>
+                                                {{ old('company_id', $invoice->company_id) == $company->id ? 'selected' : '' }}>
                                                 {{ $company->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
+                                <div id="company-error"></div>
+
                                 @error('company_id')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
@@ -41,11 +43,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="invoice_status_id">Invoice Status</label>
-                                    <select name="invoice_status_id" class="form-control select2" id="invoice_status_id"
-                                        required>
+                                    <select name="invoice_status_id" class="form-control select2" id="invoice_status_id">
                                         @foreach ($invoiceStatus as $status)
                                             <option value="{{ $status->id }}"
-                                                {{ old('invoice_status_id') == $status->id ? 'selected' : '' }}>
+                                                {{ old('invoice_status_id', $invoice->invoice_status_id) == $status->id ? 'selected' : '' }}>
                                                 {{ $status->name }}
                                             </option>
                                         @endforeach
@@ -60,8 +61,7 @@
                                 <div class="form-group">
                                     <label for="invoice_date">Invoice Date</label>
                                     <input type="date" class="form-control" name="invoice_date" id="invoice_date"
-                                        value="{{ old('invoice_date') }}">
-                                    </select>
+                                        value="{{ old('invoice_date', $invoice->invoice_date) }}">
                                 </div>
                                 @error('invoice_date')
                                     <div><span class="text-danger">{{ $message }}</span></div>
@@ -72,8 +72,7 @@
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
                                     <input type="date" class="form-control" name="due_date" id="due_date"
-                                        value="{{ old('due_date') }}">
-                                    </select>
+                                        value="{{ old('due_date', $invoice->due_date) }}">
                                 </div>
                                 @error('due_date')
                                     <div><span class="text-danger">{{ $message }}</span></div>
@@ -93,21 +92,65 @@
                                                 <th style="width: 5%">Quantity</th>
                                                 <th style="width: 15%">Unit Price</th>
                                                 <th style="width: 10%">Tax</th>
-                                                <th style="width: 10%">
-                                                    Discount
-                                                    <label>%
-                                                        <input type="radio" name="discount_type" value="percentage"
-                                                            checked>
-                                                    </label>
-                                                    <label>$
-                                                        <input type="radio" name="discount_type" value="amount">
-                                                    </label>
-                                                </th>
+                                                <th style="width: 10%">Discount</th>
                                                 <th style="width: 15%">Total Price</th>
                                                 <th class="text-right" style="width: 5%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="item-list">
+                                            @foreach ($items as $item)
+                                                <tr data-product-id="{{ $item->id }}">
+                                                    <td>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="product_name[]" value="{{ $item->product_name }}">
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control form-control-sm"
+                                                            name="quantity[]" min="1" value="{{ $item->quantity }}"
+                                                            oninput="calculateTotal(this)">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control form-control-sm"
+                                                            name="unit_price[]" oninput="calculateTotal(this)"
+                                                            value="{{ $item->unit_price }}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control form-control-sm"
+                                                            name="tax[]" value="{{ $item->tax }}" min="0"
+                                                            max="100" oninput="calculateTotal(this)">
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                name="discount[]" value="{{ $item->discount }}"
+                                                                oninput="calculateTotal(this)">
+                                                            <div class="input-group-append">
+                                                                <select name="discount_type[]"
+                                                                    class="form-control form-control-sm"
+                                                                    onchange="calculateTotal(this)">
+                                                                    <option value="percentage"
+                                                                        {{ $item->discount_type == 'percentage' ? 'selected' : '' }}>
+                                                                        %</option>
+                                                                    <option value="amount"
+                                                                        {{ $item->discount_type == 'amount' ? 'selected' : '' }}>
+                                                                        $</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control form-control-sm"
+                                                            name="total_price[]" value="{{ $item->total_price }}"
+                                                            readonly>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-row remove-product">
+                                                            Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                             <!-- input boxes will be added here -->
                                         </tbody>
                                     </table>
@@ -128,7 +171,7 @@
                     {{-- /.card-body --}}
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success waves-effect waves-light" id="createInvoice">
-                            <i class="ri-save-line align-middle me-2"></i> Create
+                            <i class="ri-save-line align-middle me-2"></i> Update
                         </button>
                     </div>
                     {{-- /.card-footer --}}
@@ -147,80 +190,142 @@
 
 @push('scripts')
     <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
     <script>
-        // Input mask
-        $('.select2').select2();
-        $(".input-mask").inputmask();
-        
-
         $(document).ready(function() {
-            // Add items
-            var itemCount = 0;
+            $('.select2').select2();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle remove button click
+            $('#item-list').on('click', '.remove-product', function() {
+                // Get the row element
+                const row = $(this).closest('tr');
 
-            $('.add-item').on('click', function() {
-                itemCount++;
+                // Get the product ID from a data attribute (you may need to modify the attribute based on your setup)
+                const productId = row.data('product-id');
 
-                var productName = $(this).data('productName');
-                var productPrice = $(this).data('productPrice');
+                // Confirm the action
+                const confirmRemove = confirm('Are you sure you want to remove this product?');
 
-                var html = '<tr>';
-                html += '<td><input type="text" name="item[]" value="' + productName +
-                    '" class="form-control"></td>';
-                html +=
-                    '<td><input type="number" name="quantity[]" value="1" min="1" class="form-control" onchange="updateTotalPrice(this)"></td>';
-                html += '<td><input type="number" name="unit_price[]" value="' + productPrice +
-                    '" class="form-control" onchange="updateTotalPrice(this)"></td>';
-                html +=
-                    '<td><input type="number" name="tax[]" placeholder="Tax" value="0" min="0" max="100" class="form-control" onchange="updateTotalPrice(this)"></td>';
-                html +=
-                    '<td><input type="number" name="discount[]" placeholder="Discount" value="0" class="form-control" onchange="updateTotalPrice(this)"></td>';
-                html += '<td><input type="number" name="total_price[]" placeholder="Total Price" value="' +
-                    productPrice + '" class="form-control"></td>';
-                html +=
-                    '<td><button type="button" class="btn btn-sm btn-danger remove-item">Remove</button></td>';
-                html += '</tr>';
+                if (confirmRemove) {
+                    // Send AJAX request to remove the product from the database
+                    $.ajax({
+                        url: `/admin/invoices/products/${productId}/remove`, // Update the URL based on your route
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            // Check if the removal was successful
+                            if (response.success) {
+                                // Remove the row from the table
+                                row.remove();
+                            } else {
+                                alert('Failed to remove the product. Please try again.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Failed to remove the product. Please try again.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
-                $('#item-list').append(html);
-                // $(this).hide();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addProductButton = document.querySelector('.add-product');
+            const modal = document.getElementById('selectProduct');
+            const itemList = document.getElementById('item-list');
+
+            // Add event listener to the "Add Product" button in the modal
+            modal.addEventListener('click', function(event) {
+                if (event.target.classList.contains('add-item')) {
+                    const productName = event.target.dataset.productName;
+                    const productPrice = event.target.dataset.productPrice;
+
+                    // Add a new row in the table
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>
+                            <input type="text" class="form-control form-control-sm" name="product_name[]" value="${productName}">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" name="quantity[]" min="1" value="1" oninput="calculateTotal(this)">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" name="unit_price[]" oninput="calculateTotal(this)" value="${productPrice}">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" name="tax[]" value="0" min="0" max="100" oninput="calculateTotal(this)">
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="number" class="form-control form-control-sm" name="discount[]" value="0" min="0" oninput="calculateTotal(this)">
+                                <div class="input-group-append">
+                                    <select name="discount_type[]" class="form-control form-control-sm" onchange="calculateTotal(this)">
+                                        <option value="percentage">%</option>
+                                        <option value="amount">$</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" name="total_price[]" value="${productPrice}" readonly>
+                        </td>
+                        <td class="text-right">
+                            <button type="button" class="btn btn-danger btn-sm remove-row">Remove</button>
+                        </td>
+                    `;
+
+                    // Add the new row to the table
+                    itemList.appendChild(row);
+
+                    // Close the modal
+                    modal.querySelector('.btn-close').click();
+                }
             });
 
-            $(document).on('click', '.remove-item', function() {
-                $(this).closest('tr').remove();
-            });
-
-            // Update Total Price when discount type changes
-            $('thead input[name="discount_type"]').on('change', function() {
-                updateTotalPrice();
+            // Add event listener to remove a row when the "Remove" button is clicked
+            itemList.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-row')) {
+                    const row = event.target.closest('tr');
+                    itemList.removeChild(row);
+                }
             });
         });
 
-        // Update Total Price
-        function updateTotalPrice() {
-            console.log("updateTotalPrice function called!");
-            var rows = $('#item-list tr');
-            rows.each(function() {
-                var row = $(this);
-                var quantity = parseInt(row.find('input[name="quantity[]"]').val());
-                var unitPrice = parseFloat(row.find('input[name="unit_price[]"]').val());
-                var taxPercentage = parseFloat(row.find('input[name="tax[]"]').val());
-                var discountType = $('thead input[name="discount_type"]:checked').val();
-                var discountValue = parseFloat(row.find('input[name="discount[]"]').val());
+        // Function to calculate total price for a row
+        function calculateTotal(element) {
+            const row = element.closest('tr');
+            const quantity = parseFloat(row.querySelector('input[name="quantity[]"]').value);
+            const unitPrice = parseFloat(row.querySelector('input[name="unit_price[]"]').value);
+            const taxPercentage = parseFloat(row.querySelector('input[name="tax[]"]').value);
+            const discount = parseFloat(row.querySelector('input[name="discount[]"]').value);
+            const discountType = row.querySelector('select[name="discount_type[]"]').value;
 
-                var subTotal = (quantity * unitPrice);
-                var taxAmount = (subTotal * taxPercentage / 100);
-                var totalPrice = subTotal + taxAmount;
+            // Calculate subtotal (unit price * quantity)
+            const subtotal = unitPrice * quantity;
 
-                if (discountType === 'percentage') {
-                    totalPrice -= (totalPrice * discountValue / 100);
-                    console.log(totalPrice);
-                } else if (discountType === 'amount') {
-                    console.log(totalPrice);
-                    totalPrice -= discountValue;
-                }
+            // Calculate discount amount based on the selected discount type
+            let discountAmount = 0;
+            if (discountType === 'percentage') {
+                discountAmount = subtotal * (discount / 100);
+            } else if (discountType === 'amount') {
+                discountAmount = discount;
+            }
 
-                row.find('input[name="total_price[]"]').val(totalPrice.toFixed(2));
-            });
+            // Calculate tax amount as a percentage of the subtotal
+            const taxAmount = subtotal * (taxPercentage / 100);
+
+            // Calculate total price: subtotal + tax - discount
+            const totalPrice = subtotal + taxAmount - discountAmount;
+
+            // Set the total price in the input field
+            row.querySelector('input[name="total_price[]"]').value = totalPrice.toFixed(2);
         }
     </script>
 @endpush

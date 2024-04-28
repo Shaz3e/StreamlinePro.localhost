@@ -2,60 +2,53 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'View Product',
+        'title' => 'View Invoice',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'Product List', 'link' => route('admin.products.index')],
-            ['text' => 'View Product', 'link' => null],
+            ['text' => 'Invoice List', 'link' => route('admin.invoices.index')],
+            ['text' => 'View', 'link' => null],
         ],
     ])
 
-    {{-- Show Summary --}}
+    {{-- Show Invoice Summary --}}
     <div class="row">
         <div class="col-md-3">
-            <div class="card" style="height: calc(100% - 30px)">
+            <div class="card">
                 <div class="card-body">
-                    <p class="card-text">Price</p>
+                    <div class="card-text">Invoiced To</div>
+                    <h4 class="card-title">{{ $invoice->company->name }}</h4>
+                </div>
+            </div>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">Invoice Status</div>
                     <h4 class="card-title">
-                        {{ $product->price }}
+                        <span class="badge"
+                            style="background-color: {{ $invoice->status->bg_color }}; color:{{ $invoice->status->text_color }}">
+                            {{ $invoice->status->name }}
+                        </span>
                     </h4>
                 </div>
             </div>
         </div>
         {{-- /.col --}}
         <div class="col-md-3">
-            <div class="card" style="height: calc(100% - 30px)">
+            <div class="card">
                 <div class="card-body">
-                    <p class="card-text">Active</p>
-                    <h4 class="card-title">
-                        @if ($product->is_active)
-                            <span class="text-success">Yes</span>
-                        @else
-                            <span class="text-danger">No</span>
-                        @endif
-                    </h4>
+                    <div class="card-text">Invoice Date</div>
+                    <h4 class="card-title">{{ date('l, jS M Y', strtotime($invoice->invoice_date)) }}</h4>
                 </div>
             </div>
         </div>
         {{-- /.col --}}
         <div class="col-md-3">
-            <div class="card" style="height: calc(100% - 30px)">
+            <div class="card">
                 <div class="card-body">
-                    <p class="card-text">Created At</p>
-                    <p class="card-title">
-                        {{ $product->created_at->format('l, F j, Y h:i A') }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        {{-- /.col --}}
-        <div class="col-md-3">
-            <div class="card" style="height: calc(100% - 30px)">
-                <div class="card-body">
-                    <p class="card-text">Updated At</p>
-                    <p class="card-title">
-                        {{ $product->updated_at->format('l, F j, Y h:i A') }}
-                    </p>
+                    <div class="card-text">Due Date</div>
+                    <h4 class="card-title">{{ date('l, jS M Y', strtotime($invoice->due_date)) }}</h4>
                 </div>
             </div>
         </div>
@@ -63,18 +56,99 @@
     </div>
     {{-- /.row --}}
 
-    {{-- Show Record --}}
+    {{-- Show Invoice Account Summary --}}
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-4">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">{{ $product->name }}</h3>
-                </div>
                 <div class="card-body">
-                    <div class="card-text">{!! $product->description !!}</div>
+                    <div class="card-text">Tax %</div>
+                    <h4 class="card-title">{{ $invoice->total_tax }}</h4>
                 </div>
             </div>
         </div>
+        {{-- /.col --}}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">All Products Price</div>
+                    <h4 class="card-title">{{ $invoice->total_price }}</h4>
+                </div>
+            </div>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">Total</div>
+                    <h4 class="card-title">{{ $invoice->total_amount }}</h4>
+                </div>
+            </div>
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
+    {{-- Show Invoice Items --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Invoice Items
+                </div>
+                {{-- /.card-header --}}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="invoice-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Tax</th>
+                                    <th>Discount</th>
+                                    <th>Discount Type</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($items as $item)
+                                    <tr>
+                                        <td>{{ $item->product_name }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ $item->unit_price }}</td>
+                                        <td>{{ $item->tax }}</td>
+                                        <td>{{ $item->discount }}</td>
+                                        <td>{{ ucwords($item->discount_type) }}</td>
+                                        <td>{{ $item->total_price }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>-</th>
+                                    <th>{{ $items->sum('quantity') }}</th>
+                                    <th>{{ $items->sum('unit_price') }}</th>
+                                    <th>{{ $items->sum('tax') }}</th>
+                                    <th>-</th>
+                                    <th>-</th>
+                                    <th>{{ $items->sum('total_price') }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    {{-- /.table-responsive --}}
+                </div>
+                {{-- /.card-body --}}
+                <div class="card-footer">
+                    <a href="{{ route('admin.invoices.edit', $invoice->id) }}"
+                        class="btn btn-success waves-effect waves-light">
+                        <i class="ri-save-line align-middle me-2"></i> Edit Invoice
+                    </a>
+                </div>
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
     </div>
     {{-- /.row --}}
 
@@ -159,11 +233,11 @@
             // Audit Log Show Modal
             $('.show-audit-modal').click(function(e) {
                 e.preventDefault();
-                const productId = $(this).data('audit-id');
+                const invoiceId = $(this).data('audit-id');
                 // Fetch details via AJAX
                 $.ajax({
                     url: `{{ route('admin.products.audit', ':id') }}`.replace(':id',
-                        productId),
+                        invoiceId),
                     type: 'GET',
                     success: function(data) {
                         // Populate modal content with fetched data
@@ -178,7 +252,7 @@
             });
             $('.delete-audit-log').click(function(e) {
                 e.preventDefault();
-                const productId = $(this).data('audit-id');
+                const invoiceId = $(this).data('audit-id');
 
                 // Show confirmation dialog
                 Swal.fire({
@@ -195,7 +269,7 @@
                         $.ajax({
                             url: `{{ route('admin.products.audit.delete', ':id') }}`
                                 .replace(
-                                    ':id', productId),
+                                    ':id', invoiceId),
                             type: 'GET',
                             success: function(data) {
                                 // Show success message

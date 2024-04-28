@@ -23,6 +23,7 @@ class InvoiceProduct extends Model
         'unit_price',
         'tax',
         'discount',
-        'total_price'
+        'discount_type',
+        'total_price',
     ];
 }
