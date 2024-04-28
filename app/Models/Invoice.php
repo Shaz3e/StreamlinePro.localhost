@@ -37,10 +37,10 @@ class Invoice extends Model implements Auditable
     /**
      * Product Relationship
      */
-    // public function product()
-    // {
-    //     return $this->belongsTo(Product::class);
-    // }
+    public function products()
+    {
+        return $this->hasMany(InvoiceProduct::class, 'invoice_id');
+    }
 
     /**
      * Invoice Status Relations

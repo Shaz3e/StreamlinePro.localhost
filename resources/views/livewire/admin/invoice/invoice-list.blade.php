@@ -96,6 +96,13 @@
                                                 </span>
                                             @endif
 
+                                            @if($invoice->products()->count() > 0)
+                                                @foreach ($invoice->products as $product)
+                                                    <span class="badge bg-warning">
+                                                        {{ $product->product_name }}
+                                                    </span>
+                                                @endforeach
+                                            @endif
                                         </td>
                                         <td>{{ $invoice->total_amount }}</td>
                                         @if (!$showDeleted)
