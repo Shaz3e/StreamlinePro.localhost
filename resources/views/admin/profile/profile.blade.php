@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <label for="name" class="col-sm-2 col-form-label">Full Name</label>
-                            <div class="col-sm-10">
+                            <div class="col-md-4 col-sm-4">
                                 <input type="text" name="name" id="name" class="form-control"
                                     value="{{ old('name', $staff->name) }}" required>
                                 @error('name')
@@ -32,7 +32,7 @@
                         {{-- /.row --}}
                         <div class="row mb-3">
                             <label for="email" class="col-sm-2 col-form-label">Email</label>
-                            <div class="col-sm-10">
+                            <div class="col-md-4 col-sm-4">
                                 <input name="email" id="email" class="form-control input-mask"
                                     data-inputmask="'alias': 'email'" value="{{ old('email', $staff->email) }}" required>
                                 @error('email')
@@ -68,7 +68,7 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <label for="current_password" class="col-sm-2 col-form-label">Current Password</label>
-                            <div class="col-sm-10">
+                            <div class="col-md-4 col-sm-4">
                                 <input type="password" name="current_password" id="current_password" class="form-control"
                                     value="{{ old('current_password') }}" required>
                                 @error('current_password')
@@ -79,7 +79,7 @@
                         {{-- /.row --}}
                         <div class="row mb-3">
                             <label for="password" class="col-sm-2 col-form-label">New Password</label>
-                            <div class="col-sm-10">
+                            <div class="col-md-4 col-sm-4">
                                 <input type="password" name="password" id="password" class="form-control"
                                     value="{{ old('password') }}" required>
                                 @error('password')
@@ -90,7 +90,7 @@
                         {{-- /.row --}}
                         <div class="row mb-3">
                             <label for="confirm_password" class="col-sm-2 col-form-label">Confirm Password</label>
-                            <div class="col-sm-10">
+                            <div class="col-md-4 col-sm-4">
                                 <input type="password" name="confirm_password" id="confirm_password" class="form-control"
                                     value="{{ old('confirm_password') }}" required>
                                 @error('confirm_password')
@@ -103,7 +103,8 @@
                     {{-- /.card-body --}}
                     <div class="card-footer">
                         <button type="submit" name="updatePassword" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-save-line align-middle me-2"></i> Change Password
+                            {{-- <i class="ri-save-line "></i> --}}
+                            <i class="ri-lock-line align-middle me-2"></i> Change Password
                         </button>
                     </div>
                 </form>
