@@ -207,6 +207,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('invoices.audit');
         Route::get('invoices-audit/delete/{id}', [InvoiceController::class, 'deleteAudit'])
             ->name('invoices.audit.delete');
+        // Remove Product
+        Route::delete('/invoices/products/{productId}/remove', [InvoiceController::class, 'removeProduct'])
+            ->name('product.remove');
+
 
         /**
          * Invoice Status

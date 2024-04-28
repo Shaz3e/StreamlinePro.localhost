@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invoice_product', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('invoice_id');
             $table->string('product_name')->nullable();
             $table->integer('quantity')->nullable()->default(1);
             $table->decimal('unit_price', 12, 2)->nullable()->default(0.00);
             $table->integer('tax')->nullable()->default(0);
             $table->integer('discount')->nullable()->default(0);
+            $table->string('discount_type')->nullable();
             $table->decimal('total_price', 12, 2)->nullable()->default(0.00);
 
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
