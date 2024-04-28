@@ -22,6 +22,12 @@ class TaskList extends Component
     #[Url()]
     public $filterStatus;
 
+    #[Url()]
+    public $filterStartedTask;
+
+    #[Url()]
+    public $filterCompletedTask;
+
     public $perPage = 10;
 
     public $id;
@@ -66,6 +72,16 @@ class TaskList extends Component
         // Filter records based on status
         if ($this->filterStatus) {
             $query->where('task_status_id', $this->filterStatus);
+        }
+
+        // Filter records based on started/not started
+        if ($this->filterStartedTask) {
+            $query->where('is_started', $this->filterStartedTask);
+        }
+
+        // Filter records based on completed/not completed
+        if ($this->filterCompletedTask) {
+            $query->where('is_completed', $this->filterCompletedTask);
         }
 
 

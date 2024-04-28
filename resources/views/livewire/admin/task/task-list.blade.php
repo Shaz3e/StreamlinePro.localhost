@@ -9,28 +9,10 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-2 col-sm-12">
-            <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Status</option>
-                <option value="">All</option>
-                @foreach ($taskStatusList as $status)
-                    <option value="{{ $status->id }}">{{ $status->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        {{-- /.col --}}
-        <div class="col-md-5 col-sm-12 mb-2">
+        <div class="col-md-9 col-sm-12 mb-2">
             <input type="search" wire:model.live="search" class="form-control form-control-sm" placeholder="Search...">
         </div>
         {{-- .col --}}
-        <div class="col-md-2 col-sm-12 mb-2">
-            <select wire:model.live="showDeleted" class="form-control form-control-sm form-control-border">
-                <option value="" selected="selected">Active/Deleted</option>
-                <option value="">Show Active Record</option>
-                <option value="true">Show Deleted Record</option>
-            </select>
-        </div>
-        {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
                 <a href="{{ route('admin.tasks.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
@@ -41,6 +23,44 @@
         {{-- /.col --}}
     </div>
     {{-- /.row --}}
+
+    <div class="row mb-3">
+        <div class="col-md-3 col-sm-12">
+            <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
+                <option value="">Filter by Status</option>
+                <option value="">All</option>
+                @foreach ($taskStatusList as $status)
+                    <option value="{{ $status->id }}">{{ $status->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-3 col-sm-12 mb-2">
+            <select wire:model.live="filterStartedTask" class="form-control form-control-sm form-control-border">
+                <option value="" selected="selected">Filter by Started/Not Started</option>
+                <option value="0">Show Not Started Task</option>
+                <option value="1">Show Started Task</option>
+            </select>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-3 col-sm-12 mb-2">
+            <select wire:model.live="filterCompletedTask" class="form-control form-control-sm form-control-border">
+                <option value="" selected="selected">Filter by Completed/Not Completed</option>
+                <option value="0">Show Not Completed Task</option>
+                <option value="1">Show Completed Task</option>
+            </select>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-3 col-sm-12 mb-2">
+            <select wire:model.live="showDeleted" class="form-control form-control-sm form-control-border">
+                <option value="" selected="selected">Filter Active/Deleted</option>
+                <option value="">Show Active Record</option>
+                <option value="true">Show Deleted Record</option>
+            </select>
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- .row --}}
 
     <div class="row" wire:poll.60s>
         <div class="col-12">
@@ -68,7 +88,7 @@
                                                 {{ $task->status->name }}
                                             </span>
                                             <span class="badge bg-success">
-                                                {{ $task->createdBy->name }}
+                                                Created By: {{ $task->createdBy->name }}
                                             </span>
                                             @role('superadmin')
                                                 <span class="badge bg-info">
@@ -80,9 +100,13 @@
                                             @if ($task->is_started)
                                                 {{ date('d M Y H:i A', strtotime($task->start_time)) }}
                                             @else
-                                                <button type="submit" wire:click="startTask({{ $task->id }})"
-                                                    class="btn btn-sm btn-success">
-                                                    <i class="ri-timer-line"></i> Start</button>
+                                                @if (auth()->user()->id == $task->assignee->id)
+                                                    <button type="submit" wire:click="startTask({{ $task->id }})"
+                                                        class="btn btn-sm btn-success">
+                                                        <i class="ri-timer-line"></i> Start</button>
+                                                @else
+                                                    <small class="badge bg-info">Not Started</small>
+                                                @endif
                                             @endif
                                         </td>
                                         <td>
@@ -91,9 +115,14 @@
                                             @elseif($task->is_started && $task->is_completed)
                                                 {{ date('d M Y H:i A', strtotime($task->complete_time)) }}
                                             @else
-                                                <button type="submit" wire:click="completeTask({{ $task->id }})"
-                                                    class="btn btn-sm btn-success">
-                                                    <i class="ri-timer-flash-line"></i> Finish</button>
+                                                @if (auth()->user()->id == $task->assignee->id)
+                                                    <button type="submit"
+                                                        wire:click="completeTask({{ $task->id }})"
+                                                        class="btn btn-sm btn-success">
+                                                        <i class="ri-timer-flash-line"></i> Finish</button>
+                                                @else
+                                                    <small class="badge bg-info">Not Completed</small>
+                                                @endif
                                             @endif
                                         </td>
                                         <td>
