@@ -11,12 +11,14 @@ use App\Models\SupportTicketPriority;
 use App\Models\SupportTicketReply;
 use App\Models\SupportTicketStatus;
 use App\Models\User;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class SupportTicketController extends Controller
 {
+    use FormHelper;
     /**
      * Display a listing of the resource.
      */
@@ -85,14 +87,11 @@ class SupportTicketController extends Controller
         }
 
         // Update record in database
-        SupportTicket::create($validated);
+        $supportTicket = SupportTicket::create($validated);
 
         session()->flash('success', 'Support Ticket has been created successfully!');
-
-        // Clear the uploaded_attachments session variable
-        session()->forget('uploaded_attachments');
-
-        return redirect()->route('admin.support-tickets.index');
+        
+        return $this->saveAndRedirect($request, 'support-tickets', $supportTicket->id);
     }
 
     /**
@@ -204,9 +203,8 @@ class SupportTicketController extends Controller
 
         // Clear the uploaded_attachments session variable
         session()->forget('uploaded_attachments');
-
-        // Redirect to index
-        return redirect()->route('admin.support-tickets.index');
+        
+        return $this->saveAndRedirect($request, 'support-tickets', $supportTicket->id);
     }
 
     /**

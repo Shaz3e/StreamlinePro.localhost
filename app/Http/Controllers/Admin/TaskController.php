@@ -7,12 +7,15 @@ use App\Http\Requests\Admin\Task\StoreTaskRequest;
 use App\Models\Admin;
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class TaskController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -62,7 +65,7 @@ class TaskController extends Controller
 
         session()->flash('success', 'The Task has been created successfully!');
 
-        return redirect()->route('admin.tasks.index');
+        return $this->saveAndRedirect($request, 'tasks', $task->id);
     }
 
     /**
@@ -145,8 +148,7 @@ class TaskController extends Controller
         // Flash message
         session()->flash('success', 'The Task has been updated successfully!');
 
-        // Redirect to index
-        return redirect()->route('admin.tasks.index');
+        return $this->saveAndRedirect($request, 'tasks', $task->id);
     }
 
     /**

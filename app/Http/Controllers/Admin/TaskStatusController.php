@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TaskStatus\StoreTaskStatusRequest;
 use App\Models\TaskStatus;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class TaskStatusController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -45,11 +48,11 @@ class TaskStatusController extends Controller
         $validated = $request->validated();
 
         // Update record in database
-        TaskStatus::create($validated);
+        $taskStatus = TaskStatus::create($validated);
 
         session()->flash('success', 'Task Status has been created successfully!');
-
-        return redirect()->route('admin.task-status.index');
+        
+        return $this->saveAndRedirect($request, 'task-status', $taskStatus->id);
     }
 
     /**
@@ -104,9 +107,8 @@ class TaskStatusController extends Controller
 
         // Flash message
         session()->flash('success', 'Task Status has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.task-status.index');
+        
+        return $this->saveAndRedirect($request, 'task-status', $taskStatus->id);
     }
 
     /**

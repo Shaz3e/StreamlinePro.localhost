@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\StoreProductRequest;
 use App\Models\Product;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class ProductController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -45,11 +48,11 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         // Update record in database
-        Product::create($validated);
+        $product = Product::create($validated);
 
         session()->flash('success', 'Product has been created successfully!');
-
-        return redirect()->route('admin.products.index');
+        
+        return $this->saveAndRedirect($request, 'products', $product->id);
     }
 
     /**
@@ -104,9 +107,8 @@ class ProductController extends Controller
 
         // Flash message
         session()->flash('success', 'Product has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.products.index');
+        
+        return $this->saveAndRedirect($request, 'products', $product->id);
     }
 
     /**

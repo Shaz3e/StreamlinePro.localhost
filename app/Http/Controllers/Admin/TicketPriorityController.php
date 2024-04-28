@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TicketPriority\StoreTicketPriorityReqeust;
 use App\Models\SupportTicketPriority;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class TicketPriorityController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -45,11 +48,11 @@ class TicketPriorityController extends Controller
         $validated = $request->validated();
 
         // Update record in database
-        SupportTicketPriority::create($validated);
+        $ticketPriority = SupportTicketPriority::create($validated);
 
         session()->flash('success', 'Ticket Priority has been created successfully!');
-
-        return redirect()->route('admin.ticket-priority.index');
+        
+        return $this->saveAndRedirect($request, 'ticket-priority', $ticketPriority->id);
     }
 
     /**
@@ -104,9 +107,8 @@ class TicketPriorityController extends Controller
 
         // Flash message
         session()->flash('success', 'Ticket Priority has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.ticket-priority.index');
+        
+        return $this->saveAndRedirect($request, 'ticket-priority', $ticketPriority->id);
     }
 
     /**

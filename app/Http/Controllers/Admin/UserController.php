@@ -8,6 +8,7 @@ use App\Mail\Admin\User\PasswordReset;
 use App\Models\Admin;
 use App\Models\Company;
 use App\Models\User;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -16,6 +17,8 @@ use OwenIt\Auditing\Models\Audit;
 
 class UserController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -54,11 +57,11 @@ class UserController extends Controller
         $validated = $request->validated();
 
         // Update record in database
-        User::create($validated);
+        $user = User::create($validated);
 
         session()->flash('success', 'User created successfully!');
-
-        return redirect()->route('admin.users.index');
+        
+        return $this->saveAndRedirect($request, 'users', $user->id);
     }
 
     /**
@@ -135,9 +138,8 @@ class UserController extends Controller
 
         // Flash message
         session()->flash('success', 'User updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.users.index');
+        
+        return $this->saveAndRedirect($request, 'users', $user->id);
     }
 
     /**

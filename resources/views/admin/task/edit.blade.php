@@ -50,7 +50,8 @@
                                     <label for="assigned_to">Assign To</label>
                                     <select name="assigned_to" class="form-control" id="assigned_to">
                                         @foreach ($staffList as $staff)
-                                            <option value="{{ $staff->id }}" {{ $task->assigned_to == $staff->id ? 'selected' : '' }}>
+                                            <option value="{{ $staff->id }}"
+                                                {{ $task->assigned_to == $staff->id ? 'selected' : '' }}>
                                                 {{ $staff->name }}
                                             </option>
                                         @endforeach
@@ -64,7 +65,8 @@
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
                                     <input type="datetime-local" class="form-control" name="due_date" id="due_date"
-                                        value="{{ old('due_date', $task->due_date) }}" min="{{ now()->format('Y-m-d\TH:i') }}">
+                                        value="{{ old('due_date', $task->due_date) }}"
+                                        min="{{ now()->format('Y-m-d\TH:i') }}">
                                 </div>
                                 @error('due_date')
                                     <span class="text-danger">{{ $message }}</span>
@@ -88,9 +90,9 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-save-line align-middle me-2"></i> Update
-                        </button>
+                        <x-form.button />
+                        <x-form.button-save-view />
+                        <x-form.button-save-create-new />
                     </div>
                     {{-- /.card-footer --}}
                 </form>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\RolePermission;
 
 use App\Http\Controllers\Controller;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -11,6 +12,8 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -56,11 +59,11 @@ class RoleController extends Controller
         ]);
 
         // $validated = $request->validate();
-        Role::create($validated);
+        $role = Role::create($validated);
 
         session()->flash('success', 'Role has been created successfully');
-
-        return redirect()->route('admin.roles-permissions.roles.index');
+        
+        return $this->saveAndRedirect($request, 'roles-permissions.roles', $role->id);
     }
 
     /**
@@ -138,7 +141,7 @@ class RoleController extends Controller
 
         session()->flash('success', 'Permission has been updated successfully');
 
-        return redirect()->route('admin.roles-permissions.roles.index');
+        return $this->saveAndRedirect($request, 'roles-permissions.roles', $role->id);
     }
 
     /**

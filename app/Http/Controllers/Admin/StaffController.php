@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Staff\StoreStaffRequest;
 use App\Models\Admin;
 use App\Models\Department;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
@@ -13,6 +14,8 @@ use Spatie\Permission\Models\Role;
 
 class StaffController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -65,8 +68,8 @@ class StaffController extends Controller
         $staff->syncRoles($request->roles);
 
         session()->flash('success', 'Staff created successfully!');
-
-        return redirect()->route('admin.staff.index');
+        
+        return $this->saveAndRedirect($request, 'staff', $staff->id);
     }
 
     /**
@@ -162,9 +165,8 @@ class StaffController extends Controller
 
         // Flash message
         session()->flash('success', 'Staff updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.staff.index');
+        
+        return $this->saveAndRedirect($request, 'staff', $staff->id);
     }
 
     /**

@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Todo\StoreTodoRequest;
 use App\Models\Todo;
 use App\Models\TodoStatus;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class TodoController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -55,8 +58,8 @@ class TodoController extends Controller
         $todo->save();
 
         session()->flash('success', 'Your Todo has been created successfully!');
-
-        return redirect()->route('admin.todos.index');
+        
+        return $this->saveAndRedirect($request, 'todos', $todo->id);
     }
 
     /**
@@ -114,9 +117,8 @@ class TodoController extends Controller
 
         // Flash message
         session()->flash('success', 'Your TODO has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.todos.index');
+        
+        return $this->saveAndRedirect($request, 'todos', $todo->id);
     }
 
     /**

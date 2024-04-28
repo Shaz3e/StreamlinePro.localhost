@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label for="text_color">Text Color</label>
                                     <input type="text" name="text_color" class="form-control" id="colorpicker-text"
-                                        value="{{ old('text_color') }}" required>
+                                        value="{{ old('text_color', $ticketStatus->text_color) }}" required>
                                     @error('text_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -85,7 +85,7 @@
                                 <div class="form-group">
                                     <label for="bg_color">Background Color</label>
                                     <input type="text" name="bg_color" class="form-control" id="colorpicker-background"
-                                        value="{{ old('bg_color') }}" required>
+                                        value="{{ old('bg_color', $ticketStatus->bg_color) }}" required>
                                     @error('bg_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -96,9 +96,9 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-save-line align-middle me-2"></i> Update
-                        </button>
+                        <x-form.button />
+                        <x-form.button-save-view />
+                        <x-form.button-save-create-new />
                     </div>
                     {{-- /.card-footer --}}
                 </form>

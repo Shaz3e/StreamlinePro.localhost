@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\InvoiceStatus\StoreInvoiceStatusRequest;
 use App\Models\InvoiceStatus;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class InvoiceStatusController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -45,11 +48,11 @@ class InvoiceStatusController extends Controller
         $validated = $request->validated();
 
         // Update record in database
-        InvoiceStatus::create($validated);
+        $invoiceStatus = InvoiceStatus::create($validated);
 
         session()->flash('success', 'Invoice Status has been created successfully!');
-
-        return redirect()->route('admin.invoice-status.index');
+        
+        return $this->saveAndRedirect($request, 'invoice-status', $invoiceStatus->id);
     }
 
     /**
@@ -104,9 +107,8 @@ class InvoiceStatusController extends Controller
 
         // Flash message
         session()->flash('success', 'Invoice Status has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.invoice-status.index');
+        
+        return $this->saveAndRedirect($request, 'invoice-status', $invoiceStatus->id);
     }
 
     /**

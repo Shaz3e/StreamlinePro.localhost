@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\StoreProfileRequest;
-use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -26,7 +24,7 @@ class ProfileController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function profileStore(StoreProfileRequest $request)
+    public function profileStore(Request $request)
     {
         if ($request->has('updatePassword')) {
             return $this->updatePassword($request);
@@ -35,14 +33,15 @@ class ProfileController extends Controller
         if ($request->has('updateProfile')) {
             return $this->updateProfile($request);
         }
-
-        return back();
     }
 
     private function updateProfile(Request $request)
     {
         // validated data
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255|unique:admins,email,' . Auth::user()->id,
+        ]);
 
         // Get current user
         $user = Auth::user();

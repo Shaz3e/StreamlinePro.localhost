@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TodoStatus\StoreTodoStatusRequest;
 use App\Models\TodoStatus;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class TodoStatusController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -45,11 +48,11 @@ class TodoStatusController extends Controller
         $validated = $request->validated();
 
         // Update record in database
-        TodoStatus::create($validated);
+        $todoStatus = TodoStatus::create($validated);
 
         session()->flash('success', 'Todo Status has been created successfully!');
-
-        return redirect()->route('admin.todo-status.index');
+        
+        return $this->saveAndRedirect($request, 'todo-status', $todoStatus->id);
     }
 
     /**
@@ -104,9 +107,8 @@ class TodoStatusController extends Controller
 
         // Flash message
         session()->flash('success', 'Todo Status has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.todo-status.index');
+        
+        return $this->saveAndRedirect($request, 'todo-status', $todoStatus->id);
     }
 
     /**

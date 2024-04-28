@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Department\StoreDepartmentRequest;
 use App\Models\Department;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
 class DepartmentController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +32,7 @@ class DepartmentController extends Controller
     {
         // Check Authorize
         Gate::authorize('create', Department::class);
-        
+
         return view('admin.department.create');
     }
 
@@ -40,17 +43,17 @@ class DepartmentController extends Controller
     {
         // Check Authorize
         Gate::authorize('create', Department::class);
-        
+
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        Department::create($validated);
+        $department = Department::create($validated);
 
 
         session()->flash('success', 'Department created successfully!');
 
-        return redirect()->route('admin.departments.index');
+        return $this->saveAndRedirect($request, 'departments', $department->id);
     }
 
     /**
@@ -60,7 +63,7 @@ class DepartmentController extends Controller
     {
         // Check Authorize
         Gate::authorize('read', $department);
-        
+
         $audits = $department->audits()
             ->latest()
             ->paginate(10);
@@ -96,7 +99,7 @@ class DepartmentController extends Controller
     {
         // Check Authorize
         Gate::authorize('update', $department);
-        
+
         // Validate data
         $validated = $request->validated();
 
@@ -105,9 +108,8 @@ class DepartmentController extends Controller
 
         // Flash message
         session()->flash('success', 'Department updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.departments.index');
+        
+        return $this->saveAndRedirect($request, 'departments', $department->id);
     }
 
     /**
@@ -117,7 +119,7 @@ class DepartmentController extends Controller
     {
         // Check Authorize
         Gate::authorize('view', Department::class);
-        
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 

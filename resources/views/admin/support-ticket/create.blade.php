@@ -184,9 +184,9 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success waves-effect waves-light" id="submitButton">
-                            <i class="ri-save-line align-middle me-2"></i> Create
-                        </button>
+                        <x-form.button />
+                        <x-form.button-save-view />
+                        <x-form.button-save-create-new />
                     </div>
                     {{-- /.card-footer --}}
                 </form>

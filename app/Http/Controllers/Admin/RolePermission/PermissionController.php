@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin\RolePermission;
 
 use App\Http\Controllers\Controller;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+    use FormHelper;
+
     public function __construct()
     {
         Gate::before(function ($user, $ability) {
@@ -51,11 +54,11 @@ class PermissionController extends Controller
         ]);
 
         // $validated = $request->validate();
-        Permission::create($validated);
+        $permission = Permission::create($validated);
 
         session()->flash('success', 'Permission has been created successfully');
-
-        return redirect()->route('admin.roles-permissions.permissions.index');
+        
+        return $this->saveAndRedirect($request, 'roles-permissions.permissions', $permission->id);
     }
 
     /**
@@ -97,7 +100,7 @@ class PermissionController extends Controller
 
         session()->flash('success', 'Permission has been updated successfully');
 
-        return redirect()->route('admin.roles-permissions.permissions.index');
+        return $this->saveAndRedirect($request, 'roles-permissions.permissions', $permission->id);
     }
 
     /**

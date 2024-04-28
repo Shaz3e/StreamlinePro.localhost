@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\InvoiceStatus;
 use App\Models\Product;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +18,8 @@ use OwenIt\Auditing\Models\Audit;
 
 class InvoiceController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -152,7 +155,7 @@ class InvoiceController extends Controller
 
         session()->flash('success', 'Invoce has been created successfully!');
 
-        return redirect()->route('admin.invoices.index');
+        return $this->saveAndRedirect($request, 'invoices', $invoice->id);
     }
 
     /**
@@ -323,9 +326,8 @@ class InvoiceController extends Controller
 
         // Flash message
         session()->flash('success', 'Invoice has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.invoices.index');
+        
+        return $this->saveAndRedirect($request, 'invoices', $invoice->id);
     }
 
     /**

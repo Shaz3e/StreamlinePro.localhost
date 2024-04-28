@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Promotion\StorePromotionRequest;
 use App\Models\Promotion;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
@@ -12,6 +13,8 @@ use OwenIt\Auditing\Models\Audit;
 
 class PromotionController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -49,11 +52,11 @@ class PromotionController extends Controller
         $validated['image'] = $request->file('image')->store('promotions', 'public');
 
         // Update record in database
-        Promotion::create($validated);
+        $promotion = Promotion::create($validated);
 
         session()->flash('success', 'Promotion has been created successfully!');
-
-        return redirect()->route('admin.promotions.index');
+        
+        return $this->saveAndRedirect($request, 'promotions', $promotion->id);
     }
 
     /**
@@ -117,9 +120,8 @@ class PromotionController extends Controller
 
         // Flash message
         session()->flash('success', 'Promotion has been updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.promotions.index');
+        
+        return $this->saveAndRedirect($request, 'promotions', $promotion->id);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Company\StoreCompanyRequest;
 use App\Models\Company;
+use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
@@ -12,6 +13,8 @@ use OwenIt\Auditing\Models\Audit;
 
 class CompanyController extends Controller
 {
+    use FormHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -53,12 +56,12 @@ class CompanyController extends Controller
         }
 
         // Update record in database
-        Company::create($validated);
+        $company = Company::create($validated);
 
 
         session()->flash('success', 'Company created successfully!');
-
-        return redirect()->route('admin.companies.index');
+        
+        return $this->saveAndRedirect($request, 'companies', $company->id);
     }
 
     /**
@@ -126,9 +129,8 @@ class CompanyController extends Controller
 
         // Flash message
         session()->flash('success', 'Company updated successfully!');
-
-        // Redirect to index
-        return redirect()->route('admin.companies.index');
+        
+        return $this->saveAndRedirect($request, 'companies', $company->id);
     }
 
     /**
