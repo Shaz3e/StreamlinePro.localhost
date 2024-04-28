@@ -142,7 +142,11 @@
                 <div class="card-footer">
                     <a href="{{ route('admin.invoices.edit', $invoice->id) }}"
                         class="btn btn-success waves-effect waves-light">
+<<<<<<< HEAD
                         <i class="ri-pencil-line align-middle me-2"></i>  Edit Invoice
+=======
+                        <i class="ri-save-line align-middle me-2"></i> Edit Invoice
+>>>>>>> 8d1c68dafe0e611926d4eba71d803ca320a87046
                     </a>
                 </div>
             </div>
