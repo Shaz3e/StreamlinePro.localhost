@@ -105,42 +105,21 @@
                     <div class="px-lg-2">
                         <div class="row g-0">
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('assets/images/brands/github.png') }}" alt="Github">
-                                    <span>GitHub</span>
+                                <a class="dropdown-icon-item" href="{{ route('admin.tasks.create') }}">
+                                    <i class="ri-task-line"></i>
+                                    <span>Tasks</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('assets/images/brands/bitbucket.png') }}" alt="bitbucket">
-                                    <span>Bitbucket</span>
+                                <a class="dropdown-icon-item" href="{{ route('admin.invoices.create') }}">
+                                    <i class="ri-wallet-line"></i>
+                                    <span>Invoices</span>
                                 </a>
                             </div>
                             <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('assets/images/brands/dribbble.png') }}" alt="dribbble">
-                                    <span>Dribbble</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="row g-0">
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('assets/images/brands/dropbox.png') }}" alt="dropbox">
-                                    <span>Dropbox</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('assets/images/brands/mail_chimp.png') }}" alt="mail_chimp">
-                                    <span>Mail Chimp</span>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('assets/images/brands/slack.png') }}" alt="slack">
-                                    <span>Slack</span>
+                                <a class="dropdown-icon-item" href="{{ route('admin.users.create') }}">
+                                    <i class="ri-user-2-fill"></i>
+                                    <span>Customers</span>
                                 </a>
                             </div>
                         </div>
