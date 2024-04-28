@@ -13,6 +13,9 @@ use App\Http\Controllers\Admin\Auth\LockController;
 // Admin Dashboard
 use App\Http\Controllers\Admin\DashboardController;
 
+// Profile
+use App\Http\Controllers\Admin\ProfileController;
+
 // Todos
 use App\Http\Controllers\Admin\TodoController;
 
@@ -113,6 +116,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/', [DashboardController::class, 'dashboard'])
             ->name('dashboard');
+
+        // Profile
+        Route::get('my-profile', [ProfileController::class, 'profile'])
+            ->name('profile');
+        Route::post('my-profile', [ProfileController::class, 'profileStore'])
+            ->name('profile.store');
 
         /**
          * Todos

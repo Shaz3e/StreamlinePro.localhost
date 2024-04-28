@@ -233,7 +233,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href="#"><i class="ri-user-line align-middle me-1"></i>
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="ri-user-line align-middle me-1"></i>
                         Profile</a>
                     @can('todo.list')
                         <a class="dropdown-item" href="{{ route('admin.todos.index') }}"><i

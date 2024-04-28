@@ -1,14 +1,14 @@
 @extends('components.layouts.app')
 
 @section('content')
-@include('partials.page-header', [
-    'title' => 'Create New Product',
-    'breadcrumbs' => [
-        ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-        ['text' => 'Product List', 'link' => route('admin.products.index')],
-        ['text' => 'Create Product', 'link' => null],
-    ],
-])
+    @include('partials.page-header', [
+        'title' => 'Create New Product',
+        'breadcrumbs' => [
+            ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
+            ['text' => 'Product List', 'link' => route('admin.products.index')],
+            ['text' => 'Create Product', 'link' => null],
+        ],
+    ])
 
     {{-- Create Form --}}
     <div class="row">
