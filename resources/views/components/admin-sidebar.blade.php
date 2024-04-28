@@ -34,6 +34,23 @@
                                 <li>
                                     <a href="{{ route('admin.tasks.index') }}" class="waves-effect">
                                         <i class="ri-task-line"></i>
+                                        @if (auth()->guard('admin')->user()->pendingTasks()->count() > 0)
+                                            <span class="badge rounded-pill bg-success float-end">
+                                                {{ auth()->guard('admin')->user()->pendingTasks()->count() }}
+                                            </span>
+                                        @endif
+
+                                        @if (auth()->guard('admin')->user()->incompleteTasks()->count() > 0)
+                                            <span class="badge rounded-pill bg-danger float-end">
+                                                {{ auth()->guard('admin')->user()->incompleteTasks()->count() }}
+                                            </span>
+                                        @endif
+
+                                        @if (auth()->guard('admin')->user()->overdueTasks()->count() > 0)
+                                            <span class="badge rounded-pill bg-warning float-end">
+                                                {{ auth()->guard('admin')->user()->overdueTasks()->count() }}
+                                            </span>
+                                        @endif
                                         <span>Tasks</span>
                                     </a>
                                 </li>

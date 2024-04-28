@@ -69,6 +69,9 @@ class Admin extends Authenticatable implements Auditable
         'department_id' => 'array', // Tells Laravel to cast the column to an array
     ];
 
+    /**
+     * Relationship to show admin department 
+     */
     public function departments()
     {
         if ($this->department_id !== null) {
@@ -76,5 +79,36 @@ class Admin extends Authenticatable implements Auditable
         } else {
             return [];
         }
+    }
+
+    /**
+     * Relationship to show admin not started tasks
+     */
+    public function pendingTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to', 'id')->where('is_started', 0);
+    }
+
+    /**
+     * Relationship to show admin incomplete tasks
+     */
+
+    public function incompleteTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to', 'id')
+            ->where('is_started', 1)
+            ->where('is_completed', 0);
+    }
+
+
+    /**
+     * Relationship to show admin overdue tasks
+     */
+    public function overdueTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to', 'id')
+            ->where('is_started', 1)
+            ->where('is_completed', 0)
+            ->where('due_date', '<', now());
     }
 }
