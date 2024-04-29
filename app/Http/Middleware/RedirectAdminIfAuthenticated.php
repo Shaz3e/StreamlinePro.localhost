@@ -26,9 +26,7 @@ class RedirectAdminIfAuthenticated
                 // Redirect to the dashboard
                 return redirect()->route('admin.dashboard');
             }
-            // Check if the admin is authenticated
         }
-
         // Allow the request to proceed if the admin is not authenticated or no redirection is needed
         return $next($request);
     }
