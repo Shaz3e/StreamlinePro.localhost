@@ -33,7 +33,7 @@ class TodoController extends Controller
     {
         // Check Authorize
         Gate::authorize('create', Todo::class);
-        
+
         $todoStatus = TodoStatus::where('is_active', 1)->get();
 
         return view('admin.todo.create', [
@@ -58,7 +58,7 @@ class TodoController extends Controller
         $todo->save();
 
         session()->flash('success', 'Your Todo has been created successfully!');
-        
+
         return $this->saveAndRedirect($request, 'todos', $todo->id);
     }
 
@@ -69,7 +69,17 @@ class TodoController extends Controller
     {
         // Check Authorize
         Gate::authorize('view', $todo);
-        
+
+        // Close Todo
+        if(request()->has('close') == 1){
+            $todo->is_closed = 1;
+            $todo->closed_at = now();
+            $todo->save();
+            session()->flash('success', 'Your TODO has been closed successfully!');
+            return back();
+        }
+
+
         $audits = $todo->audits()
             ->latest()
             ->paginate(10);
@@ -111,13 +121,20 @@ class TodoController extends Controller
 
         // Validate data
         $validated = $request->validated();
+        
+        // Check if todo was previously closed
+        if ($todo->is_closed) {
+            // Reopen todo
+            $validated['is_closed'] = 0;
+            $validated['closed_at'] = null;
+        }
 
         // Update record in database
         $todo->update($validated);
 
         // Flash message
         session()->flash('success', 'Your TODO has been updated successfully!');
-        
+
         return $this->saveAndRedirect($request, 'todos', $todo->id);
     }
 

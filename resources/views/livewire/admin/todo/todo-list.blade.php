@@ -49,10 +49,10 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 68%">My Todo</th>
+                                <th style="width: 60%">My Todo</th>
                                 <th style="width: 10%">Status</th>
                                 <th style="width: 10%"></th>
-                                <th style="width: 12%"></th>
+                                <th style="width: 20%"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,7 +61,8 @@
 
                                     <td>
                                         @if ($todo->reminder)
-                                            <span class="badge bg-danger">{{ $todo->reminder->format('d M Y H:i A') }}</span>
+                                            <span
+                                                class="badge bg-danger">{{ $todo->reminder->format('d M Y H:i A') }}</span>
                                             <br />
                                         @endif
                                         {{ $todo->title }}
@@ -105,6 +106,10 @@
                                                 </button>
                                             @endcan
                                         @else
+                                            <button type="button" wire:click="closeTodo({{ $todo->id }})"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-check-line"></i>
+                                            </button>
                                             @can('todo.read')
                                                 <a href="{{ route('admin.todos.show', $todo->id) }}"
                                                     class="btn btn-sm btn-outline-info">
@@ -142,6 +147,14 @@
 </div>
 @script
     <script>
+        // Close Todo
+        document.addEventListener('todoClosed', () => {
+            Toast.fire({
+                icon: 'success',
+                title: "Your todo has been closed successfully",
+            })
+        })
+
         // Status Changed
         document.addEventListener('statusChanged', () => {
             Toast.fire({

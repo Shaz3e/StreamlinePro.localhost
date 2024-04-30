@@ -19,6 +19,7 @@ class Todo extends Model implements Auditable
 
     protected $casts = [
         'reminder' => 'datetime',
+        'closed_at' => 'datetime',
     ];
 
     protected function setAuditInclude()

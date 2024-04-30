@@ -2,7 +2,7 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'User Profile',
+        'title' => 'My Todo',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
             ['text' => 'My Todo List', 'link' => route('admin.todos.index')],
@@ -18,25 +18,49 @@
                     {{ $todo->title }}
                 </div>
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>{{ $todo->status->name }}</th>
-                                <td>{{ $todo->created_at->format('l, F j, Y') }}</td>
-                                <td>{{ $todo->updated_at->format('l, F j, Y') }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    {!! $todo->todo_details !!}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Closed At</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{ $todo->status->name }}</th>
+                                    <td>
+                                        @if ($todo->is_closed)
+                                            {{ $todo->closed_at->format('l, F j, Y') }}
+                                        @else
+                                            <a href="{{ route('admin.todos.show', $todo->id) }}?close=1"
+                                                class="btn btn-sm btn-outline-info">
+                                                Close Now
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td>{{ $todo->created_at->format('l, F j, Y') }}</td>
+                                    <td>{{ $todo->updated_at->format('l, F j, Y') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-title">
+                        <h4>My Todo Description</h4>
+                    </div>
+                    <div class="card-text">
+                        {!! $todo->todo_details !!}
+                    </div>
                 </div>
+                {{-- /.card-body --}}
+                <div class="card-footer">
+                    <a href="{{ route('admin.todos.edit', $todo->id) }}" class="btn btn-sm btn-outline-success">
+                        <i class="ri-pencil-line"></i> Edit
+                    </a>
+                </div>
+                {{-- /.card-footer --}}
             </div>
             {{-- /.card --}}
         </div>

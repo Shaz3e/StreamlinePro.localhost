@@ -38,7 +38,9 @@ class TodoList extends Component
      */
     public function render()
     {
-        $query = Todo::query()->where('admin_id', auth()->user()->id);
+        $query = Todo::query()
+            ->where('admin_id', auth()->user()->id)
+            ->where('is_closed', 0);
 
         // Get all columns in the required table
         $columns = Schema::getColumnListing('todos');
@@ -56,7 +58,6 @@ class TodoList extends Component
         if ($this->filterStatus) {
             $query->where('todo_status_id', $this->filterStatus);
         }
-
 
         // Apply filter for deleted records if the option is selected
         if ($this->showDeleted) {
@@ -97,7 +98,7 @@ class TodoList extends Component
         // Get data
         $todo = Todo::find($todoId);
 
-        // Check user exists
+        // Check todo exists
         if (!$todo) {
             $this->dispatch('error', 'Todo not found!');
             return;
@@ -108,6 +109,29 @@ class TodoList extends Component
         ]);
 
         $this->dispatch('statusChanged');
+    }
+
+    /**
+     * Close todo
+     */
+    public function closeTodo($todoId)
+    {
+        // Get data
+        $todo = Todo::find($todoId);
+
+        // Check todo exists
+        if (!$todo) {
+            $this->dispatch('error', 'Todo not found!');
+            return;
+        }
+
+        // Close todo
+        $todo->update([
+            'is_closed' => 1,
+            'closed_at' => now(),
+        ]);
+
+        $this->dispatch('todoClosed');
     }
 
     /**
