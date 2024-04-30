@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
+use App\Jobs\User\SendUserRegistrationEmailJob;
 use App\Mail\Admin\User\PasswordReset;
 use App\Models\Admin;
 use App\Models\Company;
@@ -58,6 +59,11 @@ class UserController extends Controller
 
         // Update record in database
         $user = User::create($validated);
+
+        // Only Dispatch a job to send user registration email if uer can login is enabled
+        if($user->is_active){
+            SendUserRegistrationEmailJob::dispatch($user);
+        }
 
         session()->flash('success', 'User created successfully!');
         

@@ -25,6 +25,7 @@ class User extends Authenticatable implements Auditable
         'password',
         'is_active',
         'company_id',
+        'remember_token',
     ];
 
     // SoftDeletes

@@ -67,7 +67,15 @@
 
             <div class="page-content">
                 <div class="container-fluid">
-
+                    @if (session()->has('token'))
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-danger">
+                                    <strong>Change Your Password</strong> We strongly recommand to change your password before proceeding further as this the temporarly login session.
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     @yield('content')
 
                 </div> <!-- container-fluid -->
@@ -82,7 +90,7 @@
     </div>
     <!-- END layout-wrapper -->
 
-    <x-rightsidebar />
+    {{-- <x-rightsidebar /> --}}
 
     <!-- JAVASCRIPT -->
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>

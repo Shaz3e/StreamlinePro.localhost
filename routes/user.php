@@ -13,6 +13,9 @@ use App\Http\Controllers\User\Auth\LockController;
 // Dashboard
 use App\Http\Controllers\User\DashboardController;
 
+// Profile Controller
+use App\Http\Controllers\User\ProfileController;
+
 Route::middleware('guest')->group(function () {
 
     // Register
@@ -55,4 +58,10 @@ Route::middleware('auth')->group(function () {
     // User Dashboard
     Route::get('/', [DashboardController::class, 'dashboard'])
         ->name('dashboard');
+
+    // Profile
+    Route::get('my-profile', [ProfileController::class, 'profile'])
+        ->name('profile');
+    Route::post('my-profile', [ProfileController::class, 'profileStore'])
+        ->name('profile.store');
 });
