@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\Admin\SendTaskOverdueReminderJob;
 use App\Jobs\Staff\SendTaskReminderJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -41,3 +42,9 @@ Artisan::command('inspire', function () {
  * - Every 24 hours
  */
 Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
+
+/**
+ * If the deadline has passed since the creation of the task.
+ * Send task overdue reminder to assigned_to and created_by
+ */
+Schedule::job(new SendTaskOverdueReminderJob)->everyMinute();

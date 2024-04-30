@@ -22,6 +22,7 @@ class Task extends Model implements Auditable
         'start_time' => 'datetime',
         'completed_time' => 'datetime',
         'due_date' => 'datetime',
+        'notification_time' => 'datetime',
     ];
 
     protected function setAuditInclude()
