@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Jobs\Admin;
+namespace App\Jobs\Common\Task;
 
-use App\Mail\Admin\SendTaskOverdueReminderEmail;
+use App\Mail\Admin\Task\Admin\SendTaskOverdueReminderAdminEmail;
+use App\Mail\Admin\Task\Staff\SendTaskOverdueReminderStaffEmail;
 use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -45,7 +46,7 @@ class SendTaskOverdueReminderJob implements ShouldQueue
 
             if ($created_by) {
                 Mail::to($created_by->email)
-                    ->send(new SendTaskOverdueReminderEmail($task));
+                    ->send(new SendTaskOverdueReminderAdminEmail($task));
             }
 
             /**
@@ -58,7 +59,7 @@ class SendTaskOverdueReminderJob implements ShouldQueue
 
             if ($assigned_to) {
                 Mail::to($assigned_to->email)
-                    ->send(new SendTaskOverdueReminderEmail($task));
+                    ->send(new SendTaskOverdueReminderStaffEmail($task));
             }
 
             /**

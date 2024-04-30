@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Admin;
+namespace App\Mail\Admin\Task\Admin;
 
 use App\Models\Task;
 use Illuminate\Bus\Queueable;
@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendTaskOverdueReminderEmail extends Mailable
+class SendTaskOverdueReminderAdminEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class SendTaskOverdueReminderEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'The Task is Overdue',
+            subject: 'Send Task Overdue Reminder',
         );
     }
 
@@ -40,10 +40,10 @@ class SendTaskOverdueReminderEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.admin.send-task-overdue-reminder-email',
+            markdown: 'emails.task.send-task-overdue-reminder-admin-email',
             with: [
                 'task' => $this->task,
-                'url' => $this->task->exists ? route('admin.tasks.show', $this->task->id) : '',
+                'url' => route('admin.tasks.index'),
             ]
         );
     }
