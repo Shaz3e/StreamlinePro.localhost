@@ -98,7 +98,7 @@
                                         </td>
                                         <td>
                                             @if ($task->is_started)
-                                                {{ date('d M Y H:i A', strtotime($task->start_time)) }}
+                                                {{ $task->start_time->format('d M Y H:i A') }}
                                             @else
                                                 @if (auth()->user()->id == $task->assignee->id)
                                                     <button type="submit" wire:click="startTask({{ $task->id }})"
@@ -113,7 +113,7 @@
                                             @if (!$task->is_started && !$task->is_completed)
                                                 ...
                                             @elseif($task->is_started && $task->is_completed)
-                                                {{ date('d M Y H:i A', strtotime($task->complete_time)) }}
+                                                {{ $task->complete_time->format('d M Y H:i A') }}
                                             @else
                                                 @if (auth()->user()->id == $task->assignee->id)
                                                     <button type="submit"
@@ -138,7 +138,7 @@
                                                 <small class="text-danger">Task is Overdue</small>
                                             @elseif (!is_null($task->due_date))
                                                 <small class="text-primary">
-                                                    {{ date('d M Y H:i A', strtotime($task->due_date)) }}
+                                                    {{ $task->due_date->format('d M Y H:i A') }}
                                                 </small>
                                             @else
                                                 <small class="text-muted">No Due Date</small>

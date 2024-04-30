@@ -51,9 +51,6 @@ class StoreTaskRequest extends BaseFormRequest
             'assigned_to' => [
                 'required', 'integer', 'exists:admins,id'
             ],
-            'due_date' => [
-                'after_or_equal:' . Carbon::now()->format('Y-m-d H:i:s'),
-            ],
             'start_date' => [
                 'nullable',
                 'date_format:"Y-m-d H:i:s"',

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,6 +17,12 @@ class Task extends Model implements Auditable
 
     // SoftDeletes
     protected $dates = ['deleted_at'];
+
+    protected $casts = [
+        'start_time' => 'datetime',
+        'completed_time' => 'datetime',
+        'due_date' => 'datetime',
+    ];
 
     protected function setAuditInclude()
     {

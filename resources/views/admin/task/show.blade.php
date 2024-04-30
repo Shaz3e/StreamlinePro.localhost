@@ -92,7 +92,7 @@
                     @elseif ($task->due_date == null)
                         <strong class="badge bg-info">No Due Date</strong>
                     @else
-                        <strong>{{ date('l, F j, Y h:i A', strtotime($task->due_date)) }}</strong>
+                        <strong>{{ $task->due_date->format('l, F j, Y h:i A') }}</strong>
                     @endif
                 </div>
             </div>
@@ -104,7 +104,7 @@
 
                     <small>Start Time</small><br>
                     @if ($task->is_started)
-                        <strong>{{ date('d M Y H:i A', strtotime($task->start_time)) }}</strong>
+                        <strong>{{ $task->start_time->format('d M Y H:i A') }}</strong>
                     @else
                         <a href="?start=1" class="btn btn-sm btn-success">
                             <i class="ri-timer-line"></i> Start
@@ -117,7 +117,7 @@
                     @if (!$task->is_started && !$task->is_completed)
                         ...
                     @elseif($task->is_started && $task->is_completed)
-                        {{ date('d M Y H:i A', strtotime($task->complete_time)) }}
+                        {{ $task->complete_time->format('d M Y H:i A') }}
                     @else
                         <a href="?complete=1" class="btn btn-sm btn-success">
                             <i class="ri-timer-flash-line"></i> Finish

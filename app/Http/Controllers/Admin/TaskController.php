@@ -31,8 +31,7 @@ class TaskController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        // Check Authorize
+    {// Check Authorize
         Gate::authorize('create', Task::class);
 
         // Get all active task list
