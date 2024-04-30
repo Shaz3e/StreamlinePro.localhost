@@ -17,6 +17,11 @@ class Invoice extends Model implements Auditable
     // SoftDeletes
     protected $dates = ['deleted_at'];
 
+    protected $casts = [
+        'invoice_date' => 'date',
+        'due_date'     => 'date',
+    ];
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table
@@ -49,17 +54,4 @@ class Invoice extends Model implements Auditable
     {
         return $this->belongsTo(InvoiceStatus::class, 'invoice_status_id');
     }
-
-    // $invoice = Invoice::create([...]);
-
-    // $product1 = Product::find(1);
-    // $product2 = Product::find(2);
-
-    // $invoice->products()->attach([
-    //     $product1->id => ['quantity' => 2, 'price' => 100],
-    //     $product2->id => ['quantity' => 1, 'price' => 50],
-    // ]);
-
-    // $invoice = Invoice::find($id);
-    // $products = $invoice->products;
 }

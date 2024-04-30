@@ -61,7 +61,7 @@
 
                                     <td>
                                         @if ($todo->reminder)
-                                            <span class="badge bg-danger">{{ $todo->reminder }}</span>
+                                            <span class="badge bg-danger">{{ $todo->reminder->format('d M Y H:i A') }}</span>
                                             <br />
                                         @endif
                                         {{ $todo->title }}

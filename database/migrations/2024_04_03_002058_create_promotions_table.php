@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->boolean('is_active')->default(1);
             $table->boolean('is_featured')->default(0);
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('end_date')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

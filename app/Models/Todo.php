@@ -17,6 +17,10 @@ class Todo extends Model implements Auditable
     // SoftDeletes
     protected $dates = ['deleted_at'];
 
+    protected $casts = [
+        'reminder' => 'datetime',
+    ];
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table

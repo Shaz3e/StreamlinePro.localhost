@@ -39,7 +39,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-text">Invoice Date</div>
-                    <h4 class="card-title">{{ date('l, jS M Y', strtotime($invoice->invoice_date)) }}</h4>
+                    <h4 class="card-title">{{ $invoice->invoice_date->format('l, jS M Y') }}</h4>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-text">Due Date</div>
-                    <h4 class="card-title">{{ date('l, jS M Y', strtotime($invoice->due_date)) }}</h4>
+                    <h4 class="card-title">{{ $invoice->due_date->format('l, jS M Y') }}</h4>
                 </div>
             </div>
         </div>
