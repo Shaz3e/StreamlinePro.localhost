@@ -30,7 +30,7 @@ class SendTaskOverdueReminderStaffEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Task Overdue Reminder Staff Email',
+            subject: 'Your Task Overdue Reminder',
         );
     }
 
