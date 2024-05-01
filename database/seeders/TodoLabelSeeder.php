@@ -13,7 +13,7 @@ class TodoLabelSeeder extends Seeder
      */
     public function run(): void
     {
-        $todo_statuses = [
+        $todo_labels = [
             ['name' => 'Pending', 'text_color' => 'white', 'bg_color' => 'blue', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now(),],
             ['name' => 'In Progress', 'text_color' => 'black', 'bg_color' => 'cyan', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now(),],
             ['name' => 'Completed', 'text_color' => 'white', 'bg_color' => '#6aa84f', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now(),],
@@ -26,6 +26,6 @@ class TodoLabelSeeder extends Seeder
             ['name' => 'Low Priority', 'text_color' => 'white', 'bg_color' => '#e06666', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now(),],
         ];
 
-        DB::table('todo_labels')->insert($todo_statuses);
+        DB::table('todo_labels')->insert($todo_labels);
     }
 }
