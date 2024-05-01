@@ -42,7 +42,7 @@
                             {{-- /.col --}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="invoice_label_id">Invoice Status</label>
+                                    <label for="invoice_label_id">Invoice Label <small>for internal use</small></label>
                                     <select name="invoice_label_id" class="form-control select2" id="invoice_label_id">
                                         @foreach ($invoiceLabels as $label)
                                             <option value="{{ $label->id }}"
