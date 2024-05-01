@@ -20,7 +20,7 @@ class Task extends Model implements Auditable
 
     protected $casts = [
         'start_time' => 'datetime',
-        'completed_time' => 'datetime',
+        'complete_time' => 'datetime',
         'due_date' => 'datetime',
         'notification_time' => 'datetime',
     ];
