@@ -58,7 +58,7 @@ class TaskList extends Component
         }
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('todos');
+        $columns = Schema::getColumnListing('tasks');
 
         // Filter records based on search query
         if ($this->search !== '') {
