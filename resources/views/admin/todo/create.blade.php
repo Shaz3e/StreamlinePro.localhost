@@ -31,14 +31,14 @@
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="todo_status_id">Status</label>
-                                    <select name="todo_status_id" class="form-control" id="todo_status_id">
-                                        @foreach ($todoStatus as $status)
-                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                    <label for="todo_label_id">Label</label>
+                                    <select name="todo_label_id" class="form-control" id="todo_label_id">
+                                        @foreach ($todoLabels as $label)
+                                            <option value="{{ $label->id }}">{{ $label->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('todo_status_id')
+                                @error('todo_label_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

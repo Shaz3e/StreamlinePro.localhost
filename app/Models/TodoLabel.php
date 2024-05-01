@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable as AuditingAuditable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class TodoStatus extends Model implements Auditable
+class TodoLabel extends Model implements Auditable
 {
     use HasFactory, AuditingAuditable, SoftDeletes;
 
@@ -28,7 +28,7 @@ class TodoStatus extends Model implements Auditable
 
     public function todos()
     {
-        return $this->hasMany(Todo::class, 'todo_status_id');
+        return $this->hasMany(Todo::class, 'todo_label_id');
     }
 
     protected static function boot()
@@ -36,7 +36,7 @@ class TodoStatus extends Model implements Auditable
         parent::boot();
 
         static::deleting(function ($todoStatus) {
-            $todoStatus->todos()->where('todo_status_id', $todoStatus->id)->update(['todo_status_id' => null]);
+            $todoStatus->todos()->where('todo_label_id', $todoStatus->id)->update(['todo_label_id' => null]);
         });
     }
 }

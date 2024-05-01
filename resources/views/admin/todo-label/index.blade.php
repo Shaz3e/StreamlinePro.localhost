@@ -3,14 +3,14 @@
 @section('content')
 
     @include('partials.page-header', [
-        'title' => 'Todo Status List',
+        'title' => 'Todo Label List',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
             ['text' => 'View List', 'link' => null],
         ],
     ])
 
-    @livewire('admin.todo-status.todo-status-list')
+    @livewire('admin.todo-label.todo-label-list')
 
 @endsection
 

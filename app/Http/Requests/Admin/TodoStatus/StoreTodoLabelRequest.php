@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\TodoStatus;
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreTodoStatusRequest extends BaseFormRequest
+class StoreTodoLabelRequest extends BaseFormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,7 @@ class StoreTodoStatusRequest extends BaseFormRequest
         return [
             'name' => [
                 'required', 'string', 'max:255',
-                Rule::unique('todo_statuses', 'name')->ignore($this->todo_status),
+                Rule::unique('todo_labels', 'name')->ignore($this->todo_label),
             ],
             'text_color' => [
                 'nullable', 'hex_or_alpha',

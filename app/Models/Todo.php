@@ -31,8 +31,8 @@ class Todo extends Model implements Auditable
         $this->auditInclude = $columns;
     }
 
-    public function status()
+    public function label()
     {
-        return $this->belongsTo(TodoStatus::class, 'todo_status_id');
+        return $this->belongsTo(TodoLabel::class, 'todo_label_id');
     }
 }

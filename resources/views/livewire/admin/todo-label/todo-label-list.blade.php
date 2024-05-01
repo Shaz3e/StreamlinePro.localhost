@@ -23,7 +23,7 @@
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.todo-status.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.todo-labels.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -39,7 +39,7 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Label Name</th>
                                 @if (!$showDeleted)
                                     <th>Status</th>
                                 @endif
@@ -47,54 +47,54 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($todoStatusList as $todoStatus)
-                                <tr wire:key="{{ $todoStatus->id }}">
+                            @foreach ($todoLabelList as $todoLabel)
+                                <tr wire:key="{{ $todoLabel->id }}">
                                     <td>
                                         <span class="badge"
-                                            style="background-color:{{ $todoStatus->bg_color }}; color:{{ $todoStatus->text_color }}">
-                                            {{ $todoStatus->name }}
+                                            style="background-color:{{ $todoLabel->bg_color }}; color:{{ $todoLabel->text_color }}">
+                                            {{ $todoLabel->name }}
                                         </span>
                                     </td>
                                     @if (!$showDeleted)
                                         <td>
-                                            <input type="checkbox" wire:change="toggleStatus({{ $todoStatus->id }})"
-                                                id="is_active_{{ $todoStatus->id }}" switch="bool"
-                                                {{ $todoStatus->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $todoStatus->id }}" data-on-label="Yes"
+                                            <input type="checkbox" wire:change="toggleLabel({{ $todoLabel->id }})"
+                                                id="is_active_{{ $todoLabel->id }}" switch="bool"
+                                                {{ $todoLabel->is_active ? 'checked' : '' }} />
+                                            <label for="is_active_{{ $todoLabel->id }}" data-on-label="Yes"
                                                 data-off-label="No"></label>
                                         </td>
                                     @endif
                                     <td class="text-right">
                                         @if ($showDeleted)
-                                            @can('todo-status.restore')
-                                                <button wire:click="confirmRestore({{ $todoStatus->id }})"
+                                            @can('todo-label.restore')
+                                                <button wire:click="confirmRestore({{ $todoLabel->id }})"
                                                     class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-arrow-go-back-line"></i>
                                                 </button>
                                             @endcan
-                                            @can('todo-status.force.delete')
-                                                <button wire:click="confirmForceDelete({{ $todoStatus->id }})"
+                                            @can('todo-label.force.delete')
+                                                <button wire:click="confirmForceDelete({{ $todoLabel->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-7-line"></i>
                                                 </button>
                                             @endcan
                                         @else
-                                            @can('todo-status.read')
-                                                <a href="{{ route('admin.todo-status.show', $todoStatus->id) }}"
+                                            @can('todo-label.read')
+                                                <a href="{{ route('admin.todo-labels.show', $todoLabel->id) }}"
                                                     class="btn btn-sm btn-outline-info">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                             @endcan
-                                            @can('todo-status.update')
-                                                <a href="{{ route('admin.todo-status.edit', $todoStatus->id) }}"
+                                            @can('todo-label.update')
+                                                <a href="{{ route('admin.todo-labels.edit', $todoLabel->id) }}"
                                                     class="btn btn-sm btn-outline-success">
                                                     <i class="ri-pencil-line"></i>
                                                 </a>
                                             @endcan
-                                            @can('todo-status.delete')
-                                                <button wire:click="confirmDelete({{ $todoStatus->id }})"
+                                            @can('todo-label.delete')
+                                                <button wire:click="confirmDelete({{ $todoLabel->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-line"></i>
@@ -107,7 +107,7 @@
                         </tbody>
                     </table>
 
-                    {{ $todoStatusList->links() }}
+                    {{ $todoLabelList->links() }}
                 </div>
             </div>
         </div>

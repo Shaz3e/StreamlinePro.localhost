@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Todo;
 
 use App\Models\Todo;
-use App\Models\TodoStatus;
+use App\Models\TodoLabel;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -18,14 +18,14 @@ class TodoList extends Component
     public $search = '';
 
     #[Url()]
-    public $filterStatus;
+    public $filterLabel;
 
     public $perPage = 10;
 
     public $id;
 
     // Update todo status
-    public $statuses = [];
+    public $labels = [];
 
     // record to delete
     public $recordToDelete;
@@ -55,8 +55,8 @@ class TodoList extends Component
         }
 
         // Filter records based on status
-        if ($this->filterStatus) {
-            $query->where('todo_status_id', $this->filterStatus);
+        if ($this->filterLabel) {
+            $query->where('todo_label_id', $this->filterLabel);
         }
 
         // Apply filter for deleted records if the option is selected
@@ -66,11 +66,11 @@ class TodoList extends Component
 
         $todos = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        $getTodoStatus = TodoStatus::where('is_active', 1)->get();
+        $getTodoLabels = TodoLabel::where('is_active', 1)->get();
 
         return view('livewire.admin.todo.todo-list', [
             'todos' => $todos,
-            'getTodoStatus' => $getTodoStatus,
+            'getTodoLabels' => $getTodoLabels,
         ]);
     }
 
@@ -93,7 +93,7 @@ class TodoList extends Component
     /**
      * Toggle Status
      */
-    public function updateStatus($todoId)
+    public function updateLabel($todoId)
     {
         // Get data
         $todo = Todo::find($todoId);
@@ -105,7 +105,7 @@ class TodoList extends Component
         }
         // Change Status
         $todo->update([
-            'todo_status_id' => $this->statuses[$todoId . '_status'],
+            'todo_label_id' => $this->labels[$todoId . '_label'],
         ]);
 
         $this->dispatch('statusChanged');

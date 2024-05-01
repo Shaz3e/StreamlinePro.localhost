@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('todo_statuses', function (Blueprint $table) {
+        Schema::create('todo_labels', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('text_color')->nullable()->default('#000000');

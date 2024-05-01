@@ -3,25 +3,25 @@
 namespace App\Policies;
 
 use App\Models\Admin;
-use App\Models\TodoStatus;
+use App\Models\TodoLabel;
 
-class TodoStatusPolicy
+class TodoLabelPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(Admin $admin)
     {
-        if($admin->can('todo-status.list')){
+        if($admin->can('todo-label.list')){
             return true;
         }
     }
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Admin $admin, TodoStatus $todoStatus)
+    public function view(Admin $admin, TodoLabel $todoLabel)
     {
-        if ($admin->can('todo-status.read')) {
+        if ($admin->can('todo-label.read')) {
             return true;
         }
     }
@@ -31,7 +31,7 @@ class TodoStatusPolicy
      */
     public function create(Admin $admin)
     {
-        if ($admin->can('todo-status.create')) {
+        if ($admin->can('todo-label.create')) {
             return true;
         }
     }
@@ -39,9 +39,9 @@ class TodoStatusPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Admin $admin, TodoStatus $todoStatus)
+    public function update(Admin $admin, TodoLabel $todoLabel)
     {
-        if ($admin->can('todo-status.update')) {
+        if ($admin->can('todo-label.update')) {
             return true;
         }
     }
@@ -49,9 +49,9 @@ class TodoStatusPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Admin $admin, TodoStatus $todoStatus)
+    public function delete(Admin $admin, TodoLabel $todoLabel)
     {
-        if ($admin->can('todo-status.delete')) {
+        if ($admin->can('todo-label.delete')) {
             return true;
         }
     }
@@ -59,9 +59,9 @@ class TodoStatusPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(Admin $admin, TodoStatus $todoStatus)
+    public function restore(Admin $admin, TodoLabel $todoLabel)
     {
-        if ($admin->can('todo-status.restore')) {
+        if ($admin->can('todo-label.restore')) {
             return true;
         }
     }
@@ -69,9 +69,9 @@ class TodoStatusPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(Admin $admin, TodoStatus $todoStatus)
+    public function forceDelete(Admin $admin, TodoLabel $todoLabel)
     {
-        if ($admin->can('todo-status.force.delete')) {
+        if ($admin->can('todo-label.force.delete')) {
             return true;
         }
     }

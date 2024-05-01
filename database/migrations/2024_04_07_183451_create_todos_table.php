@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('todo_status_id')
+            $table->foreignId('todo_label_id')
                 ->nullable();
-            $table->foreign('todo_status_id')
+            $table->foreign('todo_label_id')
                 ->references('id')
-                ->on('todo_statuses')
+                ->on('todo_labels')
                 ->onDelete('set null');
 
             $table->foreignId('admin_id')->nullable();

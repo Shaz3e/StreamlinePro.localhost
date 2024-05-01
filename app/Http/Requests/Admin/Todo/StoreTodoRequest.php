@@ -21,8 +21,8 @@ class StoreTodoRequest extends BaseFormRequest
             'todo_details' => [
                 'required'
             ],
-            'todo_status_id' => [
-                'required', 'integer', 'exists:todo_statuses,id'
+            'todo_label_id' => [
+                'required', 'integer', 'exists:todo_labels,id'
             ],
             'reminder' => [
                 'nullable',

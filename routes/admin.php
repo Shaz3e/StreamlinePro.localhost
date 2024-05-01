@@ -19,8 +19,8 @@ use App\Http\Controllers\Admin\ProfileController;
 // Todos
 use App\Http\Controllers\Admin\TodoController;
 
-// Todo Status
-use App\Http\Controllers\Admin\TodoStatusController;
+// Todo Label
+use App\Http\Controllers\Admin\TodoLabelController;
 
 // Tasks
 use App\Http\Controllers\Admin\TaskController;
@@ -265,12 +265,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Todo Status
          */
-        Route::resource('todo-status', TodoStatusController::class);
+        Route::resource('todo-labels', TodoLabelController::class);
         // Audit
-        Route::get('todo-status-audit/{id}', [TodoStatusController::class, 'audit'])
-            ->name('todo-status.audit');
-        Route::get('todo-status-audit/delete/{id}', [TodoStatusController::class, 'deleteAudit'])
-            ->name('todo-status.audit.delete');
+        Route::get('todo-labels-audit/{id}', [TodoLabelController::class, 'audit'])
+            ->name('todo-labels.audit');
+        Route::get('todo-labels-audit/delete/{id}', [TodoLabelController::class, 'deleteAudit'])
+            ->name('todo-labels.audit.delete');
 
         /**
          * Support Ticket Status

@@ -22,7 +22,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Status</th>
+                                    <th>Label</th>
                                     <th>Closed At</th>
                                     <th>Created At</th>
                                     <th>Updated At</th>
@@ -30,7 +30,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>{{ $todo->status->name }}</th>
+                                    <th>{{ $todo->label->name }}</th>
                                     <td>
                                         @if ($todo->is_closed)
                                             {{ $todo->closed_at->format('l, F j, Y') }}

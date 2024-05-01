@@ -1,29 +1,27 @@
 @extends('components.layouts.app')
 
 @section('content')
-    @include('partials.page-header', [
-        'title' => 'Edit Todo Status',
-        'breadcrumbs' => [
-            ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'Todo Status List', 'link' => route('admin.todo-status.index')],
-            ['text' => 'Edit', 'link' => null],
-        ],
-    ])
+@include('partials.page-header', [
+    'title' => 'Create New Todo Label',
+    'breadcrumbs' => [
+        ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
+        ['text' => 'Todo Label List', 'link' => route('admin.todo-labels.index')],
+        ['text' => 'Create', 'link' => null],
+    ],
+])
 
     {{-- Create Form --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.todo-status.update', $todoStatus->id) }}" method="POST" class="needs-validation"
-                    novalidate>
+                <form action="{{ route('admin.todo-labels.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
-                    @method('put')
                     <div class="card-body">
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Todo Status Name</label>
+                            <label for="name" class="col-sm-2 col-form-label">Todo Label Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" id="name" class="form-control"
-                                    value="{{ old('name', $todoStatus->name) }}" required>
+                                    value="{{ old('name') }}" required>
                                 @error('name')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -34,10 +32,8 @@
                             <label for="is_active" class="col-sm-2 col-form-label">Show/Hide</label>
                             <div class="col-sm-10">
                                 <select class="form-control" name="is_active" required>
-                                    <option value="1"
-                                        {{ old('is_active', $todoStatus->is_active) == 1 ? 'selected' : '' }}>Show</option>
-                                    <option value="0"
-                                        {{ old('is_active', $todoStatus->is_active) == 0 ? 'selected' : '' }}>Hide</option>
+                                    <option value="1" {{ old('is_active') == 1 ? 'selected' : '' }}>Show</option>
+                                    <option value="0" {{ old('is_active') == 0 ? 'selected' : '' }}>Hide</option>
                                 </select>
                                 @error('is_active')
                                     <span class="text-danger">{{ $message }}</span>
@@ -50,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="text_color">Text Color</label>
                                     <input type="text" name="text_color" class="form-control"
-                                        id="colorpicker-text" value="{{ old('text_color', $todoStatus->text_color) }}"
+                                        id="colorpicker-text" value="{{ old('text_color', '#000000') }}"
                                         required>
                                     @error('text_color')
                                         <span class="text-danger">{{ $message }}</span>
@@ -62,7 +58,7 @@
                                 <div class="form-group">
                                     <label for="bg_color">Background Color</label>
                                     <input type="text" name="bg_color" class="form-control"
-                                        id="colorpicker-background" value="{{ old('bg_color', $todoStatus->bg_color) }}"
+                                        id="colorpicker-background" value="{{ old('bg_color', '#ffffff') }}"
                                         required>
                                     @error('bg_color')
                                         <span class="text-danger">{{ $message }}</span>

@@ -119,14 +119,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'todo.delete'],
             ['guard_name' => 'admin', 'name' => 'todo.restore'],
             ['guard_name' => 'admin', 'name' => 'todo.force.delete'],
-            // Todo Status
-            ['guard_name' => 'admin', 'name' => 'todo-status.list'],
-            ['guard_name' => 'admin', 'name' => 'todo-status.create'],
-            ['guard_name' => 'admin', 'name' => 'todo-status.read'],
-            ['guard_name' => 'admin', 'name' => 'todo-status.update'],
-            ['guard_name' => 'admin', 'name' => 'todo-status.delete'],
-            ['guard_name' => 'admin', 'name' => 'todo-status.restore'],
-            ['guard_name' => 'admin', 'name' => 'todo-status.force.delete'],
+            // Todo Label
+            ['guard_name' => 'admin', 'name' => 'todo-label.list'],
+            ['guard_name' => 'admin', 'name' => 'todo-label.create'],
+            ['guard_name' => 'admin', 'name' => 'todo-label.read'],
+            ['guard_name' => 'admin', 'name' => 'todo-label.update'],
+            ['guard_name' => 'admin', 'name' => 'todo-label.delete'],
+            ['guard_name' => 'admin', 'name' => 'todo-label.restore'],
+            ['guard_name' => 'admin', 'name' => 'todo-label.force.delete'],
             // Task
             ['guard_name' => 'admin', 'name' => 'task.list'],
             ['guard_name' => 'admin', 'name' => 'task.create'],

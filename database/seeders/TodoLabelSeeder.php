@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TodoStatusSeeder extends Seeder
+class TodoLabelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -26,6 +26,6 @@ class TodoStatusSeeder extends Seeder
             ['name' => 'Low Priority', 'text_color' => 'white', 'bg_color' => '#e06666', 'is_active' => 1, 'created_at' => now(), 'updated_at' => now(),],
         ];
 
-        DB::table('todo_statuses')->insert($todo_statuses);
+        DB::table('todo_labels')->insert($todo_statuses);
     }
 }

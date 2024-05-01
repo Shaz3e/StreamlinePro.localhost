@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\TodoStatus\StoreTodoStatusRequest;
-use App\Models\TodoStatus;
+use App\Http\Requests\Admin\TodoStatus\StoreTodoLabelRequest;
+use App\Models\TodoLabel;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
-class TodoStatusController extends Controller
+class TodoLabelController extends Controller
 {
     use FormHelper;
 
@@ -20,9 +20,9 @@ class TodoStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('viewAny', TodoStatus::class);
+        Gate::authorize('viewAny', TodoLabel::class);
 
-        return view('admin.todo-status.index');
+        return view('admin.todo-label.index');
     }
 
     /**
@@ -31,39 +31,39 @@ class TodoStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('create', TodoStatus::class);
+        Gate::authorize('create', TodoLabel::class);
 
-        return view('admin.todo-status.create');
+        return view('admin.todo-label.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTodoStatusRequest $request)
+    public function store(StoreTodoLabelRequest $request)
     {
         // Check Authorize
-        Gate::authorize('create', TodoStatus::class);
+        Gate::authorize('create', TodoLabel::class);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $todoStatus = TodoStatus::create($validated);
+        $todoLabel = TodoLabel::create($validated);
 
-        session()->flash('success', 'Todo Status has been created successfully!');
+        session()->flash('success', 'Todo Label has been created successfully!');
         
-        return $this->saveAndRedirect($request, 'todo-status', $todoStatus->id);
+        return $this->saveAndRedirect($request, 'todo-labels', $todoLabel->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TodoStatus $todoStatus)
+    public function show(TodoLabel $todoLabel)
     {
         // Check Authorize
-        Gate::authorize('view', $todoStatus);
+        Gate::authorize('view', $todoLabel);
 
-        $audits = $todoStatus->audits()
+        $audits = $todoLabel->audits()
             ->latest()
             ->paginate(10);
 
@@ -72,8 +72,8 @@ class TodoStatusController extends Controller
             return response()->json($audits);
         }
 
-        return view('admin.todo-status.show', [
-            'todoStatus' => $todoStatus,
+        return view('admin.todo-label.show', [
+            'todoLabel' => $todoLabel,
             'audits' => $audits,
         ]);
     }
@@ -81,34 +81,34 @@ class TodoStatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TodoStatus $todoStatus)
+    public function edit(TodoLabel $todoLabel)
     {
         // Check Authorize
-        Gate::authorize('update', $todoStatus);
+        Gate::authorize('update', $todoLabel);
 
-        return view('admin.todo-status.edit', [
-            'todoStatus' => $todoStatus,
+        return view('admin.todo-label.edit', [
+            'todoLabel' => $todoLabel,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreTodoStatusRequest $request, TodoStatus $todoStatus)
+    public function update(StoreTodoLabelRequest $request, TodoLabel $todoLabel)
     {
         // Check Authorize
-        Gate::authorize('view', $todoStatus);
+        Gate::authorize('view', $todoLabel);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $todoStatus->update($validated);
+        $todoLabel->update($validated);
 
         // Flash message
-        session()->flash('success', 'Todo Status has been updated successfully!');
+        session()->flash('success', 'Todo Label has been updated successfully!');
         
-        return $this->saveAndRedirect($request, 'todo-status', $todoStatus->id);
+        return $this->saveAndRedirect($request, 'todo-labels', $todoLabel->id);
     }
 
     /**
@@ -117,17 +117,17 @@ class TodoStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('view', TodoStatus::class);
+        Gate::authorize('view', TodoLabel::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
-            return view('admin.todo-status.audit', [
+            return view('admin.todo-label.audit', [
                 'auditLog' => $auditLog,
             ]);
         } else {
             session()->flash('error', 'Log not available');
-            return redirect()->route('admin.todo-status.index');
+            return redirect()->route('admin.todo-labels.index');
         }
     }
 
@@ -137,7 +137,7 @@ class TodoStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('delete', TodoStatus::class);
+        Gate::authorize('delete', TodoLabel::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -146,6 +146,6 @@ class TodoStatusController extends Controller
         }
 
         session()->flash('success', 'Log deleted successfully');
-        return redirect()->route('admin.todo-status.index');
+        return redirect()->route('admin.todo-labels.index');
     }
 }

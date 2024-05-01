@@ -179,7 +179,7 @@
                             @endcanany
 
                             {{-- Manage Status --}}
-                            @canany(['todo-status.list', 'task-status.list', 'ticket-status.list',
+                            @canany(['todo-label.list', 'task-status.list', 'ticket-status.list',
                                 'ticket-priority.list', 'invoice-status.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -187,12 +187,12 @@
                                         <span>Manage Status</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
-                                        {{-- Todo Status --}}
-                                        @can('todo-status.list')
-                                            <li class="{{ request()->routeIs('admin.todo-status.*') ? 'mm-active' : '' }}">
-                                                <a href="{{ route('admin.todo-status.index') }}"
-                                                    class="{{ request()->routeIs('admin.todo-status.*') ? 'active' : '' }}">
-                                                    Todo Status
+                                        {{-- Todo Labels --}}
+                                        @can('todo-label.list')
+                                            <li class="{{ request()->routeIs('admin.todo-labels.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.todo-labels.index') }}"
+                                                    class="{{ request()->routeIs('admin.todo-labels.*') ? 'active' : '' }}">
+                                                    Todo Labels
                                                 </a>
                                             </li>
                                         @endcan

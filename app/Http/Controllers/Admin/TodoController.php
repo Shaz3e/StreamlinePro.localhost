@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Todo\StoreTodoRequest;
 use App\Models\Todo;
-use App\Models\TodoStatus;
+use App\Models\TodoLabel;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -34,10 +34,10 @@ class TodoController extends Controller
         // Check Authorize
         Gate::authorize('create', Todo::class);
 
-        $todoStatus = TodoStatus::where('is_active', 1)->get();
+        $todoLabels = TodoLabel::where('is_active', 1)->get();
 
         return view('admin.todo.create', [
-            'todoStatus' => $todoStatus,
+            'todoLabels' => $todoLabels,
         ]);
     }
 
@@ -103,11 +103,11 @@ class TodoController extends Controller
         // Check Authorize
         Gate::authorize('update', $todo);
 
-        $todoStatus = TodoStatus::where('is_active', 1)->get();
+        $todoLabels = TodoLabel::where('is_active', 1)->get();
 
         return view('admin.todo.edit', [
             'todo' => $todo,
-            'todoStatus' => $todoStatus,
+            'todoLabels' => $todoLabels,
         ]);
     }
 

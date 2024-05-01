@@ -10,11 +10,11 @@
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12">
-            <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Status</option>
+            <select wire:model.live="filterLabel" class="form-control form-control-sm form-control-border">
+                <option value="">Filter by Label</option>
                 <option value="">All</option>
-                @foreach ($getTodoStatus as $status)
-                    <option value="{{ $status->id }}">{{ $status->name }}</option>
+                @foreach ($getTodoLabels as $label)
+                    <option value="{{ $label->id }}">{{ $label->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -50,7 +50,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 60%">My Todo</th>
-                                <th style="width: 10%">Status</th>
+                                <th style="width: 10%">Label</th>
                                 <th style="width: 10%"></th>
                                 <th style="width: 20%"></th>
                             </tr>
@@ -70,21 +70,21 @@
                                         {!! $todo->todo_details !!}
                                     </td>
                                     <td>
-                                        @if ($todo->todo_status_id)
+                                        @if ($todo->todo_label_id)
                                             <span class="badge"
-                                                style="background-color:{{ $todo->status->bg_color }}; color:{{ $todo->status->text_color }}">
-                                                {{ $todo->status->name }}
+                                                style="background-color:{{ $todo->label->bg_color }}; color:{{ $todo->label->text_color }}">
+                                                {{ $todo->label->name }}
                                             </span>
                                         @endif
                                     </td>
                                     <td>
-                                        <select wire:change="updateStatus({{ $todo->id }})"
-                                            wire:model="statuses.{{ $todo->id }}_status"
+                                        <select wire:change="updateLabel({{ $todo->id }})"
+                                            wire:model="labels.{{ $todo->id }}_label"
                                             class="form-control form-control-sm" id="status_{{ $todo->id }}">
                                             <option value="">Change</option>
-                                            @foreach ($getTodoStatus as $status)
-                                                <option value="{{ $status->id }}">
-                                                    {{ $status->name }}
+                                            @foreach ($getTodoLabels as $label)
+                                                <option value="{{ $label->id }}">
+                                                    {{ $label->name }}
                                                 </option>
                                             @endforeach
                                         </select>

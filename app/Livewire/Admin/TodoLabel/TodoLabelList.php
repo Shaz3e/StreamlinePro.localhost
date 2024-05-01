@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\TodoStatus;
+namespace App\Livewire\Admin\TodoLabel;
 
-use App\Models\TodoStatus;
+use App\Models\TodoLabel;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class TodoStatusList extends Component
+class TodoLabelList extends Component
 {
     use WithPagination;
 
@@ -31,10 +31,10 @@ class TodoStatusList extends Component
      */
     public function render()
     {
-        $query = TodoStatus::query();
+        $query = TodoLabel::query();
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('todo_statuses');
+        $columns = Schema::getColumnListing('todo_labels');
 
         // Filter records based on search query
         if ($this->search !== '') {
@@ -50,10 +50,10 @@ class TodoStatusList extends Component
             $query->onlyTrashed();
         }
 
-        $todoStatusList = $query->orderBy('id', 'asc')->paginate($this->perPage);
+        $todoLabelList = $query->orderBy('id', 'asc')->paginate($this->perPage);
 
-        return view('livewire.admin.todo-status.todo-status-list', [
-            'todoStatusList' => $todoStatusList
+        return view('livewire.admin.todo-label.todo-label-list', [
+            'todoLabelList' => $todoLabelList
         ]);
     }
 
@@ -76,19 +76,19 @@ class TodoStatusList extends Component
     /**
      * Toggle Status
      */
-    public function toggleStatus($todoStatusId)
+    public function toggleLabel($id)
     {
         // Get data
-        $todoStatus = TodoStatus::find($todoStatusId);
+        $todoLabel = TodoLabel::find($id);
 
         // Check user exists
-        if (!$todoStatus) {
-            $this->dispatch('error', 'Todo Staus not found!');
+        if (!$todoLabel) {
+            $this->dispatch('error', 'Todo Label not found!');
             return;
         }
 
         // Change Status
-        $todoStatus->update(['is_active' => !$todoStatus->is_active]);
+        $todoLabel->update(['is_active' => !$todoLabel->is_active]);
         $this->dispatch('statusChanged');
     }
 
@@ -114,16 +114,16 @@ class TodoStatusList extends Component
         }
 
         // get id
-        $todoStatus = TodoStatus::find($this->recordToDelete);
+        $todoLabel = TodoLabel::find($this->recordToDelete);
 
         // Check record exists
-        if (!$todoStatus) {
+        if (!$todoLabel) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $todoStatus->delete();
+        $todoLabel->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;
@@ -132,9 +132,9 @@ class TodoStatusList extends Component
     /**
      * Confirm Restore
      */
-    public function confirmRestore($todoStatusId)
+    public function confirmRestore($id)
     {
-        $this->recordToDelete = $todoStatusId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmRestore');
     }
 
@@ -144,15 +144,15 @@ class TodoStatusList extends Component
     #[On('restored')]
     public function restore()
     {
-        TodoStatus::withTrashed()->find($this->recordToDelete)->restore();
+        TodoLabel::withTrashed()->find($this->recordToDelete)->restore();
     }
 
     /**
      * Confirm force delete
      */
-    public function confirmForceDelete($userId)
+    public function confirmForceDelete($id)
     {
-        $this->recordToDelete = $userId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmForceDelete');
     }
 
@@ -162,6 +162,6 @@ class TodoStatusList extends Component
     #[On('forceDeleted')]
     public function forceDelete()
     {
-        TodoStatus::withTrashed()->find($this->recordToDelete)->forceDelete();
+        TodoLabel::withTrashed()->find($this->recordToDelete)->forceDelete();
     }
 }
