@@ -18,8 +18,8 @@ class Promotion extends Model implements Auditable
     protected $dates = ['deleted_at'];
 
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'start_date' => 'datetime:Y-m-d H:i:s',
+        'end_date' => 'datetime:Y-m-d H:i:s',
     ];
 
     protected function setAuditInclude()

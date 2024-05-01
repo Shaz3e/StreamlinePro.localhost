@@ -18,8 +18,8 @@ class Todo extends Model implements Auditable
     protected $dates = ['deleted_at'];
 
     protected $casts = [
-        'reminder' => 'datetime',
-        'closed_at' => 'datetime',
+        'reminder' => 'datetime:Y-m-d H:i:s',
+        'closed_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     protected function setAuditInclude()

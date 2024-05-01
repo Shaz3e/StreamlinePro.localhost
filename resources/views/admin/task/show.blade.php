@@ -106,9 +106,13 @@
                     @if ($task->is_started)
                         <strong>{{ $task->start_time->format('d M Y H:i A') }}</strong>
                     @else
-                        <a href="?start=1" class="btn btn-sm btn-success">
-                            <i class="ri-timer-line"></i> Start
-                        </a>
+                        @if (auth()->user()->id === $task->assignee->id)
+                            <a href="?start=1" class="btn btn-sm btn-success">
+                                <i class="ri-timer-line"></i> Start
+                            </a>
+                        @else
+                            <small class="badge bg-info">Not Started</small>
+                        @endif
                     @endif
 
                     <br />
@@ -119,9 +123,13 @@
                     @elseif($task->is_started && $task->is_completed)
                         {{ $task->complete_time->format('d M Y H:i A') }}
                     @else
-                        <a href="?complete=1" class="btn btn-sm btn-success">
-                            <i class="ri-timer-flash-line"></i> Finish
-                        </a>
+                        @if (auth()->user()->id === $task->assignee->id)
+                            <a href="?complete=1" class="btn btn-sm btn-success">
+                                <i class="ri-timer-flash-line"></i> Finish
+                            </a>
+                        @else
+                            <small class="badge bg-info">Not Completed</small>
+                        @endif
                     @endif
 
                     <br />

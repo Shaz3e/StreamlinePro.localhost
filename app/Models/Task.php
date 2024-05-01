@@ -19,10 +19,10 @@ class Task extends Model implements Auditable
     protected $dates = ['deleted_at'];
 
     protected $casts = [
-        'start_time' => 'datetime',
-        'complete_time' => 'datetime',
-        'due_date' => 'datetime',
-        'notification_time' => 'datetime',
+        'start_time' => 'datetime:Y-m-d H:i:s',
+        'complete_time' => 'datetime:Y-m-d H:i:s',
+        'due_date' => 'datetime:Y-m-d H:i:s',
+        'notification_time' => 'datetime:Y-m-d H:i:s',
     ];
 
     protected function setAuditInclude()

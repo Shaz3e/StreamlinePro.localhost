@@ -26,12 +26,12 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('admins')->onDelete('set null');
 
             $table->boolean('is_started')->default(false);
-            $table->timestamp('start_time')->nullable();
+            $table->dateTime('start_time')->nullable();
             $table->boolean('is_completed')->default(false);
-            $table->timestamp('complete_time')->nullable();
+            $table->dateTime('complete_time')->nullable();
             $table->boolean('is_notification_sent')->default(false);
-            $table->timestamp('notification_time')->nullable();
-            $table->timestamp('due_date')->nullable();
+            $table->dateTime('notification_time')->nullable();
+            $table->dateTime('due_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

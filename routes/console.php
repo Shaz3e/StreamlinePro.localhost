@@ -41,10 +41,10 @@ use Illuminate\Support\Facades\Schedule;
  * - Every 12 hours
  * - Every 24 hours
  */
-Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
+// Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
 
 /**
  * If the deadline has passed since the creation of the task.
  * Send task overdue reminder to assigned_to and created_by
  */
-Schedule::job(new SendTaskOverdueReminderJob)->everyMinute();
+// Schedule::job(new SendTaskOverdueReminderJob)->everyMinute();

@@ -25,9 +25,9 @@ return new class extends Migration
 
             $table->string('title');
             $table->longText('todo_details');
-            $table->timestamp('reminder')->nullable();
+            $table->dateTime('reminder')->nullable();
             $table->boolean('is_closed')->default(false);
-            $table->timestamp('closed_at')->nullable();
+            $table->dateTime('closed_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
