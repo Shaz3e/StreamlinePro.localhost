@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\TaskStatus\StoreTaskStatusRequest;
-use App\Models\TaskStatus;
+use App\Http\Requests\Admin\TaskLabel\StoreTaskLabelRequest;
+use App\Models\TaskLabel;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
-class TaskStatusController extends Controller
+class TaskLabelController extends Controller
 {
     use FormHelper;
 
@@ -20,9 +20,9 @@ class TaskStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('viewAny', TaskStatus::class);
+        Gate::authorize('viewAny', TaskLabel::class);
 
-        return view('admin.task-status.index');
+        return view('admin.task-label.index');
     }
 
     /**
@@ -31,39 +31,39 @@ class TaskStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('create', TaskStatus::class);
+        Gate::authorize('create', TaskLabel::class);
 
-        return view('admin.task-status.create');
+        return view('admin.task-label.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskStatusRequest $request)
+    public function store(StoreTaskLabelRequest $request)
     {
         // Check Authorize
-        Gate::authorize('create', TaskStatus::class);
+        Gate::authorize('create', TaskLabel::class);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $taskStatus = TaskStatus::create($validated);
+        $taskLabel = TaskLabel::create($validated);
 
-        session()->flash('success', 'Task Status has been created successfully!');
+        session()->flash('success', 'Task Label has been created successfully!');
         
-        return $this->saveAndRedirect($request, 'task-status', $taskStatus->id);
+        return $this->saveAndRedirect($request, 'task-labels', $taskLabel->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TaskStatus $taskStatus)
+    public function show(TaskLabel $taskLabel)
     {
         // Check Authorize
-        Gate::authorize('view', $taskStatus);
+        Gate::authorize('view', $taskLabel);
 
-        $audits = $taskStatus->audits()
+        $audits = $taskLabel->audits()
             ->latest()
             ->paginate(10);
 
@@ -72,8 +72,8 @@ class TaskStatusController extends Controller
             return response()->json($audits);
         }
 
-        return view('admin.task-status.show', [
-            'taskStatus' => $taskStatus,
+        return view('admin.task-label.show', [
+            'taskLabel' => $taskLabel,
             'audits' => $audits,
         ]);
     }
@@ -81,34 +81,34 @@ class TaskStatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TaskStatus $taskStatus)
+    public function edit(TaskLabel $taskLabel)
     {
         // Check Authorize
-        Gate::authorize('update', $taskStatus);
+        Gate::authorize('update', $taskLabel);
 
-        return view('admin.task-status.edit', [
-            'taskStatus' => $taskStatus,
+        return view('admin.task-label.edit', [
+            'taskLabel' => $taskLabel,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreTaskStatusRequest $request, TaskStatus $taskStatus)
+    public function update(StoreTaskLabelRequest $request, TaskLabel $taskLabel)
     {
         // Check Authorize
-        Gate::authorize('update', $taskStatus);
+        Gate::authorize('update', $taskLabel);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $taskStatus->update($validated);
+        $taskLabel->update($validated);
 
         // Flash message
-        session()->flash('success', 'Task Status has been updated successfully!');
+        session()->flash('success', 'Task Label has been updated successfully!');
         
-        return $this->saveAndRedirect($request, 'task-status', $taskStatus->id);
+        return $this->saveAndRedirect($request, 'task-labels', $taskLabel->id);
     }
 
     /**
@@ -117,17 +117,17 @@ class TaskStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('view', TaskStatus::class);
+        Gate::authorize('view', TaskLabel::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
-            return view('admin.task-status.audit', [
+            return view('admin.task-label.audit', [
                 'auditLog' => $auditLog,
             ]);
         } else {
             session()->flash('error', 'Log not available');
-            return redirect()->route('admin.task-status.index');
+            return redirect()->route('admin.task-labels.index');
         }
     }
 
@@ -137,7 +137,7 @@ class TaskStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('delete', TaskStatus::class);
+        Gate::authorize('delete', TaskLabel::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -146,6 +146,6 @@ class TaskStatusController extends Controller
         }
 
         session()->flash('success', 'Log deleted successfully');
-        return redirect()->route('admin.task-status.index');
+        return redirect()->route('admin.task-labels.index');
     }
 }

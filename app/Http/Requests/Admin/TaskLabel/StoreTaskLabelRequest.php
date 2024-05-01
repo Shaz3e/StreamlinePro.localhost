@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Admin\TaskStatus;
+namespace App\Http\Requests\Admin\TaskLabel;
 
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreTaskStatusRequest extends BaseFormRequest
+class StoreTaskLabelRequest extends BaseFormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,7 +18,7 @@ class StoreTaskStatusRequest extends BaseFormRequest
         return [
             'name' => [
                 'required', 'string', 'max:255',
-                Rule::unique('task_statuses', 'name')->ignore($this->task_status),
+                Rule::unique('task_labels', 'name')->ignore($this->task_label),
             ],
             'text_color' => [
                 'nullable', 'hex_or_alpha',

@@ -26,11 +26,11 @@
 
     <div class="row mb-3">
         <div class="col-md-3 col-sm-12">
-            <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Status</option>
+            <select wire:model.live="filterLabel" class="form-control form-control-sm form-control-border">
+                <option value="">Filter by Label</option>
                 <option value="">All</option>
-                @foreach ($taskStatusList as $status)
-                    <option value="{{ $status->id }}">{{ $status->name }}</option>
+                @foreach ($taskLabels as $label)
+                    <option value="{{ $label->id }}">{{ $label->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -84,8 +84,8 @@
                                         <td>
                                             <h4>{{ $task->title }}</h4>
                                             <span class="badge"
-                                                style="background-color:{{ $task->status->bg_color }}; color:{{ $task->status->text_color }}">
-                                                {{ $task->status->name }}
+                                                style="background-color:{{ $task->label->bg_color }}; color:{{ $task->label->text_color }}">
+                                                {{ $task->label->name }}
                                             </span>
                                             <span class="badge bg-success">
                                                 Created By: {{ $task->createdBy->name }}

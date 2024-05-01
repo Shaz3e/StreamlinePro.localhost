@@ -179,8 +179,8 @@
                             @endcanany
 
                             {{-- Manage Status --}}
-                            @canany(['todo-label.list', 'task-status.list', 'ticket-status.list',
-                                'ticket-priority.list', 'invoice-status.list'])
+                            @canany(['todo-label.list', 'task-label.list', 'ticket-status.list', 'ticket-priority.list',
+                                'invoice-status.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                                         <i class="ri-switch-line"></i>
@@ -196,12 +196,12 @@
                                                 </a>
                                             </li>
                                         @endcan
-                                        {{-- Task Status --}}
-                                        @can('task-status.list')
-                                            <li class="{{ request()->routeIs('admin.task-status.*') ? 'mm-active' : '' }}">
-                                                <a href="{{ route('admin.task-status.index') }}"
-                                                    class="{{ request()->routeIs('admin.task-status.*') ? 'active' : '' }}">
-                                                    Task Status
+                                        {{-- Task Label --}}
+                                        @can('task-label.list')
+                                            <li class="{{ request()->routeIs('admin.task-labels.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.task-labels.index') }}"
+                                                    class="{{ request()->routeIs('admin.task-labels.*') ? 'active' : '' }}">
+                                                    Task Labels
                                                 </a>
                                             </li>
                                         @endcan

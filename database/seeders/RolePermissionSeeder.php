@@ -135,14 +135,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'task.delete'],
             ['guard_name' => 'admin', 'name' => 'task.restore'],
             ['guard_name' => 'admin', 'name' => 'task.force.delete'],
-            // Task Status
-            ['guard_name' => 'admin', 'name' => 'task-status.list'],
-            ['guard_name' => 'admin', 'name' => 'task-status.create'],
-            ['guard_name' => 'admin', 'name' => 'task-status.read'],
-            ['guard_name' => 'admin', 'name' => 'task-status.update'],
-            ['guard_name' => 'admin', 'name' => 'task-status.delete'],
-            ['guard_name' => 'admin', 'name' => 'task-status.restore'],
-            ['guard_name' => 'admin', 'name' => 'task-status.force.delete'],
+            // Task Label
+            ['guard_name' => 'admin', 'name' => 'task-label.list'],
+            ['guard_name' => 'admin', 'name' => 'task-label.create'],
+            ['guard_name' => 'admin', 'name' => 'task-label.read'],
+            ['guard_name' => 'admin', 'name' => 'task-label.update'],
+            ['guard_name' => 'admin', 'name' => 'task-label.delete'],
+            ['guard_name' => 'admin', 'name' => 'task-label.restore'],
+            ['guard_name' => 'admin', 'name' => 'task-label.force.delete'],
             // Support Ticket
             ['guard_name' => 'admin', 'name' => 'support-ticket.list'],
             ['guard_name' => 'admin', 'name' => 'support-ticket.create'],

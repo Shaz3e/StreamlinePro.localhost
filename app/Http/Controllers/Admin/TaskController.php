@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Task\StoreTaskRequest;
 use App\Models\Admin;
 use App\Models\Task;
-use App\Models\TaskStatus;
+use App\Models\TaskLabel;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -35,13 +35,13 @@ class TaskController extends Controller
         Gate::authorize('create', Task::class);
 
         // Get all active task list
-        $taskStatusList = TaskStatus::where('is_active', 1)->get();
+        $taskLabels = TaskLabel::where('is_active', 1)->get();
 
         // Get all active staff
         $staffList = Admin::where('is_active', 1)->get();
 
         return view('admin.task.create', [
-            'taskStatusList' => $taskStatusList,
+            'taskLabels' => $taskLabels,
             'staffList' => $staffList,
         ]);
     }
@@ -91,7 +91,7 @@ class TaskController extends Controller
             return back()->with('success', 'The Task has been completed successfully!');
         }
 
-        $taskStatusList = TaskStatus::where('is_active', 1)->get();
+        $taskLabels = TaskLabel::where('is_active', 1)->get();
 
         $audits = $task->audits()
             ->latest()
@@ -104,7 +104,7 @@ class TaskController extends Controller
 
         return view('admin.task.show', [
             'task' => $task,
-            'taskStatusList' => $taskStatusList,
+            'taskLabels' => $taskLabels,
             'audits' => $audits,
         ]);
     }
@@ -118,14 +118,14 @@ class TaskController extends Controller
         Gate::authorize('update', $task);
 
         // Get all active task list
-        $taskStatusList = TaskStatus::where('is_active', 1)->get();
+        $taskLabels = TaskLabel::where('is_active', 1)->get();
 
         // Get all active staff
         $staffList = Admin::where('is_active', 1)->get();
 
         return view('admin.task.edit', [
             'task' => $task,
-            'taskStatusList' => $taskStatusList,
+            'taskLabels' => $taskLabels,
             'staffList' => $staffList,
         ]);
     }
@@ -191,7 +191,7 @@ class TaskController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $task = Task::find($id);
-        $task->task_status_id = $request->task_status_id;
+        $task->task_label_id = $request->task_label_id;
         $task->save();
         return response()->json(['message' => 'Status updated successfully']);
     }

@@ -3,25 +3,25 @@
 namespace App\Policies;
 
 use App\Models\Admin;
-use App\Models\TaskStatus;
+use App\Models\TaskLabel;
 
-class TaskStatusPolicy
+class TaskLabelPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(Admin $admin)
     {
-        if($admin->can('task-status.list')){
+        if($admin->can('task-label.list')){
             return true;
         }
     }
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Admin $admin, TaskStatus $taskStatus)
+    public function view(Admin $admin, TaskLabel $taskLabel)
     {
-        if ($admin->can('task-status.read')) {
+        if ($admin->can('task-label.read')) {
             return true;
         }
     }
@@ -31,7 +31,7 @@ class TaskStatusPolicy
      */
     public function create(Admin $admin)
     {
-        if ($admin->can('task-status.create')) {
+        if ($admin->can('task-label.create')) {
             return true;
         }
     }
@@ -39,9 +39,9 @@ class TaskStatusPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Admin $admin, TaskStatus $taskStatus)
+    public function update(Admin $admin, TaskLabel $taskLabel)
     {
-        if ($admin->can('task-status.update')) {
+        if ($admin->can('task-label.update')) {
             return true;
         }
     }
@@ -49,9 +49,9 @@ class TaskStatusPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Admin $admin, TaskStatus $taskStatus)
+    public function delete(Admin $admin, TaskLabel $taskLabel)
     {
-        if ($admin->can('task-status.delete')) {
+        if ($admin->can('task-label.delete')) {
             return true;
         }
     }
@@ -59,9 +59,9 @@ class TaskStatusPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(Admin $admin, TaskStatus $taskStatus)
+    public function restore(Admin $admin, TaskLabel $taskLabel)
     {
-        if ($admin->can('task-status.restore')) {
+        if ($admin->can('task-label.restore')) {
             return true;
         }
     }
@@ -69,9 +69,9 @@ class TaskStatusPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(Admin $admin, TaskStatus $taskStatus)
+    public function forceDelete(Admin $admin, TaskLabel $taskLabel)
     {
-        if ($admin->can('task-status.force.delete')) {
+        if ($admin->can('task-label.force.delete')) {
             return true;
         }
     }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\TaskStatus;
+namespace App\Livewire\Admin\TaskLabel;
 
-use App\Models\TaskStatus;
+use App\Models\TaskLabel;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class TaskStatusList extends Component
+class TaskLabelList extends Component
 {
     use WithPagination;
 
@@ -31,10 +31,10 @@ class TaskStatusList extends Component
      */
     public function render()
     {
-        $query = TaskStatus::query();
+        $query = TaskLabel::query();
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('task_statuses');
+        $columns = Schema::getColumnListing('task_labels');
 
         // Filter records based on search query
         if ($this->search !== '') {
@@ -50,10 +50,10 @@ class TaskStatusList extends Component
             $query->onlyTrashed();
         }
 
-        $taskStatusList = $query->orderBy('id', 'asc')->paginate($this->perPage);
+        $taskLabels = $query->orderBy('id', 'asc')->paginate($this->perPage);
 
-        return view('livewire.admin.task-status.task-status-list', [
-            'taskStatusList' => $taskStatusList
+        return view('livewire.admin.task-label.task-label-list', [
+            'taskLabels' => $taskLabels
         ]);
     }
 
@@ -76,19 +76,19 @@ class TaskStatusList extends Component
     /**
      * Toggle Status
      */
-    public function toggleStatus($taskStatusId)
+    public function toggleStatus($id)
     {
         // Get data
-        $taskStatus = TaskStatus::find($taskStatusId);
+        $taskLabel = TaskLabel::find($id);
 
         // Check user exists
-        if (!$taskStatus) {
-            $this->dispatch('error', 'Task Staus not found!');
+        if (!$taskLabel) {
+            $this->dispatch('error', 'Task Label not found!');
             return;
         }
 
         // Change Status
-        $taskStatus->update(['is_active' => !$taskStatus->is_active]);
+        $taskLabel->update(['is_active' => !$taskLabel->is_active]);
         $this->dispatch('statusChanged');
     }
 
@@ -114,16 +114,16 @@ class TaskStatusList extends Component
         }
 
         // get id
-        $taskStatus = TaskStatus::find($this->recordToDelete);
+        $taskLabel = TaskLabel::find($this->recordToDelete);
 
         // Check record exists
-        if (!$taskStatus) {
+        if (!$taskLabel) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $taskStatus->delete();
+        $taskLabel->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;
@@ -132,9 +132,9 @@ class TaskStatusList extends Component
     /**
      * Confirm Restore
      */
-    public function confirmRestore($taskStatusId)
+    public function confirmRestore($id)
     {
-        $this->recordToDelete = $taskStatusId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmRestore');
     }
 
@@ -144,15 +144,15 @@ class TaskStatusList extends Component
     #[On('restored')]
     public function restore()
     {
-        TaskStatus::withTrashed()->find($this->recordToDelete)->restore();
+        TaskLabel::withTrashed()->find($this->recordToDelete)->restore();
     }
 
     /**
      * Confirm force delete
      */
-    public function confirmForceDelete($taskStatusId)
+    public function confirmForceDelete($id)
     {
-        $this->recordToDelete = $taskStatusId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmForceDelete');
     }
 
@@ -162,6 +162,6 @@ class TaskStatusList extends Component
     #[On('forceDeleted')]
     public function forceDelete()
     {
-        TaskStatus::withTrashed()->find($this->recordToDelete)->forceDelete();
+        TaskLabel::withTrashed()->find($this->recordToDelete)->forceDelete();
     }
 }

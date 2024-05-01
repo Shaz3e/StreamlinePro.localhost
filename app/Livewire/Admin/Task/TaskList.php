@@ -4,7 +4,7 @@ namespace App\Livewire\Admin\Task;
 
 use App\Models\Admin;
 use App\Models\Task;
-use App\Models\TaskStatus;
+use App\Models\TaskLabel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
@@ -20,7 +20,7 @@ class TaskList extends Component
     public $search = '';
 
     #[Url()]
-    public $filterStatus;
+    public $filterLabel;
 
     #[Url()]
     public $filterStartedTask;
@@ -70,8 +70,8 @@ class TaskList extends Component
         }
 
         // Filter records based on status
-        if ($this->filterStatus) {
-            $query->where('task_status_id', $this->filterStatus);
+        if ($this->filterLabel) {
+            $query->where('task_label_id', $this->filterLabel);
         }
 
         // Filter records based on started/not started
@@ -92,11 +92,11 @@ class TaskList extends Component
 
         $tasks = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        $taskStatusList = TaskStatus::where('is_active', 1)->get();
+        $taskLabels = TaskLabel::where('is_active', 1)->get();
 
         return view('livewire.admin.task.task-list', [
             'tasks' => $tasks,
-            'taskStatusList' => $taskStatusList,
+            'taskLabels' => $taskLabels,
         ]);
     }
 

@@ -2,10 +2,10 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'Create New Task Status',
+        'title' => 'Create New Task Label',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'View List', 'link' => route('admin.task-status.index')],
+            ['text' => 'Task Label List', 'link' => route('admin.task-labels.index')],
             ['text' => 'Create', 'link' => null],
         ],
     ])
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.task-status.store') }}" method="POST" class="needs-validation" novalidate>
+                <form action="{{ route('admin.task-labels.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <div class="card-body">
                         <div class="row mb-3">
@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="text_color">Text Color</label>
                                     <input type="text" name="text_color" class="form-control" id="colorpicker-text"
-                                        value="{{ old('text_color') }}" required>
+                                        value="{{ old('text_color', '#00000') }}" required>
                                     @error('text_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -57,7 +57,7 @@
                                 <div class="form-group">
                                     <label for="bg_color">Background Color</label>
                                     <input type="text" name="bg_color" class="form-control" id="colorpicker-background"
-                                        value="{{ old('bg_color') }}" required>
+                                        value="{{ old('bg_color', '#ffffff') }}" required>
                                     @error('bg_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

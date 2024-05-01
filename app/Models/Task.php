@@ -51,10 +51,10 @@ class Task extends Model implements Auditable
     }
 
     /**
-     * Relationship with Task Status Table
+     * Relationship with Task Label Table
      */
-    public function status()
+    public function label()
     {
-        return $this->belongsTo(TaskStatus::class, 'task_status_id');
+        return $this->belongsTo(TaskLabel::class, 'task_label_id');
     }
 }

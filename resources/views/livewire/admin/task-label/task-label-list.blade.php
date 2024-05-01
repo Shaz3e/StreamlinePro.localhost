@@ -23,7 +23,7 @@
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.task-status.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.task-labels.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -47,34 +47,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($taskStatusList as $taskStatus)
-                                <tr wire:key="{{ $taskStatus->id }}">
+                            @foreach ($taskLabels as $taskLabel)
+                                <tr wire:key="{{ $taskLabel->id }}">
                                     <td>
                                         <span class="badge"
-                                            style="background-color:{{ $taskStatus->bg_color }}; color:{{ $taskStatus->text_color }}">
-                                            {{ $taskStatus->name }}
+                                            style="background-color:{{ $taskLabel->bg_color }}; color:{{ $taskLabel->text_color }}">
+                                            {{ $taskLabel->name }}
                                         </span>
                                     </td>
                                     @if (!$showDeleted)
                                         <td>
-                                            <input type="checkbox" wire:change="toggleStatus({{ $taskStatus->id }})"
-                                                id="is_active_{{ $taskStatus->id }}" switch="bool"
-                                                {{ $taskStatus->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $taskStatus->id }}" data-on-label="Yes"
+                                            <input type="checkbox" wire:change="toggleStatus({{ $taskLabel->id }})"
+                                                id="is_active_{{ $taskLabel->id }}" switch="bool"
+                                                {{ $taskLabel->is_active ? 'checked' : '' }} />
+                                            <label for="is_active_{{ $taskLabel->id }}" data-on-label="Yes"
                                                 data-off-label="No"></label>
                                         </td>
                                     @endif
                                     <td class="text-right">
                                         @if ($showDeleted)
                                             @can('task-status.restore')
-                                                <button wire:click="confirmRestore({{ $taskStatus->id }})"
+                                                <button wire:click="confirmRestore({{ $taskLabel->id }})"
                                                     class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-arrow-go-back-line"></i>
                                                 </button>
                                             @endcan
                                             @can('task-status.force.delete')
-                                                <button wire:click="confirmForceDelete({{ $taskStatus->id }})"
+                                                <button wire:click="confirmForceDelete({{ $taskLabel->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-7-line"></i>
@@ -82,19 +82,19 @@
                                             @endcan
                                         @else
                                             @can('task-status.read')
-                                                <a href="{{ route('admin.task-status.show', $taskStatus->id) }}"
+                                                <a href="{{ route('admin.task-labels.show', $taskLabel->id) }}"
                                                     class="btn btn-sm btn-outline-info">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                             @endcan
                                             @can('task-status.update')
-                                                <a href="{{ route('admin.task-status.edit', $taskStatus->id) }}"
+                                                <a href="{{ route('admin.task-labels.edit', $taskLabel->id) }}"
                                                     class="btn btn-sm btn-outline-success">
                                                     <i class="ri-pencil-line"></i>
                                                 </a>
                                             @endcan
                                             @can('task-status.delete')
-                                                <button wire:click="confirmDelete({{ $taskStatus->id }})"
+                                                <button wire:click="confirmDelete({{ $taskLabel->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-line"></i>
@@ -107,7 +107,7 @@
                         </tbody>
                     </table>
 
-                    {{ $taskStatusList->links() }}
+                    {{ $taskLabels->links() }}
                 </div>
             </div>
         </div>

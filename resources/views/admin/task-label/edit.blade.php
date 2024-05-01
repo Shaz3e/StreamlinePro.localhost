@@ -5,7 +5,7 @@
         'title' => 'Edit Task Status',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'View List', 'link' => route('admin.task-status.index')],
+            ['text' => 'View List', 'link' => route('admin.task-labels.index')],
             ['text' => 'Create', 'link' => null],
         ],
     ])
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.task-status.update', $taskStatus->id) }}" method="POST" class="needs-validation"
+                <form action="{{ route('admin.task-labels.update', $taskLabel->id) }}" method="POST" class="needs-validation"
                     novalidate>
                     @csrf
                     @method('put')
@@ -23,7 +23,7 @@
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-10">
                                 <input type="text" name="name" id="name" class="form-control"
-                                    value="{{ old('name', $taskStatus->name) }}" required>
+                                    value="{{ old('name', $taskLabel->name) }}" required>
                                 @error('name')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -35,9 +35,9 @@
                             <div class="col-sm-10">
                                 <select class="form-control" name="is_active" required>
                                     <option value="1"
-                                        {{ old('is_active', $taskStatus->is_active) == 1 ? 'selected' : '' }}>Show</option>
+                                        {{ old('is_active', $taskLabel->is_active) == 1 ? 'selected' : '' }}>Show</option>
                                     <option value="0"
-                                        {{ old('is_active', $taskStatus->is_active) == 0 ? 'selected' : '' }}>Hide</option>
+                                        {{ old('is_active', $taskLabel->is_active) == 0 ? 'selected' : '' }}>Hide</option>
                                 </select>
                                 @error('is_active')
                                     <span class="text-danger">{{ $message }}</span>
@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                     <label for="text_color">Text Color</label>
                                     <input type="text" name="text_color" class="form-control" id="colorpicker-text"
-                                        value="{{ old('text_color', $taskStatus->text_color) }}" required>
+                                        value="{{ old('text_color', $taskLabel->text_color) }}" required>
                                     @error('text_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -61,7 +61,7 @@
                                 <div class="form-group">
                                     <label for="bg_color">Background Color</label>
                                     <input type="text" name="bg_color" class="form-control" id="colorpicker-background"
-                                        value="{{ old('bg_color', $taskStatus->bg_color) }}" required>
+                                        value="{{ old('bg_color', $taskLabel->bg_color) }}" required>
                                     @error('bg_color')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

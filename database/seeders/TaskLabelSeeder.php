@@ -6,14 +6,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TaskStatusSeeder extends Seeder
+class TaskLabelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $task_statuses = [
+        $task_labels = [
             [
                 'name' => 'Not Started',
                 'is_active' => 1,
@@ -82,6 +82,6 @@ class TaskStatusSeeder extends Seeder
             ],
         ];
 
-        DB::table('task_statuses')->insert($task_statuses);
+        DB::table('task_labels')->insert($task_labels);
     }
 }

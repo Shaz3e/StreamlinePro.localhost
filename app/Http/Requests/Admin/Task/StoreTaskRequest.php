@@ -45,8 +45,8 @@ class StoreTaskRequest extends BaseFormRequest
             'description' => [
                 'required'
             ],
-            'task_status_id' => [
-                'required', 'integer', 'exists:task_statuses,id'
+            'task_label_id' => [
+                'required', 'integer', 'exists:task_labels,id'
             ],
             'assigned_to' => [
                 'required', 'integer', 'exists:admins,id'

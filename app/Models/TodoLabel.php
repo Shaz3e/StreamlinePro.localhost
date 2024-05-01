@@ -35,8 +35,8 @@ class TodoLabel extends Model implements Auditable
     {
         parent::boot();
 
-        static::deleting(function ($todoStatus) {
-            $todoStatus->todos()->where('todo_label_id', $todoStatus->id)->update(['todo_label_id' => null]);
+        static::deleting(function ($todoLabel) {
+            $todoLabel->todos()->where('todo_label_id', $todoLabel->id)->update(['todo_label_id' => null]);
         });
     }
 }

@@ -25,8 +25,8 @@ use App\Http\Controllers\Admin\TodoLabelController;
 // Tasks
 use App\Http\Controllers\Admin\TaskController;
 
-// Task Status
-use App\Http\Controllers\Admin\TaskStatusController;
+// Task Label
+use App\Http\Controllers\Admin\TaskLabelController;
 
 // Users
 use App\Http\Controllers\Admin\UserController;
@@ -293,13 +293,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('ticket-priority.audit.delete');
 
         /**
-         * Task Status
+         * Task Label
          */
-        Route::resource('task-status', TaskStatusController::class);
+        Route::resource('task-labels', TaskLabelController::class);
         // Audit
-        Route::get('task-status-audit/{id}', [TaskStatusController::class, 'audit'])
-            ->name('task-status.audit');
-        Route::get('task-status-audit/delete/{id}', [TaskStatusController::class, 'deleteAudit'])
-            ->name('task-status.audit.delete');
+        Route::get('task-labels-audit/{id}', [TaskLabelController::class, 'audit'])
+            ->name('task-labels.audit');
+        Route::get('task-labels-audit/delete/{id}', [TaskLabelController::class, 'deleteAudit'])
+            ->name('task-labels.audit.delete');
     });
 });

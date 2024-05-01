@@ -31,17 +31,17 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="task_status_id">Status</label>
-                                    <select name="task_status_id" class="form-control" id="task_status_id">
-                                        @foreach ($taskStatusList as $status)
-                                            <option value="{{ $status->id }}"
-                                                {{ $task->task_status_id == $status->id ? 'selected' : '' }}>
-                                                {{ $status->name }}
+                                    <label for="task_label_id">Label</label>
+                                    <select name="task_label_id" class="form-control" id="task_label_id">
+                                        @foreach ($taskLabels as $label)
+                                            <option value="{{ $label->id }}"
+                                                {{ $task->task_label_id == $label->id ? 'selected' : '' }}>
+                                                {{ $label->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('task_status_id')
+                                @error('task_label_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
