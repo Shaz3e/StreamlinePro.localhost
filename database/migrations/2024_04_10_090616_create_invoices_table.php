@@ -18,12 +18,15 @@ return new class extends Migration
             $table->foreignId('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
-            // Assign Invoice Status
+            // Assign Invoice Label
             $table->foreignId('invoice_label_id')->nullable();
             $table->foreign('invoice_label_id')->references('id')->on('invoice_labels')->onDelete('cascade');
             
             $table->date('invoice_date')->nullable();
             $table->date('due_date')->nullable();
+
+            // Invoice Status
+            $table->string('status')->default('Unpaid');
 
             $table->decimal('total_tax', 12, 2)->nullable()->default(0.00);
             $table->decimal('total_price', 12, 2)->nullable()->default(0.00);

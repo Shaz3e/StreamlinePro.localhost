@@ -69,8 +69,9 @@ class InvoiceController extends Controller
             [
                 'company_id' => 'required|exists:companies,id',
                 'invoice_label_id' => 'required|exists:invoice_labels,id',
-                'invoice_date' => 'required|date',
-                'due_date' => 'required|date',
+                'invoice_date' => 'nullable|date',
+                'due_date' => 'nullable|date',
+                'status' => 'required',
                 'total_tax' => 'nullable',
                 'total_price' => 'nullable',
                 'total_discount' => 'nullable',
@@ -96,6 +97,7 @@ class InvoiceController extends Controller
         $invoice->invoice_label_id = $request->invoice_label_id;
         $invoice->invoice_date = $request->invoice_date;
         $invoice->due_date = $request->due_date;
+        $invoice->status = $request->status;
         $invoice->save();
 
         if (
@@ -228,8 +230,9 @@ class InvoiceController extends Controller
             [
                 'company_id' => 'required|exists:companies,id',
                 'invoice_label_id' => 'required|exists:invoice_labels,id',
-                'invoice_date' => 'required|date',
-                'due_date' => 'required|date',
+                'invoice_date' => 'nullable|date',
+                'due_date' => 'nullable|date',
+                'status' => 'required',
                 'total_tax' => 'nullable',
                 'total_price' => 'nullable',
                 'total_discount' => 'nullable',
@@ -255,6 +258,7 @@ class InvoiceController extends Controller
             'invoice_label_id' => $request->invoice_label_id,
             'invoice_date' => $request->invoice_date,
             'due_date' => $request->due_date,
+            'status' => $request->status,
         ]);
 
         // Initialize sums

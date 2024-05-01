@@ -14,11 +14,12 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.invoices.store') }}" method="POST" class="needs-validation" novalidate id="invoice-form">
+                <form action="{{ route('admin.invoices.store') }}" method="POST" class="needs-validation" novalidate
+                    id="invoice-form">
                     @csrf
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="company_id">Invoice To</label>
                                     <select name="company_id" class="form-control select2" id="company_id">
@@ -38,9 +39,22 @@
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="invoice_label_id">Invoice Label <small>for internal use</small></label>
+                                    <label for="status">Status</label>
+                                    <select name="status" class="form-control">
+                                        @foreach (\App\Models\Invoice::getInvoiceStatusList() as $value => $label)
+                                            <option value="{{ $value }}">{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- /.col --}}
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="invoice_label_id">Invoice Label </label>
                                     <select name="invoice_label_id" class="form-control select2" id="invoice_label_id">
                                         @foreach ($invoiceLabels as $label)
                                             <option value="{{ $label->id }}"
@@ -50,12 +64,14 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <small class="text-muted">for internal use</small>
                                 @error('invoice_label_id')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="invoice_date">Invoice Date</label>
                                     <input type="date" class="form-control" name="invoice_date" id="invoice_date"
@@ -66,7 +82,8 @@
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
                                     <input type="date" class="form-control" name="due_date" id="due_date"
@@ -101,8 +118,8 @@
                                     </table>
 
                                     <button type="button"
-                                        class="btn btn-sm btn-primary waves-effect waves-light add-product" style="display: none;"
-                                        data-bs-toggle="modal" data-bs-target="#selectProduct">
+                                        class="btn btn-sm btn-primary waves-effect waves-light add-product"
+                                        style="display: none;" data-bs-toggle="modal" data-bs-target="#selectProduct">
                                         <i class="ri-add-line align-middle me-2"></i> Add Product
                                     </button>
                                     @include('admin.invoice.product-selection')

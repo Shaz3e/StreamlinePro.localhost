@@ -20,7 +20,7 @@
                     @method('put')
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="company_id">Invoice To</label>
                                     <select name="company_id" class="form-control select2" id="company_id">
@@ -40,9 +40,24 @@
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="invoice_label_id">Invoice Label <small>for internal use</small></label>
+                                    <label for="status">Status</label>
+                                    <select name="status" class="form-control">
+                                        @foreach (\App\Models\Invoice::getInvoiceStatusList() as $value => $label)
+                                            <option value="{{ $value }}"
+                                                @if ($invoice->status === $value) selected @endif>{{ $label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- /.col --}}
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="invoice_label_id">Invoice Label</label>
                                     <select name="invoice_label_id" class="form-control select2" id="invoice_label_id">
                                         @foreach ($invoiceLabels as $label)
                                             <option value="{{ $label->id }}"
@@ -52,12 +67,13 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <small class="text-muted">for internal use</small>
                                 @error('invoice_label_id')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="invoice_date">Invoice Date</label>
                                     <input type="date" class="form-control" name="invoice_date" id="invoice_date"
@@ -68,7 +84,7 @@
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
                                     <input type="date" class="form-control" name="due_date" id="due_date"
@@ -82,7 +98,7 @@
                         </div>
                         {{-- /.row --}}
 
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table class="table table-hover table-bordered">
@@ -145,7 +161,8 @@
                                                             readonly>
                                                     </td>
                                                     <td class="text-right">
-                                                        <button type="button" class="btn btn-danger btn-sm remove-row remove-product">
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm remove-row remove-product">
                                                             Remove
                                                         </button>
                                                     </td>

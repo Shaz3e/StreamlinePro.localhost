@@ -12,6 +12,11 @@ class Invoice extends Model implements Auditable
 {
     use HasFactory, AuditingAuditable, SoftDeletes;
 
+    const STATUS_UNPAID = 'Unpaid';
+    const STATUS_PARTIALLY_PAID = 'Partially Paid';
+    const STATUS_FULLY_PAID = 'Paid';
+    const STATUS_CANCELLED = 'Cancelled';
+
     protected $guarded = [];
 
     // SoftDeletes
@@ -22,13 +27,30 @@ class Invoice extends Model implements Auditable
         'due_date'     => 'date',
     ];
 
-    protected function setAuditInclude()
+    /**
+     * Get Invoice statuses
+     */
+    public static function getInvoiceStatusList()
     {
-        // Get all columns from the model's table
-        $columns = $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+        return [
+            self::STATUS_UNPAID => __('Unpaid'),
+            self::STATUS_PARTIALLY_PAID => __('Partially Paid'),
+            self::STATUS_FULLY_PAID => __('Paid'),
+            self::STATUS_CANCELLED => __('Cancelled'),
+        ];
+    }
 
-        // Set the $auditInclude property to include all columns
-        $this->auditInclude = $columns;
+    public function setStatus($status)
+    {
+        // if (!in_array($status, array_keys(self::getStatuses()))) {
+        //     throw new InvalidArgumentException("Invalid status");
+        // }
+        $this->status = $status;
+    }
+
+    public function getStatus()
+    {
+        return self::getStatuses()[$this->status];
     }
 
     /**
@@ -53,5 +75,14 @@ class Invoice extends Model implements Auditable
     public function label()
     {
         return $this->belongsTo(InvoiceLabel::class, 'invoice_label_id');
+    }
+
+    protected function setAuditInclude()
+    {
+        // Get all columns from the model's table
+        $columns = $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+
+        // Set the $auditInclude property to include all columns
+        $this->auditInclude = $columns;
     }
 }
