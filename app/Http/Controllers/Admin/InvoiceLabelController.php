@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\InvoiceStatus\StoreInvoiceStatusRequest;
-use App\Models\InvoiceStatus;
+use App\Http\Requests\Admin\InvoiceLabel\StoreInvoiceLabelRequest;
+use App\Models\InvoiceLabel;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
-class InvoiceStatusController extends Controller
+class InvoiceLabelController extends Controller
 {
     use FormHelper;
 
@@ -20,9 +20,9 @@ class InvoiceStatusController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('viewAny', InvoiceStatus::class);
+        Gate::authorize('viewAny', InvoiceLabel::class);
 
-        return view('admin.invoice-status.index');
+        return view('admin.invoice-label.index');
     }
 
     /**
@@ -31,39 +31,39 @@ class InvoiceStatusController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('create', InvoiceStatus::class);
+        Gate::authorize('create', InvoiceLabel::class);
 
-        return view('admin.invoice-status.create');
+        return view('admin.invoice-label.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInvoiceStatusRequest $request)
+    public function store(StoreInvoiceLabelRequest $request)
     {
         // Check Authorize
-        Gate::authorize('create', InvoiceStatus::class);
+        Gate::authorize('create', InvoiceLabel::class);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $invoiceStatus = InvoiceStatus::create($validated);
+        $invoiceLabel = InvoiceLabel::create($validated);
 
-        session()->flash('success', 'Invoice Status has been created successfully!');
+        session()->flash('success', 'Invoice Label has been created successfully!');
         
-        return $this->saveAndRedirect($request, 'invoice-status', $invoiceStatus->id);
+        return $this->saveAndRedirect($request, 'invoice-labels', $invoiceLabel->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(InvoiceStatus $invoiceStatus)
+    public function show(InvoiceLabel $invoiceLabel)
     {
         // Check Authorize
-        Gate::authorize('view', $invoiceStatus);
+        Gate::authorize('view', $invoiceLabel);
 
-        $audits = $invoiceStatus->audits()
+        $audits = $invoiceLabel->audits()
             ->latest()
             ->paginate(10);
 
@@ -72,8 +72,8 @@ class InvoiceStatusController extends Controller
             return response()->json($audits);
         }
 
-        return view('admin.invoice-status.show', [
-            'invoiceStatus' => $invoiceStatus,
+        return view('admin.invoice-label.show', [
+            'invoiceLabel' => $invoiceLabel,
             'audits' => $audits,
         ]);
     }
@@ -81,34 +81,34 @@ class InvoiceStatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(InvoiceStatus $invoiceStatus)
+    public function edit(InvoiceLabel $invoiceLabel)
     {
         // Check Authorize
-        Gate::authorize('update', $invoiceStatus);
+        Gate::authorize('update', $invoiceLabel);
 
-        return view('admin.invoice-status.edit', [
-            'invoiceStatus' => $invoiceStatus,
+        return view('admin.invoice-label.edit', [
+            'invoiceLabel' => $invoiceLabel,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreInvoiceStatusRequest $request, InvoiceStatus $invoiceStatus)
+    public function update(StoreInvoiceLabelRequest $request, InvoiceLabel $invoiceLabel)
     {
         // Check Authorize
-        Gate::authorize('update', $invoiceStatus);
+        Gate::authorize('update', $invoiceLabel);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $invoiceStatus->update($validated);
+        $invoiceLabel->update($validated);
 
         // Flash message
-        session()->flash('success', 'Invoice Status has been updated successfully!');
+        session()->flash('success', 'Invoice Label has been updated successfully!');
         
-        return $this->saveAndRedirect($request, 'invoice-status', $invoiceStatus->id);
+        return $this->saveAndRedirect($request, 'invoice-labels', $invoiceLabel->id);
     }
 
     /**
@@ -117,17 +117,17 @@ class InvoiceStatusController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('view', InvoiceStatus::class);
+        Gate::authorize('view', InvoiceLabel::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
-            return view('admin.invoice-status.audit', [
+            return view('admin.invoice-label.audit', [
                 'auditLog' => $auditLog,
             ]);
         } else {
             session()->flash('error', 'Log not available');
-            return redirect()->route('admin.invoice-status.index');
+            return redirect()->route('admin.invoice-labels.index');
         }
     }
 
@@ -137,7 +137,7 @@ class InvoiceStatusController extends Controller
     public function deleteAudit(Request $request)
     {        
         // Check Authorize
-        Gate::authorize('delete', InvoiceStatus::class);
+        Gate::authorize('delete', InvoiceLabel::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -146,6 +146,6 @@ class InvoiceStatusController extends Controller
         }
 
         session()->flash('success', 'Log deleted successfully');
-        return redirect()->route('admin.todo-status.index');
+        return redirect()->route('admin.todo-labels.index');
     }
 }

@@ -38,11 +38,11 @@
         </div>
         {{-- /.col --}}
         <div class="col-md-4 col-sm-12 mb-2">
-            <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
+            <select wire:model.live="filterLabel" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Status</option>
-                @foreach ($invoiceStatus as $statuses)
-                    <option value="{{ $statuses->id }}">
-                        {{ $statuses->name }}
+                @foreach ($invoiceLabels as $label)
+                    <option value="{{ $label->id }}">
+                        {{ $label->name }}
                     </option>
                 @endforeach
             </select>
@@ -57,7 +57,7 @@
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
-            @if ($search || $filterCompany || $filterStatus)
+            @if ($search || $filterCompany || $filterLabel)
                 <button wire:click="resetFilters" class="btn btn-sm btn-block btn-outline-secondary">
                     Reset
                 </button>
@@ -78,7 +78,7 @@
                                     <th style="width: 65%">Invoice Details</th>
                                     <th style="10%">Price</th>
                                     @if (!$showDeleted)
-                                        <th style="width: 10%">Status</th>
+                                        <th style="width: 10%">Label</th>
                                     @endif
                                     <th style="width: 15%"></th>
                                 </tr>
@@ -108,8 +108,8 @@
                                         @if (!$showDeleted)
                                             <td>
                                                 <span class="badge"
-                                                    style="background-color: {{ $invoice->status->bg_color }}; color: {{ $invoice->status->text_color }}">
-                                                    {{ $invoice->status->name }}
+                                                    style="background-color: {{ $invoice->label->bg_color }}; color: {{ $invoice->label->text_color }}">
+                                                    {{ $invoice->label->name }}
                                                 </span>
                                             </td>
                                         @endif

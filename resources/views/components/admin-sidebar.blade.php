@@ -180,11 +180,11 @@
 
                             {{-- Manage Status --}}
                             @canany(['todo-label.list', 'task-label.list', 'ticket-status.list', 'ticket-priority.list',
-                                'invoice-status.list'])
+                                'invoice-label.list'])
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                                         <i class="ri-switch-line"></i>
-                                        <span>Manage Status</span>
+                                        <span>Labels & Status</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
                                         {{-- Todo Labels --}}
@@ -223,12 +223,12 @@
                                                 </a>
                                             </li>
                                         @endcan
-                                        {{-- Invoice Status --}}
-                                        @can('invoice-status.list')
-                                            <li class="{{ request()->routeIs('admin.invoice-status.*') ? 'mm-active' : '' }}">
-                                                <a href="{{ route('admin.invoice-status.index') }}"
-                                                    class="{{ request()->routeIs('admin.invoice-status.*') ? 'active' : '' }}">
-                                                    Invoice Status
+                                        {{-- Invoice Label --}}
+                                        @can('invoice-label.list')
+                                            <li class="{{ request()->routeIs('admin.invoice-labels.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.invoice-labels.index') }}"
+                                                    class="{{ request()->routeIs('admin.invoice-labels.*') ? 'active' : '' }}">
+                                                    Invoice Labels
                                                 </a>
                                             </li>
                                         @endcan

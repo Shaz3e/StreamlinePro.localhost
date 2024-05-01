@@ -23,7 +23,7 @@
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.invoice-status.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.invoice-labels.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -47,54 +47,54 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($invoiceStatusList as $invoiceStatus)
-                                <tr wire:key="{{ $invoiceStatus->id }}">
+                            @foreach ($invoiceLabelList as $invoiceLabel)
+                                <tr wire:key="{{ $invoiceLabel->id }}">
                                     <td>
                                         <span class="badge"
-                                            style="background-color:{{ $invoiceStatus->bg_color }}; color:{{ $invoiceStatus->text_color }}">
-                                            {{ $invoiceStatus->name }}
+                                            style="background-color:{{ $invoiceLabel->bg_color }}; color:{{ $invoiceLabel->text_color }}">
+                                            {{ $invoiceLabel->name }}
                                         </span>
                                     </td>
                                     @if (!$showDeleted)
                                         <td>
-                                            <input type="checkbox" wire:change="toggleStatus({{ $invoiceStatus->id }})"
-                                                id="is_active_{{ $invoiceStatus->id }}" switch="bool"
-                                                {{ $invoiceStatus->is_active ? 'checked' : '' }} />
-                                            <label for="is_active_{{ $invoiceStatus->id }}" data-on-label="Yes"
+                                            <input type="checkbox" wire:change="toggleStatus({{ $invoiceLabel->id }})"
+                                                id="is_active_{{ $invoiceLabel->id }}" switch="bool"
+                                                {{ $invoiceLabel->is_active ? 'checked' : '' }} />
+                                            <label for="is_active_{{ $invoiceLabel->id }}" data-on-label="Yes"
                                                 data-off-label="No"></label>
                                         </td>
                                     @endif
                                     <td class="text-right">
                                         @if ($showDeleted)
-                                            @can('invoice-status.restore')
-                                                <button wire:click="confirmRestore({{ $invoiceStatus->id }})"
+                                            @can('invoice-label.restore')
+                                                <button wire:click="confirmRestore({{ $invoiceLabel->id }})"
                                                     class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-arrow-go-back-line"></i>
                                                 </button>
                                             @endcan
-                                            @can('invoice-status.force.delete')
-                                                <button wire:click="confirmForceDelete({{ $invoiceStatus->id }})"
+                                            @can('invoice-label.force.delete')
+                                                <button wire:click="confirmForceDelete({{ $invoiceLabel->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-7-line"></i>
                                                 </button>
                                             @endcan
                                         @else
-                                            @can('invoice-status.read')
-                                                <a href="{{ route('admin.invoice-status.show', $invoiceStatus->id) }}"
+                                            @can('invoice-label.read')
+                                                <a href="{{ route('admin.invoice-labels.show', $invoiceLabel->id) }}"
                                                     class="btn btn-sm btn-outline-info">
                                                     <i class="ri-eye-line"></i>
                                                 </a>
                                             @endcan
-                                            @can('invoice-status.update')
-                                                <a href="{{ route('admin.invoice-status.edit', $invoiceStatus->id) }}"
+                                            @can('invoice-label.update')
+                                                <a href="{{ route('admin.invoice-labels.edit', $invoiceLabel->id) }}"
                                                     class="btn btn-sm btn-outline-success">
                                                     <i class="ri-pencil-line"></i>
                                                 </a>
                                             @endcan
-                                            @can('invoice-status.delete')
-                                                <button wire:click="confirmDelete({{ $invoiceStatus->id }})"
+                                            @can('invoice-label.delete')
+                                                <button wire:click="confirmDelete({{ $invoiceLabel->id }})"
                                                     class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                     data-target="#deleteModal">
                                                     <i class="ri-delete-bin-line"></i>
@@ -107,7 +107,7 @@
                         </tbody>
                     </table>
 
-                    {{ $invoiceStatusList->links() }}
+                    {{ $invoiceLabelList->links() }}
                 </div>
             </div>
         </div>

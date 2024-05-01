@@ -40,17 +40,17 @@
                             {{-- /.col --}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="invoice_status_id">Invoice Status</label>
-                                    <select name="invoice_status_id" class="form-control select2" id="invoice_status_id">
-                                        @foreach ($invoiceStatus as $status)
-                                            <option value="{{ $status->id }}"
-                                                {{ old('invoice_status_id') == $status->id ? 'selected' : '' }}>
-                                                {{ $status->name }}
+                                    <label for="invoice_label_id">Invoice Label</label>
+                                    <select name="invoice_label_id" class="form-control select2" id="invoice_label_id">
+                                        @foreach ($invoiceLabels as $label)
+                                            <option value="{{ $label->id }}"
+                                                {{ old('invoice_label_id') == $label->id ? 'selected' : '' }}>
+                                                {{ $label->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('invoice_status_id')
+                                @error('invoice_label_id')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>

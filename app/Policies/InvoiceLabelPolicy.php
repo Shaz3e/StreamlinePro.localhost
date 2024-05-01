@@ -3,25 +3,25 @@
 namespace App\Policies;
 
 use App\Models\Admin;
-use App\Models\InvoiceStatus;
+use App\Models\InvoiceLabel;
 
-class InvoiceStatusPolicy
+class InvoiceLabelPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(Admin $admin)
     {
-        if($admin->can('invoice-status.list')){
+        if($admin->can('invoice-label.list')){
             return true;
         }
     }
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Admin $admin, InvoiceStatus $invoiceStatus)
+    public function view(Admin $admin, InvoiceLabel $invoiceLabel)
     {
-        if ($admin->can('invoice-status.read')) {
+        if ($admin->can('invoice-label.read')) {
             return true;
         }
     }
@@ -31,7 +31,7 @@ class InvoiceStatusPolicy
      */
     public function create(Admin $admin)
     {
-        if ($admin->can('invoice-status.create')) {
+        if ($admin->can('invoice-label.create')) {
             return true;
         }
     }
@@ -39,9 +39,9 @@ class InvoiceStatusPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Admin $admin, InvoiceStatus $invoiceStatus)
+    public function update(Admin $admin, InvoiceLabel $invoiceLabel)
     {
-        if ($admin->can('invoice-status.update')) {
+        if ($admin->can('invoice-label.update')) {
             return true;
         }
     }
@@ -49,9 +49,9 @@ class InvoiceStatusPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Admin $admin, InvoiceStatus $invoiceStatus)
+    public function delete(Admin $admin, InvoiceLabel $invoiceLabel)
     {
-        if ($admin->can('invoice-status.delete')) {
+        if ($admin->can('invoice-label.delete')) {
             return true;
         }
     }
@@ -59,9 +59,9 @@ class InvoiceStatusPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(Admin $admin, InvoiceStatus $invoiceStatus)
+    public function restore(Admin $admin, InvoiceLabel $invoiceLabel)
     {
-        if ($admin->can('invoice-status.restore')) {
+        if ($admin->can('invoice-label.restore')) {
             return true;
         }
     }
@@ -69,9 +69,9 @@ class InvoiceStatusPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(Admin $admin, InvoiceStatus $invoiceStatus)
+    public function forceDelete(Admin $admin, InvoiceLabel $invoiceLabel)
     {
-        if ($admin->can('invoice-status.force.delete')) {
+        if ($admin->can('invoice-label.force.delete')) {
             return true;
         }
     }

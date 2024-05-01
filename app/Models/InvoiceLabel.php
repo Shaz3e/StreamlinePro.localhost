@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable as AuditingAuditable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class InvoiceStatus extends Model implements Auditable
+class InvoiceLabel extends Model implements Auditable
 {
     use HasFactory, AuditingAuditable, SoftDeletes;
 

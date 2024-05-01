@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Invoice\StoreInvoiceRequest;
 use App\Models\Company;
 use App\Models\Invoice;
+use App\Models\InvoiceLabel;
 use App\Models\InvoiceProduct;
-use App\Models\InvoiceStatus;
 use App\Models\Product;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
@@ -46,12 +46,12 @@ class InvoiceController extends Controller
         $companies = Company::where('is_active', 1)->get();
 
         // Get all active invoice status
-        $invoiceStatus = InvoiceStatus::where('is_active', 1)->get();
+        $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('admin.invoice.create', [
             'products' => $products,
             'companies' => $companies,
-            'invoiceStatus' => $invoiceStatus,
+            'invoiceLabels' => $invoiceLabels,
         ]);
     }
 
@@ -68,7 +68,7 @@ class InvoiceController extends Controller
             $request->all(),
             [
                 'company_id' => 'required|exists:companies,id',
-                'invoice_status_id' => 'required|exists:invoice_statuses,id',
+                'invoice_label_id' => 'required|exists:invoice_labels,id',
                 'invoice_date' => 'required|date',
                 'due_date' => 'required|date',
                 'total_tax' => 'nullable',
@@ -93,7 +93,7 @@ class InvoiceController extends Controller
         // Update record in database
         $invoice = new Invoice();
         $invoice->company_id = $request->company_id;
-        $invoice->invoice_status_id = $request->invoice_status_id;
+        $invoice->invoice_label_id = $request->invoice_label_id;
         $invoice->invoice_date = $request->invoice_date;
         $invoice->due_date = $request->due_date;
         $invoice->save();
@@ -200,7 +200,7 @@ class InvoiceController extends Controller
         $companies = Company::where('is_active', 1)->get();
 
         // Get all active invoice status
-        $invoiceStatus = InvoiceStatus::where('is_active', 1)->get();
+        $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         // Get all product items from invoice_product table for this id
         $items = InvoiceProduct::where('invoice_id', $invoice->id)->get();
@@ -209,7 +209,7 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'products' => $products,
             'companies' => $companies,
-            'invoiceStatus' => $invoiceStatus,
+            'invoiceLabels' => $invoiceLabels,
             'items' => $items,
         ]);
     }
@@ -227,7 +227,7 @@ class InvoiceController extends Controller
             $request->all(),
             [
                 'company_id' => 'required|exists:companies,id',
-                'invoice_status_id' => 'required|exists:invoice_statuses,id',
+                'invoice_label_id' => 'required|exists:invoice_labels,id',
                 'invoice_date' => 'required|date',
                 'due_date' => 'required|date',
                 'total_tax' => 'nullable',
@@ -252,7 +252,7 @@ class InvoiceController extends Controller
         // Update invoice details
         $invoice->update([
             'company_id' => $request->company_id,
-            'invoice_status_id' => $request->invoice_status_id,
+            'invoice_label_id' => $request->invoice_label_id,
             'invoice_date' => $request->invoice_date,
             'due_date' => $request->due_date,
         ]);

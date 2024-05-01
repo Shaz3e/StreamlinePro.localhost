@@ -6,14 +6,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class InvoiceStatusSeeder extends Seeder
+class InvoiceLabelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $invoice_statuses = [
+        $invoice_labels = [
             [
                 'name' => 'Draft',
                 'description' => 'The invoice is being prepared and hasn\'t been sent to the client yet.',
@@ -93,6 +93,6 @@ class InvoiceStatusSeeder extends Seeder
             ],
         ];
 
-        DB::table('invoice_statuses')->insert($invoice_statuses);
+        DB::table('invoice_labels')->insert($invoice_labels);
     }
 }

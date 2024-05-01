@@ -48,10 +48,10 @@ class Invoice extends Model implements Auditable
     }
 
     /**
-     * Invoice Status Relations
+     * Invoice Label Relations
      */
-    public function status()
+    public function label()
     {
-        return $this->belongsTo(InvoiceStatus::class, 'invoice_status_id');
+        return $this->belongsTo(InvoiceLabel::class, 'invoice_label_id');
     }
 }

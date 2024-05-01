@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
             // Assign Invoice Status
-            $table->foreignId('invoice_status_id')->nullable();
-            $table->foreign('invoice_status_id')->references('id')->on('invoice_statuses')->onDelete('cascade');
+            $table->foreignId('invoice_label_id')->nullable();
+            $table->foreign('invoice_label_id')->references('id')->on('invoice_labels')->onDelete('cascade');
             
             $table->date('invoice_date')->nullable();
             $table->date('due_date')->nullable();

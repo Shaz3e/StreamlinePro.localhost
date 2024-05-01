@@ -59,7 +59,7 @@ use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\InvoiceController;
 
 // Invoice Status
-use App\Http\Controllers\Admin\InvoiceStatusController;
+use App\Http\Controllers\Admin\InvoiceLabelController;
 
 /**
  * Settings
@@ -224,12 +224,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Invoice Status
          */
-        Route::resource('invoice-status', InvoiceStatusController::class);
+        Route::resource('invoice-labels', InvoiceLabelController::class);
         // Audit
-        Route::get('invoice-status-audit/{id}', [InvoiceStatusController::class, 'audit'])
-            ->name('invoice-status.audit');
-        Route::get('invoice-status-audit/delete/{id}', [InvoiceStatusController::class, 'deleteAudit'])
-            ->name('invoice-status.audit.delete');
+        Route::get('invoice-labels-audit/{id}', [InvoiceLabelController::class, 'audit'])
+            ->name('invoice-labels.audit');
+        Route::get('invoice-labels-audit/delete/{id}', [InvoiceLabelController::class, 'deleteAudit'])
+            ->name('invoice-labels.audit.delete');
 
         /**
          * Admins as Staff

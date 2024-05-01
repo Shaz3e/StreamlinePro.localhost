@@ -2,14 +2,14 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'Invoice Status List',
+        'title' => 'Invoice Label List',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
             ['text' => 'View List', 'link' => null],
         ],
     ])
 
-    @livewire('admin.invoice-status.invoice-status-list')
+    @livewire('admin.invoice-label.invoice-label-list')
 @endsection
 
 @push('styles')

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\InvoiceStatus;
+namespace App\Http\Requests\Admin\InvoiceLabel;
 
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreInvoiceStatusRequest extends BaseFormRequest
+class StoreInvoiceLabelRequest extends BaseFormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,7 @@ class StoreInvoiceStatusRequest extends BaseFormRequest
         return [
             'name' => [
                 'required', 'string', 'max:255',
-                Rule::unique('invoice_statuses', 'name')->ignore($this->invoice_status),
+                Rule::unique('invoice_labels', 'name')->ignore($this->invoice_label),
             ],
             'description' => [
                 'nullable', 'string', 'max:255',

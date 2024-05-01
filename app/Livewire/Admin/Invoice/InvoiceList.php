@@ -4,7 +4,7 @@ namespace App\Livewire\Admin\Invoice;
 
 use App\Models\Company;
 use App\Models\Invoice;
-use App\Models\InvoiceStatus;
+use App\Models\InvoiceLabel;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -31,7 +31,7 @@ class InvoiceList extends Component
 
     // Filter Invoice Status
     #[Url()]
-    public $filterStatus;
+    public $filterLabel;
 
     // Show deleted records
     public $showDeleted = false;
@@ -61,8 +61,8 @@ class InvoiceList extends Component
         }
 
         // Filter records based on status
-        if ($this->filterStatus) {
-            $query->where('invoice_status_id', $this->filterStatus);
+        if ($this->filterLabel) {
+            $query->where('invoice_label_id', $this->filterLabel);
         }
 
         // Get all invoices
@@ -72,12 +72,12 @@ class InvoiceList extends Component
         $companies = Company::where('is_active', 1)->get();
 
         // Get all invoice statuses
-        $invoiceStatus = InvoiceStatus::where('is_active', 1)->get();
+        $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('livewire.admin.invoice.invoice-list', [
             'invoices' => $invoices,
             'companies' => $companies,
-            'invoiceStatus' => $invoiceStatus
+            'invoiceLabels' => $invoiceLabels
         ]);
     }
 
@@ -104,7 +104,7 @@ class InvoiceList extends Component
     {
         $this->search = '';
         $this->filterCompany = '';
-        $this->filterStatus = '';
+        $this->filterLabel = '';
         $this->showDeleted = '';
         $this->resetPage();
     }

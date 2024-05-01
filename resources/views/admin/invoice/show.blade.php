@@ -24,11 +24,11 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-text">Invoice Status</div>
+                    <div class="card-text">Invoice Label</div>
                     <h4 class="card-title">
                         <span class="badge"
-                            style="background-color: {{ $invoice->status->bg_color }}; color:{{ $invoice->status->text_color }}">
-                            {{ $invoice->status->name }}
+                            style="background-color: {{ $invoice->label->bg_color }}; color:{{ $invoice->label->text_color }}">
+                            {{ $invoice->label->name }}
                         </span>
                     </h4>
                 </div>

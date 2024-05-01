@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\InvoiceStatus;
+namespace App\Livewire\Admin\InvoiceLabel;
 
-use App\Models\InvoiceStatus;
+use App\Models\InvoiceLabel;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class InvoiceStatusList extends Component
+class InvoiceLabelList extends Component
 {
     use WithPagination;
 
@@ -31,10 +31,10 @@ class InvoiceStatusList extends Component
      */
     public function render()
     {
-        $query = InvoiceStatus::query();
+        $query = InvoiceLabel::query();
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('invoice_statuses');
+        $columns = Schema::getColumnListing('invoice_labels');
 
         // Filter records based on search query
         if ($this->search !== '') {
@@ -50,10 +50,10 @@ class InvoiceStatusList extends Component
             $query->onlyTrashed();
         }
 
-        $invoiceStatusList = $query->orderBy('id', 'asc')->paginate($this->perPage);
+        $invoiceLabelList = $query->orderBy('id', 'asc')->paginate($this->perPage);
 
-        return view('livewire.admin.invoice-status.invoice-status-list', [
-            'invoiceStatusList' => $invoiceStatusList
+        return view('livewire.admin.invoice-label.invoice-label-list', [
+            'invoiceLabelList' => $invoiceLabelList
         ]);
     }
 
@@ -76,19 +76,19 @@ class InvoiceStatusList extends Component
     /**
      * Toggle Status
      */
-    public function toggleStatus($invoiceStatusId)
+    public function toggleStatus($id)
     {
         // Get data
-        $invoiceStatus = InvoiceStatus::find($invoiceStatusId);
+        $invoiceLabel = InvoiceLabel::find($id);
 
         // Check user exists
-        if (!$invoiceStatus) {
+        if (!$invoiceLabel) {
             $this->dispatch('error', 'Invoice Staus not found!');
             return;
         }
 
         // Change Status
-        $invoiceStatus->update(['is_active' => !$invoiceStatus->is_active]);
+        $invoiceLabel->update(['is_active' => !$invoiceLabel->is_active]);
         $this->dispatch('statusChanged');
     }
 
@@ -114,16 +114,16 @@ class InvoiceStatusList extends Component
         }
 
         // get id
-        $invoiceStatus = InvoiceStatus::find($this->recordToDelete);
+        $invoiceLabel = InvoiceLabel::find($this->recordToDelete);
 
         // Check record exists
-        if (!$invoiceStatus) {
+        if (!$invoiceLabel) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $invoiceStatus->delete();
+        $invoiceLabel->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;
@@ -132,9 +132,9 @@ class InvoiceStatusList extends Component
     /**
      * Confirm Restore
      */
-    public function confirmRestore($invoiceStatusId)
+    public function confirmRestore($id)
     {
-        $this->recordToDelete = $invoiceStatusId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmRestore');
     }
 
@@ -144,15 +144,15 @@ class InvoiceStatusList extends Component
     #[On('restored')]
     public function restore()
     {
-        InvoiceStatus::withTrashed()->find($this->recordToDelete)->restore();
+        InvoiceLabel::withTrashed()->find($this->recordToDelete)->restore();
     }
 
     /**
      * Confirm force delete
      */
-    public function confirmForceDelete($invoiceStatusId)
+    public function confirmForceDelete($id)
     {
-        $this->recordToDelete = $invoiceStatusId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmForceDelete');
     }
 
@@ -162,6 +162,6 @@ class InvoiceStatusList extends Component
     #[On('forceDeleted')]
     public function forceDelete()
     {
-        InvoiceStatus::withTrashed()->find($this->recordToDelete)->forceDelete();
+        InvoiceLabel::withTrashed()->find($this->recordToDelete)->forceDelete();
     }
 }
