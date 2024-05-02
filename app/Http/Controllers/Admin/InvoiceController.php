@@ -7,9 +7,10 @@ use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceLabel;
 use App\Models\InvoiceProduct;
-use App\Models\PaymentTransaction;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Trait\Admin\FormHelper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -101,6 +102,61 @@ class InvoiceController extends Controller
         $invoice->status = $request->status;
         $invoice->save();
 
+        if (
+            request()->has('product_name') ||
+            request()->has('quantity') ||
+            request()->has('unit_price') ||
+            request()->has('tax') ||
+            request()->has('discount') ||
+            request()->has('discount_type') ||
+            request()->has('total_price')
+        ) {
+            // Extract the product details from the request
+            $productNames = request()->input('product_name');
+            $quantities = request()->input('quantity');
+            $unitPrices = request()->input('unit_price');
+            $taxes = request()->input('tax');
+            $discounts = request()->input('discount');
+            $discountTypes = request()->input('discount_type');
+            $totalPrices = request()->input('total_price');
+
+            // Initialize variables to store the sums
+            $sumQuantity = 0;
+            $sumUnitPrice = 0;
+            $sumTax = 0;
+            $sumDiscount = 0;
+            $sumTotalPrice = 0;
+
+            // Iterate through the products and calculate the sums
+            for ($i = 0; $i < count($productNames); $i++) {
+                $sumQuantity += (float) $quantities[$i];
+                $sumUnitPrice += (float) $unitPrices[$i];
+                $sumTax += (float) $taxes[$i];
+                $sumDiscount += (float) $discounts[$i];
+                $sumTotalPrice += (float) $totalPrices[$i];
+
+                // Create entries in InvoiceProduct model
+                InvoiceProduct::create([
+                    'invoice_id' => $invoice->id,
+                    'product_name' => $productNames[$i],
+                    'quantity' => $quantities[$i],
+                    'unit_price' => $unitPrices[$i],
+                    'tax' => $taxes[$i],
+                    'discount' => $discounts[$i],
+                    'discount_type' => $discountTypes[$i],
+                    'total_price' => $totalPrices[$i],
+                ]);
+            }
+
+            // Update Invoice model with sum
+            $invoice->update([
+                'total_price' => $sumUnitPrice,
+                'total_tax' => $sumTax,
+                'total_discount' => $sumDiscount,
+                'total_amount' => $sumTotalPrice,
+            ]);
+        }
+
         session()->flash('success', 'Invoce has been created successfully!');
 
         return $this->saveAndRedirect($request, 'invoices', $invoice->id);
@@ -118,7 +174,7 @@ class InvoiceController extends Controller
         $items = InvoiceProduct::where('invoice_id', $invoice->id)->get();
 
         // Get all transactions related to this invoice
-        $paymentTransactions = PaymentTransaction::where('invoice_id', $invoice->id)->get();
+        $payments = Payment::where('invoice_id', $invoice->id)->get();
 
         $audits = $invoice->audits()
             ->latest()
@@ -132,7 +188,7 @@ class InvoiceController extends Controller
         return view('admin.invoice.show', [
             'invoice' => $invoice,
             'items' => $items,
-            'paymentTransactions' => $paymentTransactions,
+            'payments' => $payments,
             'audits' => $audits,
         ]);
     }
@@ -347,7 +403,7 @@ class InvoiceController extends Controller
         $totalAmount = $invoice->total_amount;
         $paidAmount = $invoice->total_paid;
         $dueAmount = $totalAmount - $paidAmount;
-        
+
         $amount = $dueAmount > 0 ? $dueAmount : 0;
 
         // Validate data
@@ -365,15 +421,25 @@ class InvoiceController extends Controller
         }
 
         // Create new payment instance and save
-        $payment = new PaymentTransaction();
+        $payment = new Payment();
         $payment->transaction_number = Str::uuid();
         $payment->invoice_id = $invoice->id;
         $payment->transaction_date = $request->transaction_date;
         $payment->amount = $request->amount;
         $payment->save();
 
-        // Update invoice status
-        $invoice->paid($payment);
+        // If the due amount equals to total_amount change status to paid
+        if ($invoice->total_amount == $invoice->total_paid + $request->amount) {
+            $invoice->status = Invoice::STATUS_PAID;
+        } elseif ($invoice->total_paid + $request->amount > 0 && $invoice->total_paid + $request->amount < $invoice->total_amount) {
+            $invoice->status = Invoice::STATUS_PARTIALLY_PAID;
+        }
+
+
+        // Update invoice total paid with db:row
+        $invoice->update([
+            'total_paid' => DB::raw('total_paid + ' . $request->amount),
+        ]);
 
         // Return success response
         return response()->json(['success' => 'Payment has been added successfully!'], 200);
@@ -384,9 +450,23 @@ class InvoiceController extends Controller
      */
     public function removePayment(Request $request, $id)
     {
-        $payment = PaymentTransaction::find($id);
+        $payment = Payment::find($id);
 
-        // // Remove the payment
+        $invoice = Invoice::find($payment->invoice_id);
+
+        // Update minuse invoice total paid with db:row
+        $invoice->update([
+            'total_paid' => DB::raw('total_paid - ' . $payment->amount),
+        ]);
+
+        // If the due amount not equal to total_amount change status to unpaid otherwise change status to partial paid
+        // if ($invoice->total_paid === 0) {
+        //     $invoice->status = Invoice::STATUS_UNPAID;
+        // } elseif ($invoice->total_paid < $invoice->total_amount ) {
+        //     $invoice->status = Invoice::STATUS_PARTIALLY_PAID;
+        // }
+
+        // Remove the payment
         $payment->delete();
 
         // Return success response

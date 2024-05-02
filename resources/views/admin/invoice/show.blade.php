@@ -15,9 +15,11 @@
         <div class="col-md-12">
             <a class="btn btn-success waves-effect waves-light"
                 href="{{ route('admin.invoices.edit', $invoice->id) }}">Edit</a>
-            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
-                data-bs-target="#addPayment">Add Payment</button>
-            @include('admin.invoice.add-payment')
+            @if ($invoice->total_amount != $invoice->total_paid && $invoice->total_amount != 0)
+                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
+                    data-bs-target="#addPayment">Add Payment</button>
+                @include('admin.invoice.add-payment')
+            @endif
         </div>
         {{-- /.col --}}
     </div>
@@ -25,15 +27,6 @@
 
     {{-- Show Invoice Account Summary --}}
     <div class="row mt-3">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-text">Tax %</div>
-                    <h4 class="card-title">{{ $invoice->total_tax }}</h4>
-                </div>
-            </div>
-        </div>
-        {{-- /.col --}}
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
@@ -48,6 +41,15 @@
                 <div class="card-body">
                     <div class="card-text">Total</div>
                     <h4 class="card-title">{{ $invoice->total_amount }}</h4>
+                </div>
+            </div>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">Total Paid</div>
+                    <h4 class="card-title">{{ $invoice->total_paid }}</h4>
                 </div>
             </div>
         </div>
@@ -207,16 +209,16 @@
                                 </tr>
                             </thead>
                             <tbody id="transactionItems">
-                                @foreach ($paymentTransactions as $transaction)
-                                    <tr data-id="{{ $transaction->id }}">
-                                        <td>{{ $transaction->amount }}</td>
-                                        <td>{{ $transaction->transaction_number }}</td>
-                                        <td>{{ $transaction->transaction_date->format('l, F j, Y') }}</td>
-                                        <td>{{ $transaction->created_at->format('l, F j, Y') }}</td>
+                                @foreach ($payments as $payment)
+                                    <tr data-id="{{ $payment->id }}">
+                                        <td>{{ $payment->amount }}</td>
+                                        <td>{{ $payment->payment_number }}</td>
+                                        <td>{{ $payment->transaction_date->format('l, F j, Y') }}</td>
+                                        <td>{{ $payment->created_at->format('l, F j, Y') }}</td>
                                         <td>
                                             <button type="button"
                                                 class="btn btn-danger btn-sm waves-effect waves-light removePayment"
-                                                data-payment-id="{{ $transaction->id }}">
+                                                data-payment-id="{{ $payment->id }}">
                                                 <i class="ri-delete-bin-line"></i>
                                             </button>
                                         </td>

@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Observers\Invoice\InvoiceObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentTransaction extends Model
+class Payment extends Model
 {
     use HasFactory;
 

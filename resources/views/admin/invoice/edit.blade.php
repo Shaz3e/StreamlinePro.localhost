@@ -45,9 +45,9 @@
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" class="form-control">
-                                        @foreach (\App\Models\Invoice::getInvoiceStatusList() as $value => $label)
-                                            <option value="{{ $value }}"
-                                                @if ($invoice->status === $value) selected @endif>{{ $label }}
+                                        @foreach (\App\Models\Invoice::getStatuses() as $value => $label)
+                                            <option value="{{ $label }}"
+                                                @if ($invoice->status === $label) selected @endif>{{ $label }}
                                             </option>
                                         @endforeach
                                     </select>

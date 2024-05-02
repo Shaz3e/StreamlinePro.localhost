@@ -44,8 +44,8 @@
                                 <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" class="form-control">
-                                        @foreach (\App\Models\Invoice::getInvoiceStatusList() as $value => $label)
-                                            <option value="{{ $value }}">{{ $label }}</option>
+                                        @foreach (\App\Models\Invoice::getStatuses() as $value => $label)
+                                            <option value="{{ $label }}">{{ $label }}</option>
                                         @endforeach
                                     </select>
                                 </div>
