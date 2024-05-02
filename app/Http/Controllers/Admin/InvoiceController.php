@@ -101,61 +101,6 @@ class InvoiceController extends Controller
         $invoice->status = $request->status;
         $invoice->save();
 
-        if (
-            $request->has('product_name') ||
-            $request->has('quantity') ||
-            $request->has('unit_price') ||
-            $request->has('tax') ||
-            $request->has('discount') ||
-            $request->has('discount_type') ||
-            $request->has('total_price')
-        ) {
-            // Extract the product details from the request
-            $productNames = $request->input('product_name');
-            $quantities = $request->input('quantity');
-            $unitPrices = $request->input('unit_price');
-            $taxes = $request->input('tax');
-            $discounts = $request->input('discount');
-            $discountTypes = $request->input('discount_type');
-            $totalPrices = $request->input('total_price');
-
-            // Initialize variables to store the sums
-            $sumQuantity = 0;
-            $sumUnitPrice = 0;
-            $sumTax = 0;
-            $sumDiscount = 0;
-            $sumTotalPrice = 0;
-
-            // Iterate through the products and calculate the sums
-            for ($i = 0; $i < count($productNames); $i++) {
-                $sumQuantity += (float) $quantities[$i];
-                $sumUnitPrice += (float) $unitPrices[$i];
-                $sumTax += (float) $taxes[$i];
-                $sumDiscount += (float) $discounts[$i];
-                $sumTotalPrice += (float) $totalPrices[$i];
-
-                // Create entries in InvoiceProduct model
-                InvoiceProduct::create([
-                    'invoice_id' => $invoice->id,
-                    'product_name' => $productNames[$i],
-                    'quantity' => $quantities[$i],
-                    'unit_price' => $unitPrices[$i],
-                    'tax' => $taxes[$i],
-                    'discount' => $discounts[$i],
-                    'discount_type' => $discountTypes[$i],
-                    'total_price' => $totalPrices[$i],
-                ]);
-            }
-
-            // Update Invoice model with sum
-            $invoice->update([
-                'total_price' => $sumUnitPrice,
-                'total_tax' => $sumTax,
-                'total_discount' => $sumDiscount,
-                'total_amount' => $sumTotalPrice,
-            ]);
-        }
-
         session()->flash('success', 'Invoce has been created successfully!');
 
         return $this->saveAndRedirect($request, 'invoices', $invoice->id);
