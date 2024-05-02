@@ -219,6 +219,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Remove Product
         Route::delete('/invoices/products/{productId}/remove', [InvoiceController::class, 'removeProduct'])
             ->name('product.remove');
+        // Add Payment
+        Route::post('invoice/add-payment/{id}', [InvoiceController::class, 'addPayment'])
+            ->name('invoice.add-payment');
+        Route::delete('invoice/remove-payment/{id}', [InvoiceController::class, 'removePayment'])
+            ->name('invoice.remove-payment');
 
 
         /**

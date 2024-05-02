@@ -26,7 +26,7 @@
 
 
     <div class="row mb-3">
-        <div class="col-md-4 col-sm-12 mb-2">
+        <div class="col-md-3 col-sm-12 mb-2">
             <select wire:model.live="filterCompany" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Company</option>
                 @foreach ($companies as $company)
@@ -37,9 +37,18 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-4 col-sm-12 mb-2">
-            <select wire:model.live="filterLabel" class="form-control form-control-sm form-control-border">
+        <div class="col-md-3 col-sm-12 mb-2">
+            <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Status</option>
+                @foreach ($invoiceStatuses as $value => $label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                @endforeach
+            </select>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-2 col-sm-12 mb-2">
+            <select wire:model.live="filterLabel" class="form-control form-control-sm form-control-border">
+                <option value="">Filter by Label</option>
                 @foreach ($invoiceLabels as $label)
                     <option value="{{ $label->id }}">
                         {{ $label->name }}
@@ -57,11 +66,9 @@
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
-            @if ($search || $filterCompany || $filterLabel)
-                <button wire:click="resetFilters" class="btn btn-sm btn-block btn-outline-secondary">
-                    Reset
-                </button>
-            @endif
+            <button wire:click="resetFilters" class="btn btn-sm btn-block btn-outline-secondary">
+                Reset
+            </button>
         </div>
         {{-- /.col --}}
     </div>
@@ -75,7 +82,8 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th style="width: 65%">Invoice Details</th>
+                                    <th style="width: 55%">Invoice Details</th>
+                                    <th style="10%">Status</th>
                                     <th style="10%">Price</th>
                                     @if (!$showDeleted)
                                         <th style="width: 10%">Label</th>
@@ -96,7 +104,7 @@
                                                 </span>
                                             @endif
 
-                                            @if($invoice->products()->count() > 0)
+                                            @if ($invoice->products()->count() > 0)
                                                 @foreach ($invoice->products as $product)
                                                     <span class="badge bg-warning">
                                                         {{ $product->product_name }}
@@ -104,6 +112,7 @@
                                                 @endforeach
                                             @endif
                                         </td>
+                                        <td>{{ $invoice->status }}</td>
                                         <td>{{ $invoice->total_amount }}</td>
                                         @if (!$showDeleted)
                                             <td>

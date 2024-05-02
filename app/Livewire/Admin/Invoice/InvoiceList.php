@@ -31,10 +31,20 @@ class InvoiceList extends Component
 
     // Filter Invoice Status
     #[Url()]
+    public $filterStatus = 'Unpaid';
+    public $invoiceStatuses;
+
+    // Filter Invoice Label
+    #[Url()]
     public $filterLabel;
 
     // Show deleted records
     public $showDeleted = false;
+
+    public function mount()
+    {
+        $this->invoiceStatuses = Invoice::getInvoiceStatusList();
+    }
 
     /**
      * Main Blade Render
@@ -61,6 +71,10 @@ class InvoiceList extends Component
         }
 
         // Filter records based on status
+        if ($this->filterStatus) {
+            $query->where('status', $this->filterStatus);
+        }
+        // Filter records based on label
         if ($this->filterLabel) {
             $query->where('invoice_label_id', $this->filterLabel);
         }
@@ -104,6 +118,7 @@ class InvoiceList extends Component
     {
         $this->search = '';
         $this->filterCompany = '';
+        $this->filterStatus = '';
         $this->filterLabel = '';
         $this->showDeleted = '';
         $this->resetPage();

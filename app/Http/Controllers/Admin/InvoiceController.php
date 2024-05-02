@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Invoice\StoreInvoiceRequest;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceLabel;
 use App\Models\InvoiceProduct;
+use App\Models\PaymentTransaction;
 use App\Models\Product;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use OwenIt\Auditing\Models\Audit;
+use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
 {
@@ -171,6 +172,9 @@ class InvoiceController extends Controller
         // Get invoice items
         $items = InvoiceProduct::where('invoice_id', $invoice->id)->get();
 
+        // Get all transactions related to this invoice
+        $paymentTransactions = PaymentTransaction::where('invoice_id', $invoice->id)->get();
+
         $audits = $invoice->audits()
             ->latest()
             ->paginate(10);
@@ -183,6 +187,7 @@ class InvoiceController extends Controller
         return view('admin.invoice.show', [
             'invoice' => $invoice,
             'items' => $items,
+            'paymentTransactions' => $paymentTransactions,
             'audits' => $audits,
         ]);
     }
@@ -330,7 +335,7 @@ class InvoiceController extends Controller
 
         // Flash message
         session()->flash('success', 'Invoice has been updated successfully!');
-        
+
         return $this->saveAndRedirect($request, 'invoices', $invoice->id);
     }
 
@@ -385,5 +390,61 @@ class InvoiceController extends Controller
 
         // Return a JSON response indicating success
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Add Payment
+     */
+    public function addPayment(Request $request, $id)
+    {
+        $invoice = Invoice::find($id);
+        // Calculate amount to be paid and due after adding payment
+        $totalAmount = $invoice->total_amount;
+        $paidAmount = $invoice->total_paid;
+        $dueAmount = $totalAmount - $paidAmount;
+        
+        $amount = $dueAmount > 0 ? $dueAmount : 0;
+
+        // Validate data
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'amount' => 'required|lte:' . $amount,
+                'transaction_date' => 'required|date',
+            ],
+        );
+
+        // Return error if validation fails
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
+        // Create new payment instance and save
+        $payment = new PaymentTransaction();
+        $payment->transaction_number = Str::uuid();
+        $payment->invoice_id = $invoice->id;
+        $payment->transaction_date = $request->transaction_date;
+        $payment->amount = $request->amount;
+        $payment->save();
+
+        // Update invoice status
+        $invoice->paid($payment);
+
+        // Return success response
+        return response()->json(['success' => 'Payment has been added successfully!'], 200);
+    }
+
+    /**
+     * Remove Payment
+     */
+    public function removePayment(Request $request, $id)
+    {
+        $payment = PaymentTransaction::find($id);
+
+        // // Remove the payment
+        $payment->delete();
+
+        // Return success response
+        return response()->json(['success' => 'Transaction has been removed successfully!'], 200);
     }
 }

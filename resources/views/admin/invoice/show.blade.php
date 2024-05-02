@@ -10,8 +10,21 @@
         ],
     ])
 
-    {{-- Show Invoice Account Summary --}}
+    {{-- Links to perform quick actions --}}
     <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-success waves-effect waves-light"
+                href="{{ route('admin.invoices.edit', $invoice->id) }}">Edit</a>
+            <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
+                data-bs-target="#addPayment">Add Payment</button>
+            @include('admin.invoice.add-payment')
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
+    {{-- Show Invoice Account Summary --}}
+    <div class="row mt-3">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
@@ -173,9 +186,56 @@
     </div>
     {{-- /.row --}}
 
+    {{-- Transaction Details --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Transaction Details
+                </div>
+                {{-- /.card-header --}}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Transaction ID</th>
+                                    <th>Transaction Date</th>
+                                    <th>Created At</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionItems">
+                                @foreach ($paymentTransactions as $transaction)
+                                    <tr data-id="{{ $transaction->id }}">
+                                        <td>{{ $transaction->amount }}</td>
+                                        <td>{{ $transaction->transaction_number }}</td>
+                                        <td>{{ $transaction->transaction_date->format('l, F j, Y') }}</td>
+                                        <td>{{ $transaction->created_at->format('l, F j, Y') }}</td>
+                                        <td>
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm waves-effect waves-light removePayment"
+                                                data-payment-id="{{ $transaction->id }}">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{-- /.card-body --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
 
     {{-- Show Audit History --}}
-    @hasrole('superadmin')
+    @hasrole('tester')
         @if (count($audits) > 0)
             <div class="row">
                 <div class="col-md-12">
@@ -251,7 +311,7 @@
 @endpush
 
 @push('scripts')
-    @hasrole('superadmin')
+    @hasrole('tester')
         <script>
             $(document).ready(function() {
                 // Audit Log Show Modal
@@ -319,4 +379,41 @@
             });
         </script>
     @endhasrole
+
+    <script>
+        $(document).ready(function() {
+            // remove payment when button #removePayment click via ajax
+            $('.removePayment').click(function(e) {
+                e.preventDefault();
+                const paymentId = $(this).data('payment-id');
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: `{{ route('admin.invoice.remove-payment', ':id') }}`.replace(':id',
+                        paymentId),
+                    type: 'DELETE',
+                    success: function(data) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: data.success,
+                            icon: 'success',
+                            showCancelButton: false
+                        });
+                        location.reload();
+                    },
+                    error: function(error) {
+                        // console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.error,
+                            icon: 'error',
+                            showCancelButton: false
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endpush

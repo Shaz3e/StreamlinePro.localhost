@@ -32,6 +32,7 @@ return new class extends Migration
             $table->decimal('total_price', 12, 2)->nullable()->default(0.00);
             $table->decimal('total_discount', 12, 2)->nullable()->default(0.00);
             $table->decimal('total_amount', 12, 2)->nullable()->default(0.00);
+            $table->decimal('total_paid', 12, 2)->nullable()->default(0.00);
             $table->softDeletes();
             $table->timestamps();
         });

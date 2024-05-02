@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\Invoice\InvoiceObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,6 +47,7 @@ class Invoice extends Model implements Auditable
         //     throw new InvalidArgumentException("Invalid status");
         // }
         $this->status = $status;
+        $this->save();
     }
 
     public function getStatus()
@@ -84,5 +86,11 @@ class Invoice extends Model implements Auditable
 
         // Set the $auditInclude property to include all columns
         $this->auditInclude = $columns;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::observe(InvoiceObserver::class);
     }
 }
