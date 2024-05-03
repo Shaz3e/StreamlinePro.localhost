@@ -10,6 +10,7 @@ use App\Models\InvoiceProduct;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Trait\Admin\FormHelper;
+use Brick\Math\BigInteger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -458,16 +459,20 @@ class InvoiceController extends Controller
         $invoice->update([
             'total_paid' => DB::raw('total_paid - ' . $payment->amount),
         ]);
-
-        // If the due amount not equal to total_amount change status to unpaid otherwise change status to partial paid
-        // if ($invoice->total_paid === 0) {
-        //     $invoice->status = Invoice::STATUS_UNPAID;
-        // } elseif ($invoice->total_paid < $invoice->total_amount ) {
-        //     $invoice->status = Invoice::STATUS_PARTIALLY_PAID;
-        // }
-
+        
         // Remove the payment
         $payment->delete();
+
+        // If the due amount not equal to total_amount change status to unpaid otherwise change status to partial paid        
+        if($payment->count() == 0){
+            $invoice->update([
+                'status' => Invoice::STATUS_UNPAID
+            ]);
+        }elseif($invoice->total_paid != $invoice->total_amount){
+            $invoice->update([
+                'status' => Invoice::STATUS_PARTIALLY_PAID
+            ]);
+        }
 
         // Return success response
         return response()->json(['success' => 'Transaction has been removed successfully!'], 200);
