@@ -43,7 +43,7 @@ class InvoiceList extends Component
 
     public function mount()
     {
-        $this->invoiceStatuses = Invoice::getInvoiceStatusList();
+        $this->invoiceStatuses = Invoice::getStatuses();
     }
 
     /**
