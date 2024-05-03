@@ -177,6 +177,17 @@ class InvoiceController extends Controller
         // Get all transactions related to this invoice
         $payments = Payment::where('invoice_id', $invoice->id)->get();
 
+        $totalPercentageDiscount = 0;
+        $totalAmountDiscount = 0;
+        
+        foreach ($invoice->products as $product) {
+            if ($product->discount_type == 'percentage') {
+                $totalPercentageDiscount += $product->discount;
+            } elseif ($product->discount_type == 'amount') {
+                $totalAmountDiscount += $product->discount;
+            }
+        }
+
         $audits = $invoice->audits()
             ->latest()
             ->paginate(10);
@@ -190,6 +201,8 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'items' => $items,
             'payments' => $payments,
+            'totalPercentageDiscount' => $totalPercentageDiscount,
+            'totalAmountDiscount' => $totalAmountDiscount,
             'audits' => $audits,
         ]);
     }

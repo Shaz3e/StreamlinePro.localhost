@@ -13,8 +13,9 @@
     {{-- Links to perform quick actions --}}
     <div class="row">
         <div class="col-md-12">
-            <a class="btn btn-success waves-effect waves-light"
-                href="{{ route('admin.invoices.edit', $invoice->id) }}">Edit</a>
+            <a class="btn btn-success waves-effect waves-light" href="{{ route('admin.invoices.edit', $invoice->id) }}">
+                <i class="ri-edit-line align-middle me-2"></i> Edit Invoice
+            </a>
             @if ($invoice->total_amount != $invoice->total_paid && $invoice->total_amount != 0)
                 <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
                     data-bs-target="#addPayment">Add Payment</button>
@@ -72,7 +73,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-text">Invoiced To</div>
-                    <h4 class="card-title">{{ $invoice->company->name }}</h4>
+                    <h4 class="card-title">
+                        <a href="{{ route('admin.companies.show', $invoice->company->id) }}">
+                            {{ $invoice->company->name }}
+                        </a>
+                    </h4>
                 </div>
             </div>
         </div>
@@ -134,7 +139,7 @@
                 {{-- /.card-header --}}
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="invoice-items-table">
+                        {{-- <table class="table table-hover table-bordered" id="invoice-items-table">
                             <thead>
                                 <tr>
                                     <th>Product</th>
@@ -170,6 +175,85 @@
                                     <th>{{ $items->sum('total_price') }}</th>
                                 </tr>
                             </tfoot>
+                        </table> --}}
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><strong>Product</strong></th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Unit Price</th>
+                                    <th class="text-center">Tax</th>
+                                    <th class="text-center">Discount</th>
+                                    <th class="text-center">Discount Type</th>
+                                    <th class="text-end">Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($items as $item)
+                                    <tr>
+                                        <td>{{ $item->product_name }}</td>
+                                        <td class="text-center">{{ $item->quantity }}</td>
+                                        <td class="text-center">{{ $item->unit_price }}</td>
+                                        <td class="text-center">{{ $item->tax }}</td>
+                                        <td class="text-center">{{ $item->discount }}</td>
+                                        <td class="text-center">{{ ucwords($item->discount_type) }}</td>
+                                        <td class="text-end">{{ $item->total_price }}</td>
+                                    </tr>
+                                @endforeach
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-end">
+                                        <strong>Subtotal</strong>
+                                    </td>
+                                    <td class="thick-line text-end">
+                                        {{ $invoice->total_price }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-end">
+                                        <strong>Total Discount %</strong>
+                                    </td>
+                                    <td class="thick-line text-end">
+                                        {{ $totalPercentageDiscount }}%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-end">
+                                        <strong>Total Fixed Amount Discount</strong>
+                                    </td>
+                                    <td class="thick-line text-end">
+                                        ${{ $totalAmountDiscount }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-end">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="no-line text-end">
+                                        <h4 class="m-0">{{ $invoice->total_amount }}</h4>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                     {{-- /.table-responsive --}}
@@ -294,7 +378,8 @@
         @endif
 
         {{-- Audit Log --}}
-        <div class="modal fade auditLog" tabindex="-1" aria-labelledby="auditLog" style="display: none;" aria-hidden="true">
+        <div class="modal fade auditLog" tabindex="-1" aria-labelledby="auditLog" style="display: none;"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
