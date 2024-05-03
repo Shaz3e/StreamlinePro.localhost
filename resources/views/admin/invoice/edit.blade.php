@@ -20,7 +20,7 @@
                     @method('put')
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="company_id">Invoice To</label>
                                     <select name="company_id" class="form-control select2" id="company_id">
@@ -40,21 +40,6 @@
                                 @enderror
                             </div>
                             {{-- /.col --}}
-
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" class="form-control">
-                                        @foreach (\App\Models\Invoice::getStatuses() as $value => $label)
-                                            <option value="{{ $label }}"
-                                                @if ($invoice->status === $label) selected @endif>{{ $label }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- /.col --}}
-
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="invoice_label_id">Invoice Label</label>
@@ -128,18 +113,17 @@
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control form-control-sm"
-                                                            name="unit_price[]" oninput="calculateTotal(this)"
+                                                            name="unit_price[]" min="1" oninput="calculateTotal(this)"
                                                             value="{{ $item->unit_price }}">
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control form-control-sm"
-                                                            name="tax[]" value="{{ $item->tax }}" min="0"
-                                                            max="100" oninput="calculateTotal(this)">
+                                                            name="tax[]" value="{{ $item->tax }}" min="0" oninput="calculateTotal(this)">
                                                     </td>
                                                     <td>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control form-control-sm"
-                                                                name="discount[]" value="{{ $item->discount }}"
+                                                                name="discount[]" min="0" value="{{ $item->discount }}"
                                                                 oninput="calculateTotal(this)">
                                                             <div class="input-group-append">
                                                                 <select name="discount_type[]"
@@ -274,10 +258,10 @@
                             <input type="number" class="form-control form-control-sm" name="quantity[]" min="1" value="1" oninput="calculateTotal(this)">
                         </td>
                         <td>
-                            <input type="number" class="form-control form-control-sm" name="unit_price[]" oninput="calculateTotal(this)" value="${productPrice}">
+                            <input type="number" class="form-control form-control-sm" name="unit_price[]" min="1" oninput="calculateTotal(this)" value="${productPrice}">
                         </td>
                         <td>
-                            <input type="number" class="form-control form-control-sm" name="tax[]" value="0" min="0" max="100" oninput="calculateTotal(this)">
+                            <input type="number" class="form-control form-control-sm" name="tax[]" value="0" min="0" oninput="calculateTotal(this)">
                         </td>
                         <td>
                             <div class="input-group">

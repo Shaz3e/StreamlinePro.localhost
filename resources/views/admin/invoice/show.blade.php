@@ -139,44 +139,6 @@
                 {{-- /.card-header --}}
                 <div class="card-body">
                     <div class="table-responsive">
-                        {{-- <table class="table table-hover table-bordered" id="invoice-items-table">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                    <th>Tax</th>
-                                    <th>Discount</th>
-                                    <th>Discount Type</th>
-                                    <th>Total Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($items as $item)
-                                    <tr>
-                                        <td>{{ $item->product_name }}</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        <td>{{ $item->unit_price }}</td>
-                                        <td>{{ $item->tax }}</td>
-                                        <td>{{ $item->discount }}</td>
-                                        <td>{{ ucwords($item->discount_type) }}</td>
-                                        <td>{{ $item->total_price }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>-</th>
-                                    <th>{{ $items->sum('quantity') }}</th>
-                                    <th>{{ $items->sum('unit_price') }}</th>
-                                    <th>{{ $items->sum('tax') }}</th>
-                                    <th>-</th>
-                                    <th>-</th>
-                                    <th>{{ $items->sum('total_price') }}</th>
-                                </tr>
-                            </tfoot>
-                        </table> --}}
-
                         <table class="table">
                             <thead>
                                 <tr>
@@ -288,7 +250,6 @@
                                     <th>Amount</th>
                                     <th>Transaction ID</th>
                                     <th>Transaction Date</th>
-                                    <th>Created At</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -296,9 +257,8 @@
                                 @foreach ($payments as $payment)
                                     <tr data-id="{{ $payment->id }}">
                                         <td>{{ $payment->amount }}</td>
-                                        <td>{{ $payment->payment_number }}</td>
+                                        <td>{{ $payment->transaction_number }}</td>
                                         <td>{{ $payment->transaction_date->format('l, F j, Y') }}</td>
-                                        <td>{{ $payment->created_at->format('l, F j, Y') }}</td>
                                         <td>
                                             <button type="button"
                                                 class="btn btn-danger btn-sm waves-effect waves-light removePayment"

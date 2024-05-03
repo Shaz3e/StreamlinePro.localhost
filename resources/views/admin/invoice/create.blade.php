@@ -19,7 +19,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="company_id">Invoice To</label>
                                     <select name="company_id" class="form-control select2" id="company_id">
@@ -39,19 +39,6 @@
                                 @enderror
                             </div>
                             {{-- /.col --}}
-
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" class="form-control">
-                                        @foreach (\App\Models\Invoice::getStatuses() as $value => $label)
-                                            <option value="{{ $label }}">{{ $label }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- /.col --}}
-
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="invoice_label_id">Invoice Label </label>
