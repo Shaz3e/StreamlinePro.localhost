@@ -23,3 +23,8 @@ function calcTime($startTime, $endTime)
         return "$minutes minutes";
     }
 }
+
+function currencyFormat($value)
+{
+    return number_format($value,2);
+}

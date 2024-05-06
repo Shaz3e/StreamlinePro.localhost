@@ -23,8 +23,9 @@ class Invoice extends Model implements Auditable
     protected $dates = ['deleted_at'];
 
     protected $casts = [
-        'invoice_date' => 'date',
-        'due_date'     => 'date',
+        'invoice_date'  => 'date',
+        'due_date'      => 'date',
+        'published_on'  => 'date',
     ];
 
     /**
@@ -54,6 +55,14 @@ class Invoice extends Model implements Auditable
     }
 
     /**
+     * User Relationship
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * Company Relationship
      */
     public function company()
@@ -66,7 +75,7 @@ class Invoice extends Model implements Auditable
      */
     public function products()
     {
-        return $this->hasMany(InvoiceProduct::class, 'invoice_id');
+        return $this->hasMany(InvoiceItem::class, 'invoice_id');
     }
 
     /**
@@ -84,7 +93,13 @@ class Invoice extends Model implements Auditable
     {
         return $this->hasMany(Payment::class, 'invoice_id');
     }
-
+    
+    /**
+     * setAuditInclude
+     * Audit log include all column in the table
+     *
+     * @return void
+     */
     protected function setAuditInclude()
     {
         // Get all columns from the model's table

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Invoice\StoreInvoiceRequest;
 use App\Models\Company;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\InvoiceLabel;
-use App\Models\InvoiceProduct;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Brick\Math\BigInteger;
 use Carbon\Carbon;
@@ -45,6 +47,9 @@ class InvoiceController extends Controller
         // Get all active products
         $products = Product::where('is_active', 1)->get();
 
+        // Get all active users
+        $users = User::where('is_active', 1)->get();
+
         // Get all active companies
         $companies = Company::where('is_active', 1)->get();
 
@@ -53,6 +58,7 @@ class InvoiceController extends Controller
 
         return view('admin.invoice.create', [
             'products' => $products,
+            'users' => $users,
             'companies' => $companies,
             'invoiceLabels' => $invoiceLabels,
         ]);
@@ -70,89 +76,79 @@ class InvoiceController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'company_id' => 'required|exists:companies,id',
+                // Invoice Table
+                'invoice_to' => 'required',
+                'user_id' => 'required_if:invoice_to,user|exists:users,id',
+                'company_id' => 'required_if:invoice_to,user|exists:companies,id',
+                'is_published' => 'required|boolean',
+                'published_on' => 'required|date',
                 'invoice_label_id' => 'required|exists:invoice_labels,id',
                 'invoice_date' => 'nullable|date',
                 'due_date' => 'nullable|date',
-                'total_tax' => 'nullable',
-                'total_price' => 'nullable',
-                'total_discount' => 'nullable',
-                'total_amount' => 'nullable',
-                'product_name' => 'nullable|max:255',
-                'quantity' => 'nullable',
-                'unit_price' => 'nullable',
-                'tax' => 'nullable',
-                'discount' => 'nullable',
-                'discount_type' => 'nullable',
-                'total_price' => 'nullable',
+                'discount_type' => 'required|string',
             ],
         );
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         // Update record in database
         $invoice = new Invoice();
-        $invoice->company_id = $request->company_id;
+        if ($request->has('user_id')) {
+            $invoice->user_id = $request->user_id;
+        } elseif ($request->has('company_id')) {
+            $invoice->company_id = $request->company_id;
+        }
+        $invoice->is_published = $request->is_published;
+        $invoice->published_on = $request->published_on;
         $invoice->invoice_label_id = $request->invoice_label_id;
         $invoice->invoice_date = $request->invoice_date;
         $invoice->due_date = $request->due_date;
+        $invoice->discount_type = $request->discount_type;
+        $invoice->header_note = $request->header_note;
+        $invoice->footer_note = $request->footer_note;
+        $invoice->private_note = $request->private_note;
         $invoice->save();
-
+        
+        // Check invoice items if provided
         if (
-            request()->has('product_name') ||
-            request()->has('quantity') ||
-            request()->has('unit_price') ||
-            request()->has('tax') ||
-            request()->has('discount') ||
-            request()->has('discount_type') ||
-            request()->has('total_price')
+            $request->has('item_description') &&
+            $request->has('quantity') &&
+            $request->has('unit_price') &&
+            $request->has('discount_value') &&
+            $request->has('tax_value') &&
+            $request->has('product_total')
         ) {
-            // Extract the product details from the request
-            $productNames = request()->input('product_name');
+            // Extract the product details from the request            
+            $items = request()->input('item_description');
             $quantities = request()->input('quantity');
             $unitPrices = request()->input('unit_price');
-            $taxes = request()->input('tax');
-            $discounts = request()->input('discount');
-            $discountTypes = request()->input('discount_type');
-            $totalPrices = request()->input('total_price');
-
-            // Initialize variables to store the sums
-            $sumQuantity = 0;
-            $sumUnitPrice = 0;
-            $sumTax = 0;
-            $sumDiscount = 0;
-            $sumTotalPrice = 0;
+            $discountValues = request()->input('discount_value');
+            $taxValues = request()->input('tax_value');
+            $totalPrices = request()->input('product_total');
 
             // Iterate through the products and calculate the sums
-            for ($i = 0; $i < count($productNames); $i++) {
-                $sumQuantity += (float) $quantities[$i];
-                $sumUnitPrice += (float) $unitPrices[$i];
-                $sumTax += (float) $taxes[$i];
-                $sumDiscount += (float) $discounts[$i];
-                $sumTotalPrice += (float) $totalPrices[$i];
-
+            for ($i = 0; $i < count($items); $i++) {
                 // Create entries in InvoiceProduct model
-                InvoiceProduct::create([
+                InvoiceItem::create([
                     'invoice_id' => $invoice->id,
-                    'product_name' => $productNames[$i],
+                    'item_description' => $items[$i],
                     'quantity' => $quantities[$i],
                     'unit_price' => $unitPrices[$i],
-                    'tax' => $taxes[$i],
-                    'discount' => $discounts[$i],
-                    'discount_type' => $discountTypes[$i],
-                    'total_price' => $totalPrices[$i],
+                    'discount_value' => $discountValues[$i],
+                    'tax_value' => $taxValues[$i],
+                    'product_total' => $totalPrices[$i],
                 ]);
             }
-
-            // Update Invoice model with sum
+            
+            // Update invoice with sum
             $invoice->update([
-                'total_price' => $sumUnitPrice,
-                'total_tax' => $sumTax,
-                'total_discount' => $sumDiscount,
-                'total_amount' => $sumTotalPrice,
+                'sub_total' => $request->sub_total,
+                'discount' => $request->discount,
+                'tax' => $request->tax,
+                'total' => $request->total,
             ]);
         }
 
@@ -170,21 +166,10 @@ class InvoiceController extends Controller
         Gate::authorize('read', $invoice);
 
         // Get invoice items
-        $items = InvoiceProduct::where('invoice_id', $invoice->id)->get();
+        $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
 
         // Get all transactions related to this invoice
         $payments = Payment::where('invoice_id', $invoice->id)->get();
-
-        $totalPercentageDiscount = 0;
-        $totalAmountDiscount = 0;
-        
-        foreach ($invoice->products as $product) {
-            if ($product->discount_type == 'percentage') {
-                $totalPercentageDiscount += $product->discount;
-            } elseif ($product->discount_type == 'amount') {
-                $totalAmountDiscount += $product->discount;
-            }
-        }
 
         $audits = $invoice->audits()
             ->latest()
@@ -199,8 +184,6 @@ class InvoiceController extends Controller
             'invoice' => $invoice,
             'items' => $items,
             'payments' => $payments,
-            'totalPercentageDiscount' => $totalPercentageDiscount,
-            'totalAmountDiscount' => $totalAmountDiscount,
             'audits' => $audits,
         ]);
     }
@@ -216,18 +199,22 @@ class InvoiceController extends Controller
         // Get all active products
         $products = Product::where('is_active', 1)->get();
 
+        // Get all active users
+        $users = User::where('is_active', 1)->get();
+
         // Get all active companies
         $companies = Company::where('is_active', 1)->get();
 
         // Get all active invoice status
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
-        // Get all product items from invoice_product table for this id
-        $items = InvoiceProduct::where('invoice_id', $invoice->id)->get();
+        // Get all product items from invoice_items table for this id
+        $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
 
         return view('admin.invoice.edit', [
             'invoice' => $invoice,
             'products' => $products,
+            'users' => $users,
             'companies' => $companies,
             'invoiceLabels' => $invoiceLabels,
             'items' => $items,
@@ -246,36 +233,34 @@ class InvoiceController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'company_id' => 'required|exists:companies,id',
+                // Invoice Table
+                'is_published' => 'required|boolean',
+                'published_on' => 'required|date',
                 'invoice_label_id' => 'required|exists:invoice_labels,id',
                 'invoice_date' => 'nullable|date',
                 'due_date' => 'nullable|date',
-                'total_tax' => 'nullable',
-                'total_price' => 'nullable',
-                'total_discount' => 'nullable',
-                'total_amount' => 'nullable',
-                'product_name' => 'nullable|max:255',
-                'quantity' => 'nullable',
-                'unit_price' => 'nullable',
-                'tax' => 'nullable',
-                'discount' => 'nullable',
-                'discount_type' => 'nullable',
-                'total_price' => 'nullable',
+                'discount_type' => 'required|string',
             ],
         );
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         // Update invoice details
-        $invoice->update([
-            'company_id' => $request->company_id,
-            'invoice_label_id' => $request->invoice_label_id,
-            'invoice_date' => $request->invoice_date,
-            'due_date' => $request->due_date,
-        ]);
+        $invoice->is_published = $request->is_published;
+        $invoice->published_on = $request->published_on;
+        $invoice->invoice_label_id = $request->invoice_label_id;
+        $invoice->invoice_date = $request->invoice_date;
+        $invoice->due_date = $request->due_date;
+        $invoice->discount_type = $request->discount_type;
+        $invoice->header_note = $request->header_note;
+        $invoice->footer_note = $request->footer_note;
+        $invoice->private_note = $request->private_note;
+        $invoice->save();
+
+
 
         // Initialize sums
         $sumUnitPrice = 0;
@@ -286,46 +271,44 @@ class InvoiceController extends Controller
         // Handle product details
         DB::transaction(function () use ($request, $invoice, &$sumUnitPrice, &$sumTax, &$sumDiscount, &$sumTotalPrice) {
             // Fetch existing products
-            $existingProducts = InvoiceProduct::where('invoice_id', $invoice->id)->get()->keyBy('id');
+            $existingProducts = InvoiceItem::where('invoice_id', $invoice->id)->get()->keyBy('id');
 
             // Initialize arrays to track product IDs from the request
             $productIdsFromRequest = $request->input('product_id', []);
 
             // Iterate through product inputs from the request
-            foreach ($request->input('product_name', []) as $index => $productName) {
+            foreach ($request->input('item_description', []) as $index => $productName) {
                 $productId = $productIdsFromRequest[$index] ?? null;
 
                 // Calculate sums
                 $sumUnitPrice += (float) $request->input('unit_price', [])[$index];
-                $sumTax += (float) $request->input('tax', [])[$index];
-                $sumDiscount += (float) $request->input('discount', [])[$index];
-                $sumTotalPrice += (float) $request->input('total_price', [])[$index];
+                $sumDiscount += (float) $request->input('discount_value', [])[$index];
+                $sumTax += (float) $request->input('tax_value', [])[$index];
+                $sumTotalPrice += (float) $request->input('product_total', [])[$index];
 
                 if ($productId && isset($existingProducts[$productId])) {
                     // Update existing product
                     $product = $existingProducts[$productId];
-                    $product->product_name = $productName;
+                    $product->item_description = $productName;
                     $product->quantity = $request->input('quantity', [])[$index];
                     $product->unit_price = $request->input('unit_price', [])[$index];
-                    $product->tax = $request->input('tax', [])[$index];
-                    $product->discount = $request->input('discount', [])[$index];
-                    $product->discount_type = $request->input('discount_type', [])[$index];
-                    $product->total_price = $request->input('total_price', [])[$index];
+                    $product->discount_value = $request->input('discount_value', [])[$index];
+                    $product->tax_value = $request->input('tax_value', [])[$index];
+                    $product->product_total = $request->input('product_total', [])[$index];
                     $product->save();
 
                     // Remove the product from the existing products array (as it's now been updated)
                     unset($existingProducts[$productId]);
                 } else {
                     // Create new product
-                    InvoiceProduct::create([
+                    InvoiceItem::create([
                         'invoice_id' => $invoice->id,
-                        'product_name' => $productName,
+                        'item_description' => $productName,
                         'quantity' => $request->input('quantity', [])[$index],
                         'unit_price' => $request->input('unit_price', [])[$index],
-                        'tax' => $request->input('tax', [])[$index],
-                        'discount' => $request->input('discount', [])[$index],
-                        'discount_type' => $request->input('discount_type', [])[$index],
-                        'total_price' => $request->input('total_price', [])[$index],
+                        'discount_value' => $request->input('discount_value', [])[$index],
+                        'tax_value' => $request->input('tax_value', [])[$index],
+                        'product_total' => $request->input('product_total', [])[$index],
                     ]);
                 }
             }
@@ -336,11 +319,16 @@ class InvoiceController extends Controller
             }
 
             // Update invoice with calculated sums
+            $subTotal = $request->sub_total;
+            $discount = $request->discount;
+            $tax = $request->tax;
+            $total = $request->total;
+
             $invoice->update([
-                'total_price' => $sumUnitPrice,
-                'total_tax' => $sumTax,
-                'total_discount' => $sumDiscount,
-                'total_amount' => $sumTotalPrice,
+                'sub_total' => $subTotal,
+                'discount' => $discount,
+                'tax' => $tax,
+                'total' => $total,
             ]);
         });
 
@@ -394,7 +382,7 @@ class InvoiceController extends Controller
     public function removeProduct($productId)
     {
         // Find the product by its ID
-        $product = InvoiceProduct::findOrFail($productId);
+        $product = InvoiceItem::findOrFail($productId);
 
         // Remove the product from the database
         $product->delete();
@@ -410,7 +398,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($id);
         // Calculate amount to be paid and due after adding payment
-        $totalAmount = $invoice->total_amount;
+        $totalAmount = $invoice->total;
         $paidAmount = $invoice->total_paid;
         $dueAmount = $totalAmount - $paidAmount;
 
@@ -439,9 +427,9 @@ class InvoiceController extends Controller
         $payment->save();
 
         // If the due amount equals to total_amount change status to paid
-        if ($invoice->total_amount == $invoice->total_paid + $request->amount) {
+        if ($invoice->total == $invoice->total_paid + $request->amount) {
             $invoice->status = Invoice::STATUS_PAID;
-        } elseif ($invoice->total_paid + $request->amount > 0 && $invoice->total_paid + $request->amount < $invoice->total_amount) {
+        } elseif ($invoice->total_paid + $request->amount > 0 && $invoice->total_paid + $request->amount < $invoice->total) {
             $invoice->status = Invoice::STATUS_PARTIALLY_PAID;
         }
 
@@ -468,16 +456,16 @@ class InvoiceController extends Controller
         $invoice->update([
             'total_paid' => DB::raw('total_paid - ' . $payment->amount),
         ]);
-        
+
         // Remove the payment
         $payment->delete();
 
-        // If the due amount not equal to total_amount change status to unpaid otherwise change status to partial paid        
-        if($payment->count() == 0){
+        // If the due amount not equal to total change status to unpaid otherwise change status to partial paid        
+        if ($payment->count() == 0) {
             $invoice->update([
                 'status' => Invoice::STATUS_UNPAID
             ]);
-        }elseif($invoice->total_paid != $invoice->total_amount){
+        } elseif ($invoice->total_paid != $invoice->total) {
             $invoice->update([
                 'status' => Invoice::STATUS_PARTIALLY_PAID
             ]);

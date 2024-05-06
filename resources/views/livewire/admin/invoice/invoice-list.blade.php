@@ -85,9 +85,7 @@
                                     <th style="width: 55%">Invoice Details</th>
                                     <th style="10%">Status</th>
                                     <th style="10%">Price</th>
-                                    @if (!$showDeleted)
-                                        <th style="width: 10%">Label</th>
-                                    @endif
+                                    <th style="width: 10%">Label</th>
                                     <th style="width: 15%"></th>
                                 </tr>
                             </thead>
@@ -95,34 +93,42 @@
                                 @foreach ($invoices as $invoice)
                                     <tr wire:key="{{ $invoice->id }}">
                                         <td>
-                                            <span class="badge bg-info">
-                                                Invoice ID# {{ $invoice->id }}
-                                            </span>
+                                            <a href="{{ route('admin.invoices.show', $invoice->id) }}">
+                                                Invoice# {{ $invoice->id }}
+                                            </a>
                                             @if ($invoice->company)
                                                 <span class="badge bg-success">
                                                     {{ $invoice->company->name }}
                                                 </span>
                                             @endif
-
+                                            @if ($invoice->user)
+                                                <span class="badge bg-success">
+                                                    {{ $invoice->user->name }}
+                                                </span>
+                                            @endif
                                             @if ($invoice->products()->count() > 0)
                                                 @foreach ($invoice->products as $product)
                                                     <span class="badge bg-warning">
-                                                        {{ $product->product_name }}
+                                                        {{ $product->item_description }}
                                                     </span>
                                                 @endforeach
                                             @endif
                                         </td>
-                                        <td>{{ $invoice->status }}</td>
-                                        <td>{{ $invoice->total_amount }}</td>
-                                        @if (!$showDeleted)
-                                            <td>
-                                                <span class="badge"
-                                                    style="background-color: {{ $invoice->label->bg_color }}; color: {{ $invoice->label->text_color }}">
-                                                    {{ $invoice->label->name }}
-                                                </span>
-                                            </td>
-                                        @endif
-                                        <td class="text-right">
+                                        <td>
+                                            <strong>{{ $invoice->status }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong>
+                                                {{ $invoice->total }}
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge"
+                                                style="background-color: {{ $invoice->label->bg_color }};color: {{ $invoice->label->text_color }}">
+                                                {{ $invoice->label->name }}
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
                                             @if ($showDeleted)
                                                 @can('invoices.restore')
                                                     <button wire:click="confirmRestore({{ $invoice->id }})"

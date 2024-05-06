@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
 
-            // Assign Company a invoice
+            // Assign User an invoice
+            $table->foreignId('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Assign Company an invoice
             $table->foreignId('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
@@ -28,11 +32,21 @@ return new class extends Migration
             // Invoice Status
             $table->string('status')->default('Unpaid');
 
-            $table->decimal('total_tax', 12, 2)->nullable()->default(0.00);
-            $table->decimal('total_price', 12, 2)->nullable()->default(0.00);
-            $table->decimal('total_discount', 12, 2)->nullable()->default(0.00);
-            $table->decimal('total_amount', 12, 2)->nullable()->default(0.00);
-            $table->decimal('total_paid', 12, 2)->nullable()->default(0.00);
+            $table->boolean('is_published')->default(false);
+            $table->date('published_on')->default(now());
+
+            // Store special notes for this invoice
+            $table->text('header_note')->nullable();
+            $table->text('footer_note')->nullable();
+            $table->text('private_note')->nullable();
+
+            $table->string('discount_type')->nullable();
+            
+            $table->decimal('sub_total', 65, 2)->nullable()->default(0.00);
+            $table->decimal('discount', 65, 2)->nullable()->default(0.00);
+            $table->decimal('tax', 65, 2)->nullable()->default(0.00);
+            $table->decimal('total', 65, 2)->nullable()->default(0.00);
+            $table->decimal('total_paid', 65, 2)->nullable()->default(0.00);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -20,6 +20,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        {{-- /.col --}}
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="transaction_date">Payment Date</label>
@@ -30,15 +31,18 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        {{-- /.col --}}
                     </div>
-                    {{-- /.modal-body --}}
+                    {{-- /.row --}}
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
                     </div>
                     {{-- /.modal-footer --}}
                 </div>
-                {{-- /.modal-content --}}
+                {{-- /.modal-body --}}
+            </div>
+            {{-- /.modal-content --}}
         </form>
     </div>
     {{-- /.modal-dialog --}}
@@ -57,7 +61,7 @@
                 $.ajax({
                     type: 'POST',
                     url: `{{ route('admin.invoice.add-payment', ':id') }}`.replace(':id',
-                            invoiceId),
+                        invoiceId),
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },

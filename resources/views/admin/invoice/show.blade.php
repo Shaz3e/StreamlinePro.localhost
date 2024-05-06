@@ -12,54 +12,61 @@
 
     {{-- Links to perform quick actions --}}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6 col-sm-12">
             <a class="btn btn-success waves-effect waves-light" href="{{ route('admin.invoices.edit', $invoice->id) }}">
                 <i class="ri-edit-line align-middle me-2"></i> Edit Invoice
             </a>
-            @if ($invoice->total_amount != $invoice->total_paid && $invoice->total_amount != 0)
+            @if ($invoice->total != $invoice->total_paid && $invoice->total != 0)
                 <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
                     data-bs-target="#addPayment">Add Payment</button>
                 @include('admin.invoice.add-payment')
             @endif
         </div>
-        {{-- /.col --}}
+        <div class="col-md-6 col-sm-12 text-end">
+            @if ($invoice->is_published)
+                Published on:
+            @else
+                Will be published on
+            @endif
+            <span>{{ $invoice->published_on->format('l, jS M Y') }}</span>
+        </div>
     </div>
-    {{-- /.row --}}
 
     {{-- Show Invoice Account Summary --}}
     <div class="row mt-3">
-        <div class="col-md-3">
-            <div class="card">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border border-primary">
                 <div class="card-body">
-                    <div class="card-text">All Products Price</div>
-                    <h4 class="card-title">{{ $invoice->total_price }}</h4>
+                    <div class="card-text text-center">Sub Total</div>
+                    <h4 class="card-title text-center">{{ $invoice->sub_total }}</h4>
+                </div>
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-3 col-sm-6">
+            <div class="card border border-primary">
+                <div class="card-body">
+                    <div class="card-text text-center">Total</div>
+                    <h4 class="card-title text-center">{{ $invoice->total }}</h4>
                 </div>
             </div>
         </div>
         {{-- /.col --}}
-        <div class="col-md-3">
-            <div class="card">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border border-primary">
                 <div class="card-body">
-                    <div class="card-text">Total</div>
-                    <h4 class="card-title">{{ $invoice->total_amount }}</h4>
+                    <div class="card-text text-center">Total Paid</div>
+                    <h4 class="card-title text-center">{{ $invoice->total_paid }}</h4>
                 </div>
             </div>
         </div>
         {{-- /.col --}}
-        <div class="col-md-3">
-            <div class="card">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border border-primary">
                 <div class="card-body">
-                    <div class="card-text">Total Paid</div>
-                    <h4 class="card-title">{{ $invoice->total_paid }}</h4>
-                </div>
-            </div>
-        </div>
-        {{-- /.col --}}
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-text">Status</div>
-                    <h4 class="card-title">{{ $invoice->status }}</h4>
+                    <div class="card-text text-center">Status</div>
+                    <h4 class="card-title text-center">{{ $invoice->status }}</h4>
                 </div>
             </div>
         </div>
@@ -74,9 +81,15 @@
                 <div class="card-body">
                     <div class="card-text">Invoiced To</div>
                     <h4 class="card-title">
-                        <a href="{{ route('admin.companies.show', $invoice->company->id) }}">
-                            {{ $invoice->company->name }}
-                        </a>
+                        @if (!is_null($invoice->user_id))
+                            <a href="{{ route('admin.users.show', $invoice->user->id) }}">
+                                {{ $invoice->user->name }}
+                            </a>
+                        @elseif (!is_null($invoice->company_id))
+                            <a href="{{ route('admin.companies.show', $invoice->company->id) }}">
+                                {{ $invoice->company->name }}
+                            </a>
+                        @endif
                     </h4>
                 </div>
             </div>
@@ -129,92 +142,152 @@
     </div>
     {{-- /.row --}}
 
+    {{-- Show Private Note --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Private Note</div>
+                <div class="card-body">
+                    @if (!is_null($invoice->private_note))
+                        {!! $invoice->private_note !!}
+                    @else
+                        <span class="text-danger">No Private Note</span>
+                    @endif
+                </div>
+                {{-- /.card-body --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
+    {{-- Header Note --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Invoice Header Note</div>
+                <div class="card-body">
+                    @if (!is_null($invoice->header_note))
+                        {!! $invoice->header_note !!}
+                    @else
+                        <span class="text-danger">No Header Note</span>
+                    @endif
+                </div>
+                {{-- /.card-body --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
     {{-- Show Invoice Items --}}
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    Invoice Items
-                </div>
-                {{-- /.card-header --}}
+                <div class="card-header">Invoice Details</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th><strong>Product</strong></th>
-                                    <th class="text-center">Quantity</th>
-                                    <th class="text-center">Unit Price</th>
-                                    <th class="text-center">Tax</th>
-                                    <th class="text-center">Discount</th>
-                                    <th class="text-center">Discount Type</th>
-                                    <th class="text-end">Total Price</th>
+                                    <th style="width: 70%"><strong>Item</strong></th>
+                                    <th class="text-center" style="width: 10%"><strong>Price</strong></th>
+                                    <th class="text-center" style="width: 10%"><strong>Quantity</strong></th>
+                                    <th class="text-end" style="width: 10%"><strong>Totals</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($items as $item)
                                     <tr>
-                                        <td>{{ $item->product_name }}</td>
+                                        <td>{{ $item->item_description }}</td>
+                                        <td class="text-center">{{ currencyFormat($item->unit_price) }}</td>
                                         <td class="text-center">{{ $item->quantity }}</td>
-                                        <td class="text-center">{{ $item->unit_price }}</td>
-                                        <td class="text-center">{{ $item->tax }}</td>
-                                        <td class="text-center">{{ $item->discount }}</td>
-                                        <td class="text-center">{{ ucwords($item->discount_type) }}</td>
-                                        <td class="text-end">{{ $item->total_price }}</td>
+                                        <td class="text-end">
+                                            {{ currencyFormat($item->unit_price * $item->quantity) }}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 <tr>
                                     <td class="thick-line"></td>
                                     <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line text-end">
+                                    <td class="thick-line text-center">
                                         <strong>Subtotal</strong>
                                     </td>
                                     <td class="thick-line text-end">
-                                        {{ $invoice->total_price }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line text-end">
-                                        <strong>Total Discount %</strong>
-                                    </td>
-                                    <td class="thick-line text-end">
-                                        {{ $totalPercentageDiscount }}%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line text-end">
-                                        <strong>Total Fixed Amount Discount</strong>
-                                    </td>
-                                    <td class="thick-line text-end">
-                                        ${{ $totalAmountDiscount }}
+                                        {{ $invoice->sub_total }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="no-line"></td>
                                     <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line text-end">
-                                        <strong>Total</strong>
+                                    <td class="no-line text-center">
+                                        <strong>Discount</strong>
                                     </td>
                                     <td class="no-line text-end">
-                                        <h4 class="m-0">{{ $invoice->total_amount }}</h4>
+                                        {{ $invoice->discount }}
                                     </td>
                                 </tr>
+                                @if (!is_null($invoice->tax))
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center">
+                                            <strong>Tax</strong>
+                                        </td>
+                                        <td class="no-line text-end">
+                                            {{ $invoice->tax }}
+                                        </td>
+                                    </tr>
+                                @endif
+                                @if ($invoice->total_paid > 0)
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="no-line text-end">
+                                            {{ $invoice->total }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center">
+                                            <strong>Total Paid</strong>
+                                        </td>
+                                        <td class="no-line text-end">
+                                            {{ $invoice->total_paid }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center">
+                                            <strong>Balance</strong>
+                                        </td>
+                                        <td class="no-line text-end">
+                                            <h4 class="m-0">
+                                                {{ $invoice->total - $invoice->total_paid }}
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="no-line text-end">
+                                            <h4 class="m-0">
+                                                {{ $invoice->total }}
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -222,11 +295,12 @@
                 </div>
                 {{-- /.card-body --}}
                 <div class="card-footer">
-                    <a href="{{ route('admin.invoices.edit', $invoice->id) }}"
-                        class="btn btn-success btn-sm waves-effect waves-light">
+                    <a class="btn btn-success btn-sm waves-effect waves-light"
+                        href="{{ route('admin.invoices.edit', $invoice->id) }}">
                         <i class="ri-edit-line align-middle me-2"></i> Edit Invoice
                     </a>
                 </div>
+                {{-- /.card-footer --}}
             </div>
             {{-- /.card --}}
         </div>
@@ -250,6 +324,7 @@
                                     <th>Amount</th>
                                     <th>Transaction ID</th>
                                     <th>Transaction Date</th>
+                                    <th>Created At</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -259,6 +334,7 @@
                                         <td>{{ $payment->amount }}</td>
                                         <td>{{ $payment->transaction_number }}</td>
                                         <td>{{ $payment->transaction_date->format('l, F j, Y') }}</td>
+                                        <td>{{ $payment->created_at->format('l, F j, Y') }}</td>
                                         <td>
                                             <button type="button"
                                                 class="btn btn-danger btn-sm waves-effect waves-light removePayment"
@@ -271,6 +347,26 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                {{-- /.card-body --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
+    {{-- Footer Note --}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Invoice Footer Note</div>
+                <div class="card-body">
+                    @if (!is_null($invoice->footer_note))
+                        {!! $invoice->footer_note !!}
+                    @else
+                        <span class="text-danger">No Footer Note</span>
+                    @endif
                 </div>
                 {{-- /.card-body --}}
             </div>

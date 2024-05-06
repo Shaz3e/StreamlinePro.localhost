@@ -176,18 +176,6 @@
                 <div class="card">
                     <div class="card-header">Invoice Items</div>
                     <div class="card-body">
-                        {{-- Header Note --}}
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="header_note">Header Note <small class="text-muted">Text will appear before invice items</small></label>
-                                    <textarea name="header_note" class="form-control textEditor">{!! old('header_note') !!}</textarea>
-                                </div>
-                            </div>
-                            {{-- /.col --}}
-                        </div>
-                        {{-- /.row --}}
-
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -244,59 +232,23 @@
                                 <table class="table">
                                     <tr>
                                         <td>Sub Total</td>
-                                        <td>
-                                            <span id="subTotal">0.00</span>
-                                            <input type="hidden" name="sub_total" value="0.00">
-                                        </td>
+                                        <td id="subTotal">0.00</td>
                                     </tr>
                                     <tr>
-                                        <td>Discount</td>
-                                        <td>
-                                            <span id="discountTotal">0.00</span>
-                                            <input type="hidden" name="discount" value="0.00">
-                                        </td>
+                                        <td>Discountl</td>
+                                        <td id="discountTotal">0.00</td>
                                     </tr>
                                     <tr>
                                         <td>Tax</td>
-                                        <td>
-                                            <span id="taxTotal">0.00</span>
-                                            <input type="hidden" name="tax" value="0.00">
-                                        </td>
+                                        <td id="taxTotal">0.00</td>
                                     </tr>
                                     <tr>
                                         <td>Total</td>
-                                        <td>
-                                            <span id="total">0.00</span>
-                                            <input type="hidden" name="total" value="0.00">
-                                        </td>
+                                        <td id="total">0.00</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
-
-                        {{-- Footer Note --}}
-                        <div class="row mt-5">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="footer_note">Footer Note <small class="text-muted">Text will appear after invoice items</small></label>
-                                    <textarea name="footer_note" class="form-control textEditor">{!! old('footer_note') !!}</textarea>
-                                </div>
-                            </div>
-                            {{-- /.col --}}
-                        </div>
-                        {{-- /.row --}}
-                        
-                        {{-- Private Note --}}
-                        <div class="row mt-5">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="private_note">Private Note <small class="text-muted">This note will be visible to staff only</small></label>
-                                    <textarea name="private_note" class="form-control textEditor">{!! old('private_note') !!}</textarea>
-                                </div>
-                            </div>
-                            {{-- /.col --}}
-                        </div>
-                        {{-- /.row --}}
                     </div>
                     {{-- /.card-body --}}
                 </div>
@@ -322,7 +274,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             // Initialize select2
@@ -338,49 +289,6 @@
                     $('#invoice_to_company').show();
                 }
             });
-
-            0 < $(".textEditor").length && tinymce.init({
-                selector: "textarea.textEditor",
-                height: 200,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                    "save table directionality emoticons template paste"
-                ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
-                style_formats: [{
-                        title: "Bold text",
-                        inline: "b"
-                    },
-                    {
-                        title: "Red text",
-                        inline: "span",
-                        styles: {
-                            color: "#ff0000"
-                        }
-                    }, {
-                        title: "Red header",
-                        block: "h1",
-                        styles: {
-                            color: "#ff0000"
-                        }
-                    }, {
-                        title: "Example 1",
-                        inline: "span",
-                        classes: "example1"
-                    }, {
-                        title: "Example 2",
-                        inline: "span",
-                        classes: "example2"
-                    }, {
-                        title: "Table styles"
-                    }, {
-                        title: "Table row 1",
-                        selector: "tr",
-                        classes: "tablerow1"
-                    }
-                ]
-            })
         });
     </script>
 
@@ -406,16 +314,16 @@
                             <textarea name="item_description[]" class="form-control" required>${productName}</textarea>
                         </td>
                         <td>
-                            <input type="number" name="quantity[]" class="form-control" value="0" min="1" required oninput="showTotalSummary(this); calculateTotal(this)">
+                            <input type="number" name="quantity[]" class="form-control" value="1" min="1" required oninput="calculateTotal(this)">
                         </td>
                         <td>
-                            <input type="number" name="unit_price[]" class="form-control" value="${productPrice}" min="0" required oninput="showTotalSummary(this); calculateTotal(this)">
+                            <input type="number" name="unit_price[]" class="form-control" value="${productPrice}" min="0" required oninput="calculateTotal(this)">
                         </td>
                         <td>
-                            <input type="number" name="discount_value[]" class="form-control" value="0" min="0" required oninput="showTotalSummary(this); calculateTotal(this)">
+                            <input type="number" name="discount_value[]" class="form-control" value="0" min="0" required oninput="calculateTotal(this)">
                         </td>
                         <td>
-                            <select name="tax_value[]" class="form-control" oninput="showTotalSummary(this); calculateTotal(this)" required>
+                            <select name="tax_value[]" class="form-control" oninput="calculateTotal(this)" required>
                                 <option value="0">none</option>
                                 <option value="10.00">10%</option>
                                 <option value="17.00">17%</option>
@@ -423,7 +331,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="number" name="product_total[]" class="form-control" value="${productPrice}" readonly>
+                            <input type="number" name="total_price[]" class="form-control" value="${productPrice}" readonly>
                         </td>
                         <td class="text-right">
                             <button type="button" class="btn btn-danger btn-sm remove-row">Remove</button>
@@ -468,7 +376,7 @@
             const unitPriceInput = row.querySelector('input[name="unit_price[]"]');
             const discountValueInput = row.querySelector('input[name="discount_value[]"]');
             const taxValueSelect = row.querySelector('select[name="tax_value[]"]');
-            const totalPriceInput = row.querySelector('input[name="product_total[]"]');
+            const totalPriceInput = row.querySelector('input[name="total_price[]"]');
 
             // Access the discount type from the table head
             const discountTypeInput = document.querySelector('input[name="discount_type"]:checked');
@@ -527,30 +435,15 @@
                 const discountValueInput = row.querySelector('input[name="discount_value[]"]');
                 const taxValueSelect = row.querySelector('select[name="tax_value[]"]');
 
-                // Access the discount type from the table head
-                const discountTypeInput = document.querySelector('input[name="discount_type"]:checked');
-                if (!discountTypeInput) {
-                    console.error('No discount type selected in the table head.');
-                    return;
-                }
-                const discountType = discountTypeInput.value;
-
                 const quantity = parseFloat(quantityInput.value) || 0;
                 const unitPrice = parseFloat(unitPriceInput.value) || 0;
                 const discountValue = parseFloat(discountValueInput.value) || 0;
                 const taxPercentage = parseFloat(taxValueSelect.value) || 0;
 
                 const subtotal = unitPrice * quantity;
-
-                let discountAmount = 0;
-                if (discountType === 'percentage') {
-                    discountAmount = subtotal * (discountValue / 100);
-                } else if (discountType === 'amount') {
-                    discountAmount = discountValue;
-                }
-
+                const discountAmount = subtotal * (discountValue / 100);
                 const taxAmount = subtotal * (taxPercentage / 100);
-                const totalPrice = subtotal + taxAmount - discountAmount;
+                const totalPrice = subtotal - discountAmount + taxAmount;
 
                 subTotal += subtotal;
                 discountTotal += discountAmount;
@@ -562,13 +455,6 @@
             document.getElementById("discountTotal").innerText = discountTotal.toFixed(2);
             document.getElementById("taxTotal").innerText = taxTotal.toFixed(2);
             document.getElementById("total").innerText = total.toFixed(2);
-
-
-            // Update the input field values
-            document.querySelector('input[name="sub_total"]').value = subTotal.toFixed(2);
-            document.querySelector('input[name="discount"]').value = discountTotal.toFixed(2);
-            document.querySelector('input[name="tax"]').value = taxTotal.toFixed(2);
-            document.querySelector('input[name="total"]').value = total.toFixed(2);
         }
     </script>
 @endpush
