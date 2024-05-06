@@ -40,6 +40,10 @@ use App\Http\Controllers\Admin\PromotionController;
 // Products
 use App\Http\Controllers\Admin\ProductController;
 
+// Knowledgebase
+use App\Http\Controllers\Admin\Knowledgebase\KnowledgebaseCategoryController;
+use App\Http\Controllers\Admin\Knowledgebase\KnowledgebaseArticleController;
+
 // Support Ticket Priority
 use App\Http\Controllers\Admin\TicketPriorityController;
 
@@ -148,6 +152,41 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('tasks-audit/delete/{id}', [TaskController::class, 'deleteAudit'])
             ->name('tasks.audit.delete');
 
+        /**
+         * Support Tickets
+         */
+        Route::resource('support-tickets', SupportTicketController::class);
+        Route::post('support-tickets-reply/{supportTicketId}', [SupportTicketController::class, 'ticketReply'])
+            ->name('support-tickets.reply');
+
+        // Upload attachments for support tickets
+        Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
+            ->name('support-tickets.upload-attachments');
+
+        // Audit
+        Route::get('support-tickets-audit/{id}', [SupportTicketController::class, 'audit'])
+            ->name('support-tickets.audit');
+        Route::get('support-tickets-audit/delete/{id}', [SupportTicketController::class, 'deleteAudit'])
+            ->name('support-tickets.audit.delete');
+
+        /**
+         * Invoice
+         */
+        Route::resource('invoices', InvoiceController::class);
+        // Audit
+        Route::get('invoices-audit/{id}', [InvoiceController::class, 'audit'])
+            ->name('invoices.audit');
+        Route::get('invoices-audit/delete/{id}', [InvoiceController::class, 'deleteAudit'])
+            ->name('invoices.audit.delete');
+        // Remove Product
+        Route::delete('/invoices/products/{productId}/remove', [InvoiceController::class, 'removeProduct'])
+            ->name('product.remove');
+        // Add Payment
+        Route::post('invoice/add-payment/{id}', [InvoiceController::class, 'addPayment'])
+            ->name('invoice.add-payment');
+        Route::delete('invoice/remove-payment/{id}', [InvoiceController::class, 'removePayment'])
+            ->name('invoice.remove-payment');
+
 
         /**
          * Users
@@ -190,51 +229,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('products-audit/delete/{id}', [ProductController::class, 'deleteAudit'])
             ->name('products.audit.delete');
 
-        /**
-         * Support Tickets
-         */
-        Route::resource('support-tickets', SupportTicketController::class);
-        Route::post('support-tickets-reply/{supportTicketId}', [SupportTicketController::class, 'ticketReply'])
-            ->name('support-tickets.reply');
+        // Knowledgebase Category & Article
+        Route::prefix('knowledgebase')->name('knowledgebase.')->group(function () {
+            Route::resource('categories', KnowledgebaseCategoryController::class);
+            // Audit
+            Route::get('category-audit/{id}', [KnowledgebaseCategoryController::class, 'audit'])
+                ->name('category.audit');
+            Route::get('category-audit/delete/{id}', [KnowledgebaseCategoryController::class, 'deleteAudit'])
+                ->name('category.audit.delete');
 
-        // Upload attachments for support tickets
-        Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
-            ->name('support-tickets.upload-attachments');
-
-        // Audit
-        Route::get('support-tickets-audit/{id}', [SupportTicketController::class, 'audit'])
-            ->name('support-tickets.audit');
-        Route::get('support-tickets-audit/delete/{id}', [SupportTicketController::class, 'deleteAudit'])
-            ->name('support-tickets.audit.delete');
-
-        /**
-         * Invoice
-         */
-        Route::resource('invoices', InvoiceController::class);
-        // Audit
-        Route::get('invoices-audit/{id}', [InvoiceController::class, 'audit'])
-            ->name('invoices.audit');
-        Route::get('invoices-audit/delete/{id}', [InvoiceController::class, 'deleteAudit'])
-            ->name('invoices.audit.delete');
-        // Remove Product
-        Route::delete('/invoices/products/{productId}/remove', [InvoiceController::class, 'removeProduct'])
-            ->name('product.remove');
-        // Add Payment
-        Route::post('invoice/add-payment/{id}', [InvoiceController::class, 'addPayment'])
-            ->name('invoice.add-payment');
-        Route::delete('invoice/remove-payment/{id}', [InvoiceController::class, 'removePayment'])
-            ->name('invoice.remove-payment');
-
-
-        /**
-         * Invoice Status
-         */
-        Route::resource('invoice-labels', InvoiceLabelController::class);
-        // Audit
-        Route::get('invoice-labels-audit/{id}', [InvoiceLabelController::class, 'audit'])
-            ->name('invoice-labels.audit');
-        Route::get('invoice-labels-audit/delete/{id}', [InvoiceLabelController::class, 'deleteAudit'])
-            ->name('invoice-labels.audit.delete');
+            Route::resource('articles', KnowledgebaseArticleController::class);
+            // Audit
+            Route::get('article-audit/{id}', [KnowledgebaseArticleController::class, 'audit'])
+                ->name('article.audit');
+            Route::get('article-audit/delete/{id}', [KnowledgebaseArticleController::class, 'deleteAudit'])
+                ->name('article.audit.delete');
+        });
 
         /**
          * Admins as Staff
@@ -278,6 +288,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('todo-labels.audit.delete');
 
         /**
+         * Task Label
+         */
+        Route::resource('task-labels', TaskLabelController::class);
+        // Audit
+        Route::get('task-labels-audit/{id}', [TaskLabelController::class, 'audit'])
+            ->name('task-labels.audit');
+        Route::get('task-labels-audit/delete/{id}', [TaskLabelController::class, 'deleteAudit'])
+            ->name('task-labels.audit.delete');
+
+        /**
          * Support Ticket Status
          */
         Route::resource('ticket-status', TicketStatusController::class);
@@ -298,13 +318,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('ticket-priority.audit.delete');
 
         /**
-         * Task Label
+         * Invoice Label
          */
-        Route::resource('task-labels', TaskLabelController::class);
+        Route::resource('invoice-labels', InvoiceLabelController::class);
         // Audit
-        Route::get('task-labels-audit/{id}', [TaskLabelController::class, 'audit'])
-            ->name('task-labels.audit');
-        Route::get('task-labels-audit/delete/{id}', [TaskLabelController::class, 'deleteAudit'])
-            ->name('task-labels.audit.delete');
+        Route::get('invoice-labels-audit/{id}', [InvoiceLabelController::class, 'audit'])
+            ->name('invoice-labels.audit');
+        Route::get('invoice-labels-audit/delete/{id}', [InvoiceLabelController::class, 'deleteAudit'])
+            ->name('invoice-labels.audit.delete');
     });
 });

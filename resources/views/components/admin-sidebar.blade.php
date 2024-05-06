@@ -82,7 +82,7 @@
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                                         {{-- <i class="ri-profile-line"></i> --}}
-                                        <i class="ri-user-2-fill"></i>
+                                        <i class="ri-user-2-line"></i>
                                         <span>Users & Companies</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
@@ -127,6 +127,45 @@
                                     </a>
                                 </li>
                             @endcan
+
+                            {{-- Knowledgebase --}}
+                            @canany(['knowledgebase-category.list', 'knowledgebase-article.list'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="ri-file-list-3-line"></i>
+                                        <span>Knowledgebase</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        {{-- Knowledgebase Category --}}
+                                        @can('knowledgebase-category.list')
+                                            <li class="{{ request()->routeIs('admin.knowledgebase.categories.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.knowledgebase.categories.index') }}"
+                                                    class="{{ request()->routeIs('admin.knowledgebase.categories.*') ? 'active' : '' }}">
+                                                    Cateogry
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        {{-- Knowledgebase Article --}}
+                                        @can('knowledgebase-article.list')
+                                            <li class="{{ request()->routeIs('admin.knowledgebase.articles.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.knowledgebase.articles.index') }}"
+                                                    class="{{ request()->routeIs('admin.knowledgebase.articles.*') ? 'active' : '' }}">
+                                                    Articles
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        {{-- Knowledgebase Article Create --}}
+                                        @can('knowledgebase-article.create')
+                                            <li class="{{ request()->routeIs('admin.knowledgebase.articles.create') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.knowledgebase.articles.create') }}"
+                                                    class="{{ request()->routeIs('admin.knowledgebase.articles.create') ? 'active' : '' }}">
+                                                    New Article
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
 
                             {{-- Manage --}}
                             @canany(['staff.list', 'department.list', 'role.list'])

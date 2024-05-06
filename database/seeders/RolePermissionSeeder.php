@@ -183,6 +183,22 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'invoice-label.delete'],
             ['guard_name' => 'admin', 'name' => 'invoice-label.restore'],
             ['guard_name' => 'admin', 'name' => 'invoice-label.force.delete'],
+            // Knowledgebase Category
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.list'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.create'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.read'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.update'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.delete'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.restore'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-category.force.delete'],
+            // Knowledgebase Article
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.list'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.create'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.read'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.update'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.delete'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.restore'],
+            ['guard_name' => 'admin', 'name' => 'knowledgebase-article.force.delete'],
             // Add more permissions here...
         ];
 

@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\KnowledgebaseArticle;
 use App\Models\User;
+use Database\Factories\KnowledgebaseArticleFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -33,6 +35,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             DepartmentSeeder::class,
             UserSeeder::class,
+            KnowledgebaseCategorySeeder::class,
 
             // Run this seeder at the end
             RolePermissionSeeder::class,

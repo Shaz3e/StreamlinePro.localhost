@@ -49,7 +49,6 @@ class CompanyController extends Controller
         $validated = $request->validated();
 
         // Upload logo if provided
-
         if ($request->hasFile('logo')) {
             $filename = time() . '.' . $request->file('logo')->extension();
             $validated['logo'] = $request->file('logo')->storeAs('companies/logos', $filename, 'public');

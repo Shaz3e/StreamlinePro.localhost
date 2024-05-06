@@ -54,6 +54,14 @@ class User extends Authenticatable implements Auditable
         ];
     }
 
+    /**
+     * Company Relationship
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table
@@ -61,13 +69,5 @@ class User extends Authenticatable implements Auditable
 
         // Set the $auditInclude property to include all columns
         $this->auditInclude = $columns;
-    }
-
-    /**
-     * Company Relationship
-     */
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
     }
 }
