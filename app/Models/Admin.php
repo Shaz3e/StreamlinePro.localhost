@@ -27,7 +27,7 @@ class Admin extends Authenticatable implements Auditable
         'email',
         'password',
         'is_active',
-        'admin_id',
+        'mobile',
     ];
 
     // SoftDeletes

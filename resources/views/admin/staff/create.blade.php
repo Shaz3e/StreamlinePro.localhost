@@ -40,6 +40,17 @@
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
+                            <label for="mobile" class="col-sm-2 col-form-label">Mobile Number</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="mobile" id="mobile" class="form-control" minlength="12"
+                                    maxlength="20" value="{{ old('mobile') }}">
+                                @error('mobile')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- /.row --}}
+                        <div class="row mb-3">
                             <label for="department_id" class="col-sm-2 col-form-label">Departments</label>
                             <div class="col-sm-10">
                                 <select class="form-control select2" multiple name="department_id[]" id="department_id">
@@ -133,7 +144,18 @@
         // Input mask
         $(document).ready(function() {
             $('.select2').select2();
-            $(".input-mask").inputmask()
+            $(".input-mask").inputmask();
+            $("#mobile").inputmask({
+                mask: '+999999999999',
+                placeholder: '+____________',
+                greedy: false,
+                definations: {
+                    '9': {
+                        validator: '[0-9]',
+                        cardinality: 1
+                    }
+                }
+            });
         });
     </script>
 @endpush

@@ -27,6 +27,13 @@ class StoreStaffRequest extends BaseFormRequest
                 'array',
                 Rule::exists('companies', 'id'),
             ],
+            'mobile' => [
+                'nullable',
+                'string',
+                'min:12',
+                'max:20',
+                Rule::unique('admins', 'mobile')->ignore($this->staff),
+            ],
             'roles' => [
                 'required',
                 'array',
