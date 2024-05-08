@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\Task;
 use App\Models\TaskLabel;
 use App\Trait\Admin\FormHelper;
+use App\Trait\Admin\SmsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
@@ -15,6 +16,7 @@ use OwenIt\Auditing\Models\Audit;
 class TaskController extends Controller
 {
     use FormHelper;
+    use SmsTrait;
 
     /**
      * Display a listing of the resource.
@@ -61,6 +63,9 @@ class TaskController extends Controller
         $task = Task::create($validated);
         $task->created_by = auth()->user()->id;
         $task->save();
+        
+        // Send SMS
+        $this->sendSms($task->assignee->mobile,$task->title);
 
         session()->flash('success', 'The Task has been created successfully!');
 
