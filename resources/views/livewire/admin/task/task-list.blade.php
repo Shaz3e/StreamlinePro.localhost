@@ -70,11 +70,12 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th style="width: 47%">Tasks</th>
-                                    <th style="width: 12%">Started At</th>
-                                    <th style="width: 12%">Completed At</th>
-                                    <th style="width: 12%">Total Time</th>
-                                    <th style="width: 12%">Due At</th>
+                                    <th style="width: 30%">Tasks</th>
+                                    <th style="width: 12%"><small>Started At</small></th>
+                                    <th style="width: 12%"><small>Completed At</small></th>
+                                    <th style="width: 12%"><small>Task Complete Time</small></th>
+                                    <th style="width: 12%"><small>Total Time</small></th>
+                                    <th style="width: 12%"><small>Due At</small></th>
                                     <th style="width: 5%"></th>
                                 </tr>
                             </thead>
@@ -131,6 +132,14 @@
                                             @else
                                                 <i class="ri-history-line"></i>
                                                 {{ calcTime($task->start_time, $task->complete_time) }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($task->is_started == 0 || $task->is_completed == 0)
+                                                ...
+                                            @else
+                                                <i class="ri-history-line"></i>
+                                                {{ calcTime($task->created_at, $task->complete_time) }}
                                             @endif
                                         </td>
                                         <td>
