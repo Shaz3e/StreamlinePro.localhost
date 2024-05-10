@@ -4,8 +4,6 @@ namespace App\Policies;
 
 use App\Models\Admin;
 use App\Models\AppSetting;
-use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AppSettingPolicy
 {

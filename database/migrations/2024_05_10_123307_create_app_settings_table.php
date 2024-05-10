@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('app_settings', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->timestamps();
         });
     }

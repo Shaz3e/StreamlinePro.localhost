@@ -69,13 +69,13 @@ use App\Http\Controllers\Admin\InvoiceLabelController;
  * Settings
  */
 use App\Http\Controllers\Admin\AppSetting\AppSettingController;
-
+use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
+use App\Http\Controllers\Admin\AppSetting\RegistrationSettingController;
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
 // Roles
 use App\Http\Controllers\Admin\RolePermission\RoleController;
-
 
 // if route is /admin redirect to admin/dashboard
 
@@ -131,6 +131,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // App Settings
         Route::resource('app-settings', AppSettingController::class);
+
+        Route::prefix('settings')->name('settings.')->group(function(){
+            // General Setting
+            Route::get('', [GeneralSettingController::class, 'general'])->name('general');
+            Route::post('', [GeneralSettingController::class, 'generalStore'])->name('general.store');
+            
+            // Registration Setting
+            Route::get('registration', [RegistrationSettingController::class, 'registration'])->name('registration');
+            Route::post('registration', [RegistrationSettingController::class, 'registrationStore'])->name('registration.store');
+        });
 
         /**
          * Todos

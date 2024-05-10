@@ -21,6 +21,6 @@ class AppSetting extends Model
 
     public function setValueAttribute($value)
     {
-        $this->attributes['value'] = str_replace(' ', '_', $value);
+        $this->attributes['value'] = $value;
     }
 }

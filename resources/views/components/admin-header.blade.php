@@ -242,8 +242,8 @@
                             Todo</a>
                     @endcan
 
-                    @hasanyrole(['superadmin', 'tester', 'developer'])
-                        <a class="dropdown-item d-block" href="#"><span
+                    @hasanyrole(['superadmin', 'developer'])
+                        <a class="dropdown-item d-block" href="{{ route('admin.settings.general') }}"><span
                                 class="badge bg-success float-end mt-1">11</span><i
                                 class="ri-settings-2-line align-middle me-1"></i> Settings</a>
                     @endhasanyrole

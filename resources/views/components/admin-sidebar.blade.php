@@ -204,7 +204,7 @@
                                             </li>
                                         @endcan
                                         {{-- Permissions --}}
-                                        @if (auth()->user()->id === 1)
+                                        @hasanyrole(['developer'])
                                             <li
                                                 class="{{ request()->routeIs('admin.roles-permissions.permissions.*') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.roles-permissions.permissions.index') }}"
@@ -212,7 +212,7 @@
                                                     Permissions
                                                 </a>
                                             </li>
-                                        @endif
+                                        @endhasanyrole
                                     </ul>
                                 </li>
                             @endcanany

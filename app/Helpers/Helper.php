@@ -7,6 +7,18 @@ function DiligentCreators($appSettingName){
     return AppSetting::where('name', $appSettingName)->value('value');
 }
 
+function getAllTimeZonesSelectBox($selectedValue)
+{
+	echo '<select name="site_timezone" class="form-control select2" id="site_timezone" required="required">';
+	echo '<option value="">-- Select Time Zone --</option>';
+	$tzlist = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+	foreach ($tzlist as $value) {
+		$selected = ($value === $selectedValue) ? 'selected="selected"' : '';
+		echo '<option value="' . $value . '" ' . $selected . '>' . $value . '</option>';
+	}
+	echo '</select>';
+}
+
 function calcTime($startTime, $endTime)
 {
     $start_time = Carbon::parse($startTime);

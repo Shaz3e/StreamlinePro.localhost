@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KnowledgebaseCategorySeeder::class,
 
+            AppSettingSeeder::class,
+
             // Run this seeder at the end
             RolePermissionSeeder::class,
         ]);

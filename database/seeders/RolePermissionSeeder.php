@@ -207,6 +207,7 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'knowledgebase-article.delete'],
             ['guard_name' => 'admin', 'name' => 'knowledgebase-article.restore'],
             ['guard_name' => 'admin', 'name' => 'knowledgebase-article.force.delete'],
+
             // Add more permissions here...
         ];
 
