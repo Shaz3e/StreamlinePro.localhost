@@ -11,6 +11,10 @@ class RegisterController extends Controller
 {
     public function view()
     {
+        if(DiligentCreators('can_admin_register') == 0){
+            return redirect()->route('admin.login');
+        }
+        
         return view('admin.auth.register');
     }
 

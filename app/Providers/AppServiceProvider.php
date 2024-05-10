@@ -24,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::before(function ($user, $ability) {
-            return $user->hasRole('superadmin') ? true : null;
+            // return $user->hasRole('superadmin') ? true : null;
+            return $user->hasAnyRole(['superadmin', 'developer']) ? true : null;
         });
 
         /**
@@ -39,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
          */
         Validator::extend('validate_each', function ($attribute, $value, $parameters, $validator) {
             foreach ($value as $file) {
-                if (! in_array($file->getMimeType(), ['image/jpeg', 'image/png'])) {
+                if (!in_array($file->getMimeType(), ['image/jpeg', 'image/png'])) {
                     return false;
                 }
             }

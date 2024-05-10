@@ -68,6 +68,8 @@ use App\Http\Controllers\Admin\InvoiceLabelController;
 /**
  * Settings
  */
+use App\Http\Controllers\Admin\AppSetting\AppSettingController;
+
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -126,6 +128,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('profile');
         Route::post('my-profile', [ProfileController::class, 'profileStore'])
             ->name('profile.store');
+
+        // App Settings
+        Route::resource('app-settings', AppSettingController::class);
 
         /**
          * Todos

@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\AppSetting;
 use Carbon\Carbon;
+
+function DiligentCreators($appSettingName){
+    return AppSetting::where('name', $appSettingName)->value('value');
+}
 
 function calcTime($startTime, $endTime)
 {

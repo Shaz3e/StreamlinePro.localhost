@@ -14,6 +14,10 @@ class ForgotPasswordController extends Controller
 {
     public function view()
     {
+        if(DiligentCreators('can_admin_reset_password') == 0){
+            return redirect()->route('admin.login');
+        }
+        
         return view('admin.auth.forgot-password');
     }
 

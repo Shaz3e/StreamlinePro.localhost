@@ -233,16 +233,26 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="ri-user-line align-middle me-1"></i>
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i
+                            class="ri-user-line align-middle me-1"></i>
                         Profile</a>
                     @can('todo.list')
                         <a class="dropdown-item" href="{{ route('admin.todos.index') }}"><i
                                 class="ri-todo-line align-middle me-1"></i> My
                             Todo</a>
                     @endcan
-                    <a class="dropdown-item d-block" href="#"><span
-                            class="badge bg-success float-end mt-1">11</span><i
-                            class="ri-settings-2-line align-middle me-1"></i> Settings</a>
+
+                    @hasanyrole(['superadmin', 'tester', 'developer'])
+                        <a class="dropdown-item d-block" href="#"><span
+                                class="badge bg-success float-end mt-1">11</span><i
+                                class="ri-settings-2-line align-middle me-1"></i> Settings</a>
+                    @endhasanyrole
+
+                    @hasrole('developer')
+                        <a class="dropdown-item d-block" href="{{ route('admin.app-settings.index') }}">
+                            <i class="ri-settings-2-line align-middle me-1"></i> App Settings</a>
+                    @endhasrole
+
                     <a class="dropdown-item" href="{{ route('admin.lock') }}">
                         <i class="ri-lock-unlock-line align-middle me-1"></i>
                         Lock Your Account

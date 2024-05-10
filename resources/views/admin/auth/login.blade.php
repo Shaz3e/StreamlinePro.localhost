@@ -49,17 +49,23 @@
                             </button>
                         </div>
 
-                        <div class="col-12 mb-">
-                            Do not have an account <a href="{{ route('admin.register') }}">Register</a>.
-                        </div>
-                        <div class="col-12 mb-">
-                            Forgot Password <a href="{{ route('admin.forgot.password') }}">Click here</a> to
-                            reset.
-                        </div>
+                        @if (DiligentCreators('can_admin_register') == 1)
+                            <div class="col-12 mb-">
+                                Do not have an account <a href="{{ route('admin.register') }}">Register</a>.
+                            </div>
+                        @endif
+
+                        @if (DiligentCreators('can_admin_reset_password') == 1)
+                            <div class="col-12 mb-">
+                                Forgot Password <a href="{{ route('admin.forgot.password') }}">Click here</a> to
+                                reset.
+                            </div>
+                        @endif
 
                     </div>
                     {{-- /.row --}}
                 </form>
+
                 @env('local')
                 <div class="row mx-5">
                     <div class="col-md-12">
@@ -90,7 +96,7 @@
                                     redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
                             </div>
                             <div class="mb-2">
-                                <x-login-link label="Login as Developer" email="develoepr@shaz3e.com"
+                                <x-login-link label="Login as Developer" email="developer@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
                             </div>
@@ -99,6 +105,7 @@
                 </div>
                 {{-- /.row --}}
                 @endenv
+
             </div>
             {{-- /.s3-authbox --}}
         </div>
