@@ -60,10 +60,10 @@
                     </div>
                     {{-- /.row --}}
                 </form>
+                @env('local')
                 <div class="row mx-5">
                     <div class="col-md-12">
                         <div class="d-grid">
-                            @env('local')
                             <div class="mb-2">
                                 <x-login-link label="Login as SuperAdmin" email="superadmin@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
@@ -83,12 +83,22 @@
                                 <x-login-link label="Login as Staff" email="staff@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
-                                @endenv
+                            </div>
+                            <div class="mb-2">
+                                <x-login-link label="Login as Tester" email="tester@shaz3e.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
+                            </div>
+                            <div class="mb-2">
+                                <x-login-link label="Login as Developer" email="develoepr@shaz3e.com"
+                                    class="btn btn-success btn-block btn-sm waves-effect waves-light"
+                                    redirect-url="{{ route('admin.dashboard') }}" guard="admin" />
                             </div>
                         </div>
                     </div>
                 </div>
-                {{-- /.container --}}
+                {{-- /.row --}}
+                @endenv
             </div>
             {{-- /.s3-authbox --}}
         </div>

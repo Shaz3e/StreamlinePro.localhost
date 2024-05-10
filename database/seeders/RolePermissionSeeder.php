@@ -21,6 +21,8 @@ class RolePermissionSeeder extends Seeder
         // Create roles
         $roles = [
             ['guard_name' => 'admin', 'name' => 'superadmin'],
+            ['guard_name' => 'admin', 'name' => 'tester'],
+            ['guard_name' => 'admin', 'name' => 'developer'],
             ['guard_name' => 'admin', 'name' => 'admin'],
             ['guard_name' => 'admin', 'name' => 'manager'],
             ['guard_name' => 'admin', 'name' => 'staff'],
@@ -33,7 +35,13 @@ class RolePermissionSeeder extends Seeder
             if ($newRole->name === 'superadmin') {
                 $admin = Admin::where('email', 'superadmin@shaz3e.com')->first();
                 $admin->assignRole($newRole);
-            } elseif ($newRole->name === 'admin') {
+            } elseif ($newRole->name === 'tester') {
+                $admin = Admin::where('email', 'tester@shaz3e.com')->first();
+                $admin->assignRole($newRole);
+            } elseif ($newRole->name === 'developer') {
+                $admin = Admin::where('email', 'developer@shaz3e.com')->first();
+                $admin->assignRole($newRole);
+            }elseif ($newRole->name === 'admin') {
                 $admin = Admin::where('email', 'admin@shaz3e.com')->first();
                 $admin->assignRole($newRole);
             } elseif ($newRole->name === 'manager') {
@@ -208,6 +216,10 @@ class RolePermissionSeeder extends Seeder
 
         // Assign permissions to superadmin
         $superAdminRole = Role::where('guard_name', 'admin')->where('name', 'superadmin')->first();
+        $superAdminRole->givePermissionTo(Permission::all());
+        $superAdminRole = Role::where('guard_name', 'admin')->where('name', 'tester')->first();
+        $superAdminRole->givePermissionTo(Permission::all());
+        $superAdminRole = Role::where('guard_name', 'admin')->where('name', 'developer')->first();
         $superAdminRole->givePermissionTo(Permission::all());
 
         // Assign permissions to admin
