@@ -70,7 +70,7 @@ use App\Http\Controllers\Admin\InvoiceLabelController;
  */
 use App\Http\Controllers\Admin\AppSetting\AppSettingController;
 use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
-use App\Http\Controllers\Admin\AppSetting\RegistrationSettingController;
+use App\Http\Controllers\Admin\AppSetting\AuthenticationSettingController;
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -138,8 +138,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('', [GeneralSettingController::class, 'generalStore'])->name('general.store');
             
             // Registration Setting
-            Route::get('registration', [RegistrationSettingController::class, 'registration'])->name('registration');
-            Route::post('registration', [RegistrationSettingController::class, 'registrationStore'])->name('registration.store');
+            Route::get('authentication', [AuthenticationSettingController::class, 'authentication'])->name('authentication');
+            Route::post('authentication', [AuthenticationSettingController::class, 'authenticationStore'])->name('authentication.store');
         });
 
         /**

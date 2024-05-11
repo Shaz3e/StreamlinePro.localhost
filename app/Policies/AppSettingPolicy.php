@@ -91,16 +91,16 @@ class AppSettingPolicy
         }
     }
 
-    public function registration(Admin $admin)
+    public function authentication(Admin $admin)
     {
-        if($admin->canAny(['registration-setting.list', 'registration-setting.read'])){
+        if($admin->canAny(['authentication-setting.list', 'authentication-setting.read'])){
             return true;
         }
     }
 
-    public function registrationStore(Admin $admin)
+    public function authenticationStore(Admin $admin)
     {
-        if($admin->can('registration-setting.update')){
+        if($admin->can('authentication-setting.update')){
             return true;
         }
     }

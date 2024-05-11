@@ -43,17 +43,17 @@ class GeneralSettingController extends Controller
         if ($request->hasFile('site_logo_light')) {
             $filename = time() . '-light.' . $request->file('site_logo_light')->extension();
             $path = $request->file('site_logo_light')->storeAs('settings/logo', $filename, 'public');
-            $validated['site_logo_light'] = $path; // Store the path in the $validated array
+            $validated['site_logo_light'] = $path;
         }
         if ($request->hasFile('site_logo_dark')) {
             $filename = time() . '-dark.' . $request->file('site_logo_dark')->extension();
             $path = $request->file('site_logo_dark')->storeAs('settings/logo', $filename, 'public');
-            $validated['site_logo_dark'] = $path; // Store the path in the $validated array
+            $validated['site_logo_dark'] = $path;
         }
         if ($request->hasFile('site_logo_small')) {
             $filename = time() . '-small.' . $request->file('site_logo_small')->extension();
             $path = $request->file('site_logo_small')->storeAs('settings/logo', $filename, 'public');
-            $validated['site_logo_small'] = $path; // Store the path in the $validated array
+            $validated['site_logo_small'] = $path;
         }
 
         // Loop through each validated field and update or create the settings

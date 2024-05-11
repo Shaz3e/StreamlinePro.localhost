@@ -21,8 +21,8 @@
                     @include('admin.app-setting.general.general')
                 @endif
                 
-                @if (request()->routeIs('admin.settings.registration'))
-                    @include('admin.app-setting.registration.registration')
+                @if (request()->routeIs('admin.settings.authentication'))
+                    @include('admin.app-setting.authentication.authentication')
                 @endif
 
             </div>

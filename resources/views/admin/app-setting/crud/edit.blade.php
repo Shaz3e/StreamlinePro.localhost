@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <label for="value">Setting Value</label>
                                     <input type="text" name="value" class="form-control" id="value"
-                                        value="{{ old('value', $appSetting->value) }}" required>
+                                        value="{{ old('value', $appSetting->value) }}">
                                     @error('value')
                                         <div><span class="text-danger">{{ $message }}</span></div>
                                     @enderror

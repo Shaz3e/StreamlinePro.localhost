@@ -20,7 +20,7 @@ class AppSettingRequest extends BaseFormRequest
                 Rule::unique('app_settings', 'name')->ignore($this->app_setting),
             ],
             'value' => [
-                'required', 'max:255'
+                'nullable', 'max:255'
             ],
         ];
     }

@@ -6,10 +6,10 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> General
             </a>
         @endcan
-        @can('registration-setting.list')
-        <a href="{{ route('admin.settings.registration') }}"
-            class="{{ request()->routeIs('admin.settings.registration') ? 'active' : '' }}">
-            <i class="ri ri-arrow-right-s-line me-2"></i> Registration
+        @can('authentication-setting.list')
+        <a href="{{ route('admin.settings.authentication') }}"
+            class="{{ request()->routeIs('admin.settings.authentication') ? 'active' : '' }}">
+            <i class="ri ri-arrow-right-s-line me-2"></i> Authentication
         </a>
         @endcan
     </div>
