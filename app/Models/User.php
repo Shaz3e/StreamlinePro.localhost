@@ -70,6 +70,14 @@ class User extends Authenticatable implements Auditable
         return $this->hasMany(Invoice::class);
     }
 
+    /**
+     * Support Tickets Relationship
+     */
+    public function supportTickets()
+    {
+        return $this->hasMany(SupportTicket::class);
+    }
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table

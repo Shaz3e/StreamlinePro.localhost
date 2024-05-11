@@ -22,9 +22,14 @@
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
-                            <small>Client</small><br>
+                            <small>User</small><br>
                             <strong>
-                                {{ optional($supportTicket->user)->name ? $supportTicket->user->name : 'N/A' }}
+                                @if ($supportTicket->user_id)
+                                    <a href="{{ route('admin.users.show', $supportTicket->user->id) }}">
+                                        {{ $supportTicket->user->name }}
+                                    </a>
+                                @endif
+                                {{-- {{ optional($supportTicket->user)->name ? $supportTicket->user->name : 'N/A' }} --}}
                             </strong>
                         </div>
                         {{-- /.col --}}
@@ -150,7 +155,8 @@
                 </div>
                 {{-- /.card-body --}}
                 <div class="card-footer">
-                    <button onclick="scrollToReply()" class="btn btn-info btn-sm"><i class="ri-reply-line"></i> Response to Ticket</button>
+                    <button onclick="scrollToReply()" class="btn btn-info btn-sm"><i class="ri-reply-line"></i> Response to
+                        Ticket</button>
                 </div>
                 {{-- /.card-footer --}}
             </div>
@@ -164,7 +170,7 @@
     @include('admin.support-ticket.support-ticket-reply')
 
     {{-- Show Audit History --}}
-    @can('support-ticket.force.delete')
+    @hasanyrole(['superadmin', 'developer'])
         @if (count($audits) > 0)
             <div class="row">
                 <div class="col-md-12">
@@ -233,7 +239,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div>
-    @endcan
+    @endhasanyrole
 @endsection
 
 @push('styles')
@@ -249,7 +255,7 @@
             });
         }
     </script>
-    @can('support-ticket.force.delete')
+    @hasanyrole(['superadmin', 'developer'])
         <script>
             $(document).ready(function() {
                 // Audit Log Show Modal
@@ -316,5 +322,5 @@
                 });
             });
         </script>
-    @endcan
+    @endhasanyrole
 @endpush

@@ -218,6 +218,70 @@
     </div>
     {{-- /.row --}}
 
+    {{-- Show Recent Support Tickets --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Recent Support Tickets</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket#</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Created At</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($user->supportTickets()->latest()->take(5)->get() as $ticket)
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('admin.support-tickets.show', $ticket->id) }}">
+                                                {{ $ticket->ticket_number }}
+                                            </a>
+                                        </td>
+                                        <td>{{ $ticket->title }}</td>
+                                        <td>
+                                            <span class="badge"
+                                                style="background-color: {{ $ticket->status->bg_color }}; color:{{ $ticket->status->text_color }};">
+
+                                                {{ $ticket->status->name }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $ticket->created_at->format('l, F j, Y') }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.support-tickets.show', $ticket->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    {{-- /.table-responsive --}}
+                </div>
+                {{-- /.card-body --}}
+                <div class="card-footer">
+                    <a href="{{ route('admin.support-tickets.index') }}?filterUser={{ $user->id }}&filterByStatusTickets="
+                        class="btn btn-sm btn-outline-info">
+                        View All Support Tickets
+                    </a>
+                </div>
+                {{-- /.card-footer --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
     @hasanyrole(['superadmin', 'developer'])
         {{-- Show Audit History --}}
         @if (count($audits) > 0)
