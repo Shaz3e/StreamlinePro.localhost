@@ -68,7 +68,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="message">Ticket Details</label>
-                                    <textarea id="message" name="message" class="form-control" required>{{ old('message') }}</textarea>
+                                    <textarea id="message" name="message" class="form-control" rows="5" required>{{ old('message') }}</textarea>
                                 </div>
                                 @error('message')
                                     <span class="text-danger">{{ $message }}</span>

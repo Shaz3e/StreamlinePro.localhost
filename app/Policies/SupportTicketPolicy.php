@@ -24,11 +24,17 @@ class SupportTicketPolicy
         // if ($admin->can('support-ticket.read')) {
         //     return true;
         // }
-        if (in_array($supportTicket->department_id, $admin->department_id)) {
+        // if (in_array($supportTicket->department_id, $admin->department_id)) {
+        //     return true;
+        // }
+
+        // return $admin->id === $supportTicket->admin_id;
+
+        if ($supportTicket->department_id === null && $supportTicket->admin_id === $admin->id) {
             return true;
         }
-
-        return $admin->id === $supportTicket->admin_id;
+    
+        return $supportTicket->department_id !== null && in_array($supportTicket->department_id, $admin->department_id);
     }
 
     /**

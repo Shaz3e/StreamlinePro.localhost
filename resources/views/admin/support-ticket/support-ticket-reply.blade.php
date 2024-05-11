@@ -11,7 +11,7 @@
                     <div class="row mb-2">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea name="message" name="message" id="message" class="form-control">{!! old('message') !!}</textarea>
+                                <textarea name="message" name="message" id="message" class="form-control" rows="7">{!! old('message') !!}</textarea>
                                 @error('message')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
