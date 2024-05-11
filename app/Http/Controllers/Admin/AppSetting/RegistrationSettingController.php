@@ -4,20 +4,24 @@ namespace App\Http\Controllers\Admin\AppSetting;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppSetting;
-use App\Policies\RegistrationSettingPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rules\Can;
 
 class RegistrationSettingController extends Controller
 {
     public function registration()
     {
+        // Check authorize
+        Gate::authorize('registration', AppSetting::class);
+
         return view('admin.app-setting.main');
     }
 
     public function registrationStore(Request $request)
     {
+        // Check authorize
+        Gate::authorize('registrationStore', AppSetting::class);
+
         // Define validation rules for the request
         $rules = [
             'can_customer_register' => 'required|boolean',

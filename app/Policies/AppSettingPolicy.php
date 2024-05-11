@@ -76,4 +76,32 @@ class AppSettingPolicy
             return true;
         }
     }
+
+    public function general(Admin $admin)
+    {
+        if($admin->canAny(['general-setting.list', 'general-setting.read'])){
+            return true;
+        }
+    }
+
+    public function generalStore(Admin $admin)
+    {
+        if($admin->can('general-setting.update')){
+            return true;
+        }
+    }
+
+    public function registration(Admin $admin)
+    {
+        if($admin->canAny(['registration-setting.list', 'registration-setting.read'])){
+            return true;
+        }
+    }
+
+    public function registrationStore(Admin $admin)
+    {
+        if($admin->can('registration-setting.update')){
+            return true;
+        }
+    }
 }

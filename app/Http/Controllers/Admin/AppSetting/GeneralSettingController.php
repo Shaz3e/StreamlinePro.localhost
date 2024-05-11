@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\AppSetting;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppSetting;
-use App\Policies\GeneralSettingPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +14,17 @@ class GeneralSettingController extends Controller
 {
     public function general()
     {
+        // Check authorize
+        Gate::authorize('general', AppSetting::class);
+
         return view('admin.app-setting.main');
     }
 
     public function generalStore(Request $request)
     {
+        // Check authorize
+        Gate::authorize('generalStore', AppSetting::class);
+
         // Define validation rules for the request
         $rules = [
             'site_name' => 'required|string|max:255',
