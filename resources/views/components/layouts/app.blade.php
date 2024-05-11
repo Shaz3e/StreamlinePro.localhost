@@ -90,7 +90,7 @@
     </div>
     <!-- END layout-wrapper -->
 
-    <x-rightsidebar />
+    {{-- <x-rightsidebar /> --}}
 
     <!-- JAVASCRIPT -->
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>

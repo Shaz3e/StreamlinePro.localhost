@@ -26,7 +26,18 @@
 
 
     <div class="row mb-3">
-        <div class="col-md-3 col-sm-12 mb-2">
+        <div class="col-md-2 col-sm-12 mb-2">
+            <select wire:model.live="filterUser" class="form-control form-control-sm form-control-border">
+                <option value="">Filter by User</option>
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}">
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-2 col-sm-12 mb-2">
             <select wire:model.live="filterCompany" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Company</option>
                 @foreach ($companies as $company)
@@ -37,7 +48,7 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-3 col-sm-12 mb-2">
+        <div class="col-md-2 col-sm-12 mb-2">
             <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Status</option>
                 @foreach ($invoiceStatuses as $value => $label)

@@ -125,75 +125,245 @@
     </div>
     {{-- /.row --}}
 
-    {{-- Show Audit History --}}
-    @if (count($audits) > 0)
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        Audit History
-                    </div>
-                    {{-- /.card-header --}}
-
-                    <div class="card-body">
-                        <table class="table" id="#audit-log-table">
+    {{-- Show Unpaid Invoice List --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Unpaid / Partial Paid Invoices</h5>
+                </div>
+                {{-- /.card-header --}}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Audit</th>
-                                    <th>IP</th>
-                                    <th>Modified At</th>
-                                    <th>Records</th>
+                                    <th>Invoice#</th>
+                                    <th>Invoice Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th>Total Paid</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($audits as $audit)
-                                    <tr>
-                                        <td></td>
-                                        <td>{{ $audit->ip_address }}</td>
-                                        <td>{{ $audit->created_at }}</td>
-                                        <td>
-                                            <button type="button"
-                                                class="btn btn-primary btn-sm waves-effect waves-light show-audit-modal"
-                                                data-bs-toggle="modal" data-bs-target=".auditLog"
-                                                data-audit-id="{{ $audit->id }}">
-                                                <i class="ri-history-line"></i>
-                                            </button>
+                                @foreach ($company->invoices()->latest()->whereIn('status', [App\Models\Invoice::STATUS_UNPAID, App\Models\Invoice::STATUS_PARTIALLY_PAID])->get() as $invoice)
 
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm waves-effect waves-light delete-audit-log"
-                                                data-audit-id="{{ $audit->id }}">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </button>
+                                    <tr>
+                                        <td>{{ $invoice->id }}</td>
+                                        <td>{{ optional($invoice->invoice_date)->format('l, jS M Y') }}</td>
+                                        <td>{{ optional($invoice->due_date)->format('l, jS M Y') }}</td>
+                                        <td>{{ $invoice->status }}</td>
+                                        <td>{{ $invoice->total }}</td>
+                                        <td>{{ $invoice->total_paid }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.invoices.show', $invoice->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-
-                        {{ $audits->links('pagination::bootstrap-5') }}
                     </div>
-                    {{-- /.card-body --}}
+                    {{-- /.table-responsive --}}
                 </div>
-                {{-- /.card --}}
+                {{-- /.card-body --}}
             </div>
-            {{-- /.col --}}
+            {{-- /.card --}}
         </div>
-        {{-- /.row --}}
-    @endif
-
-    {{-- Audit Log --}}
-    <div class="modal fade auditLog" tabindex="-1" aria-labelledby="auditLog" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="auditLog">Audit Log</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
+        {{-- /.col --}}
     </div>
+    {{-- /.row --}}
+
+    {{-- Show Invoice List --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Recent Invoices</h5>
+                </div>
+                {{-- /.card-header --}}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice#</th>
+                                    <th>Invoice Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th>Total Paid</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($company->invoices()->latest()->take(10)->get() as $invoice)
+                                    <tr>
+                                        <td>{{ $invoice->id }}</td>
+                                        <td>{{ optional($invoice->invoice_date)->format('l, jS M Y') }}</td>
+                                        <td>{{ optional($invoice->due_date)->format('l, jS M Y') }}</td>
+                                        <td>{{ $invoice->status }}</td>
+                                        <td>{{ $invoice->total }}</td>
+                                        <td>{{ $invoice->total_paid }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.invoices.show', $invoice->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    {{-- /.table-responsive --}}
+                </div>
+                {{-- /.card-body --}}
+                <div class="card-footer">
+                    <a href="{{ route('admin.invoices.index') }}?filterCompany={{ $company->id }}"
+                        class="btn btn-sm btn-outline-info">
+                        View All Invoices
+                    </a>
+                </div>
+                {{-- /.card-footer --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
+    {{-- Show Recent Transactions --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Recent Transactions</h5>
+                </div>
+                {{-- /.card-header --}}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Transactions#</th>
+                                    <th>Invoice#</th>
+                                    <th>Amount</th>
+                                    <th>Transaction Date</th>
+                                    <th>Recorded Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($company->invoices as $invoice)
+                                    @foreach ($invoice->payments()->latest()->take(20)->get() as $payment)
+                                        <tr>
+                                            <td>{{ $payment->transaction_number }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.invoices.show', $payment->invoice_id) }}">
+                                                    {{ $payment->invoice_id }}
+                                                </a>
+                                            </td>
+                                            <td>{{ $payment->amount }}</td>
+                                            <td>{{ $payment->transaction_date->format('d M Y') }}</td>
+                                            <td>{{ $payment->created_at->format('d M Y') }}</td>
+                                            <td>
+                                                {{-- <a href="{{ route('admin.invoices.show', $payment->id) }}"
+                                                class="btn btn-sm btn-outline-info">
+                                                <i class="ri-eye-line"></i>
+                                            </a> --}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    {{-- /.table-responsive --}}
+                </div>
+                {{-- /.card-body --}}
+            </div>
+            {{-- /.card --}}
+        </div>
+        {{-- /.col --}}
+    </div>
+    {{-- /.row --}}
+
+    @hasanyrole(['superadmin', 'developer'])
+        {{-- Show Audit History --}}
+        @if (count($audits) > 0)
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            Audit History
+                        </div>
+                        {{-- /.card-header --}}
+
+                        <div class="card-body">
+                            <table class="table" id="#audit-log-table">
+                                <thead>
+                                    <tr>
+                                        <th>Audit</th>
+                                        <th>IP</th>
+                                        <th>Modified At</th>
+                                        <th>Records</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($audits as $audit)
+                                        <tr>
+                                            <td></td>
+                                            <td>{{ $audit->ip_address }}</td>
+                                            <td>{{ $audit->created_at }}</td>
+                                            <td>
+                                                <button type="button"
+                                                    class="btn btn-primary btn-sm waves-effect waves-light show-audit-modal"
+                                                    data-bs-toggle="modal" data-bs-target=".auditLog"
+                                                    data-audit-id="{{ $audit->id }}">
+                                                    <i class="ri-history-line"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                    class="btn btn-danger btn-sm waves-effect waves-light delete-audit-log"
+                                                    data-audit-id="{{ $audit->id }}">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            {{ $audits->links('pagination::bootstrap-5') }}
+                        </div>
+                        {{-- /.card-body --}}
+                    </div>
+                    {{-- /.card --}}
+                </div>
+                {{-- /.col --}}
+            </div>
+            {{-- /.row --}}
+        @endif
+
+        {{-- Audit Log --}}
+        <div class="modal fade auditLog" tabindex="-1" aria-labelledby="auditLog" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="auditLog">Audit Log</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    @endhasanyrole
 @endsection
 
 @push('styles')
@@ -206,69 +376,71 @@
     <script src="{{ asset('assets/libs/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
     <!-- lightbox init js-->
     <script src="{{ asset('assets/js/pages/lightbox.init.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            // Audit Log Show Modal
-            $('.show-audit-modal').click(function(e) {
-                e.preventDefault();
-                const companyId = $(this).data('audit-id');
-                // Fetch details via AJAX
-                $.ajax({
-                    url: `{{ route('admin.companies.audit', ':id') }}`.replace(':id', companyId),
-                    type: 'GET',
-                    success: function(data) {
-                        // Populate modal content with fetched data
-                        $('.auditLog .modal-body').html(data);
-                        // Show the modal
-                        $('.auditLog').modal('show');
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
+    @hasanyrole(['superadmin', 'developer'])
+        <script>
+            $(document).ready(function() {
+                // Audit Log Show Modal
+                $('.show-audit-modal').click(function(e) {
+                    e.preventDefault();
+                    const companyId = $(this).data('audit-id');
+                    // Fetch details via AJAX
+                    $.ajax({
+                        url: `{{ route('admin.companies.audit', ':id') }}`.replace(':id', companyId),
+                        type: 'GET',
+                        success: function(data) {
+                            // Populate modal content with fetched data
+                            $('.auditLog .modal-body').html(data);
+                            // Show the modal
+                            $('.auditLog').modal('show');
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
                 });
-            });
-            $('.delete-audit-log').click(function(e) {
-                e.preventDefault();
-                const companyId = $(this).data('audit-id');
+                $('.delete-audit-log').click(function(e) {
+                    e.preventDefault();
+                    const companyId = $(this).data('audit-id');
 
-                // Show confirmation dialog
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this audit log!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel!',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // If user confirms, proceed with deletion
-                        $.ajax({
-                            url: `{{ route('admin.companies.audit.delete', ':id') }}`
-                                .replace(
-                                    ':id', companyId),
-                            type: 'GET',
-                            success: function(data) {
-                                // Show success message
-                                Swal.fire('Deleted!',
-                                    'Your audit log has been deleted.', 'success');
-                                // reload page
-                                location.reload();
-                            },
-                            error: function(error) {
-                                console.error('Error:', error);
-                                // Show error message if deletion fails
-                                Swal.fire('Error!',
-                                    'Failed to delete audit log or it has been deleted',
-                                    'error');
-                            }
-                        });
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        // If user cancels, show message that the history is safe
-                        Swal.fire('Cancelled', 'Your audit log is safe :)', 'info');
-                    }
+                    // Show confirmation dialog
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You will not be able to recover this audit log!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel!',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // If user confirms, proceed with deletion
+                            $.ajax({
+                                url: `{{ route('admin.companies.audit.delete', ':id') }}`
+                                    .replace(
+                                        ':id', companyId),
+                                type: 'GET',
+                                success: function(data) {
+                                    // Show success message
+                                    Swal.fire('Deleted!',
+                                        'Your audit log has been deleted.', 'success');
+                                    // reload page
+                                    location.reload();
+                                },
+                                error: function(error) {
+                                    console.error('Error:', error);
+                                    // Show error message if deletion fails
+                                    Swal.fire('Error!',
+                                        'Failed to delete audit log or it has been deleted',
+                                        'error');
+                                }
+                            });
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            // If user cancels, show message that the history is safe
+                            Swal.fire('Cancelled', 'Your audit log is safe :)', 'info');
+                        }
+                    });
                 });
             });
-        });
-    </script>
+        </script>
+    @endhasanyrole
 @endpush

@@ -89,7 +89,7 @@ class Invoice extends Model implements Auditable
     /**
      * Invoice Payment Transaction relationship
      */
-    public function paymentTransactions()
+    public function payments()
     {
         return $this->hasMany(Payment::class, 'invoice_id');
     }

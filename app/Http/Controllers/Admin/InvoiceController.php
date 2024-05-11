@@ -79,7 +79,7 @@ class InvoiceController extends Controller
                 // Invoice Table
                 'invoice_to' => 'required',
                 'user_id' => 'required_if:invoice_to,user|exists:users,id',
-                'company_id' => 'required_if:invoice_to,user|exists:companies,id',
+                'company_id' => 'required_if:invoice_to,company|exists:companies,id',
                 'is_published' => 'required|boolean',
                 'published_on' => 'required|date',
                 'invoice_label_id' => 'required|exists:invoice_labels,id',
@@ -96,11 +96,10 @@ class InvoiceController extends Controller
 
         // Update record in database
         $invoice = new Invoice();
-        if ($request->has('user_id')) {
-            $invoice->user_id = $request->user_id;
-        } elseif ($request->has('company_id')) {
-            $invoice->company_id = $request->company_id;
-        }
+
+        $invoice->user_id = $request->input('invoice_to') === "user" ? $request->user_id : null;
+        $invoice->company_id = $request->input('invoice_to') === "company" ? $request->company_id : null;
+
         $invoice->is_published = $request->is_published;
         $invoice->published_on = $request->published_on;
         $invoice->invoice_label_id = $request->invoice_label_id;
@@ -110,8 +109,9 @@ class InvoiceController extends Controller
         $invoice->header_note = $request->header_note;
         $invoice->footer_note = $request->footer_note;
         $invoice->private_note = $request->private_note;
+
         $invoice->save();
-        
+
         // Check invoice items if provided
         if (
             $request->has('item_description') &&
@@ -142,7 +142,7 @@ class InvoiceController extends Controller
                     'product_total' => $totalPrices[$i],
                 ]);
             }
-            
+
             // Update invoice with sum
             $invoice->update([
                 'sub_total' => $request->sub_total,
@@ -461,7 +461,7 @@ class InvoiceController extends Controller
         $payment->delete();
 
         // If the due amount not equal to total change status to unpaid otherwise change status to partial paid        
-        if ($payment->count() == 0) {
+        if ($invoice->payments()->count() == 0) {
             $invoice->update([
                 'status' => Invoice::STATUS_UNPAID
             ]);

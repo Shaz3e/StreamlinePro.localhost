@@ -41,5 +41,13 @@ class Company extends Model implements Auditable
     public function users()
     {
         return $this->hasMany(User::class);
+    }    
+
+    /**
+     * Invoice Relationship
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }

@@ -62,6 +62,14 @@ class User extends Authenticatable implements Auditable
         return $this->belongsTo(Company::class);
     }
 
+    /**
+     * Invoice Relationship
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Invoice;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceLabel;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -24,6 +25,10 @@ class InvoiceList extends Component
 
     // record to delete
     public $recordToDelete;
+
+    // Filter Invoice by User
+    #[Url()]
+    public $filterUser;
 
     // Filter Invoice by Company
     #[Url()]
@@ -65,6 +70,10 @@ class InvoiceList extends Component
             });
         }
 
+        // Filter records based on user
+        if ($this->filterUser) {
+            $query->where('user_id', $this->filterUser);
+        }
         // Filter records based on company
         if ($this->filterCompany) {
             $query->where('company_id', $this->filterCompany);
@@ -82,6 +91,9 @@ class InvoiceList extends Component
         // Get all invoices
         $invoices = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
+        // Get all users
+        $users = User::where('is_active', 1)->get();
+
         // Get all companies
         $companies = Company::where('is_active', 1)->get();
 
@@ -91,6 +103,7 @@ class InvoiceList extends Component
         return view('livewire.admin.invoice.invoice-list', [
             'invoices' => $invoices,
             'companies' => $companies,
+            'users' => $users,
             'invoiceLabels' => $invoiceLabels
         ]);
     }
