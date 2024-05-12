@@ -66,7 +66,12 @@
             <div class="card border border-primary">
                 <div class="card-body">
                     <div class="card-text text-center">Status</div>
-                    <h4 class="card-title text-center">{{ $invoice->status }}</h4>
+                    <h4 class="card-title text-center">
+                        {{-- {{ $invoice->status }} --}}
+                        <span class="badge {{ $invoice->getStatusColor() }}">
+                            {{ $invoice->getStatus() }}
+                        </span>
+                    </h4>
                 </div>
             </div>
         </div>

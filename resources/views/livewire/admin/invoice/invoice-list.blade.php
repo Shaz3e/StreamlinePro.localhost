@@ -126,7 +126,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <strong>{{ $invoice->status }}</strong>
+                                            <strong
+                                                class="badge {{ $invoice->getStatusColor() }}">{{ $invoice->getStatus() }}</strong>
                                         </td>
                                         <td>
                                             <strong>

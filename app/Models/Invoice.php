@@ -54,6 +54,20 @@ class Invoice extends Model implements Auditable
         return $this->status;
     }
 
+    public function getStatusColor()
+    {
+        switch ($this->status) {
+            case self::STATUS_UNPAID:
+                return 'bg-danger';
+            case self::STATUS_PARTIALLY_PAID:
+                return 'bg-warning';
+            case self::STATUS_PAID:
+                return 'bg-success';
+            case self::STATUS_CANCELLED:
+                return 'bg-default';
+        }
+    }
+
     /**
      * User Relationship
      */
@@ -93,7 +107,7 @@ class Invoice extends Model implements Auditable
     {
         return $this->hasMany(Payment::class, 'invoice_id');
     }
-    
+
     /**
      * setAuditInclude
      * Audit log include all column in the table
