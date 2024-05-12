@@ -70,7 +70,7 @@ class SupportTicketList extends Component
         $departments = $admin->department_id;
 
         // Check if the logged-in admin is a super admin (with admin ID 1)
-        if ($admin->hasRole('superadmin')) {
+        if ($admin->hasRole(['superadmin', 'developer'])) {
             // If admin is super admin, fetch all support tickets
             $query = SupportTicket::query();
         } else {

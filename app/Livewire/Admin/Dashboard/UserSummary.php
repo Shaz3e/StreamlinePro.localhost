@@ -25,6 +25,10 @@ class UserSummary extends Component
     {
         $lastMonthNewUsers = User::whereBetween('created_at', [now()->subMonth(), now()->endOfMonth()])->count();
         $thisMonthNewUsers = User::whereBetween('created_at', [now()->startOfMonth(), now()])->count();
+
+        if ($lastMonthNewUsers == 0) {
+            return 0; // or any other default value you prefer
+        }
     
         $percentageChange = (($thisMonthNewUsers - $lastMonthNewUsers) / $lastMonthNewUsers) * 100;
     

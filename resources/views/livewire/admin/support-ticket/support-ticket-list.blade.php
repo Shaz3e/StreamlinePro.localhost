@@ -117,13 +117,25 @@
                             @foreach ($tickets as $ticket)
                                 <tr wire:key="{{ $ticket->id }}">
                                     <td>
-                                        {{ $ticket->ticket_number }}
+                                        <a class="text-black"
+                                            href="{{ route('admin.support-tickets.show', $ticket->id) }}">
+                                            {{ $ticket->ticket_number }}
+                                        </a>
                                         @if ($ticket->user_id)
-                                            Client: {{ $ticket->user->name }}
+                                            Client:
+                                            <a class="text-black"
+                                                href="{{ route('admin.users.show', $ticket->user_id) }}">
+                                                {{ $ticket->user->name }}
+                                            </a>
                                         @endif
                                     </td>
                                     <td>
-                                        <h5>{{ $ticket->title }}</h5>
+                                        <h5>
+                                            <a class="text-black"
+                                                href="{{ route('admin.support-tickets.show', $ticket->id) }}">
+                                                {{ $ticket->title }}
+                                            </a>
+                                        </h5>
                                         @if ($ticket->is_internal == 1)
                                             <span class="badge bg-danger">Internal Ticket</span>
                                         @endif
@@ -140,12 +152,14 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="badge" style="background-color: {{ $ticket->status->bg_color }}; color: {{ $ticket->status->text_color }}">
+                                        <span class="badge"
+                                            style="background-color: {{ $ticket->status->bg_color }}; color: {{ $ticket->status->text_color }}">
                                             {{ $ticket->status->name }}
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge" style="background-color: {{ $ticket->priority->bg_color }}; color: {{ $ticket->priority->text_color }}">
+                                        <span class="badge"
+                                            style="background-color: {{ $ticket->priority->bg_color }}; color: {{ $ticket->priority->text_color }}">
                                             {{ $ticket->priority->name }}
                                         </span>
                                     </td>
