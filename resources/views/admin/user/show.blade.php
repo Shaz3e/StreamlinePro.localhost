@@ -15,34 +15,39 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table">
-                        <tr>
-                            <td>Name</td>
-                            <td>Company</td>
-                            <td>Email</td>
-                            <td>Status</td>
-                            <td>Created At</td>
-                        </tr>
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>
-                                @if ($user->company != null)
-                                    <a href="{{ route('admin.companies.show', $user->company->id) }}">
-                                        {{ $user->company->name }}
-                                    </a>
-                                @endif
-                            </td>
-                            <td>{{ $user->email }}</td>
-                            <td>
-                                @if ($user->is_active)
-                                    <span class="badge bg-success">Active</span>
-                                @else
-                                    <span class="badge bg-danger">Inactive</span>
-                                @endif
-                            </td>
-                            <td>{{ $user->created_at->format('l, F j, Y') }}</td>
-                        </tr>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <td>Name</td>
+                                <td>Company</td>
+                                <td>Email</td>
+                                <td>Status</td>
+                                <td>Created At</td>
+                            </tr>
+                            <tr>
+                                <td>{{ $user->name }}</td>
+                                <td>
+                                    @if ($user->company != null)
+                                        <a href="{{ route('admin.companies.show', $user->company->id) }}">
+                                            {{ $user->company->name }}
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>{{ $user->email }}</td>
+                                <td>
+                                    @if ($user->is_active)
+                                        <span class="badge bg-success">Active</span>
+                                    @else
+                                        <span class="badge bg-danger">Inactive</span>
+                                    @endif
+                                </td>
+                                <td>{{ $user->created_at->format('l, F j, Y') }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {{-- /.table-responsive --}}
+
+                    <a href="{{ route('admin.users.edit', $user) }}">Edit</a>
                 </div>
             </div>
             {{-- /.card --}}
