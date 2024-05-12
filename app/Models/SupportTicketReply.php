@@ -27,6 +27,14 @@ class SupportTicketReply extends Model implements Auditable
     }
 
     /**
+     * Support Ticket Relationship
+     */
+    public function supportTicket()
+    {
+        return $this->belongsTo(SupportTicket::class);
+    }
+
+    /**
      * Relationship with the User model (users)
      */
     public function client()

@@ -35,12 +35,18 @@
                         {{-- /.col --}}
                         <div class="col-md-3">
                             <small>Status</small><br>
-                            <strong>{{ $supportTicket->status->name }}</strong>
+                            <strong class="badge"
+                                style="background-color:{{ $supportTicket->status->bg_color }};color:{{ $supportTicket->status->text_color }};">
+                                {{ $supportTicket->status->name }}
+                            </strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">
                             <small>Priority</small><br>
-                            <strong>{{ $supportTicket->priority->name }}</strong>
+                            <strong class="badge"
+                                style="background-color:{{ $supportTicket->priority->bg_color }};color: {{ $supportTicket->priority->text_color }};">
+                                {{ $supportTicket->priority->name }}
+                            </strong>
                         </div>
                         {{-- /.col --}}
                     </div>
