@@ -1,3 +1,5 @@
+@livewire('admin.dashboard.user-summary')
+
 <div class="row mb-3">
     <div class="col-6">
         @livewire('admin.dashboard.recent-support-ticket')
@@ -19,4 +21,3 @@
         @livewire('admin.dashboard.recent-payments')
     </div>
 </div>
-{{-- /.row --}}
