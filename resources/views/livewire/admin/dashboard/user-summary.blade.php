@@ -56,8 +56,8 @@
                                 </p>
                             </div>
                             <div class="avatar-sm">
-                                <span class="avatar-title bg-light text-primary rounded-3">
-                                    <i class="ri-user-3-line font-size-24"></i>
+                                <span class="avatar-title bg-transparent text-primary rounded-3">
+                                    <i class="ri-user-add-line font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -80,8 +80,8 @@
                                 </p>
                             </div>
                             <div class="avatar-sm">
-                                <span class="avatar-title bg-light text-primary rounded-3">
-                                    <i class="ri-user-3-line font-size-24"></i>
+                                <span class="avatar-title bg-transparent text-primary rounded-3">
+                                    <i class="ri-user-star-line font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -92,20 +92,38 @@
             </div>
             {{-- /.col --}}
             {{-- Total Users --}}
-            <div class="col-12">
+            <div class="col-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2">Total Users</p>
                                 <h4 class="mb-2">{{ $users->count() }}</h4>
-                                <p class="text-muted mb-0">
-                                    in system
-                                </p>
                             </div>
                             <div class="avatar-sm">
-                                <span class="avatar-title bg-light text-primary rounded-3">
+                                <span class="avatar-title bg-transparent text-primary rounded-3">
                                     <i class="ri-user-3-line font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- /.card-body --}}
+                </div>
+                {{-- /.card --}}
+            </div>
+            {{-- /.col --}}
+            {{-- Active Company --}}
+            <div class="col-6">
+                <div class="card" style="height: calc(100% - 15px)">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-truncate font-size-14 mb-2">Active Company</p>
+                                <h4 class="mb-2">{{ $companies->count() }}</h4>
+                            </div>
+                            <div class="avatar-sm">
+                                <span class="avatar-title bg-transparent text-primary rounded-3">
+                                    <i class="ri-building-4-line font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -125,8 +143,8 @@
                                 <h4 class="mb-2">{{ $users->where('is_active', 1)->count() }}</h4>
                             </div>
                             <div class="avatar-sm">
-                                <span class="avatar-title bg-light text-primary rounded-3">
-                                    <i class="ri-user-3-line font-size-24"></i>
+                                <span class="avatar-title bg-transparent text-primary rounded-3">
+                                    <i class="ri-user-heart-line font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -146,8 +164,8 @@
                                 <h4 class="mb-2">{{ $users->where('is_active', 0)->count() }}</h4>
                             </div>
                             <div class="avatar-sm">
-                                <span class="avatar-title bg-light text-primary rounded-3">
-                                    <i class="ri-user-3-line font-size-24"></i>
+                                <span class="avatar-title bg-transparent text-primary rounded-3">
+                                    <i class="ri-user-unfollow-line font-size-24"></i>
                                 </span>
                             </div>
                         </div>
