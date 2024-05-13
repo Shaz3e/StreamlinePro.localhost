@@ -32,16 +32,28 @@ class SupportTicketList extends Component
     public $filterInternalTickets = '';
 
     #[Url()]
-    public $filterUserTickets = '';
+    public $searchUser = '';
 
     #[Url()]
-    public $filterAdminTickets = '';
+    public $users = [];
+
+    #[Url()]
+    public $searchStaff = '';
+
+    #[Url()]
+    public $staff = [];
 
     #[Url()]
     public $filterDepartmentTickets = '';
 
     #[Url()]
-    public $filterByStatusTickets = 1;
+    public $searchDepartment = '';
+
+    #[Url()]
+    public $departments = [];
+
+    #[Url()]
+    public $filterByStatusTickets = '';
 
     #[Url()]
     public $filterByPriorityTickets = '';
@@ -96,17 +108,25 @@ class SupportTicketList extends Component
         if ($this->filterInternalTickets !== '') {
             $query->where('is_internal', $this->filterInternalTickets);
         }
-
-        if ($this->filterUserTickets !== '') {
-            $query->where('user_id', $this->filterUserTickets);
+        
+        if ($this->searchUser !== '') {
+            $query->whereHas('user', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchUser . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchUser . '%');
+            });
+        }
+        
+        if ($this->searchStaff !== '') {
+            $query->whereHas('admin', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchStaff . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchStaff . '%');
+            });
         }
 
-        if ($this->filterAdminTickets !== '') {
-            $query->where('admin_id', $this->filterAdminTickets);
-        }
-
-        if ($this->filterDepartmentTickets !== '') {
-            $query->where('department_id', $this->filterDepartmentTickets);
+        if ($this->searchDepartment !== '') {
+            $query->whereHas('department', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchDepartment . '%');
+            });
         }
 
         if ($this->filterByStatusTickets !== '') {
@@ -126,12 +146,6 @@ class SupportTicketList extends Component
         $tickets = $query->orderBy('id', 'desc')
             ->paginate($this->perPage);
 
-        // Get all user/client
-        $getUsers = User::all();
-
-        // Get all admin/staff
-        $getAdmins = Admin::all();
-
         // Get all ticket department
         $getDepartments = Department::all();
 
@@ -143,9 +157,6 @@ class SupportTicketList extends Component
 
         return view('livewire.admin.support-ticket.support-ticket-list', [
             'tickets' => $tickets,
-            'getUsers' => $getUsers,
-            'getAdmins' => $getAdmins,
-            'getDepartments' => $getDepartments,
             'getTicketStatuses' => $getTicketStatuses,
             'getTicketPriorities' => $getTicketPriorities,
         ]);
@@ -173,10 +184,10 @@ class SupportTicketList extends Component
     public function resetFilters()
     {
         $this->search = '';
+        $this->searchUser = '';
+        $this->searchStaff = '';
         $this->filterInternalTickets = '';
-        $this->filterUserTickets = '';
-        $this->filterAdminTickets = '';
-        $this->filterDepartmentTickets = '';
+        $this->searchStaff = '';
         $this->filterByStatusTickets = '';
         $this->filterByPriorityTickets = '';
         $this->resetPage();

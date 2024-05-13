@@ -42,28 +42,13 @@
             </select>
         </div>
         <div class="col-md-2 col-sm-12">
-            <select wire:model.live="filterUserTickets" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Client</option>
-                @foreach ($getUsers as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchUser" class="form-control form-control-sm" placeholder="Search By User...">
         </div>
         <div class="col-md-2 col-sm-12">
-            <select wire:model.live="filterAdminTickets" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Staff</option>
-                @foreach ($getAdmins as $admin)
-                    <option value="{{ $admin->id }}">{{ $admin->name }}</option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchStaff" class="form-control form-control-sm" placeholder="Search By Staff...">
         </div>
         <div class="col-md-2 col-sm-12">
-            <select wire:model.live="filterDepartmentTickets" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Department</option>
-                @foreach ($getDepartments as $department)
-                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchDepartment" class="form-control form-control-sm" placeholder="Search By Department...">
         </div>
         <div class="col-md-2 col-sm-12">
             <select wire:model.live="filterByStatusTickets" class="form-control form-control-sm form-control-border">
@@ -85,9 +70,9 @@
             @if (
                 $search ||
                     $filterInternalTickets ||
-                    $filterUserTickets ||
-                    $filterAdminTickets ||
-                    $filterDepartmentTickets ||
+                    $searchUser ||
+                    $searchStaff ||
+                    $searchDepartment ||
                     $filterByStatusTickets ||
                     $filterByPriorityTickets)
                 <button wire:click="resetFilters" class="btn btn-sm btn-block btn-outline-secondary">

@@ -274,7 +274,7 @@
                 </div>
                 {{-- /.card-body --}}
                 <div class="card-footer">
-                    <a href="{{ route('admin.support-tickets.index') }}?filterUser={{ $user->id }}&filterByStatusTickets="
+                    <a href="{{ route('admin.support-tickets.index') }}?searchUser={{ $user->email }}&filterByStatusTickets="
                         class="btn btn-sm btn-outline-info">
                         View All Support Tickets
                     </a>
