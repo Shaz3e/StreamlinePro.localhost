@@ -10,6 +10,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Company</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -20,6 +21,15 @@
                                         <a href="{{ route('admin.users.show', $user->id) }}">{{ $user->name }}</a>
                                     </td>
                                     <td>{{ $user->email }}</td>
+                                    <td>
+                                        @if ($user->company)
+                                            <a href="{{ route('admin.companies.show', $user->company->id) }}">
+                                                {{ $user->company->name }}
+                                            </a>
+                                        @else
+                                         - 
+                                        @endif
+                                    </td>
                                     <td>
                                         <x-is-active-badge :isActive="$user->is_active" />
                                     </td>
