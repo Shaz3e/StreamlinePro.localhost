@@ -217,6 +217,11 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'authentication-setting.list'],
             ['guard_name' => 'admin', 'name' => 'authentication-setting.read'],
             ['guard_name' => 'admin', 'name' => 'authentication-setting.update'],
+            
+            // Dashboard Setting
+            ['guard_name' => 'admin', 'name' => 'dashboard-setting.list'],
+            ['guard_name' => 'admin', 'name' => 'dashboard-setting.read'],
+            ['guard_name' => 'admin', 'name' => 'dashboard-setting.update'],
 
             // Add more permissions here...
         ];

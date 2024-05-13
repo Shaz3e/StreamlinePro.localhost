@@ -52,6 +52,11 @@ class AppSettingSeeder extends Seeder
             ['name' => 'reset_page_text_color', 'value' => null],
             ['name' => 'reset_page_text_bg_color', 'value' => null],
             ['name' => 'reset_page_image', 'value' => 'settings/page/reset-page.jpg'],
+            
+            // Dashboard Setting
+            ['name' => 'can_access_user_summary', 'value' => json_encode(["superadmin","tester","developer"])],
+            ['name' => 'can_access_support_ticket_summary', 'value' => json_encode(["superadmin","tester","developer"])],
+            ['name' => 'can_access_invoice_summary', 'value' => json_encode(["superadmin","tester","developer"])],
         ];
 
         DB::table('app_settings')->insert($appSettings);

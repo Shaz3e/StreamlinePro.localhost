@@ -77,6 +77,9 @@ class AppSettingPolicy
         }
     }
 
+    /**
+     * General Setting
+     */
     public function general(Admin $admin)
     {
         if($admin->canAny(['general-setting.list', 'general-setting.read'])){
@@ -91,6 +94,9 @@ class AppSettingPolicy
         }
     }
 
+    /**
+     * Authentication Setting
+     */
     public function authentication(Admin $admin)
     {
         if($admin->canAny(['authentication-setting.list', 'authentication-setting.read'])){
@@ -101,6 +107,23 @@ class AppSettingPolicy
     public function authenticationStore(Admin $admin)
     {
         if($admin->can('authentication-setting.update')){
+            return true;
+        }
+    }
+
+    /**
+     * Dashboard Setting
+     */
+    public function dashboard(Admin $admin)
+    {
+        if($admin->canAny(['dashboard-setting.list', 'dashboard-setting.read'])){
+            return true;
+        }
+    }
+
+    public function dashboardStore(Admin $admin)
+    {
+        if($admin->can('dashboard-setting.update')){
             return true;
         }
     }

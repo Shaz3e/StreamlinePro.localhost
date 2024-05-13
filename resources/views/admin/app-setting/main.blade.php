@@ -25,6 +25,10 @@
                     @include('admin.app-setting.authentication.authentication')
                 @endif
 
+                @if (request()->routeIs('admin.settings.dashboard'))
+                    @include('admin.app-setting.dashboard.dashboard')
+                @endif
+
             </div>
             {{-- /.email-rightbar --}}
 

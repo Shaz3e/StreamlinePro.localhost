@@ -71,6 +71,7 @@ use App\Http\Controllers\Admin\InvoiceLabelController;
 use App\Http\Controllers\Admin\AppSetting\AppSettingController;
 use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
 use App\Http\Controllers\Admin\AppSetting\AuthenticationSettingController;
+use App\Http\Controllers\Admin\AppSetting\DashboardSettingController;
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -140,6 +141,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Registration Setting
             Route::get('authentication', [AuthenticationSettingController::class, 'authentication'])->name('authentication');
             Route::post('authentication', [AuthenticationSettingController::class, 'authenticationStore'])->name('authentication.store');
+
+            // Dashboard Setting
+            Route::get('dashboard', [DashboardSettingController::class, 'dashboard'])->name('dashboard');
+            Route::post('dashboard', [DashboardSettingController::class, 'dashboardStore'])->name('dashboard.store');
         });
 
         /**
