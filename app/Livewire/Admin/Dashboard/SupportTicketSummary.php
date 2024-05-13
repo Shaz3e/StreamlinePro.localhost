@@ -9,13 +9,15 @@ class SupportTicketSummary extends Component
 {
     public function render()
     {
-        $supportTickets = SupportTicket::all();        
+        $supportTickets = SupportTicket::count();
+        $openSupportTickets = SupportTicket::where('support_ticket_status_id', 1)->count();
 
         $currentMonthTickets = SupportTicket::whereMonth('created_at', now()->month)->count();
         $lastMonthTickets = SupportTicket::whereMonth('created_at', now()->subMonth()->month)->count();
 
         return view('livewire.admin.dashboard.support-ticket-summary', [
             'supportTickets' => $supportTickets,
+            'openSupportTickets' => $openSupportTickets,
             'currentMonthTickets' => $currentMonthTickets,
             'lastMonthTickets' => $lastMonthTickets,
         ]);
@@ -25,18 +27,18 @@ class SupportTicketSummary extends Component
     {
         $lastMonthTickets = SupportTicket::whereBetween('created_at', [now()->subMonth(), now()->endOfMonth()])->count();
         $thisMonthTickets = SupportTicket::whereBetween('created_at', [now()->startOfMonth(), now()])->count();
-        
+
         if ($lastMonthTickets == 0) {
             return 0; // or any other default value you prefer
         }
-        
+
         $percentageChange = (($thisMonthTickets - $lastMonthTickets) / $lastMonthTickets) * 100;
-        
+
         // Update: return the absolute value of the percentage change if it's negative
         if ($percentageChange < 0) {
             return abs($percentageChange);
         }
-        
+
         return $percentageChange;
     }
 }

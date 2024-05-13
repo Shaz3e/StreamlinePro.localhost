@@ -6,8 +6,8 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <p class="text-truncate font-size-14 mb-2">Open Tickets</p>
-                        <h4 class="mb-2">{{ $supportTickets->where('support_ticket_status_id', 1)->count() }}</h4>
-                        <p class="text-muted mb-0"><span class="text-success fw-bold font-size-12 me-2"><i class="ri-arrow-right-up-line me-1 align-middle"></i>9.23%</span>from previous period</p>
+                        <h4 class="mb-2">{{ $openSupportTickets }}</h4>
+                        Total open tickets
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-light text-primary rounded-3">
@@ -78,7 +78,7 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <p class="text-truncate font-size-14 mb-2">Total</p>
-                        <h4 class="mb-2">{{ $supportTickets->count() }}</h4>
+                        <h4 class="mb-2">{{ $supportTickets }}</h4>
                         <p class="text-muted mb-0">created in system</p>
                     </div>
                     <div class="avatar-sm">

@@ -103,7 +103,9 @@ class SupportTicketController extends Controller
         Gate::authorize('view', $supportTicket);
 
         // Get attachments
-        $attachments = json_decode($supportTicket->attachments, true);
+        // $attachments = json_decode($supportTicket->attachments, true);
+        $attachments = $supportTicket->attachments ? json_decode($supportTicket->attachments, true) : [];
+
 
         // Get all admin/staff
         $staffList = Admin::where('is_active', 1)->get();

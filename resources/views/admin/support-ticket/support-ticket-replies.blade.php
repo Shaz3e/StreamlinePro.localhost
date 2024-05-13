@@ -11,27 +11,31 @@
                             {!! $reply->message !!}
                         </div>
 
-                        <div class="card-text">
-                            <strong>Attachments</strong>
-                            <ul>
-                                @foreach (explode(',', $reply->attachments) as $attachment)
-                                    <li>
-                                        <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="">
-                                            Open
-                                        </a>
-                                        <a href="{{ asset('storage/' . $attachment) }}" download="{{ $attachment }}"
-                                            class="">
-                                            Download
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        {{-- /.card-text --}}
+                        @if ($reply->attachments)
+                            <div class="card-text">
+                                <strong>Attachments</strong>
+                                <ul>
+                                    @foreach (explode(',', $reply->attachments) as $attachment)
+                                        <li>
+                                            <a href="{{ asset('storage/' . $attachment) }}" target="_blank"
+                                                class="">
+                                                Open
+                                            </a>
+                                            <a href="{{ asset('storage/' . $attachment) }}"
+                                                download="{{ $attachment }}" class="">
+                                                Download
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            {{-- /.card-text --}}
+                        @endif
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <small><i class="ri-timer-2-line"></i> Replied at {{ $reply->updated_at->format('l, F j, Y h:i A') }}</small>
+                        <small><i class="ri-timer-2-line"></i> Replied at
+                            {{ $reply->updated_at->format('l, F j, Y h:i A') }}</small>
                     </div>
                     {{-- /.card-footer --}}
                 </div>
@@ -49,27 +53,31 @@
                             {!! $reply->message !!}
                         </div>
 
-                        <div class="card-text">
-                            <strong>Attachments</strong>
-                            <ul>
-                                @foreach (explode(',', $reply->attachments) as $attachment)
-                                    <li>
-                                        <a href="{{ asset('storage/' . $attachment) }}" target="_blank" class="">
-                                            Open
-                                        </a>
-                                        <a href="{{ asset('storage/' . $attachment) }}" download="{{ $attachment }}"
-                                            class="">
-                                            Download
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        {{-- /.card-text --}}
+                        @if ($reply->attachments)
+                            <div class="card-text">
+                                <strong>Attachments</strong>
+                                <ul>
+                                    @foreach (explode(',', $reply->attachments) as $attachment)
+                                        <li>
+                                            <a href="{{ asset('storage/' . $attachment) }}" target="_blank"
+                                                class="">
+                                                Open
+                                            </a>
+                                            <a href="{{ asset('storage/' . $attachment) }}"
+                                                download="{{ $attachment }}" class="">
+                                                Download
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            {{-- /.card-text --}}
+                        @endif
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <small><i class="ri-timer-2-line"></i> Replied at {{ $reply->updated_at->format('l, F j, Y h:i A') }}</small>
+                        <small><i class="ri-timer-2-line"></i> Replied at
+                            {{ $reply->updated_at->format('l, F j, Y h:i A') }}</small>
                     </div>
                     {{-- /.card-footer --}}
                 </div>

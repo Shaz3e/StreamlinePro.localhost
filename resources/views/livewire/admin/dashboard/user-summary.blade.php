@@ -15,7 +15,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users->sortByDesc('id')->take(6) as $user)
+                            @foreach ($users as $user)
                                 <tr wire:key="{{ $user->id }}">
                                     <td>
                                         <a href="{{ route('admin.users.show', $user->id) }}">{{ $user->name }}</a>
@@ -27,7 +27,7 @@
                                                 {{ $user->company->name }}
                                             </a>
                                         @else
-                                         - 
+                                            -
                                         @endif
                                     </td>
                                     <td>
@@ -58,9 +58,11 @@
                                 <p class="text-truncate font-size-14 mb-2">New Users</p>
                                 <h4 class="mb-2">{{ $currentMonthUsers }}</h4>
                                 <p class="text-muted mb-0">
-                                    <span class="{{ $this->getNewUserPercentageChange() > 0 ? 'text-success' : 'text-danger' }} fw-bold font-size-12 me-2">
-                                        <i class="{{ $this->getNewUserPercentageChange() > 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} me-1 align-middle"></i>
-                                        {{ number_format($this->getNewUserPercentageChange(), 1) }}%
+                                    <span
+                                        class="{{ $newUserPercentageChange > 0 ? 'text-success' : 'text-danger' }} fw-bold font-size-12 me-2">
+                                        <i
+                                            class="{{ $newUserPercentageChange > 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} me-1 align-middle"></i>
+                                        {{ number_format($newUserPercentageChange, 1) }}%
                                     </span>
                                     from previous month
                                 </p>
@@ -108,7 +110,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2">Total Users</p>
-                                <h4 class="mb-2">{{ $users->count() }}</h4>
+                                <h4 class="mb-2">{{ $totalUsers }}</h4>
                             </div>
                             <div class="avatar-sm">
                                 <span class="avatar-title bg-transparent text-primary rounded-3">
@@ -129,7 +131,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2">Active Company</p>
-                                <h4 class="mb-2">{{ $companies->count() }}</h4>
+                                <h4 class="mb-2">{{ $companies }}</h4>
                             </div>
                             <div class="avatar-sm">
                                 <span class="avatar-title bg-transparent text-primary rounded-3">
@@ -150,7 +152,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2">Active Users</p>
-                                <h4 class="mb-2">{{ $users->where('is_active', 1)->count() }}</h4>
+                                <h4 class="mb-2">{{ $activeUsers }}</h4>
                             </div>
                             <div class="avatar-sm">
                                 <span class="avatar-title bg-transparent text-primary rounded-3">
@@ -171,7 +173,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-truncate font-size-14 mb-2">Inactive Users</p>
-                                <h4 class="mb-2">{{ $users->where('is_active', 0)->count() }}</h4>
+                                <h4 class="mb-2">{{ $inActiveUsers }}</h4>
                             </div>
                             <div class="avatar-sm">
                                 <span class="avatar-title bg-transparent text-primary rounded-3">
