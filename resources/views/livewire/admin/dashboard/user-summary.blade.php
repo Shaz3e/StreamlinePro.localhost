@@ -1,4 +1,4 @@
-<div class="row mb-3" wire:poll.5s.visible>
+<div class="row mb-3">
     {{-- New Users --}}
     <div class="col-8">
         <div class="card" style="height: calc(100% - 15px)">

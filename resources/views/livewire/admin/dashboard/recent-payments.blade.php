@@ -1,4 +1,4 @@
-<div class="card" wire:poll.5s.visible style="height: calc(100% - 15px)">
+<div class="card" style="height: calc(100% - 15px)">
     <div class="card-body">
         <h4 class="card-title">Latest Transactions</h4>
         <div class="table-responsive">

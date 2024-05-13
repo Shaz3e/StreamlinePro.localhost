@@ -1,4 +1,4 @@
-<div class="row mb-0" wire:poll.5s.visible>
+<div class="row mb-0">
     {{-- Open Tickets --}}
     <div class="col-3">
         <div class="card" style="height: calc(100% - 30px)">

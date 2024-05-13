@@ -1,4 +1,4 @@
-<div class="card" wire:poll.5s.visible style="height: calc(100% - 15px)">
+<div class="card" style="height: calc(100% - 15px)">
     <div class="card-body">
         <h4 class="card-title">Recent Support Ticket Replies</h4>
         <div class="table-resposnive">
