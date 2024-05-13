@@ -68,7 +68,7 @@ class StaffController extends Controller
         $staff->syncRoles($request->roles);
 
         session()->flash('success', 'Staff created successfully!');
-        
+
         return $this->saveAndRedirect($request, 'staff', $staff->id);
     }
 
@@ -80,7 +80,7 @@ class StaffController extends Controller
         // Check Authorize
         Gate::authorize('read', $staff);
 
-        if($staff->id === 1){
+        if ($staff->id === 1) {
             session()->flash('error', 'You cannot view super admin!');
             return redirect()->route('admin.staff.index');
         }
@@ -108,7 +108,7 @@ class StaffController extends Controller
         // Check Authorize
         Gate::authorize('update', $staff);
 
-        if($staff->id === 1){
+        if ($staff->id === 1) {
             session()->flash('error', 'You cannot edit the super admin!');
             return redirect()->route('admin.staff.index');
         }
@@ -138,11 +138,11 @@ class StaffController extends Controller
         // Check Authorize
         Gate::authorize('update', $staff);
 
-        if($staff->id === 1){
+        if ($staff->id === 1) {
             session()->flash('error', 'You cannot edit the super admin!');
             return redirect()->route('admin.staff.index');
         }
-        
+
         // Validate data
         $validated = $request->validated();
 
@@ -165,7 +165,7 @@ class StaffController extends Controller
 
         // Flash message
         session()->flash('success', 'Staff updated successfully!');
-        
+
         return $this->saveAndRedirect($request, 'staff', $staff->id);
     }
 
@@ -196,7 +196,7 @@ class StaffController extends Controller
     {
         // Check Authorize
         Gate::authorize('delete', Admin::class);
-        
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
             $auditLog->delete();
@@ -206,5 +206,27 @@ class StaffController extends Controller
         session()->flash('success', 'Log deleted successfully');
         return redirect()->route('admin.staff.index');
     }
-}
 
+    /**
+     * Search Staff
+     */
+    public function searchStaff(Request $request)
+    {
+        // Check Authorize
+        Gate::authorize('create', Admin::class);
+
+        $term = $request->input('term');
+        $admins = Admin::where('name', 'like', '%' . $term . '%')
+            ->select('id', 'name')
+            ->get();
+
+        return response()->json([
+            'results' => $admins->map(function ($admin) {
+                return [
+                    'id' => $admin->id,
+                    'text' => $admin->name
+                ];
+            })
+        ]);
+    }
+}

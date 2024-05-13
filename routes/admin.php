@@ -68,6 +68,7 @@ use App\Http\Controllers\Admin\InvoiceLabelController;
 /**
  * Settings
  */
+
 use App\Http\Controllers\Admin\AppSetting\AppSettingController;
 use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
 use App\Http\Controllers\Admin\AppSetting\AuthenticationSettingController;
@@ -133,11 +134,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // App Settings
         Route::resource('app-settings', AppSettingController::class);
 
-        Route::prefix('settings')->name('settings.')->group(function(){
+        Route::prefix('settings')->name('settings.')->group(function () {
             // General Setting
             Route::get('', [GeneralSettingController::class, 'general'])->name('general');
             Route::post('', [GeneralSettingController::class, 'generalStore'])->name('general.store');
-            
+
             // Registration Setting
             Route::get('authentication', [AuthenticationSettingController::class, 'authentication'])->name('authentication');
             Route::post('authentication', [AuthenticationSettingController::class, 'authenticationStore'])->name('authentication.store');
@@ -212,6 +213,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Users
          */
         Route::resource('users', UserController::class);
+        // Search Users
+        Route::get('search-users', [UserController::class, 'searchUsers'])
+            ->name('search.users');
+
         // Audit
         Route::get('users-audit/{id}', [UserController::class, 'audit'])
             ->name('users.audit');
@@ -271,6 +276,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
          */
         // Staff List
         Route::resource('staff', StaffController::class);
+        Route::get('staff-search', [StaffController::class, 'searchStaff'])
+            ->name('search.staff');
         // Audit
         Route::get('staff-audit/{id}', [UserController::class, 'audit'])
             ->name('staff.audit');
@@ -281,6 +288,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Departments
          */
         Route::resource('departments', DepartmentController::class);
+        // Search Department
+        Route::get('search-departments', [DepartmentController::class, 'searchDepartments'])
+            ->name('search.departments');
+
         // Audit
         Route::get('departments-audit/{id}', [DepartmentController::class, 'audit'])
             ->name('departments.audit');

@@ -149,4 +149,27 @@ class DepartmentController extends Controller
         session()->flash('success', 'Log deleted successfully');
         return redirect()->route('admin.departments.index');
     }
+
+    /**
+     * Search Departments
+     */
+    public function searchDepartments(Request $request)
+    {
+        // Check Authorize
+        Gate::authorize('create', Department::class);
+        
+        $term = $request->input('term');
+        $departments = Department::where('name', 'like', '%' . $term . '%')
+            ->select('id', 'name')
+            ->get();
+            
+        return response()->json([
+            'results' => $departments->map(function($department) {
+                return [
+                    'id' => $department->id,
+                    'text' => $department->name
+                ];
+            })
+        ]);
+    }
 }

@@ -38,7 +38,7 @@ class UserController extends Controller
     {
         // Check Authorize
         Gate::authorize('create', User::class);
-        
+
         $companies = Company::where('is_active', 1)->get();
 
         return view('admin.user.create', [
@@ -61,12 +61,12 @@ class UserController extends Controller
         $user = User::create($validated);
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
-        if($user->is_active){
+        if ($user->is_active) {
             SendUserRegistrationEmailJob::dispatch($user);
         }
 
         session()->flash('success', 'User created successfully!');
-        
+
         return $this->saveAndRedirect($request, 'users', $user->id);
     }
 
@@ -144,7 +144,7 @@ class UserController extends Controller
 
         // Flash message
         session()->flash('success', 'User updated successfully!');
-        
+
         return $this->saveAndRedirect($request, 'users', $user->id);
     }
 
@@ -172,7 +172,7 @@ class UserController extends Controller
      * Delete Audit Log
      */
     public function deleteAudit(Request $request)
-    {        
+    {
         // Check Authorize
         Gate::authorize('delete', User::class);
 
@@ -184,5 +184,29 @@ class UserController extends Controller
 
         session()->flash('success', 'Log deleted successfully');
         return redirect()->route('admin.users.index');
+    }
+
+    /**
+     * Search Users
+     */
+    public function searchUsers(Request $request)
+    {
+        // Check Authorize
+        Gate::authorize('create', User::class);
+
+        $term = $request->input('term');
+        $users = User::where('name', 'like', '%' . $term . '%')
+            ->orWhere('email', 'like', '%' . $term . '%')
+            ->select('id', 'name')
+            ->get();
+
+        return response()->json([
+            'results' => $users->map(function($user) {
+                return [
+                    'id' => $user->id,
+                    'text' => $user->name
+                ];
+            })
+        ]);
     }
 }

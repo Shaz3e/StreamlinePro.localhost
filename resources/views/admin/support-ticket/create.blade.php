@@ -48,12 +48,6 @@
                                     <label for="admin_id">Assign Ticket</label>
                                     <select id="admin_id" name="admin_id" class="form-control">
                                         <option value="">Select</option>
-                                        @foreach ($staffList as $staff)
-                                            <option value="{{ $staff->id }}"
-                                                {{ old('admin_id') == $staff->id ? 'selected' : '' }}>
-                                                {{ $staff->name }}
-                                            </option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 @error('admin_id')
@@ -83,12 +77,6 @@
                                     <label for="user_id">Select Client</label>
                                     <select id="user_id" name="user_id" class="form-control">
                                         <option value="">Select</option>
-                                        @foreach ($clients as $client)
-                                            <option value="{{ $client->id }}"
-                                                {{ old('user_id') == $client->id ? 'selected' : '' }}>
-                                                {{ $client->name }}
-                                            </option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 @error('user_id')
@@ -101,12 +89,6 @@
                                     <label for="department_id">Select Department</label>
                                     <select id="department_id" name="department_id" class="form-control">
                                         <option value="">Select</option>
-                                        @foreach ($departments as $department)
-                                            <option value="{{ $department->id }}"
-                                                {{ old('department_id') == $department->id ? 'selected' : '' }}>
-                                                {{ $department->name }}
-                                            </option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 @error('department_id')
@@ -199,9 +181,11 @@
 @endsection
 
 @push('styles')
+    <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
     <script>
         $('#attachments').change(function() {
             var file = this.files[0];
@@ -249,6 +233,73 @@
                     console.error(error);
                     $('#upload-progress').html('Upload failed!');
                 }
+            });
+        });
+
+        // Search
+        $(document).ready(function() {
+            // Search Users
+            $('#user_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.users') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
+            // Search Department
+            $('#department_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.departments') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
+            // Search Staff
+            $('#admin_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.staff') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
             });
         });
     </script>

@@ -38,15 +38,6 @@ class SupportTicketController extends Controller
         // Check Authorize
         Gate::authorize('create', SupportTicket::class);
 
-        // Get all active Staff/Admin
-        $staffList = Admin::where('is_active', 1)->get();
-
-        // Get all active Clients
-        $clients = User::where('is_active', 1)->get();
-
-        // Get all active Department
-        $departments = Department::where('is_active', 1)->get();
-
         // Get all active suport ticket statuses
         $ticketStatuses = SupportTicketStatus::where('is_active', 1)->get();
 
@@ -54,9 +45,6 @@ class SupportTicketController extends Controller
         $ticketPriorities = SupportTicketPriority::where('is_active', 1)->get();
 
         return view('admin.support-ticket.create', [
-            'staffList' => $staffList,
-            'clients' => $clients,
-            'departments' => $departments,
             'ticketStatuses' => $ticketStatuses,
             'ticketPriorities' => $ticketPriorities,
         ]);
