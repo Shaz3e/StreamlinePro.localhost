@@ -32,9 +32,11 @@
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-header">
                     @if (auth()->user()->id === $task->createdBy->id)
-                        <a href="{{ route('admin.tasks.edit', $task->id) }}">
-                            <i class="ri-pencil-line"></i> Edit
-                        </a>
+                        @can('task.update')
+                            <a href="{{ route('admin.tasks.edit', $task->id) }}">
+                                <i class="ri-pencil-line"></i> Edit
+                            </a>
+                        @endcan
                     @endif
                     <h5>{{ $task->title }}</h5>
                     @if (!session()->get('taskClosed'))

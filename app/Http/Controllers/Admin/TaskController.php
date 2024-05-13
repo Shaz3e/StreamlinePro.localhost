@@ -39,12 +39,8 @@ class TaskController extends Controller
         // Get all active task list
         $taskLabels = TaskLabel::where('is_active', 1)->get();
 
-        // Get all active staff
-        $staffList = Admin::where('is_active', 1)->get();
-
         return view('admin.task.create', [
             'taskLabels' => $taskLabels,
-            'staffList' => $staffList,
         ]);
     }
 
@@ -65,7 +61,7 @@ class TaskController extends Controller
         $task->save();
         
         // Send SMS
-        $this->sendSms($task->assignee->mobile,$task->title);
+        // $this->sendSms($task->assignee->mobile,$task->title);
 
         session()->flash('success', 'The Task has been created successfully!');
 
@@ -125,13 +121,9 @@ class TaskController extends Controller
         // Get all active task list
         $taskLabels = TaskLabel::where('is_active', 1)->get();
 
-        // Get all active staff
-        $staffList = Admin::where('is_active', 1)->get();
-
         return view('admin.task.edit', [
             'task' => $task,
             'taskLabels' => $taskLabels,
-            'staffList' => $staffList,
         ]);
     }
 

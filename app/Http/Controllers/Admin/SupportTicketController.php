@@ -94,13 +94,6 @@ class SupportTicketController extends Controller
         // $attachments = json_decode($supportTicket->attachments, true);
         $attachments = $supportTicket->attachments ? json_decode($supportTicket->attachments, true) : [];
 
-
-        // Get all admin/staff
-        $staffList = Admin::where('is_active', 1)->get();
-
-        // Get all departments
-        $departments = Department::where('is_active', 1)->get();
-
         // Get all support ticket statuses
         $supportTicketStatus = SupportTicketStatus::where('is_active', 1)->get();
 
@@ -125,8 +118,6 @@ class SupportTicketController extends Controller
         return view('admin.support-ticket.show', [
             'supportTicket' => $supportTicket,
             'attachments' => $attachments,
-            'staffList' => $staffList,
-            'departments' => $departments,
             'supportTicketStatus' => $supportTicketStatus,
             'supportTicketPriorities' => $supportTicketPriorities,
             'supportTicketReplies' => $supportTicketReplies,
@@ -142,15 +133,6 @@ class SupportTicketController extends Controller
         // Check Authorize
         Gate::authorize('update', $supportTicket);
 
-        // Get all active Staff/Admin
-        $staffList = Admin::where('is_active', 1)->get();
-
-        // Get all active Clients
-        $clients = User::where('is_active', 1)->get();
-
-        // Get all active Department
-        $departments = Department::where('is_active', 1)->get();
-
         // Get all active suport ticket statuses
         $ticketStatuses = SupportTicketStatus::where('is_active', 1)->get();
 
@@ -159,9 +141,6 @@ class SupportTicketController extends Controller
 
         return view('admin.support-ticket.edit', [
             'supportTicket' => $supportTicket,
-            'staffList' => $staffList,
-            'clients' => $clients,
-            'departments' => $departments,
             'ticketStatuses' => $ticketStatuses,
             'ticketPriorities' => $ticketPriorities,
         ]);

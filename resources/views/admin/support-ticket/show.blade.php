@@ -89,6 +89,15 @@
                     {{-- /.row --}}
                 </div>
                 {{-- /.card-body --}}
+
+                @can('support-ticket.update')
+                    <div class="card-footer">
+                        <a href="{{ route('admin.support-tickets.edit', $supportTicket->id) }}">
+                            <i class="ri-pencil-line"></i> Edit
+                        </a>
+                    </div>
+                    {{-- /.card-footer --}}
+                @endcan
             </div>
             {{-- /.card --}}
         </div>

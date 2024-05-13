@@ -100,7 +100,7 @@
                                 <div class="form-group">
                                     <label for="support_ticket_status_id">Ticket Status</label>
                                     <select id="support_ticket_status_id" name="support_ticket_status_id"
-                                        class="form-control" required>
+                                        class="form-control select2" required>
                                         <option value="">Select</option>
                                         @foreach ($ticketStatuses as $status)
                                             <option value="{{ $status->id }}"
@@ -119,7 +119,7 @@
                                 <div class="form-group">
                                     <label for="support_ticket_priority_id">Ticket Priority</label>
                                     <select id="support_ticket_priority_id" name="support_ticket_priority_id"
-                                        class="form-control" required>
+                                        class="form-control select2" required>
                                         <option value="">Select</option>
                                         @foreach ($ticketPriorities as $priority)
                                             <option value="{{ $priority->id }}"
@@ -186,6 +186,8 @@
 
 @push('scripts')
     <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+    <!--tinymce js-->
+    <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
     <script>
         $('#attachments').change(function() {
             var file = this.files[0];
@@ -238,6 +240,8 @@
 
         // Search
         $(document).ready(function() {
+            // init select2
+            $('.select2').select2();
             // Search Users
             $('#user_id').select2({
                 ajax: {
@@ -300,6 +304,49 @@
                     }
                 },
                 minimumInputLength: 3
+            });
+
+            0 < $("#message").length && tinymce.init({
+                selector: "textarea#message",
+                height: 300,
+                plugins: [
+                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "save table directionality emoticons template paste"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+                style_formats: [{
+                        title: "Bold text",
+                        inline: "b"
+                    },
+                    {
+                        title: "Red text",
+                        inline: "span",
+                        styles: {
+                            color: "#ff0000"
+                        }
+                    }, {
+                        title: "Red header",
+                        block: "h1",
+                        styles: {
+                            color: "#ff0000"
+                        }
+                    }, {
+                        title: "Example 1",
+                        inline: "span",
+                        classes: "example1"
+                    }, {
+                        title: "Example 2",
+                        inline: "span",
+                        classes: "example2"
+                    }, {
+                        title: "Table styles"
+                    }, {
+                        title: "Table row 1",
+                        selector: "tr",
+                        classes: "tablerow1"
+                    }
+                ]
             });
         });
     </script>
