@@ -243,9 +243,8 @@
                     @endcan
 
                     @canany(['general-setting.list', 'authentication-setting.list'])
-                        <a class="dropdown-item d-block" href="{{ route('admin.settings.general') }}"><span
-                                class="badge bg-success float-end mt-1">11</span><i
-                                class="ri-settings-2-line align-middle me-1"></i> Settings</a>
+                        <a class="dropdown-item d-block" href="{{ route('admin.settings.general') }}">
+                            <i class="ri-settings-2-line align-middle me-1"></i> Settings</a>
                     @endcanany
 
                     @hasrole('developer')
