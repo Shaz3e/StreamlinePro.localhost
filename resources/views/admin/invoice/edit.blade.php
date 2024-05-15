@@ -59,7 +59,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="date" name="published_on" class="form-control" id="published_on"
                                                 value="{{ old('published_on', $invoice->published_on->format('Y-m-d')) }}"
-                                                min="{{ now()->format('Y-m-d') }}" required>
+                                                min="{{ $invoice->published_on->format('Y-m-d') }}" required>
                                         </div>
                                         <small class="text-muted">Invoice will be sent via email to this date</small>
                                         @error('published_on')

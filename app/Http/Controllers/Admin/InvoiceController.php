@@ -83,6 +83,11 @@ class InvoiceController extends Controller
                 'due_date' => 'nullable|date',
                 'discount_type' => 'required|string',
             ],
+            [
+                'invoice_to.required' => 'Invoice To is required',
+                'user_id.required_if' => 'User is required',
+                'company_id.required_if' => 'Company is required',
+            ],
         );
 
         if ($validator->fails()) {
