@@ -9,7 +9,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">
-                            <i class="ri-user-add-line font-size-24"></i>
+                            <i class="ri-safe-2-line font-size-24"></i>
                         </span>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">
-                            <i class="ri-user-add-line font-size-24"></i>
+                            <i class="ri-safe-line font-size-24"></i>
                         </span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">
-                            <i class="ri-user-add-line font-size-24"></i>
+                            <i class="ri-swap-line font-size-24"></i>
                         </span>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">
-                            <i class="ri-user-add-line font-size-24"></i>
+                            <i class="ri-swap-box-line font-size-24"></i>
                         </span>
                     </div>
                 </div>
