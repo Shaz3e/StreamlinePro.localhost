@@ -40,13 +40,8 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 mb-3" id="invoice_to_user">
                                         <div class="form-group">
                                             <label for="user_id">Select Customer</label>
-                                            <select name="user_id" class="form-control select2">
-                                                @foreach ($users as $user)
-                                                    <option value="{{ $user->id }}"
-                                                        {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                                        {{ $user->name }}
-                                                    </option>
-                                                @endforeach
+                                            <select name="user_id" id="user_id" class="form-control">
+                                                <option value="">Select</option>
                                             </select>
                                         </div>
                                         @error('user_id')
@@ -58,13 +53,8 @@
                                         style="display: none;">
                                         <div class="form-group">
                                             <label for="company_id">Select Company</label>
-                                            <select name="company_id" class="form-control select2">
-                                                @foreach ($companies as $company)
-                                                    <option value="{{ $company->id }}"
-                                                        {{ old('company_id') == $company->id ? 'selected' : '' }}>
-                                                        {{ $company->name }}
-                                                    </option>
-                                                @endforeach
+                                            <select name="company_id" id="company_id" class="form-control">
+                                                <option value="">Select</option>
                                             </select>
                                         </div>
                                         @error('company_id')
@@ -337,6 +327,49 @@
                     $('#invoice_to_user').hide();
                     $('#invoice_to_company').show();
                 }
+            });
+            
+            // Search Users
+            $('#user_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.users') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
+            // Search Companies
+            $('#company_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.companies') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
             });
 
             0 < $(".textEditor").length && tinymce.init({

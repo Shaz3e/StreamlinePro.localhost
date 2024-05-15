@@ -33,7 +33,7 @@ class CompanyController extends Controller
     {
         // Check Authorize
         Gate::authorize('create', Company::class);
-        
+
         return view('admin.company.create');
     }
 
@@ -44,7 +44,7 @@ class CompanyController extends Controller
     {
         // Check Authorize
         Gate::authorize('create', Company::class);
-        
+
         // Validate data
         $validated = $request->validated();
 
@@ -59,7 +59,7 @@ class CompanyController extends Controller
 
 
         session()->flash('success', 'Company created successfully!');
-        
+
         return $this->saveAndRedirect($request, 'companies', $company->id);
     }
 
@@ -70,7 +70,7 @@ class CompanyController extends Controller
     {
         // Check Authorize
         Gate::authorize('view', $company);
-        
+
         $audits = $company->audits()
             ->latest()
             ->paginate(10);
@@ -106,7 +106,7 @@ class CompanyController extends Controller
     {
         // Check Authorize
         Gate::authorize('update', $company);
-        
+
         // Validate data
         $validated = $request->validated();
 
@@ -128,7 +128,7 @@ class CompanyController extends Controller
 
         // Flash message
         session()->flash('success', 'Company updated successfully!');
-        
+
         return $this->saveAndRedirect($request, 'companies', $company->id);
     }
 
@@ -139,7 +139,7 @@ class CompanyController extends Controller
     {
         // Check Authorize
         Gate::authorize('read', Company::class);
-        
+
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
@@ -168,5 +168,28 @@ class CompanyController extends Controller
 
         session()->flash('success', 'Log deleted successfully');
         return redirect()->route('admin.companies.index');
+    }
+
+    /**
+     * Search Company
+     */
+    public function searchCompanies(Request $request)
+    {
+        // Check Authorize
+        // Gate::authorize('create', Company::class);
+
+        $term = $request->input('term');
+        $companies = Company::where('name', 'like', '%' . $term . '%')
+            ->select('id', 'name')
+            ->get();
+
+        return response()->json([
+            'results' => $companies->map(function ($company) {
+                return [
+                    'id' => $company->id,
+                    'text' => $company->name
+                ];
+            })
+        ]);
     }
 }

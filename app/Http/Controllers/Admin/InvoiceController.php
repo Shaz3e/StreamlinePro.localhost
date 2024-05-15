@@ -47,19 +47,11 @@ class InvoiceController extends Controller
         // Get all active products
         $products = Product::where('is_active', 1)->get();
 
-        // Get all active users
-        $users = User::where('is_active', 1)->get();
-
-        // Get all active companies
-        $companies = Company::where('is_active', 1)->get();
-
         // Get all active invoice status
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('admin.invoice.create', [
             'products' => $products,
-            'users' => $users,
-            'companies' => $companies,
             'invoiceLabels' => $invoiceLabels,
         ]);
     }
@@ -78,8 +70,12 @@ class InvoiceController extends Controller
             [
                 // Invoice Table
                 'invoice_to' => 'required',
-                'user_id' => 'required_if:invoice_to,user|exists:users,id',
-                'company_id' => 'required_if:invoice_to,company|exists:companies,id',
+                'user_id' => [
+                    'required_if:invoice_to,user',
+                ],
+                'company_id' => [
+                    'required_if:invoice_to,company',
+                ],
                 'is_published' => 'required|boolean',
                 'published_on' => 'required|date',
                 'invoice_label_id' => 'required|exists:invoice_labels,id',
@@ -199,12 +195,6 @@ class InvoiceController extends Controller
         // Get all active products
         $products = Product::where('is_active', 1)->get();
 
-        // Get all active users
-        $users = User::where('is_active', 1)->get();
-
-        // Get all active companies
-        $companies = Company::where('is_active', 1)->get();
-
         // Get all active invoice status
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
@@ -214,8 +204,6 @@ class InvoiceController extends Controller
         return view('admin.invoice.edit', [
             'invoice' => $invoice,
             'products' => $products,
-            'users' => $users,
-            'companies' => $companies,
             'invoiceLabels' => $invoiceLabels,
             'items' => $items,
         ]);

@@ -227,6 +227,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Companies
          */
         Route::resource('companies', CompanyController::class);
+        // Search Companies
+        Route::get('search-companies', [CompanyController::class, 'searchCompanies'])
+            ->name('search.companies');
         // Audit
         Route::get('companies-audit/{id}', [CompanyController::class, 'audit'])
             ->name('companies.audit');
