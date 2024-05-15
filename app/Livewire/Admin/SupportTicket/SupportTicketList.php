@@ -146,9 +146,6 @@ class SupportTicketList extends Component
         $tickets = $query->orderBy('id', 'desc')
             ->paginate($this->perPage);
 
-        // Get all ticket department
-        $getDepartments = Department::all();
-
         // Get all ticket status
         $getTicketStatuses = SupportTicketStatus::all();
 

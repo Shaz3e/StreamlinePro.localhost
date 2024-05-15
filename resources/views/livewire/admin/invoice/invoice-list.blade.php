@@ -27,25 +27,11 @@
 
     <div class="row mb-3">
         <div class="col-md-2 col-sm-12 mb-2">
-            <select wire:model.live="filterUser" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by User</option>
-                @foreach ($users as $user)
-                    <option value="{{ $user->id }}">
-                        {{ $user->name }}
-                    </option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchUser" class="form-control form-control-sm" placeholder="Search By User...">
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
-            <select wire:model.live="filterCompany" class="form-control form-control-sm form-control-border">
-                <option value="">Filter by Company</option>
-                @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">
-                        {{ $company->name }}
-                    </option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchCompany" class="form-control form-control-sm" placeholder="Search By Company...">
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">

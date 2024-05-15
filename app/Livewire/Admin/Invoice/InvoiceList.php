@@ -26,13 +26,19 @@ class InvoiceList extends Component
     // record to delete
     public $recordToDelete;
 
-    // Filter Invoice by User
+    // Search Invoice by User
     #[Url()]
-    public $filterUser;
+    public $searchUser = '';
+
+    #[Url()]
+    public $users = [];
 
     // Filter Invoice by Company
     #[Url()]
-    public $filterCompany;
+    public $searchCompany = '';
+
+    #[Url()]
+    public $companies = [];
 
     // Filter Invoice Status
     #[Url()]
@@ -71,12 +77,18 @@ class InvoiceList extends Component
         }
 
         // Filter records based on user
-        if ($this->filterUser) {
-            $query->where('user_id', $this->filterUser);
+        if ($this->searchUser !== '') {
+            $query->whereHas('user', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchUser . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchUser . '%');
+            });
         }
         // Filter records based on company
-        if ($this->filterCompany) {
-            $query->where('company_id', $this->filterCompany);
+        if ($this->searchCompany !== '') {
+            $query->whereHas('company', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchCompany . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchCompany . '%');
+            });
         }
 
         // Filter records based on status
@@ -91,19 +103,11 @@ class InvoiceList extends Component
         // Get all invoices
         $invoices = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        // Get all users
-        $users = User::where('is_active', 1)->get();
-
-        // Get all companies
-        $companies = Company::where('is_active', 1)->get();
-
         // Get all invoice statuses
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('livewire.admin.invoice.invoice-list', [
             'invoices' => $invoices,
-            'companies' => $companies,
-            'users' => $users,
             'invoiceLabels' => $invoiceLabels
         ]);
     }
@@ -130,7 +134,8 @@ class InvoiceList extends Component
     public function resetFilters()
     {
         $this->search = '';
-        $this->filterCompany = '';
+        $this->searchUser = '';
+        $this->searchCompany = '';
         $this->filterStatus = '';
         $this->filterLabel = '';
         $this->showDeleted = '';

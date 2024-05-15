@@ -18,6 +18,8 @@
 
 {{-- Invoice Summary --}}
 @hasanyrole(json_decode(DiligentCreators('can_access_invoice_summary')))
+    @livewire('admin.dashboard.invoice-summary')
+    
     <div class="row mb-3">
         <div class="col-6">
             @livewire('admin.dashboard.recent-invoice')
