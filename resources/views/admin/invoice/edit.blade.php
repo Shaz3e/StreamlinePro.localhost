@@ -461,7 +461,7 @@
                             <textarea name="item_description[]" class="form-control" required>${productName}</textarea>
                         </td>
                         <td>
-                            <input type="number" name="quantity[]" class="form-control" value="1" min="1" required oninput="showTotalSummary(this); calculateTotal(this)">
+                            <input type="number" name="quantity[]" class="form-control" value="0" min="1" required oninput="showTotalSummary(this); calculateTotal(this)">
                         </td>
                         <td>
                             <input type="number" name="unit_price[]" class="form-control" value="${productPrice}" min="0" required oninput="showTotalSummary(this); calculateTotal(this)">
