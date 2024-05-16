@@ -28,6 +28,9 @@ class TaskList extends Component
     #[Url()]
     public $filterCompletedTask;
 
+    #[Url()]
+    public $filterOverdueTask;
+
     public $perPage = 10;
 
     public $id;
@@ -50,7 +53,7 @@ class TaskList extends Component
         $staff = Admin::find($loggedInStaff->id);
 
         // Show all records to super admin
-        if ($staff->hasRole('superadmin')) {
+        if ($staff->hasRole(['superadmin', 'developer'])) {
             $query = Task::query();
         } else {
             // Show only logged in user tasks
@@ -76,12 +79,27 @@ class TaskList extends Component
 
         // Filter records based on started/not started
         if ($this->filterStartedTask) {
-            $query->where('is_started', $this->filterStartedTask);
+            $query->where([
+                'is_started' => $this->filterStartedTask,
+                'is_completed' => 0
+            ]);
         }
 
         // Filter records based on completed/not completed
         if ($this->filterCompletedTask) {
             $query->where('is_completed', $this->filterCompletedTask);
+        }
+
+        // Filter records based on overdue task
+        if ($this->filterOverdueTask) {
+            if ($this->filterOverdueTask == 1) {
+                // Show only overdue tasks
+                $query->where('due_date', '<', now())
+                    ->where('is_completed', 0);
+            } elseif ($this->filterOverdueTask == 0) {
+                // Hide overdue tasks
+                $query->where('due_date', '>', now());
+            }
         }
 
 

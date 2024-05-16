@@ -1,3 +1,10 @@
+{{-- Task Summary --}}
+@livewire('admin.dashboard.task-summary')
+<div class="row mb-3">
+    @livewire('admin.dashboard.recent-task')
+
+</div>
+
 {{-- User Summary --}}
 @hasanyrole(json_decode(DiligentCreators('can_access_user_summary')))
     @livewire('admin.dashboard.user-summary')
@@ -19,7 +26,7 @@
 {{-- Invoice Summary --}}
 @hasanyrole(json_decode(DiligentCreators('can_access_invoice_summary')))
     @livewire('admin.dashboard.invoice-summary')
-    
+
     <div class="row mb-3">
         <div class="col-6">
             @livewire('admin.dashboard.recent-invoice')

@@ -1,4 +1,6 @@
 <div>
+    @livewire('admin.dashboard.task-summary')
+
     <div class="row mb-3">
         <div class="col-md-1 col-sm-12 mb-2">
             <select wire:model.live="perPage" class="form-control form-control-sm form-control-border">
@@ -9,10 +11,17 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-9 col-sm-12 mb-2">
+        <div class="col-md-7 col-sm-12 mb-2">
             <input type="search" wire:model.live="search" class="form-control form-control-sm" placeholder="Search...">
         </div>
         {{-- .col --}}
+        <div class="col-md-2 col-sm-12 mb-2">
+            <select wire:model.live="filterOverdueTask" class="form-control form-control-sm form-control-border">
+                <option value="" selected>Filter by Overdue</option>
+                <option value="0">Hide Overdue Task</option>
+                <option value="1">Show Overdue Task</option>
+            </select>
+        </div>
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
                 <a href="{{ route('admin.tasks.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
