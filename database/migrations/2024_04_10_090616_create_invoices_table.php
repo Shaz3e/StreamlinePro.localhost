@@ -39,6 +39,7 @@ return new class extends Migration
             $table->text('header_note')->nullable();
             $table->text('footer_note')->nullable();
             $table->text('private_note')->nullable();
+            $table->text('cancel_note')->nullable();
 
             $table->string('discount_type')->nullable();
             

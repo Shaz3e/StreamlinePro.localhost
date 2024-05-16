@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Admin\Invoice;
 
-use App\Models\Company;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Models\Invoice;
 use App\Models\InvoiceLabel;
-use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -52,9 +51,42 @@ class InvoiceList extends Component
     // Show deleted records
     public $showDeleted = false;
 
+    public $unpaidInvoices = '';
+    public $partialPaidInvoices = '';
+    public $totalPaidInvoices = '';
+    public $cancelledInvoices = '';
+
+    public $totalAmount = '';
+    public $totalPaidAmount = '';
+    public $totalDueAmount = '';
+
     public function mount()
     {
         $this->invoiceStatuses = Invoice::getStatuses();
+
+        // Invoice Statuses
+        $statusUnpaid = Invoice::STATUS_UNPAID;
+        $partialPaid = Invoice::STATUS_PARTIALLY_PAID;
+        $totalPaid = Invoice::STATUS_PAID;
+        $cancelled = Invoice::STATUS_CANCELLED;
+
+        // Invoice Count Status
+        $this->unpaidInvoices = Invoice::where('status', $statusUnpaid)->count();
+        $this->partialPaidInvoices = Invoice::where('status', $partialPaid)->count();
+        $this->totalPaidInvoices = Invoice::where('status', $totalPaid)->count();
+        $this->cancelledInvoices = Invoice::where('status', $cancelled)->count();
+
+        // Total Amount
+        $this->totalAmount = Invoice::where([
+            'status' => $statusUnpaid,
+        ])->sum('total');
+        // Total Paid Amount
+        $this->totalPaidAmount = Invoice::where([
+            'status' => $partialPaid,
+            'status' => $totalPaid,
+        ])->sum('total_paid');
+        // Due Amount
+        $this->totalDueAmount = $this->totalAmount - $this->totalPaidAmount;
     }
 
     /**

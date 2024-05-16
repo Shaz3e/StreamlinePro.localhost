@@ -1,4 +1,8 @@
 <div>
+    {{-- Invoice Summary Report --}}
+    @include('livewire.admin.invoice.invoice-summary')
+    
+    {{-- Invoice Search & Filters --}}
     <div class="row mb-3">
         <div class="col-md-1 col-sm-12 mb-2">
             <select wire:model.live="perPage" class="form-control form-control-sm form-control-border">
@@ -24,21 +28,22 @@
     </div>
     {{-- /.row --}}
 
-
     <div class="row mb-3">
         <div class="col-md-2 col-sm-12 mb-2">
-            <input type="search" wire:model.live="searchUser" class="form-control form-control-sm" placeholder="Search By User...">
+            <input type="search" wire:model.live="searchUser" class="form-control form-control-sm"
+                placeholder="Search By User...">
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
-            <input type="search" wire:model.live="searchCompany" class="form-control form-control-sm" placeholder="Search By Company...">
+            <input type="search" wire:model.live="searchCompany" class="form-control form-control-sm"
+                placeholder="Search By Company...">
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <select wire:model.live="filterStatus" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Status</option>
                 @foreach ($invoiceStatuses as $value => $label)
-                    <option value="{{ $value }}">{{ $label }}</option>
+                    <option value="{{ $label }}">{{ $label }}</option>
                 @endforeach
             </select>
         </div>
@@ -69,7 +74,7 @@
         </div>
         {{-- /.col --}}
     </div>
-    {{-- /.row --}}
+    {{-- /.row --}}    
 
     <div class="row">
         <div class="col-12">

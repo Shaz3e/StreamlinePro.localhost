@@ -44,9 +44,6 @@
                             <div class="col-sm-10">
                                 <select class="form-control select2" name="company_id" id="company_id">
                                     <option value="">Select</option>
-                                    @foreach ($companies as $company)
-                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                    @endforeach
                                 </select>
                                 @error('company_id')
                                     <span class="text-danger">{{ $message }}</span>
@@ -118,7 +115,29 @@
         // Input mask
         $(document).ready(function() {
             $('.select2').select2();
-            $(".input-mask").inputmask()
+            $(".input-mask").inputmask();
+
+            // Search Companies
+            $('#company_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.companies') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
         });
     </script>
 @endpush

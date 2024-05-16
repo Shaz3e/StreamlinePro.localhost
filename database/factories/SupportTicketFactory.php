@@ -24,7 +24,7 @@ class SupportTicketFactory extends Factory
             'department_id' => fake()->numberBetween(1,4),
             'support_ticket_status_id' => fake()->numberBetween(1,12),
             'support_ticket_priority_id' => fake()->numberBetween(1,6),
-            'user_id' => fake()->numberBetween(1,5),
+            'user_id' => fake()->numberBetween(1,500),
             // 'admin_id' => fake()->numberBetween(1,5),
             'created_at' => fake()->dateTimeBetween('-1 month', 'now'),
         ];

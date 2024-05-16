@@ -199,12 +199,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('invoices.audit');
         Route::get('invoices-audit/delete/{id}', [InvoiceController::class, 'deleteAudit'])
             ->name('invoices.audit.delete');
+        // Cancel Invoice
+        Route::post('invoice/cancel-invoice/{id}', [InvoiceController::class, 'cancelInvoice'])
+            ->name('cancel.invoice');
+        // Mark as Unapid Invoice
+        Route::get('invoice/mark-as-unapid/{invoice}', [InvoiceController::class, 'markAsUnpaid'])
+            ->name('mark.as.unpaid.invoice');
         // Remove Product
         Route::delete('/invoices/products/{productId}/remove', [InvoiceController::class, 'removeProduct'])
             ->name('product.remove');
         // Add Payment
         Route::post('invoice/add-payment/{id}', [InvoiceController::class, 'addPayment'])
             ->name('invoice.add-payment');
+        // Remove Payment
         Route::delete('invoice/remove-payment/{id}', [InvoiceController::class, 'removePayment'])
             ->name('invoice.remove-payment');
 

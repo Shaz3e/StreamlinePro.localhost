@@ -370,6 +370,30 @@ class InvoiceController extends Controller
     }
 
     /**
+     * Mark as Unpaid
+     */
+    public function markAsUnpaid(Invoice $invoice)
+    {
+        $invoice->update([
+            'status' => Invoice::STATUS_UNPAID,
+        ]);
+        return back()->with('success', 'Invoice status changed.');
+    }
+
+    /**
+     * Cancel Invoice
+     */
+    public function cancelInvoice(Request $request, $id)
+    {
+        $invoice = Invoice::find($id);
+        $invoice->update([
+            'status' => Invoice::STATUS_CANCELLED,
+            'cancel_note' => $request->cancel_note,
+        ]);
+        return response()->json(['success' => 'Invoice has been cancelled!'], 200);
+    }
+
+    /**
      * Remove product item from invoice
      */
     public function removeProduct($productId)

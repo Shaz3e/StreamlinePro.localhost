@@ -11,29 +11,58 @@
     ])
 
     {{-- Links to perform quick actions --}}
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <a class="btn btn-success waves-effect waves-light" href="{{ route('admin.invoices.edit', $invoice->id) }}">
-                <i class="ri-edit-line align-middle me-2"></i> Edit Invoice
-            </a>
-            @if ($invoice->total != $invoice->total_paid && $invoice->total != 0)
-                <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
-                    data-bs-target="#addPayment">Add Payment</button>
-                @include('admin.invoice.add-payment')
-            @endif
+    @if ($invoice->status === App\Models\Invoice::STATUS_CANCELLED)
+        <div class="row mb-0">
+            <div class="col-12">
+                <div class="card border border-danger">
+                    <div class="card-header bg-transparent border-danger">
+                        <h5 class="my-0 text-danger"><i class="mdi mdi-block-helper me-3"></i>This invoice is Cancelled</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            {!! $invoice->cancel_note !!}
+                        </p>
+                    </div>
+                    {{-- /.card-body --}}
+                    <div class="card-footer">
+                        <a href="{{ route('admin.mark.as.unpaid.invoice', $invoice->id) }}" class="btn btn-success btn-sm waves-effect waves-light">Mark as Unpaid</a>
+                    </div>
+                </div>
+                {{-- /.card --}}
+            </div>
+            {{-- /.col --}}
         </div>
-        <div class="col-md-6 col-sm-12 text-end">
-            @if ($invoice->is_published)
-                Published on:
-            @else
-                Will be published on
-            @endif
-            <span>{{ $invoice->published_on->format('l, jS M Y') }}</span>
+        {{-- /.row --}}
+    @else
+        <div class="row mb-3">
+            <div class="col-md-6 col-sm-12">
+                <a class="btn btn-success waves-effect waves-light" href="{{ route('admin.invoices.edit', $invoice->id) }}">
+                    <i class="ri-edit-line align-middle me-2"></i> Edit Invoice
+                </a>
+                @if ($invoice->total != $invoice->total_paid && $invoice->total != 0)
+                    <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal"
+                        data-bs-target="#addPayment">Add Payment</button>
+                    @include('admin.invoice.add-payment')
+                @endif
+                @if ($invoice->total_paid <= 0)
+                    <button type="button" class="btn btn-secondary waves-effect waves-light" data-bs-toggle="modal"
+                        data-bs-target="#cancelInvoice">Mark as Cancelled</button>
+                    @include('admin.invoice.cancel-invoice')
+                @endif
+            </div>
+            <div class="col-md-6 col-sm-12 text-end">
+                @if ($invoice->is_published)
+                    Published on:
+                @else
+                    Will be published on
+                @endif
+                <span>{{ $invoice->published_on->format('l, jS M Y') }}</span>
+            </div>
         </div>
-    </div>
+    @endif
 
     {{-- Show Invoice Account Summary --}}
-    <div class="row mt-3">
+    <div class="row">
         <div class="col-md-3 col-sm-6">
             <div class="card border border-primary">
                 <div class="card-body">

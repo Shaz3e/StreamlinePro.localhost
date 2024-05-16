@@ -64,7 +64,7 @@ class Invoice extends Model implements Auditable
             case self::STATUS_PAID:
                 return 'bg-success';
             case self::STATUS_CANCELLED:
-                return 'bg-default';
+                return 'bg-light';
         }
     }
 

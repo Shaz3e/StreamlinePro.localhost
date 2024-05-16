@@ -39,11 +39,7 @@ class UserController extends Controller
         // Check Authorize
         Gate::authorize('create', User::class);
 
-        $companies = Company::where('is_active', 1)->get();
-
-        return view('admin.user.create', [
-            'companies' => $companies,
-        ]);
+        return view('admin.user.create');
     }
 
     /**
