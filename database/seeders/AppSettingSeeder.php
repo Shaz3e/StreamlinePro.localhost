@@ -28,7 +28,7 @@ class AppSettingSeeder extends Seeder
             ['name' => 'can_admin_reset_password', 'value' => 0],
             ['name' => 'can_customer_register', 'value' => 1],
             ['name' => 'can_user_reset_password', 'value' => 1],
-            
+
             ['name' => 'login_page_heading', 'value' => null],
             ['name' => 'login_page_heading_color', 'value' => null],
             ['name' => 'login_page_heading_bg_color', 'value' => null],
@@ -52,12 +52,12 @@ class AppSettingSeeder extends Seeder
             ['name' => 'reset_page_text_color', 'value' => null],
             ['name' => 'reset_page_text_bg_color', 'value' => null],
             ['name' => 'reset_page_image', 'value' => 'settings/page/reset-page.jpg'],
-            
+
             // Dashboard Setting
-            ['name' => 'can_access_task_summary', 'value' => json_encode(["superadmin","tester","developer"])],
-            ['name' => 'can_access_user_summary', 'value' => json_encode(["superadmin","tester","developer"])],
-            ['name' => 'can_access_support_ticket_summary', 'value' => json_encode(["superadmin","tester","developer"])],
-            ['name' => 'can_access_invoice_summary', 'value' => json_encode(["superadmin","tester","developer"])],
+            ['name' => 'can_access_task_summary', 'value' => json_encode(["superadmin", "tester", "developer", "admin", "manager", "staff"])],
+            ['name' => 'can_access_user_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
+            ['name' => 'can_access_support_ticket_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
+            ['name' => 'can_access_invoice_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
         ];
 
         DB::table('app_settings')->insert($appSettings);
