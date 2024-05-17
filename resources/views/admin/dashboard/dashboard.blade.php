@@ -1,9 +1,11 @@
 {{-- Task Summary --}}
-@livewire('admin.dashboard.task-summary')
-<div class="row mb-3">
-    @livewire('admin.dashboard.recent-task')
+@hasanyrole(json_decode(DiligentCreators('can_access_task_summary')))
+    @livewire('admin.dashboard.task-summary')
+    <div class="row mb-3">
+        @livewire('admin.dashboard.recent-task')
 
-</div>
+    </div>
+@endhasanyrole
 
 {{-- User Summary --}}
 @hasanyrole(json_decode(DiligentCreators('can_access_user_summary')))

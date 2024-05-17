@@ -1,5 +1,7 @@
 <div>
-    @livewire('admin.dashboard.task-summary')
+    @hasanyrole(json_decode(DiligentCreators('can_access_task_summary')))
+        @livewire('admin.dashboard.task-summary')
+    @endhasanyrole
 
     <div class="row mb-3">
         <div class="col-md-1 col-sm-12 mb-2">

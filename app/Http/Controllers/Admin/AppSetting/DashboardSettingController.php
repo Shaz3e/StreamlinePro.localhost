@@ -29,6 +29,7 @@ class DashboardSettingController extends Controller
 
         // Define validation rules for the request
         $rules = [
+            'can_access_task_summary' => 'required|array|max:255',
             'can_access_user_summary' => 'required|array|max:255',
             'can_access_support_ticket_summary' => 'required|array|max:255',
             'can_access_invoice_summary' => 'required|array|max:255',
