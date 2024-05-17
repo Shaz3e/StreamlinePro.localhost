@@ -9,14 +9,12 @@ class SupportTicketSummary extends Component
 {
     public function render()
     {
-        $supportTickets = SupportTicket::count();
         $openSupportTickets = SupportTicket::where('support_ticket_status_id', 1)->count();
 
         $currentMonthTickets = SupportTicket::whereMonth('created_at', now()->month)->count();
         $lastMonthTickets = SupportTicket::whereMonth('created_at', now()->subMonth()->month)->count();
 
         return view('livewire.admin.dashboard.support-ticket-summary', [
-            'supportTickets' => $supportTickets,
             'openSupportTickets' => $openSupportTickets,
             'currentMonthTickets' => $currentMonthTickets,
             'lastMonthTickets' => $lastMonthTickets,

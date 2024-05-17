@@ -1,6 +1,6 @@
 <div class="row mb-0">
     {{-- Open Tickets --}}
-    <div class="col-3">
+    <div class="col-4">
         <div class="card" style="height: calc(100% - 30px)">
             <div class="card-body">
                 <div class="d-flex">
@@ -11,7 +11,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-light text-primary rounded-3">
-                            <i class="ri-shopping-cart-2-line font-size-24"></i>  
+                            <i class="ri-questionnaire-line font-size-24"></i>  
                         </span>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
     </div>
     {{-- /.col --}}
     {{-- Current Month Tickets --}}
-    <div class="col-3">
+    <div class="col-4">
         <div class="card" style="height: calc(100% - 30px)">
             <div class="card-body">
                 <div class="d-flex">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-light text-primary rounded-3">
-                            <i class="ri-shopping-cart-2-line font-size-24"></i>  
+                            <i class="ri-chat-history-line font-size-24"></i>  
                         </span>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
     </div>
     {{-- /.col --}}
     {{-- Last Month Tickets --}}
-    <div class="col-3">
+    <div class="col-4">
         <div class="card" style="height: calc(100% - 30px)">
             <div class="card-body">
                 <div class="d-flex">
@@ -61,29 +61,7 @@
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-light text-primary rounded-3">
-                            <i class="ri-shopping-cart-2-line font-size-24"></i>  
-                        </span>
-                    </div>
-                </div>
-            </div>
-            {{-- /.card-body --}}
-        </div>
-        {{-- /.card --}}
-    </div>
-    {{-- /.col --}}
-    {{-- Total Tickets --}}
-    <div class="col-3">
-        <div class="card" style="height: calc(100% - 30px)">
-            <div class="card-body">
-                <div class="d-flex">
-                    <div class="flex-grow-1">
-                        <p class="text-truncate font-size-14 mb-2">Total</p>
-                        <h4 class="mb-2">{{ $supportTickets }}</h4>
-                        <p class="text-muted mb-0">created in system</p>
-                    </div>
-                    <div class="avatar-sm">
-                        <span class="avatar-title bg-light text-primary rounded-3">
-                            <i class="ri-shopping-cart-2-line font-size-24"></i>  
+                            <i class="ri-feedback-line font-size-24"></i>  
                         </span>
                     </div>
                 </div>
