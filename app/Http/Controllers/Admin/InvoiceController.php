@@ -465,9 +465,11 @@ class InvoiceController extends Controller
         $invoice = Invoice::find($payment->invoice_id);
 
         // Update minuse invoice total paid with db:row
-        $invoice->update([
-            'total_paid' => DB::raw('total_paid - ' . $payment->amount),
-        ]);
+        if ($invoice->total_paid != 0) {
+            $invoice->update([
+                'total_paid' => DB::raw('total_paid - ' . $payment->amount),
+            ]);
+        }
 
         // Remove the payment
         $payment->delete();
