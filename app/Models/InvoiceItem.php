@@ -22,4 +22,9 @@ class InvoiceItem extends Model
         'tax_value',
         'product_total',
     ];
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
 }
