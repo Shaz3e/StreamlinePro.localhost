@@ -409,6 +409,7 @@ class InvoiceController extends Controller
     public function addPayment(Request $request, $id)
     {
         $invoice = Invoice::find($id);
+
         // Calculate amount to be paid and due after adding payment
         $totalAmount = $invoice->total;
         $paidAmount = $invoice->total_paid;
@@ -438,19 +439,6 @@ class InvoiceController extends Controller
         $payment->amount = $request->amount;
         $payment->save();
 
-        // If the due amount equals to total_amount change status to paid
-        if ($invoice->total == $invoice->total_paid + $request->amount) {
-            $invoice->status = Invoice::STATUS_PAID;
-        } elseif ($invoice->total_paid + $request->amount > 0 && $invoice->total_paid + $request->amount < $invoice->total) {
-            $invoice->status = Invoice::STATUS_PARTIALLY_PAID;
-        }
-
-
-        // Update invoice total paid with db:row
-        $invoice->update([
-            'total_paid' => DB::raw('total_paid + ' . $request->amount),
-        ]);
-
         // Return success response
         return response()->json(['success' => 'Payment has been added successfully!'], 200);
     }
@@ -458,32 +446,12 @@ class InvoiceController extends Controller
     /**
      * Remove Payment
      */
-    public function removePayment(Request $request, $id)
+    public function removePayment($id)
     {
         $payment = Payment::find($id);
 
-        $invoice = Invoice::find($payment->invoice_id);
-
-        // Update minuse invoice total paid with db:row
-        if ($invoice->total_paid != 0) {
-            $invoice->update([
-                'total_paid' => DB::raw('total_paid - ' . $payment->amount),
-            ]);
-        }
-
         // Remove the payment
         $payment->delete();
-
-        // If the due amount not equal to total change status to unpaid otherwise change status to partial paid        
-        if ($invoice->payments()->count() == 0) {
-            $invoice->update([
-                'status' => Invoice::STATUS_UNPAID
-            ]);
-        } elseif ($invoice->total_paid != $invoice->total) {
-            $invoice->update([
-                'status' => Invoice::STATUS_PARTIALLY_PAID
-            ]);
-        }
 
         // Return success response
         return response()->json(['success' => 'Transaction has been removed successfully!'], 200);

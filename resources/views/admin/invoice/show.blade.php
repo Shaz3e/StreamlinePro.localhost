@@ -25,7 +25,8 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <a href="{{ route('admin.mark.as.unpaid.invoice', $invoice->id) }}" class="btn btn-success btn-sm waves-effect waves-light">Mark as Unpaid</a>
+                        <a href="{{ route('admin.mark.as.unpaid.invoice', $invoice->id) }}"
+                            class="btn btn-success btn-sm waves-effect waves-light">Mark as Unpaid</a>
                     </div>
                 </div>
                 {{-- /.card --}}
@@ -563,6 +564,8 @@
             $('.removePayment').click(function(e) {
                 e.preventDefault();
                 const paymentId = $(this).data('payment-id');
+                // Hide the row
+                $(this).closest('tr').hide(); // This line hides the row containing the delete button
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -588,6 +591,8 @@
                             icon: 'error',
                             showCancelButton: false
                         });
+                        // Show the row again if the delete operation fails
+                        $(this).closest('tr').show(); // This line shows the row if the AJAX call fails
                     }
                 });
             });
