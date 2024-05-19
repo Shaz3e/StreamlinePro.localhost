@@ -149,7 +149,6 @@
                             </thead>
                             <tbody>
                                 @foreach ($company->invoices()->latest()->whereIn('status', [App\Models\Invoice::STATUS_UNPAID, App\Models\Invoice::STATUS_PARTIALLY_PAID])->get() as $invoice)
-
                                     <tr>
                                         <td>{{ $invoice->id }}</td>
                                         <td>{{ optional($invoice->invoice_date)->format('l, jS M Y') }}</td>
@@ -224,7 +223,7 @@
                 </div>
                 {{-- /.card-body --}}
                 <div class="card-footer">
-                    <a href="{{ route('admin.invoices.index') }}?filterCompany={{ $company->id }}"
+                    <a href="{{ route('admin.invoices.index') }}?searchCompany={{ $company->name }}"
                         class="btn btn-sm btn-outline-info">
                         View All Invoices
                     </a>
