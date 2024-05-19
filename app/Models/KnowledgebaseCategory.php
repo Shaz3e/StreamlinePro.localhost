@@ -25,7 +25,7 @@ class KnowledgebaseCategory extends Model implements Auditable
      */
     public function articles()
     {
-        return $this->hasMany(KnowledgebaseArticle::class);
+        return $this->hasMany(KnowledgebaseArticle::class, 'category_id');
     }
 
     protected function setAuditInclude()

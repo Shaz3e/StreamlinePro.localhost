@@ -24,10 +24,11 @@ class ArticleList extends Component
     public $id;
 
     #[Url()]
-    public $filterCategory = '';
+    public $searchCategory = '';
 
+    // Search Invoice by User
     #[Url()]
-    public $filterAuthor = '';
+    public $searchAuthor = '';
 
     // record to delete
     public $recordToDelete;
@@ -50,7 +51,7 @@ class ArticleList extends Component
             $query = KnowledgebaseArticle::query();
         } else {
             // Show only logged in user articles
-            $query = KnowledgebaseArticle::query()->where('author', $loggedInStaff->id);
+            $query = KnowledgebaseArticle::query()->where('author_id', $loggedInStaff->id);
         }
 
         // Get all columns in the required table
@@ -66,12 +67,18 @@ class ArticleList extends Component
         }
 
         // Filter records based on category query
-        if ($this->filterCategory !== '') {
-            $query->where('category_id', $this->filterCategory);
+        if ($this->searchCategory !== '') {
+            $query->whereHas('category', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchAuthor . '%')
+                    ->where('slug', 'like', '%' . $this->searchAuthor . '%');
+            });
         }
         // Filter records based on author query
-        if ($this->filterAuthor !== '') {
-            $query->where('author_id', $this->filterAuthor);
+        if ($this->searchAuthor !== '') {
+            $query->whereHas('author', function ($q) {
+                $q->where('name', 'like', '%' . $this->searchAuthor . '%')
+                    ->orWhere('email', 'like', '%' . $this->searchAuthor . '%');
+            });
         }
 
         // Apply filter for deleted records if the option is selected
@@ -81,13 +88,8 @@ class ArticleList extends Component
 
         $articles = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        $categories = KnowledgebaseCategory::all();
-        $authors = Admin::all();
-
         return view('livewire.admin.knowledgebase.article.article-list', [
             'articles' => $articles,
-            'categories' => $categories,
-            'authors' => $authors,
         ]);
     }
 

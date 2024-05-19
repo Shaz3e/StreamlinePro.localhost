@@ -27,9 +27,11 @@
                         <tr>
                             <td>Total Articles List</td>
                             <td>
-                                {{-- @if ($category->articles->count() > 0)
-                                    {{ $category->articles->count() }}
-                                @endif --}}
+                                @if ($category->articles->count() > 0)
+                                    <a href="{{ route('admin.knowledgebase.articles.index') }}?searchCategory={{ $category->slug }}">
+                                        {{ $category->articles->count() }}
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                         <tr>

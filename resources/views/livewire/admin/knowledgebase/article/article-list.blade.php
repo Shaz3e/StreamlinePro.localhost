@@ -14,21 +14,13 @@
         </div>
         {{-- .col --}}
         <div class="col-md-2 col-sm-12 mb-2">
-            <select wire:model.live="filterCategory" class="form-control form-control-sm form-control-border">
-                <option value="" selected="selected">Filters Category</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchCategory" class="form-control form-control-sm"
+                placeholder="Search By Category...">
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
-            <select wire:model.live="filterAuthor" class="form-control form-control-sm form-control-border">
-                <option value="" selected="selected">Filters Author</option>
-                @foreach ($authors as $author)
-                    <option value="{{ $author->id }}">{{ $author->name }}</option>
-                @endforeach
-            </select>
+            <input type="search" wire:model.live="searchAuthor" class="form-control form-control-sm"
+                placeholder="Search By Author...">
         </div>
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">

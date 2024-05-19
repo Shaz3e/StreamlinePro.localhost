@@ -31,6 +31,7 @@ class KnowledgebaseArticle extends Model implements Auditable
     {
         return $this->belongsTo(Admin::class, 'author_id');
     }
+    
     /**
      * Category relationship
      */
