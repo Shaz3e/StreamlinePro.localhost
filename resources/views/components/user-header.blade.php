@@ -33,14 +33,6 @@
                     <span class="ri-search-line"></span>
                 </div>
             </form>
-
-            <div class="dropdown dropdown-mega d-none d-lg-block ms-2">
-                <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown"
-                    aria-haspopup="false" aria-expanded="false">
-                    Mega Menu
-                    <i class="mdi mdi-chevron-down"></i>
-                </button>
-            </div>
         </div>
 
         <div class="d-flex">
@@ -260,13 +252,6 @@
                     <!-- item-->
                     <a class="dropdown-item" href="{{ route('profile') }}"><i class="ri-user-line align-middle me-1"></i>
                         Profile</a>
-                    <a class="dropdown-item" href="#"><i class="ri-wallet-2-line align-middle me-1"></i> My
-                        Wallet</a>
-                    <a class="dropdown-item d-block" href="#"><span
-                            class="badge bg-success float-end mt-1">11</span><i
-                            class="ri-settings-2-line align-middle me-1"></i> Settings</a>
-                    <a class="dropdown-item" href="{{ route('lock') }}"><i class="ri-lock-unlock-line align-middle me-1"></i>
-                        Lock screen</a>
                     <div class="dropdown-divider"></div>
                     <a href="javascript:void(0)" class="dropdown-item text-danger"
                         onclick="$('#logout-form').submit();">

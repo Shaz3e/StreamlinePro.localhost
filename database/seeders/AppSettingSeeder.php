@@ -22,6 +22,11 @@ class AppSettingSeeder extends Seeder
             ['name' => 'site_logo_dark', 'value' => 'settings/logo/logo-dark.png'],
             ['name' => 'site_logo_small', 'value' => 'settings/logo/logo-sm.png'],
             ['name' => 'site_timezone', 'value' => 'UTC'],
+            ['name' => 'app_address', 'value' => null],
+            ['name' => 'app_zipcode', 'value' => null],
+            ['name' => 'app_city', 'value' => null],
+            ['name' => 'app_state', 'value' => null],
+            ['name' => 'app_country', 'value' => null],
 
             // Authentication
             ['name' => 'can_admin_register', 'value' => 0],

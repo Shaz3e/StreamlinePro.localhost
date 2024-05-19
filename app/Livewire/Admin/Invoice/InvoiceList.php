@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Invoice;
 
-use App\Http\Controllers\Admin\InvoiceController;
 use App\Models\Invoice;
 use App\Models\InvoiceLabel;
 use Illuminate\Support\Facades\Schema;

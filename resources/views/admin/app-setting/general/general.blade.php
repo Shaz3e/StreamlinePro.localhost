@@ -107,6 +107,67 @@
                 {{-- /.col --}}
             </div>
             {{-- /.row --}}
+            <div class="row mb-3">
+                <div class="col-10">
+                    <div class="form-group">
+                        <label for="app_address">Address</label>
+                        <input type="text" name="app_address" id="app_address" class="form-control"
+                            value="{{ old('app_address', DiligentCreators('app_address')) }}">
+                    </div>
+                    @error('app_address')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="app_zipcode">Zip Code</label>
+                        <input type="text" name="app_zipcode" id="app_zipcode" class="form-control"
+                            value="{{ old('app_zipcode', DiligentCreators('app_zipcode')) }}">
+                    </div>
+                    @error('app_zipcode')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+            </div>
+            {{-- /.row --}}
+            <div class="row mb-3">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="app_city">City</label>
+                        <input type="text" name="app_city" id="app_city" class="form-control"
+                            value="{{ old('app_city', DiligentCreators('app_city')) }}">
+                    </div>
+                    @error('app_city')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="app_state">State</label>
+                        <input type="text" name="app_state" id="app_state" class="form-control"
+                            value="{{ old('app_state', DiligentCreators('app_state')) }}">
+                    </div>
+                    @error('app_state')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="app_country">Country</label>
+                        <input type="text" name="app_country" id="app_country" class="form-control"
+                            value="{{ old('app_country', DiligentCreators('app_country')) }}">
+                    </div>
+                    @error('app_country')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+            </div>
+            {{-- /.row --}}
         </div>
         {{-- /.card-body --}}
         <div class="card-footer">

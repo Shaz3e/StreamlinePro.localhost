@@ -34,6 +34,11 @@ class GeneralSettingController extends Controller
             'site_logo_dark' => 'nullable|mimes:jpeg,png|max:2048',
             'site_logo_small' => 'nullable|mimes:jpeg,png|max:2048',
             'site_timezone' => 'required',
+            'app_address' => 'nullable|max:255',
+            'app_zipcode' => 'nullable|max:255',
+            'app_city' => 'nullable|max:255',
+            'app_state' => 'nullable|max:255',
+            'app_country' => 'nullable|max:255',
         ];
 
         // Validate the request data based on the rules

@@ -12,7 +12,7 @@ use App\Http\Controllers\User\Auth\LockController;
 
 // Dashboard
 use App\Http\Controllers\User\DashboardController;
-
+use App\Http\Controllers\User\InvoiceController;
 // Profile Controller
 use App\Http\Controllers\User\ProfileController;
 
@@ -64,4 +64,10 @@ Route::middleware('auth')->group(function () {
         ->name('profile');
     Route::post('my-profile', [ProfileController::class, 'profileStore'])
         ->name('profile.store');
+
+    // Invoice
+    Route::get('invoices', [InvoiceController::class, 'index'])
+        ->name('invoice.index');
+    Route::get('invoices/{id}', [InvoiceController::class, 'show'])
+        ->name('invoice.show');
 });
