@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
+use App\Mail\User\Invoice\InvoicePaymentConfirmationEmail;
 use App\Models\Invoice;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentObserver
 {
@@ -26,6 +28,10 @@ class PaymentObserver
 
         // Save the updated invoice
         $invoice->save();
+
+        // Send email notification
+        Mail::to($invoice->user->email)
+            ->send(new InvoicePaymentConfirmationEmail($invoice, $payment));
     }
 
     /**
