@@ -125,7 +125,8 @@
                                                 @foreach ($items as $item)
                                                     <tr>
                                                         <td>{{ $item->item_description }}</td>
-                                                        <td class="text-center">{{ currencyFormat($item->unit_price) }}</td>
+                                                        <td class="text-center">{{ currencyFormat($item->unit_price) }}
+                                                        </td>
                                                         <td class="text-center">{{ $item->quantity }}</td>
                                                         <td class="text-end">
                                                             {{ currencyFormat($item->unit_price * $item->quantity) }}
@@ -230,6 +231,17 @@
                         </div>
                     </div> <!-- end row -->
 
+
+                    @if ($invoice->total !== $invoice->total_paid)
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary waves-effect waves-light"
+                                    data-bs-toggle="modal" data-bs-target="#addStripePayment">Pay Via Stripe</button>
+                                @include('user.invoice.stripe.form')
+                            </div>
+                        </div>
+                    @endif
+
                     {{-- Footer Note --}}
                     @if (!is_null($invoice->footer_note))
                         <div class="row mt-5">
@@ -263,6 +275,7 @@
                                     <th>Amount</th>
                                     <th>Transaction ID</th>
                                     <th>Transaction Date</th>
+                                    <th>Payment Method</th>
                                     <th>Created At</th>
                                     <th></th>
                                 </tr>
@@ -273,6 +286,7 @@
                                         <td>{{ $payment->amount }}</td>
                                         <td>{{ $payment->transaction_number }}</td>
                                         <td>{{ $payment->transaction_date->format('l, F j, Y') }}</td>
+                                        <td>{{ $payment->payment_method }}</td>
                                         <td>{{ $payment->created_at->format('l, F j, Y') }}</td>
                                         <td>
                                             <button type="button"

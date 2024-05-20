@@ -13,6 +13,7 @@ use App\Http\Controllers\User\Auth\LockController;
 // Dashboard
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\InvoiceController;
+use App\Http\Controllers\User\PaymentMethods\Stripe\StripeController;
 // Profile Controller
 use App\Http\Controllers\User\ProfileController;
 
@@ -70,4 +71,11 @@ Route::middleware('auth')->group(function () {
         ->name('invoice.index');
     Route::get('invoices/{id}', [InvoiceController::class, 'show'])
         ->name('invoice.show');
+
+    // Payment Methods
+    Route::prefix('payment-method')->name('payment-method.')->group(function () {
+        // Stripe
+        Route::post('stripe-payment/process', [StripeController::class, 'processPayment'])
+            ->name('stripe.payment-process');
+    });
 });

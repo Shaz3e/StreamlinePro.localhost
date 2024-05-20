@@ -359,6 +359,7 @@
                                     <th>Amount</th>
                                     <th>Transaction ID</th>
                                     <th>Transaction Date</th>
+                                    <th>Payment Method</th>
                                     <th>Created At</th>
                                     <th></th>
                                 </tr>
@@ -369,6 +370,7 @@
                                         <td>{{ $payment->amount }}</td>
                                         <td>{{ $payment->transaction_number }}</td>
                                         <td>{{ $payment->transaction_date->format('l, F j, Y') }}</td>
+                                        <td>{{ $payment->payment_method }}</td>
                                         <td>{{ $payment->created_at->format('l, F j, Y') }}</td>
                                         <td>
                                             <button type="button"

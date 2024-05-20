@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->decimal('amount', 12, 2)->nullable()->default(0.00);
             $table->dateTime('transaction_date');
+            $table->string('payment_method')->nullable();
             $table->timestamps();
         });
     }
