@@ -9,6 +9,24 @@
         ],
     ])
 
+    @if (request('status') == 'success')
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            </div>
+        </div>
+    @elseif (request('status') == 'cancel')
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    {{ session('status') }}
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- Links to perform quick actions --}}
     @if ($invoice->status === App\Models\Invoice::STATUS_CANCELLED)
         <div class="row mb-0">
@@ -234,15 +252,28 @@
 
                     {{-- Payment Methods --}}
                     @if ($invoice->total !== $invoice->total_paid)
-                        <div class="row">
+                        <ul class="list-inline mb-0 mt-5">
                             @if (DiligentCreators('stripe') == 1)
-                                <div class="col-12">
-                                    <button type="button" class="btn btn-primary waves-effect waves-light"
-                                        data-bs-toggle="modal" data-bs-target="#addStripePayment">Pay Via Stripe</button>
+                                <li class="list-inline-item">
+                                    <button type="button" class="btn bg-dark text-white waves-effect waves-light"
+                                        data-bs-toggle="modal" data-bs-target="#addStripePayment">
+                                        {{ DiligentCreators('stripe_display_name') }}
+                                    </button>
                                     @include('user.invoice.stripe.form')
-                                </div>
+                                </li>
                             @endif
-                        </div>
+                            @if (DiligentCreators('stripe_hosted_checkout') == 1)
+                                <li class="list-inline-item">
+                                    <form action="{{ route('payment-method.stripe.hosted.checkout') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
+                                        <button type="submit" class="btn bg-dark text-white waves-effect waves-light">
+                                            {{ DiligentCreators('stripe_hosted_checkout_display_name') }}
+                                        </button>
+                                    </form>
+                                </li>
+                            @endif
+                        </ul>
                     @endif
 
                     {{-- Footer Note --}}

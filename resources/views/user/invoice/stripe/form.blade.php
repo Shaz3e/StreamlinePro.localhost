@@ -6,7 +6,7 @@
             <input type="hidden" name="invoice" value="{{ $invoice->id }}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addStripePaymentLabel">Add Payment</h5>
+                    <h5 class="modal-title" id="addStripePaymentLabel">{{ DiligentCreators('stripe_display_name') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 {{-- /.modal-header --}}

@@ -12,6 +12,54 @@ use Stripe\Stripe;
 
 class StripeController extends Controller
 {
+    /**
+     * Hosted Checkout
+     */
+    public function hostedCheckout(Request $request)
+    {
+        $invoice = Invoice::find($request->invoice_id);
+
+        if (!$invoice) {
+            return response()->json(['error' => 'Invoice not found'], 404);
+        }
+
+        // Get max amount
+        $maxAmount = $invoice->total - $invoice->total_paid;
+
+        // Convert amount to cents
+        $amountInCents = $maxAmount * 100;
+
+        // Setup Stripe
+        Stripe::setApiKey(config('stripe.secret_key'));
+
+        // Hosted Checkout Session
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'unit_amount' => $amountInCents,
+                        'product_data' => [
+                            'name' => 'Payment Against Invoice# ' . $invoice->id,
+                        ],
+                    ],
+                    'quantity' => 1,
+                ],
+            ],
+            'mode' => 'payment',
+            'client_reference_id' => $invoice->id,
+            'success_url' => route('invoice.show', ['id' => $invoice->id, 'status' => 'success']) . '&session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('invoice.show', ['id' => $invoice->id, 'status' => 'cancel']),
+        ]);
+
+        // Return the hosted checkout session
+        return redirect()->away($session->url);
+    }
+
+    /**
+     * Process Stripe Payment via PaymentIntent
+     */
     public function processPayment(Request $request)
     {
         $invoice = Invoice::find($request->invoice_id);
@@ -70,6 +118,9 @@ class StripeController extends Controller
         }
     }
 
+    /**
+     * Handle Payment Confirmation
+     */
     public function handlePaymentConfirmation(Request $request)
     {
         $paymentIntentId = $request->input('payment_intent_id');

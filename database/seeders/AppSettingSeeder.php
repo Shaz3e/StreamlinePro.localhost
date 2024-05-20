@@ -66,6 +66,9 @@ class AppSettingSeeder extends Seeder
 
             // Payment Methods
             ['name' => 'stripe', 'value' => 0],
+            ['name' => 'stripe_display_name', 'value' => 'Stripe'],
+            ['name' => 'stripe_hosted_checkout', 'value' => 0],
+            ['name' => 'stripe_hosted_checkout_display_name', 'value' => 'Hosted Checkout'],
         ];
 
         DB::table('app_settings')->insert($appSettings);

@@ -6,7 +6,71 @@
             Stripe Configuration
         </div>
         <div class="card-body">
-            {{-- Stripe --}}
+            {{-- Stripe Names --}}
+            <div class="row mb-3">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label for="stripe_display_name">Stripe Payment Intent Display name</label>
+                        <input type="text" name="stripe_display_name" id="stripe_display_name" class="form-control"
+                            value="{{ DiligentCreators('stripe_display_name') }}" required>
+                    </div>
+                </div>
+                {{-- /.col --}}
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label for="stripe_hosted_checkout_display_name">Stripe Hosted Checkout Display name</label>
+                        <input type="text" name="stripe_hosted_checkout_display_name" id="stripe_hosted_checkout_display_name" class="form-control"
+                            value="{{ DiligentCreators('stripe_hosted_checkout_display_name') }}" required>
+                    </div>
+                </div>
+                {{-- /.col --}}
+            </div>
+            {{-- /.row --}}
+            {{-- Options --}}
+            <div class="row mb-3">
+                <div class="col-md-6 col-sm-6">
+                    <div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="stripe" id="showStripe"
+                                @if (DiligentCreators('stripe') == 1) checked @endif value="1">
+                            <label class="form-check-label" for="showStripe">
+                                Show Stripe Payment Gateway on Invoice
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="stripe" id="hideStripe"
+                                @if (DiligentCreators('stripe') == 0) checked @endif value="0">
+                            <label class="form-check-label" for="hideStripe">
+                                Hide Stripe Payment Gateway on Invoice
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {{-- /.col --}}
+                <div class="col-md-6 col-sm-6">
+                    <div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="stripe_hosted_checkout"
+                                id="showStripeHostedCheckout" @if (DiligentCreators('stripe_hosted_checkout') == 1) checked @endif
+                                value="1">
+                            <label class="form-check-label" for="showStripeHostedCheckout">
+                                Show Stripe Hosted Checkout on Invoice
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="stripe_hosted_checkout"
+                                id="hideStripeHostedCheckout" @if (DiligentCreators('stripe_hosted_checkout') == 0) checked @endif
+                                value="0">
+                            <label class="form-check-label" for="hideStripeHostedCheckout">
+                                Hide Stripe Hosted Checkout on Invoice
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {{-- /.col --}}
+            </div>
+            {{-- /.row --}}
+            {{-- Stripe Keys --}}
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="form-group">
@@ -26,27 +90,6 @@
                 {{-- /.col --}}
             </div>
             {{-- /.row --}}
-            <div class="row mt-2">
-                <div class="col-md-12 col-sm-12">
-                    <div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="radio" name="stripe" id="showStripe"
-                                @if (DiligentCreators('stripe') == 1) checked @endif value="1">
-                            <label class="form-check-label" for="showStripe">
-                                Show Stripe Payment Gateway on Invoice
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="stripe" id="hideStripe"
-                                @if (DiligentCreators('stripe') == 0) checked @endif value="0">
-                            <label class="form-check-label" for="hideStripe">
-                                Hide Stripe Payment Gateway on Invoice
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                {{-- /.col --}}
-            </div>
         </div>
         {{-- /.card-body --}}
         <div class="card-footer">

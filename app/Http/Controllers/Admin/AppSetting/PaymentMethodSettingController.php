@@ -29,6 +29,9 @@ class PaymentMethodSettingController extends Controller
             // Validate the request data based on the rules
             $validated = $request->validate([
                 'stripe' => 'required|boolean',
+                'stripe_display_name' => 'required|max:255',
+                'stripe_hosted_checkout' => 'required|boolean',
+                'stripe_hosted_checkout_display_name' => 'required|max:255',
                 'stripe_key' => 'required|string|max:255',
                 'stripe_secret' => 'required|string|max:255',
             ]);
@@ -37,6 +40,18 @@ class PaymentMethodSettingController extends Controller
             AppSetting::updateOrCreate(
                 ['name' => 'stripe'],
                 ['value' => $validated['stripe']]
+            );
+            AppSetting::updateOrCreate(
+                ['name' => 'stripe_display_name'],
+                ['value' => $validated['stripe_display_name']]
+            );
+            AppSetting::updateOrCreate(
+                ['name' => 'stripe_hosted_checkout'],
+                ['value' => $validated['stripe_hosted_checkout']]
+            );
+            AppSetting::updateOrCreate(
+                ['name' => 'stripe_hosted_checkout_display_name'],
+                ['value' => $validated['stripe_hosted_checkout_display_name']]
             );
 
             $envPath = base_path('.env');

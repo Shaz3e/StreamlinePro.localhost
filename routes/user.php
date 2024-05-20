@@ -74,9 +74,10 @@ Route::middleware('auth')->group(function () {
 
     // Payment Methods
     Route::prefix('payment-method')->name('payment-method.')->group(function () {
-        // Stripe
+        // Stripe Payment Intent
         Route::post('stripe/process-payment', [StripeController::class, 'processPayment'])->name('stripe.process-payment');
         Route::post('stripe/handle-payment-confirmation', [StripeController::class, 'handlePaymentConfirmation'])->name('stripe.handle-payment-confirmation');
-        Route::get('stripe/payment/callback', [StripeController::class, 'handlePaymentCallback'])->name('stripe.payment.callback');
+        // Stripe Hosted Checkout
+        Route::post('stripe/hosted-checkout', [StripeController::class, 'hostedCheckout'])->name('stripe.hosted.checkout');
     });
 });
