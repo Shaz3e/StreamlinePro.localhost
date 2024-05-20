@@ -75,7 +75,8 @@ Route::middleware('auth')->group(function () {
     // Payment Methods
     Route::prefix('payment-method')->name('payment-method.')->group(function () {
         // Stripe
-        Route::post('stripe-payment/process', [StripeController::class, 'processPayment'])
-            ->name('stripe.payment-process');
+        Route::post('stripe/process-payment', [StripeController::class, 'processPayment'])->name('stripe.process-payment');
+        Route::post('stripe/handle-payment-confirmation', [StripeController::class, 'handlePaymentConfirmation'])->name('stripe.handle-payment-confirmation');
+        Route::get('stripe/payment/callback', [StripeController::class, 'handlePaymentCallback'])->name('stripe.payment.callback');
     });
 });

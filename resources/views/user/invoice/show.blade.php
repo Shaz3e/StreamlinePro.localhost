@@ -291,13 +291,6 @@
                                         <td>{{ $payment->transaction_date->format('l, F j, Y') }}</td>
                                         <td>{{ $payment->payment_method }}</td>
                                         <td>{{ $payment->created_at->format('l, F j, Y') }}</td>
-                                        <td>
-                                            <button type="button"
-                                                class="btn btn-danger btn-sm waves-effect waves-light removePayment"
-                                                data-payment-id="{{ $payment->id }}">
-                                                <i class="ri-delete-bin-line"></i>
-                                            </button>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
