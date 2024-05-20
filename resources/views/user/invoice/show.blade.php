@@ -69,9 +69,6 @@
                                     <address>
                                         <strong>Billed To:</strong><br>
                                         {{ auth()->user()->name }}<br>
-                                        1234 Main<br>
-                                        Apt. 4B<br>
-                                        Springfield, ST 54321
                                     </address>
                                 </div>
                                 <div class="col-3 offset-3 text-end">
@@ -86,8 +83,7 @@
                             <div class="row">
                                 <div class="col-6 mt-4">
                                     <address>
-                                        <strong>Payment Method:</strong><br>
-                                        Visa ending **** 4242<br>
+                                        <strong>Email:</strong><br>
                                         {{ auth()->user()->email }}
                                     </address>
                                 </div>
@@ -240,7 +236,6 @@
                                             <a href="javascript:window.print()"
                                                 class="btn btn-success waves-effect waves-light"><i
                                                     class="fa fa-print"></i></a>
-                                            <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Send</a>
                                         </div>
                                     </div>
                                 </div>
