@@ -32,7 +32,13 @@ class SendInvoiceNotificationsJob implements ShouldQueue
         $today = Carbon::now()->toDateString();
 
         // Find invoices with published_on equal to today and send email
-        $invoicesToPublish = Invoice::whereDate('published_on', $today)->get();
+        $invoicesToPublish = Invoice::where([
+            'status' => Invoice::STATUS_UNPAID,
+            'status' => Invoice::STATUS_PARTIALLY_PAID,
+        ])
+            ->whereDate('published_on', $today)
+            ->get();
+
         foreach ($invoicesToPublish as $invoice) {
             // Send invoice pulished notification to user
             if ($invoice->user) {
