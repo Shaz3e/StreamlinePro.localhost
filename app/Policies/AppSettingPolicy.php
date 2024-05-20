@@ -127,4 +127,21 @@ class AppSettingPolicy
             return true;
         }
     }
+
+    /**
+     * Payment Method Setting
+     */
+    public function paymentMethod(Admin $admin)
+    {
+        if($admin->canAny(['payment-method-setting.list', 'payment-method-setting.read'])){
+            return true;
+        }
+    }
+
+    public function paymentMethodStore(Admin $admin)
+    {
+        if($admin->can('payment-method-setting.update')){
+            return true;
+        }
+    }
 }

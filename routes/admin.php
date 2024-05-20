@@ -73,6 +73,7 @@ use App\Http\Controllers\Admin\AppSetting\AppSettingController;
 use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
 use App\Http\Controllers\Admin\AppSetting\AuthenticationSettingController;
 use App\Http\Controllers\Admin\AppSetting\DashboardSettingController;
+use App\Http\Controllers\Admin\AppSetting\PaymentMethodSettingController;
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -146,6 +147,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Dashboard Setting
             Route::get('dashboard', [DashboardSettingController::class, 'dashboard'])->name('dashboard');
             Route::post('dashboard', [DashboardSettingController::class, 'dashboardStore'])->name('dashboard.store');
+
+            // Payment Method Setting
+            Route::get('payment-methods', [PaymentMethodSettingController::class, 'paymentMethod'])->name('paymentMethod');
+            Route::post('payment-methods', [PaymentMethodSettingController::class, 'paymentMethodStore'])->name('payment-method.store');
         });
 
         /**

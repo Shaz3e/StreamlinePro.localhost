@@ -29,6 +29,10 @@
                     @include('admin.app-setting.dashboard.dashboard')
                 @endif
 
+                @if (request()->routeIs('admin.settings.paymentMethod'))
+                    @include('admin.app-setting.payment-method.payment-method')
+                @endif
+
             </div>
             {{-- /.email-rightbar --}}
 

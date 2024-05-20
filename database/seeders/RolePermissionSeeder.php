@@ -222,6 +222,11 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'dashboard-setting.list'],
             ['guard_name' => 'admin', 'name' => 'dashboard-setting.read'],
             ['guard_name' => 'admin', 'name' => 'dashboard-setting.update'],
+            
+            // Payment Method Setting
+            ['guard_name' => 'admin', 'name' => 'payment-method-setting.list'],
+            ['guard_name' => 'admin', 'name' => 'payment-method-setting.read'],
+            ['guard_name' => 'admin', 'name' => 'payment-method-setting.update'],
 
             // Add more permissions here...
         ];

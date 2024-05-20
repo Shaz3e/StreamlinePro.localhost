@@ -63,6 +63,9 @@ class AppSettingSeeder extends Seeder
             ['name' => 'can_access_user_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
             ['name' => 'can_access_support_ticket_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
             ['name' => 'can_access_invoice_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
+
+            // Payment Methods
+            ['name' => 'stripe', 'value' => 0],
         ];
 
         DB::table('app_settings')->insert($appSettings);

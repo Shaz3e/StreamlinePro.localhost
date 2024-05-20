@@ -18,6 +18,12 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> Dashboard Setting
             </a>
         @endcan
+        @can('payment-method-setting.list')
+            <a href="{{ route('admin.settings.paymentMethod') }}"
+                class="{{ request()->routeIs('admin.settings.paymentMethod') ? 'active' : '' }}">
+                <i class="ri ri-arrow-right-s-line me-2"></i> Payment Methods
+            </a>
+        @endcan
     </div>
 </div>
 {{-- email-leftbar --}}

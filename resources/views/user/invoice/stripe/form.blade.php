@@ -1,8 +1,9 @@
-<div class="modal fade" id="addStripePayment" tabindex="-1" role="dialog" aria-labelledby="addStripePaymentLabel" aria-hidden="true">
+<div class="modal fade" id="addStripePayment" tabindex="-1" role="dialog" aria-labelledby="addStripePaymentLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form class="needs-validation" novalidate id="paymentForm">
             @csrf
-            <input type="hidden" name="invoice" value="{{ $invoice->id }}">            
+            <input type="hidden" name="invoice" value="{{ $invoice->id }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addStripePaymentLabel">Add Payment</h5>
@@ -30,7 +31,7 @@
                                 <div class="form-group">
                                     <label for="amount">Amount</label>
                                     <input type="number" class="form-control" id="amount" name="amount"
-                                        max="{{ $invoice->total_amount }}" required>
+                                        max="{{ $invoice->total - $invoice->total_paid }}" value="{{ $invoice->total - $invoice->total_paid }}" required>
                                 </div>
                                 @error('amount')
                                     <span class="text-danger">{{ $message }}</span>
@@ -149,6 +150,10 @@
                             $('#paymentFormError').hide();
                             $('#paymentFormSuccessMessage').text(response.success);
                             $('#paymentFormSuccess').show();
+                            // refresh page after 5 seconds
+                            setTimeout(function() {
+                                location.reload();
+                            }, 5000)
                         } else {
                             $('#paymentFormSuccess').hide();
                             $('#paymentFormErrorMessage').text(response.error);

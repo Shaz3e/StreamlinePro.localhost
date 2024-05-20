@@ -232,13 +232,16 @@
                     </div> <!-- end row -->
 
 
+                    {{-- Payment Methods --}}
                     @if ($invoice->total !== $invoice->total_paid)
                         <div class="row">
-                            <div class="col-12">
-                                <button type="button" class="btn btn-primary waves-effect waves-light"
-                                    data-bs-toggle="modal" data-bs-target="#addStripePayment">Pay Via Stripe</button>
-                                @include('user.invoice.stripe.form')
-                            </div>
+                            @if (DiligentCreators('stripe') == 1)
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary waves-effect waves-light"
+                                        data-bs-toggle="modal" data-bs-target="#addStripePayment">Pay Via Stripe</button>
+                                    @include('user.invoice.stripe.form')
+                                </div>
+                            @endif
                         </div>
                     @endif
 
