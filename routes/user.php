@@ -12,10 +12,15 @@ use App\Http\Controllers\User\Auth\LockController;
 
 // Dashboard
 use App\Http\Controllers\User\DashboardController;
-use App\Http\Controllers\User\InvoiceController;
-use App\Http\Controllers\User\PaymentMethods\Stripe\StripeController;
 // Profile Controller
 use App\Http\Controllers\User\ProfileController;
+
+// Invoice
+use App\Http\Controllers\User\InvoiceController;
+use App\Http\Controllers\User\PaymentMethods\Stripe\StripeController;
+
+// Support Tickets
+use App\Http\Controllers\User\SupportTicketController;
 
 Route::middleware('guest')->group(function () {
 
@@ -80,4 +85,16 @@ Route::middleware('auth')->group(function () {
         // Stripe Hosted Checkout
         Route::post('stripe/hosted-checkout', [StripeController::class, 'hostedCheckout'])->name('stripe.hosted.checkout');
     });
+
+
+    // Support Ticket
+    Route::resource('support-tickets', SupportTicketController::class);
+    
+    // Support Ticket Reply
+    Route::post('support-tickets-reply/{supportTicketId}', [SupportTicketController::class, 'ticketReply'])
+    ->name('support-tickets.reply');
+
+    // Upload attachments for support tickets
+    Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
+        ->name('support-tickets.upload-attachments');
 });

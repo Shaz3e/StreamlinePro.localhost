@@ -77,6 +77,9 @@ class SupportTicketController extends Controller
         // Update record in database
         $supportTicket = SupportTicket::create($validated);
 
+        // Forget uploaded_attachments Session
+        session()->forget('uploaded_attachments');
+
         session()->flash('success', 'Support Ticket has been created successfully!');
         
         return $this->saveAndRedirect($request, 'support-tickets', $supportTicket->id);
@@ -243,8 +246,8 @@ class SupportTicketController extends Controller
         if ($request->has('updateStatus')) {
             // Validate data
             $validated = $request->validate([
-                'admin_id' => 'required|exists:admins,id',
-                'department_id' => 'required|exists:departments,id',
+                'admin_id' => 'nullable|exists:admins,id',
+                'department_id' => 'nullable|exists:departments,id',
                 'support_ticket_status_id' => 'required|exists:support_ticket_statuses,id',
                 'support_ticket_priority_id' => 'required|exists:support_ticket_priorities,id',
             ]);

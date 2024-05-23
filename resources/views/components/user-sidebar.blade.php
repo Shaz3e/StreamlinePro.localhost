@@ -33,7 +33,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.dashboard') }}" class="waves-effect">
+                                <a href="{{ route('support-tickets.index') }}" class="waves-effect">
                                     <i class="ri-questionnaire-line"></i>
                                     <span>My Tickets</span>
                                 </a>
