@@ -24,6 +24,12 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> Payment Methods
             </a>
         @endcan
+        @can('mail-setting.list')
+            <a href="{{ route('admin.settings.mail') }}"
+                class="{{ request()->routeIs('admin.settings.mail') ? 'active' : '' }}">
+                <i class="ri ri-arrow-right-s-line me-2"></i> Mail Setting
+            </a>
+        @endcan
     </div>
 </div>
 {{-- email-leftbar --}}

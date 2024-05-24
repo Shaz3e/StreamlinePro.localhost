@@ -33,6 +33,10 @@
                     @include('admin.app-setting.payment-method.payment-method')
                 @endif
 
+                @if (request()->routeIs('admin.settings.mail'))
+                    @include('admin.app-setting.mail.mail')
+                @endif
+
             </div>
             {{-- /.email-rightbar --}}
 

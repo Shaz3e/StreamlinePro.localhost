@@ -74,6 +74,8 @@ use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
 use App\Http\Controllers\Admin\AppSetting\AuthenticationSettingController;
 use App\Http\Controllers\Admin\AppSetting\DashboardSettingController;
 use App\Http\Controllers\Admin\AppSetting\PaymentMethodSettingController;
+use App\Http\Controllers\Admin\AppSetting\MailSettingController;
+
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -151,6 +153,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Payment Method Setting
             Route::get('payment-methods', [PaymentMethodSettingController::class, 'paymentMethod'])->name('paymentMethod');
             Route::post('payment-methods', [PaymentMethodSettingController::class, 'paymentMethodStore'])->name('payment-method.store');
+
+            // Mail Setting
+            Route::get('mail', [MailSettingController::class, 'mail'])->name('mail');
+            Route::post('mail', [MailSettingController::class, 'mailStore'])->name('mail.store');
         });
 
         /**

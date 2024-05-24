@@ -144,4 +144,20 @@ class AppSettingPolicy
             return true;
         }
     }
+
+    /**
+     * Mail Setting
+     */
+    public function mail(Admin $admin)
+    {
+        if($admin->canAny(['mail0setting.list','mail0setting.read'])){
+            return true;
+        }
+    }
+    public function mailStore(Admin $admin)
+    {
+        if($admin->can('mail-setting.update')){
+            return true;
+        }
+    }
 }
