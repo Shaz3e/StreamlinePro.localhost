@@ -5,7 +5,6 @@ namespace App\Observers;
 use App\Mail\SupportTicket\SupportTicketCreatedEmail;
 use App\Models\Admin;
 use App\Models\SupportTicket;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SupportTicketObserver

@@ -2,9 +2,8 @@
 
 namespace App\Mail\SupportTicket;
 
-use App\Models\Admin;
 use App\Models\SupportTicket;
-use App\Models\User;
+use App\Models\SupportTicketReply;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -12,19 +11,21 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SupportTicketCreatedEmail extends Mailable
+class SupportTicketReplyCreatedEmail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    
     public $supportTicket;
+    public $supportTicketReply;
     public $recipient;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(SupportTicket $supportTicket, User|Admin $recipient)
+    public function __construct(SupportTicketReply $supportTicketReply, $recipient)
     {
-        $this->supportTicket = $supportTicket;
+        $this->supportTicket = SupportTicket::where('id', $supportTicketReply->support_ticket_id)->first();
+        $this->supportTicketReply = $supportTicketReply;
         $this->recipient = $recipient;
     }
 
@@ -34,7 +35,7 @@ class SupportTicketCreatedEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Support Ticket Created',
+            subject: 'Support Ticket Reply',
         );
     }
 
@@ -44,9 +45,10 @@ class SupportTicketCreatedEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.support-ticket.support-ticket-created-email',
+            markdown: 'emails.support-ticket.support-ticket-reply-created-email',
             with: [
                 'supportTicket' => $this->supportTicket,
+                'supportTicketReply' => $this->supportTicketReply,
             ],
         );
     }
