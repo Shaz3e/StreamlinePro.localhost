@@ -57,11 +57,9 @@
                                     <td>{{ $staff->name }}</td>
                                     <td>{{ $staff->email }}</td>
                                     <td>
-                                        @if ($staff->departments() !== null)
-                                            @foreach ($staff->departments() as $id => $name)
-                                                <span class="badge bg-info">{{ $name }}</span>
-                                            @endforeach
-                                        @endif
+                                        @foreach ($staff->departments as $department)
+                                            <span class="badge bg-primary">{{ $department->name }}</span>
+                                        @endforeach
                                     </td>
                                     <td>
                                         @if (!empty($staff->getRoleNames()))

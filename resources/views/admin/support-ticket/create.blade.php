@@ -75,7 +75,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="user_id">Select Client</label>
-                                    <select id="user_id" name="user_id" class="form-control">
+                                    <select id="user_id" name="user_id" class="form-control" required>
                                         <option value="">Select</option>
                                     </select>
                                 </div>

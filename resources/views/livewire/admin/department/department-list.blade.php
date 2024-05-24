@@ -15,7 +15,8 @@
         {{-- .col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.departments.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.departments.create') }}"
+                    class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -40,6 +41,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Staff</th>
                                     @if (!$showDeleted)
                                         <th>Status</th>
                                     @endif
@@ -50,6 +52,13 @@
                                 @foreach ($departments as $department)
                                     <tr wire:key="{{ $department->id }}">
                                         <td>{{ $department->name }}</td>
+                                        <td>
+                                            @if ($department->admins()->count() > 0)
+                                                {{ $department->admins()->count() }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         @if (!$showDeleted)
                                             <td>
                                                 <input type="checkbox" wire:change="toggleStatus({{ $department->id }})"

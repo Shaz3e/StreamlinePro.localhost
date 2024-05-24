@@ -74,11 +74,7 @@ class Admin extends Authenticatable implements Auditable
      */
     public function departments()
     {
-        if ($this->department_id !== null) {
-            return Department::whereIn('id', $this->department_id)->pluck('name', 'id');
-        } else {
-            return [];
-        }
+        return $this->belongsToMany(Department::class, 'admin_department', 'admin_id', 'department_id');
     }
 
     /**

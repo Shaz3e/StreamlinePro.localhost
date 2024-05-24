@@ -17,6 +17,14 @@ class Department extends Model implements Auditable
     // SoftDeletes
     protected $dates = ['deleted_at'];
 
+    /**
+     * Relationship to show staff associated with the department
+     */
+    public function admins()
+    {
+        return $this->belongsToMany(Admin::class, 'admin_department', 'department_id', 'admin_id');
+    }
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table

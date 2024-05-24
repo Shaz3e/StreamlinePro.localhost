@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Payment;
+use App\Models\SupportTicket;
 use App\Observers\PaymentObserver;
+use App\Observers\SupportTicketObserver;
 use Illuminate\Support\ServiceProvider;
 
 class ObserverServiceProvider extends ServiceProvider
@@ -22,5 +24,6 @@ class ObserverServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Payment::observe(PaymentObserver::class);
+        SupportTicket::observe(SupportTicketObserver::class);
     }
 }

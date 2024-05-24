@@ -70,7 +70,9 @@ class SupportTicketController extends Controller
         $supportTicket->message = $validated['message'];
         $supportTicket->support_ticket_status_id = 1;
         $supportTicket->support_ticket_priority_id = 2;
-        $supportTicket->attachments = $validated['attachments'];
+        if (isset($validated['attachments'])) {
+            $supportTicket->attachments = $validated['attachments'];
+        }
 
         $supportTicket->save();
 

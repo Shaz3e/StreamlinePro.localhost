@@ -61,8 +61,10 @@ class StaffController extends Controller
         // Update record in database
         $staff = Admin::create($validated);
 
-        $staff->department_id = $request->department_id;
-        $staff->save();
+        // Attach department
+        if($request->department_id){
+            $staff->departments()->attach($request->department_id);
+        }
 
         // Sync Role
         $staff->syncRoles($request->roles);
@@ -159,9 +161,10 @@ class StaffController extends Controller
         // Sync Role
         $staff->syncRoles($request->roles);
 
-        // Update Department
-        $staff->department_id = $request->department_id;
-        $staff->save();
+        // Attach department
+        if($request->department_id){
+            $staff->departments()->sync($request->department_id);
+        }
 
         // Flash message
         session()->flash('success', 'Staff updated successfully!');

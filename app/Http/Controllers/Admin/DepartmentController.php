@@ -50,7 +50,6 @@ class DepartmentController extends Controller
         // Update record in database
         $department = Department::create($validated);
 
-
         session()->flash('success', 'Department created successfully!');
 
         return $this->saveAndRedirect($request, 'departments', $department->id);

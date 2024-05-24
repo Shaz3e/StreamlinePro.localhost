@@ -25,7 +25,7 @@ class StoreStaffRequest extends BaseFormRequest
             'department_id' => [
                 'nullable',
                 'array',
-                Rule::exists('companies', 'id'),
+                Rule::exists('departments', 'id'),
             ],
             'mobile' => [
                 'nullable',
