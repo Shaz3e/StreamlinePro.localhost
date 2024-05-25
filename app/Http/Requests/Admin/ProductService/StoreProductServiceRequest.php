@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Product;
+namespace App\Http\Requests\Admin\ProductService;
 
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreProductRequest extends BaseFormRequest
+class StoreProductServiceRequest extends BaseFormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,13 +17,16 @@ class StoreProductRequest extends BaseFormRequest
         return [
             'name' => [
                 'required', 'string', 'max:255',
-                Rule::unique('products', 'name')->ignore($this->product),
+                Rule::unique('products_services', 'name')->ignore($this->product_service),
             ],
             'price' => [
                 'required', 'numeric', 'gt:0',
             ],
             'description' => [
                 'nullable', 'string',
+            ],
+            'type' => [
+                'nullable', 'max:255',
             ],
             'is_active' => [
                 'required', 'boolean',

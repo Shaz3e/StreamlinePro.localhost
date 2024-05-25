@@ -155,7 +155,7 @@
     {{-- /.row --}}
 
     {{-- Show Audit History --}}
-    @hasrole('superadmin')
+    @hasanyrole(['superadmin', 'tester', 'developer'])
         @if (count($audits) > 0)
             <div class="row">
                 <div class="col-md-12">
@@ -224,14 +224,14 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div>
-    @endhasrole
+    @endhasanyrole
 @endsection
 
 @push('styles')
 @endpush
 
 @push('scripts')
-    @hasrole('superadmin')
+    @hasanyrole(['superadmin', 'tester', 'developer'])
         <script>
             $(document).ready(function() {
                 // Audit Log Show Modal
@@ -296,7 +296,7 @@
                 });
             });
         </script>
-    @endhasrole
+    @endhasanyrole
     <script>
         // Update status
         function updateStatus(labelId) {

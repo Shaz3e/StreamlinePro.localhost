@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Product\StoreProductRequest;
-use App\Models\Product;
+use App\Http\Requests\Admin\ProductService\StoreProductServiceRequest;
+use App\Models\ProductService;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
-class ProductController extends Controller
+class ProductServiceController extends Controller
 {
     use FormHelper;
 
@@ -20,9 +20,9 @@ class ProductController extends Controller
     public function index()
     {
         // Check Authorize
-        Gate::authorize('viewAny', Product::class);
+        Gate::authorize('viewAny', ProductService::class);
 
-        return view('admin.product.index');
+        return view('admin.product-service.index');
     }
 
     /**
@@ -31,39 +31,39 @@ class ProductController extends Controller
     public function create()
     {
         // Check Authorize
-        Gate::authorize('create', Product::class);
+        Gate::authorize('create', ProductService::class);
 
-        return view('admin.product.create');
+        return view('admin.product-service.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductServiceRequest $request)
     {
         // Check Authorize
-        Gate::authorize('create', Product::class);
+        Gate::authorize('create', ProductService::class);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $product = Product::create($validated);
+        $productService = ProductService::create($validated);
 
-        session()->flash('success', 'Product has been created successfully!');
+        session()->flash('success', 'Record has been created successfully!');
         
-        return $this->saveAndRedirect($request, 'products', $product->id);
+        return $this->saveAndRedirect($request, 'product-service', $productService->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(ProductService $productService)
     {
         // Check Authorize
-        Gate::authorize('read', $product);
+        Gate::authorize('read', $productService);
 
-        $audits = $product->audits()
+        $audits = $productService->audits()
             ->latest()
             ->paginate(10);
 
@@ -72,8 +72,8 @@ class ProductController extends Controller
             return response()->json($audits);
         }
 
-        return view('admin.product.show', [
-            'product' => $product,
+        return view('admin.product-service.show', [
+            'productService' => $productService,
             'audits' => $audits,
         ]);
     }
@@ -81,34 +81,34 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(ProductService $productService)
     {
         // Check Authorize
-        Gate::authorize('update', $product);
+        Gate::authorize('update', $productService);
 
-        return view('admin.product.edit', [
-            'product' => $product,
+        return view('admin.product-service.edit', [
+            'productService' => $productService,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreProductRequest $request, Product $product)
+    public function update(StoreProductServiceRequest $request, ProductService $productService)
     {
         // Check Authorize
-        Gate::authorize('update', $product);
+        Gate::authorize('update', $productService);
 
         // Validate data
         $validated = $request->validated();
 
         // Update record in database
-        $product->update($validated);
+        $productService->update($validated);
 
         // Flash message
-        session()->flash('success', 'Product has been updated successfully!');
+        session()->flash('success', 'Record has been updated successfully!');
         
-        return $this->saveAndRedirect($request, 'products', $product->id);
+        return $this->saveAndRedirect($request, 'product-service', $productService->id);
     }
 
     /**
@@ -117,17 +117,17 @@ class ProductController extends Controller
     public function audit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('view', Product::class);
+        Gate::authorize('view', ProductService::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
 
-            return view('admin.product.audit', [
+            return view('admin.product-service.audit', [
                 'auditLog' => $auditLog,
             ]);
         } else {
             session()->flash('error', 'Log not available');
-            return redirect()->route('admin.products.index');
+            return redirect()->route('admin.products-services.index');
         }
     }
 
@@ -137,7 +137,7 @@ class ProductController extends Controller
     public function deleteAudit(Request $request)
     {
         // Check Authorize
-        Gate::authorize('delete', Product::class);
+        Gate::authorize('delete', ProductService::class);
 
         if (request()->ajax()) {
             $auditLog = Audit::find($request->id);
@@ -146,7 +146,7 @@ class ProductController extends Controller
         }
 
         session()->flash('success', 'Log deleted successfully');
-        return redirect()->route('admin.products.index');
+        return redirect()->route('admin.products-services.index');
     }
 }
 

@@ -7,7 +7,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceLabel;
 use App\Models\Payment;
-use App\Models\Product;
+use App\Models\ProductService;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,14 +39,14 @@ class InvoiceController extends Controller
         // Check Authorize
         Gate::authorize('create', Invoice::class);
 
-        // Get all active products
-        $products = Product::where('is_active', 1)->get();
+        // Get all active products and services
+        $productService = ProductService::where('is_active', 1)->get();
 
         // Get all active invoice status
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('admin.invoice.create', [
-            'products' => $products,
+            'productService' => $productService,
             'invoiceLabels' => $invoiceLabels,
         ]);
     }
@@ -192,8 +192,8 @@ class InvoiceController extends Controller
         // Check Authorize
         Gate::authorize('update', $invoice);
 
-        // Get all active products
-        $products = Product::where('is_active', 1)->get();
+        // Get all active products and services
+        $productService = ProductService::where('is_active', 1)->get();
 
         // Get all active invoice status
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
@@ -203,7 +203,7 @@ class InvoiceController extends Controller
 
         return view('admin.invoice.edit', [
             'invoice' => $invoice,
-            'products' => $products,
+            'productService' => $productService,
             'invoiceLabels' => $invoiceLabels,
             'items' => $items,
         ]);
@@ -307,16 +307,11 @@ class InvoiceController extends Controller
             }
 
             // Update invoice with calculated sums
-            $subTotal = $request->sub_total;
-            $discount = $request->discount;
-            $tax = $request->tax;
-            $total = $request->total;
-
             $invoice->update([
-                'sub_total' => $subTotal,
-                'discount' => $discount,
-                'tax' => $tax,
-                'total' => $total,
+                'sub_total' => $request->sub_total,
+                'discount' => $request->discount,
+                'tax' => $request->tax,
+                'total' => $request->total,
             ]);
         });
 

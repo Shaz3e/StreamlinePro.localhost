@@ -38,7 +38,7 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\PromotionController;
 
 // Products
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductServiceController;
 
 // Knowledgebase
 use App\Http\Controllers\Admin\Knowledgebase\KnowledgebaseCategoryController;
@@ -268,12 +268,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
          * Products
          */
         // Product List
-        Route::resource('products', ProductController::class);
+        Route::resource('product-service', ProductServiceController::class);
         // Audit
-        Route::get('products-audit/{id}', [ProductController::class, 'audit'])
-            ->name('products.audit');
-        Route::get('products-audit/delete/{id}', [ProductController::class, 'deleteAudit'])
-            ->name('products.audit.delete');
+        Route::get('product-service-audit/{id}', [ProductServiceController::class, 'audit'])
+            ->name('product-service.audit');
+        Route::get('product-service-audit/delete/{id}', [ProductServiceController::class, 'deleteAudit'])
+            ->name('product-service.audit.delete');
 
         // Knowledgebase Category & Article
         Route::prefix('knowledgebase')->name('knowledgebase.')->group(function () {

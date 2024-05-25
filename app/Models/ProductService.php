@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable as AuditingAuditable;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class Product extends Model implements Auditable
+class ProductService extends Model implements Auditable
 {
     use HasFactory, AuditingAuditable, SoftDeletes;
+
+    // Table Name
+    protected $table = 'products_services';
 
     protected $guarded = [];
 

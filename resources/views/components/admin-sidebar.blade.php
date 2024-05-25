@@ -118,12 +118,12 @@
                             @endcan
 
                             {{-- Products --}}
-                            @can('product.list')
-                                <li class="{{ request()->routeIs('admin.products.*') ? 'mm-active' : '' }}">
-                                    <a href="{{ route('admin.products.index') }}"
-                                        class="waves-effect {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                            @can('product-service.list')
+                                <li class="{{ request()->routeIs('admin.product-service.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.product-service.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.product-service.*') ? 'active' : '' }}">
                                         <i class="ri-store-2-line"></i>
-                                        <span>Products</span>
+                                        <span>Products & Services</span>
                                     </a>
                                 </li>
                             @endcan

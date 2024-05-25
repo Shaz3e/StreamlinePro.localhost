@@ -1,31 +1,29 @@
 @extends('components.layouts.app')
 
 @section('content')
-
-@include('partials.page-header', [
-    'title' => 'Edit Product',
-    'breadcrumbs' => [
-        ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-        ['text' => 'Product List', 'link' => route('admin.products.index')],
-        ['text' => 'Edit Product', 'link' => null],
-    ],
-])
+    @include('partials.page-header', [
+        'title' => 'Create New',
+        'breadcrumbs' => [
+            ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
+            ['text' => 'Product Service List', 'link' => route('admin.product-service.index')],
+            ['text' => 'Create Product', 'link' => null],
+        ],
+    ])
 
     {{-- Create Form --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" class="needs-validation" novalidate
+                <form action="{{ route('admin.product-service.store') }}" method="POST" class="needs-validation" novalidate
                     enctype="multipart/form-data">
                     @csrf
-                    @method('put')
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name">Product Name</label>
+                                    <label for="name">Product or Service Name</label>
                                     <input type="text" name="name" class="form-control" id="name"
-                                        value="{{ old('name', $product->name) }}" required>
+                                        value="{{ old('name') }}" required>
                                 </div>
                                 @error('name')
                                     <div><span class="text-danger">{{ $message }}</span></div>
@@ -34,21 +32,34 @@
                             {{-- /.col --}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="price">Product Price</label>
+                                    <label for="price">Price</label>
                                     <input type="text" name="price" class="form-control" id="price"
-                                        value="{{ old('price', $product->price) }}" required>
+                                        value="{{ old('price') }}" required>
                                 </div>
                                 @error('price')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
                             {{-- /.col --}}
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="is_active">Product Status</label>
+                                    <label for="type">Type</label>
+                                    <select name="type" class="form-control" id="type" required>
+                                        <option value="product" {{ old('type') == 'product' ? 'selected' : '' }}>Show</option>
+                                        <option value="service" {{ old('type') == 'service' ? 'selected' : '' }}>Hide</option>
+                                    </select>
+                                </div>
+                                @error('type')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label for="is_active">Status</label>
                                     <select name="is_active" class="form-control" id="is_active" required>
-                                        <option value="1" {{ old('is_active', $product->is_active) == 1 ? 'selected' : '' }}>Show</option>
-                                        <option value="0" {{ old('is_active', $product->is_active) == 0 ? 'selected' : '' }}>Hide</option>
+                                        <option value="1" {{ old('is_active') == 1 ? 'selected' : '' }}>Show</option>
+                                        <option value="0" {{ old('is_active') == 0 ? 'selected' : '' }}>Hide</option>
                                     </select>
                                 </div>
                                 @error('is_active')
@@ -61,8 +72,8 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="description">Product description</label>
-                                    <textarea name="description" class="form-control" id="description">{{ old('description', $product->description) }}</textarea>
+                                    <label for="description">Description</label>
+                                    <textarea name="description" class="form-control" id="description">{{ old('description') }}</textarea>
                                 </div>
                                 @error('description')
                                     <div><span class="text-danger">{{ $message }}</span></div>

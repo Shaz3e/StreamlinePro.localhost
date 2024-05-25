@@ -2,14 +2,14 @@
 
 @section('content')
     @include('partials.page-header', [
-        'title' => 'Products',
+        'title' => 'Products & Services',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('admin.dashboard')],
-            ['text' => 'View List', 'link' => null],
+            ['text' => 'Product Service List', 'link' => null],
         ],
     ])
 
-    @livewire('admin.product.product-list')
+    @livewire('admin.product-service.product-service-list')
 @endsection
 
 @push('styles')

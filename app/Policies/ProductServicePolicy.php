@@ -3,25 +3,25 @@
 namespace App\Policies;
 
 use App\Models\Admin;
-use App\Models\Product;
+use App\Models\ProductService;
 
-class ProductPolicy
+class ProductServicePolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(Admin $admin)
     {
-        if($admin->can('product.list')){
+        if($admin->can('product-service.list')){
             return true;
         }
     }
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Admin $admin, Product $product)
+    public function view(Admin $admin, ProductService $productService)
     {
-        if ($admin->can('product.read')) {
+        if ($admin->can('product-service.read')) {
             return true;
         }
     }
@@ -31,7 +31,7 @@ class ProductPolicy
      */
     public function create(Admin $admin)
     {
-        if ($admin->can('product.create')) {
+        if ($admin->can('product-service.create')) {
             return true;
         }
     }
@@ -39,9 +39,9 @@ class ProductPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Admin $admin, Product $product)
+    public function update(Admin $admin, ProductService $productService)
     {
-        if ($admin->can('product.update')) {
+        if ($admin->can('product-service.update')) {
             return true;
         }
     }
@@ -49,9 +49,9 @@ class ProductPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Admin $admin, Product $product)
+    public function delete(Admin $admin, ProductService $productService)
     {
-        if ($admin->can('product.delete')) {
+        if ($admin->can('product-service.delete')) {
             return true;
         }
     }
@@ -59,9 +59,9 @@ class ProductPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(Admin $admin, Product $product)
+    public function restore(Admin $admin, ProductService $productService)
     {
-        if ($admin->can('product.restore')) {
+        if ($admin->can('product-service.restore')) {
             return true;
         }
     }
@@ -69,9 +69,9 @@ class ProductPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(Admin $admin, Product $product)
+    public function forceDelete(Admin $admin, ProductService $productService)
     {
-        if ($admin->can('product.force.delete')) {
+        if ($admin->can('product-service.force.delete')) {
             return true;
         }
     }

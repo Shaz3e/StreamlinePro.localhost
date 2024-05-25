@@ -9,13 +9,21 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-7 col-sm-12 mb-2">
+        <div class="col-md-1 col-sm-12 mb-2">
+            <select wire:model.live="filterProductService" class="form-control form-control-sm form-control-border">
+                <option value="" selected="selected">Filters</option>
+                <option value="product">Show Products</option>
+                <option value="service">Show Services</option>
+            </select>
+        </div>
+        {{-- /.col --}}
+        <div class="col-md-6 col-sm-12 mb-2">
             <input type="search" wire:model.live="search" class="form-control form-control-sm" placeholder="Search...">
         </div>
         {{-- .col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.products.create') }}"
+                <a href="{{ route('admin.product-service.create') }}"
                     class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
@@ -49,50 +57,50 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
-                                    <tr wire:key="{{ $product->id }}">
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->price }}</td>
+                                @foreach ($productsServices as $productService)
+                                    <tr wire:key="{{ $productService->id }}">
+                                        <td>{{ $productService->name }}</td>
+                                        <td>{{ $productService->price }}</td>
                                         @if (!$showDeleted)
                                             <td>
-                                                <input type="checkbox" wire:change="toggleStatus({{ $product->id }})"
-                                                    id="is_active_{{ $product->id }}" switch="bool"
-                                                    {{ $product->is_active ? 'checked' : '' }} />
-                                                <label for="is_active_{{ $product->id }}" data-on-label="Yes"
+                                                <input type="checkbox" wire:change="toggleStatus({{ $productService->id }})"
+                                                    id="is_active_{{ $productService->id }}" switch="bool"
+                                                    {{ $productService->is_active ? 'checked' : '' }} />
+                                                <label for="is_active_{{ $productService->id }}" data-on-label="Yes"
                                                     data-off-label="No"></label>
                                             </td>
                                         @endif
                                         <td class="text-right">
                                             @if ($showDeleted)
-                                                @can('product.restore')
-                                                    <button wire:click="confirmRestore({{ $product->id }})"
+                                                @can('product-service.restore')
+                                                    <button wire:click="confirmRestore({{ $productService->id }})"
                                                         class="btn btn-sm btn-outline-info" data-toggle="modal"
                                                         data-target="#deleteModal">
                                                         <i class="ri-arrow-go-back-line"></i>
                                                     </button>
                                                 @endcan
-                                                @can('product.force.delete')
-                                                    <button wire:click="confirmForceDelete({{ $product->id }})"
+                                                @can('product-service.force.delete')
+                                                    <button wire:click="confirmForceDelete({{ $productService->id }})"
                                                         class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                         data-target="#deleteModal">
                                                         <i class="ri-delete-bin-7-line"></i>
                                                     </button>
                                                 @endcan
                                             @else
-                                                @can('product.read')
-                                                    <a href="{{ route('admin.products.show', $product->id) }}"
+                                                @can('product-service.read')
+                                                    <a href="{{ route('admin.product-service.show', $productService->id) }}"
                                                         class="btn btn-sm btn-outline-info">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
                                                 @endcan
-                                                @can('product.update')
-                                                    <a href="{{ route('admin.products.edit', $product->id) }}"
+                                                @can('product-service.update')
+                                                    <a href="{{ route('admin.product-service.edit', $productService->id) }}"
                                                         class="btn btn-sm btn-outline-success">
                                                         <i class="ri-pencil-line"></i>
                                                     </a>
                                                 @endcan
-                                                @can('product.delete')
-                                                    <button wire:click="confirmDelete({{ $product->id }})"
+                                                @can('product-service.delete')
+                                                    <button wire:click="confirmDelete({{ $productService->id }})"
                                                         class="btn btn-sm btn-outline-danger" data-toggle="modal"
                                                         data-target="#deleteModal">
                                                         <i class="ri-delete-bin-line"></i>
@@ -105,7 +113,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $products->links() }}
+                    {{ $productsServices->links() }}
                 </div>
             </div>
         </div>

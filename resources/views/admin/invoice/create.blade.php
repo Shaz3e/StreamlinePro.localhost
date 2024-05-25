@@ -218,10 +218,10 @@
 
                             <div class="col-md-12">
                                 <button type="button" class="btn btn-sm btn-primary waves-effect waves-light add-product"
-                                    data-bs-toggle="modal" data-bs-target="#selectProduct">
+                                    data-bs-toggle="modal" data-bs-target="#selectProductService">
                                     <i class="ri-add-line align-middle me-2"></i> Add Product(s) or Service(s)
                                 </button>
-                                @include('admin.invoice.product-selection')
+                                @include('admin.invoice.product-service-selection')
                             </div>
                             {{-- /.col-md-12 --}}
                         </div>
@@ -420,7 +420,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Product modal
-            const modal = document.getElementById('selectProduct');
+            const modal = document.getElementById('selectProductService');
             // Prepair item list in the table
             const itemList = document.getElementById('item-list');
 

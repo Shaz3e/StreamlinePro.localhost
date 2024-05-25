@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\Product;
+namespace App\Livewire\Admin\ProductService;
 
-use App\Models\Product;
+use App\Models\ProductService;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ProductList extends Component
+class ProductServiceList extends Component
 {
     use WithPagination;
 
@@ -19,6 +19,9 @@ class ProductList extends Component
     public $perPage = 10;
 
     public $id;
+
+    // Filter by Product or Services
+    public $filterProductService;
 
     // record to delete
     public $recordToDelete;
@@ -31,10 +34,10 @@ class ProductList extends Component
      */
     public function render()
     {
-        $query = Product::query();
+        $query = ProductService::query();
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('products');
+        $columns = Schema::getColumnListing('products_and_services');
 
         // Filter records based on search query
         if ($this->search !== '') {
@@ -45,15 +48,20 @@ class ProductList extends Component
             });
         }
 
+        // Filter by Product or Services
+        if ($this->filterProductService) {
+            $query->where('type', $this->filterProductService);
+        }
+
         // Apply filter for deleted records if the option is selected
         if ($this->showDeleted) {
             $query->onlyTrashed();
         }
 
-        $products = $query->orderBy('id', 'asc')->paginate($this->perPage);
+        $productsServices = $query->orderBy('id', 'asc')->paginate($this->perPage);
 
-        return view('livewire.admin.product.product-list', [
-            'products' => $products
+        return view('livewire.admin.product-service.product-service-list', [
+            'productsServices' => $productsServices
         ]);
     }
 
@@ -76,19 +84,19 @@ class ProductList extends Component
     /**
      * Toggle Status
      */
-    public function toggleStatus($productId)
+    public function toggleStatus($id)
     {
         // Get data
-        $product = Product::find($productId);
+        $productService = ProductService::find($id);
 
         // Check user exists
-        if (!$product) {
-            $this->dispatch('error', 'Product not found!');
+        if (!$productService) {
+            $this->dispatch('error', 'Product or Service not found!');
             return;
         }
 
         // Change Status
-        $product->update(['is_active' => !$product->is_active]);
+        $productService->update(['is_active' => !$productService->is_active]);
         $this->dispatch('statusChanged');
     }
 
@@ -114,16 +122,16 @@ class ProductList extends Component
         }
 
         // get id
-        $product = Product::find($this->recordToDelete);
+        $productService = ProductService::find($this->recordToDelete);
 
         // Check record exists
-        if (!$product) {
+        if (!$productService) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $product->delete();
+        $productService->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;
@@ -132,9 +140,9 @@ class ProductList extends Component
     /**
      * Confirm Restore
      */
-    public function confirmRestore($productId)
+    public function confirmRestore($id)
     {
-        $this->recordToDelete = $productId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmRestore');
     }
 
@@ -144,15 +152,15 @@ class ProductList extends Component
     #[On('restored')]
     public function restore()
     {
-        Product::withTrashed()->find($this->recordToDelete)->restore();
+        ProductService::withTrashed()->find($this->recordToDelete)->restore();
     }
 
     /**
      * Confirm force delete
      */
-    public function confirmForceDelete($productId)
+    public function confirmForceDelete($id)
     {
-        $this->recordToDelete = $productId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmForceDelete');
     }
 
@@ -168,8 +176,8 @@ class ProductList extends Component
             return;
         }
 
-        $product = Product::withTrashed()->find($this->recordToDelete);
+        $productService = ProductService::withTrashed()->find($this->recordToDelete);
 
-        $product->forceDelete();
+        $productService->forceDelete();
     }
 }

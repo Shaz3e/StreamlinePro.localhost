@@ -95,14 +95,14 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'promotion.delete'],
             ['guard_name' => 'admin', 'name' => 'promotion.restore'],
             ['guard_name' => 'admin', 'name' => 'promotion.force.delete'],
-            // Product
-            ['guard_name' => 'admin', 'name' => 'product.list'],
-            ['guard_name' => 'admin', 'name' => 'product.create'],
-            ['guard_name' => 'admin', 'name' => 'product.read'],
-            ['guard_name' => 'admin', 'name' => 'product.update'],
-            ['guard_name' => 'admin', 'name' => 'product.delete'],
-            ['guard_name' => 'admin', 'name' => 'product.restore'],
-            ['guard_name' => 'admin', 'name' => 'product.force.delete'],
+            // Product & Services
+            ['guard_name' => 'admin', 'name' => 'product-service.list'],
+            ['guard_name' => 'admin', 'name' => 'product-service.create'],
+            ['guard_name' => 'admin', 'name' => 'product-service.read'],
+            ['guard_name' => 'admin', 'name' => 'product-service.update'],
+            ['guard_name' => 'admin', 'name' => 'product-service.delete'],
+            ['guard_name' => 'admin', 'name' => 'product-service.restore'],
+            ['guard_name' => 'admin', 'name' => 'product-service.force.delete'],
             // Role
             ['guard_name' => 'admin', 'name' => 'role.list'],
             ['guard_name' => 'admin', 'name' => 'role.create'],

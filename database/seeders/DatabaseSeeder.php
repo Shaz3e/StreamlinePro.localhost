@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             InvoiceLabelSeeder::class,
 
             // Local
-            ProductSeeder::class,
+            ProductServiceSeeder::class,
             CompanySeeder::class,
             DepartmentSeeder::class,
             UserSeeder::class,
