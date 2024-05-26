@@ -56,10 +56,11 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th style="width: 30%">Name</th>
+                                    <th style="width: 35%">Name</th>
                                     <th style="30%">Image</th>
+                                    <th style="10%">Featured</th>
                                     @if (!$showDeleted)
-                                        <th>Status</th>
+                                        <th style="10%">Status</th>
                                     @endif
                                     <th style="width: 15%"></th>
                                 </tr>
@@ -75,6 +76,13 @@
                                                     class="w-auto rounded" style="max-height: 50px" loading="lazy"
                                                     decoding="async" />
                                             </a>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" wire:change="toggleFeatured({{ $promotion->id }})"
+                                                id="is_featured_{{ $promotion->id }}" switch="bool"
+                                                {{ $promotion->is_featured ? 'checked' : '' }} />
+                                            <label for="is_featured_{{ $promotion->id }}" data-on-label="Yes"
+                                                data-off-label="No"></label>
                                         </td>
                                         @if (!$showDeleted)
                                             <td>

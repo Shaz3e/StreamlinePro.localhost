@@ -22,14 +22,14 @@ class StorePromotionRequest extends BaseFormRequest
             'start_date' => [
                 'nullable',
                 function ($attribute, $value, $fail) {
-                    $date = date('Y-m-d H:i:s', strtotime($value));
+                    $date = date('Y-m-d', strtotime($value));
                     request()->merge([$attribute => $date]);
                 },
             ],
             'end_date' => [
                 'nullable',
                 function ($attribute, $value, $fail) {
-                    $date = date('Y-m-d H:i:s', strtotime($value));
+                    $date = date('Y-m-d', strtotime($value));
                     request()->merge([$attribute => $date]);
                 },
             ],

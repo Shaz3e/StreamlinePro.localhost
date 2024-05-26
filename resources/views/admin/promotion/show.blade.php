@@ -48,7 +48,7 @@
                     <p class="card-text">Start Date</p>
                     <p class="card-title">
                         @if ($promotion->start_date)
-                            {{ $promotion->start_date->format('l, F j, Y h:i A') }}
+                            {{ $promotion->start_date->format('l, F j, Y') }}
                         @else
                             N/A
                         @endif
@@ -63,7 +63,7 @@
                     <p class="card-text">End Date</p>
                     <p class="card-title">
                         @if ($promotion->end_date)
-                            {{ $promotion->end_date->format('l, F j, Y h:i A') }}
+                            {{ $promotion->end_date->format('l, F j, Y') }}
                         @else
                             N/A
                         @endif

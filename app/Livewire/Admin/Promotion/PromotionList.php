@@ -110,6 +110,25 @@ class PromotionList extends Component
     }
 
     /**
+     * Toggle Featured
+     */
+    public function toggleFeatured($promotionId)
+    {
+        // Get data
+        $promotion = Promotion::find($promotionId);
+
+        // Check user exists
+        if (!$promotion) {
+            $this->dispatch('error', 'Promotion not found!');
+            return;
+        }
+
+        // Change Status
+        $promotion->update(['is_featured' => !$promotion->is_featured]);
+        $this->dispatch('statusChanged');
+    }
+
+    /**
      * Confirm Delete
      */
     public function confirmDelete($id)

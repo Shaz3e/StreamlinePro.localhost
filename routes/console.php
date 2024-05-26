@@ -9,6 +9,7 @@ use App\Jobs\User\Invoice\SendInvoiceSecondOverDueNoticeJob;
 use App\Jobs\User\Invoice\SendInvoiceSecondReminderBeforeDueDateJob;
 use App\Jobs\User\Invoice\SendInvoiceThirdOverDueNoticeJob;
 use App\Jobs\User\Invoice\SendInvoiceThirdReminderBeforeDueDateJob;
+use App\Jobs\User\PromotionScheduleJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -90,3 +91,8 @@ use Illuminate\Support\Facades\Schedule;
  * Send Invoice Third Overdue Reminder when due_date after 3 days from now
  */
 // Schedule::job(new SendInvoiceThirdOverDueNoticeJob)->daily();
+
+/**
+ * Update Promotion is_active status based on time
+ */
+// Schedule::job(new PromotionScheduleJob)->daily();

@@ -51,8 +51,8 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="description">Promotion description</label>
-                                    <textarea name="description" class="form-control" id="description">{{ old('description') }}</textarea>
+                                    <label for="description">Promotion Description</label>
+                                    <textarea name="description" class="form-control textEditor" id="description">{{ old('description') }}</textarea>
                                 </div>
                                 <small class="text-muted">For internal use only</small>
                                 @error('description')
@@ -66,7 +66,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="start_date">Start Date</label>
-                                    <input type="datetime-local" class="form-control" name="start_date" id="start_date"
+                                    <input type="date" class="form-control" name="start_date" id="start_date"
                                         value="{{ old('start_date') }}">
                                 </div>
                                 <small class="text-muted">Promotion Start Date</small>
@@ -78,7 +78,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="end_date">End Date</label>
-                                    <input type="datetime-local" class="form-control" name="end_date" id="end_date"
+                                    <input type="date" class="form-control" name="end_date" id="end_date"
                                         value="{{ old('end_date') }}">
                                 </div>
                                 <small class="text-muted">Promotion End Date</small>
@@ -146,4 +146,51 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            0 < $(".textEditor").length && tinymce.init({
+                selector: "textarea.textEditor",
+                height: 500,
+                plugins: [
+                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                    "save table directionality emoticons template paste"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+                style_formats: [{
+                        title: "Bold text",
+                        inline: "b"
+                    },
+                    {
+                        title: "Red text",
+                        inline: "span",
+                        styles: {
+                            color: "#ff0000"
+                        }
+                    }, {
+                        title: "Red header",
+                        block: "h1",
+                        styles: {
+                            color: "#ff0000"
+                        }
+                    }, {
+                        title: "Example 1",
+                        inline: "span",
+                        classes: "example1"
+                    }, {
+                        title: "Example 2",
+                        inline: "span",
+                        classes: "example2"
+                    }, {
+                        title: "Table styles"
+                    }, {
+                        title: "Table row 1",
+                        selector: "tr",
+                        classes: "tablerow1"
+                    }
+                ]
+            })
+        });
+    </script>
 @endpush
