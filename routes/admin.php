@@ -300,9 +300,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('staff-search', [StaffController::class, 'searchStaff'])
             ->name('search.staff');
         // Audit
-        Route::get('staff-audit/{id}', [UserController::class, 'audit'])
+        Route::get('staff-audit/{id}', [StaffController::class, 'audit'])
             ->name('staff.audit');
-        Route::get('staff-audit/delete/{id}', [UserController::class, 'deleteAudit'])
+        Route::get('staff-audit/delete/{id}', [StaffController::class, 'deleteAudit'])
             ->name('staff.audit.delete');
 
         /**
