@@ -1,7 +1,7 @@
 <div class="row mb-3">
     {{-- Recent Tasks --}}
-    <div class="col-12">
-        <div class="card" style="height: calc(100% - 15px)">
+    <div class="col-md-12">
+        <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Recent Task</h4>
                 <div class="table-resposnive">
