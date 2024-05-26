@@ -5,8 +5,11 @@
 
                     <!-- User details -->
                     <div class="user-profile text-center mt-3">
+                        
                         <div class="">
-                            <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="" class="avatar-md rounded-circle">
+                            <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('storage/avatars/avatar.png') }}"
+                                alt="{{ ucwords(auth()->user()->name) }}"
+                                class="avatar-md rounded-circle">
                         </div>
                         <div class="mt-3">
                             <h4 class="font-size-16 mb-1">{{ auth()->user()->name }}</h4>

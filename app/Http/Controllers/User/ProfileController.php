@@ -29,6 +29,10 @@ class ProfileController extends Controller
             return $this->updatePassword($request);
         }
 
+        if ($request->has('changeAvatar')) {
+            return $this->changeAvatar($request);
+        }
+
         if ($request->has('updateProfile')) {
             return $this->updateProfile($request);
         }
@@ -70,7 +74,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         // If token session exists
-        if(!session()->has('token')){
+        if (!session()->has('token')) {
             // If current password is incorrect
             if (!password_verify($validated['current_password'], $user->password)) {
                 session()->flash('error', 'Your current password is incorrect.');
@@ -90,6 +94,41 @@ class ProfileController extends Controller
         $user->save();
 
         session()->flash('success', 'Your password has been changed');
+        return back();
+    }
+
+    /**
+     * Change Profile Avatar
+     */
+    private function changeAvatar(Request $request)
+    {
+        // Validate the request data
+        $validated = $request->validate([
+            'avatar' => 'nullable|image|mimes:png,jpg|max:2048',
+            'selected_avatar' => 'nullable|string'
+        ]);
+
+        $user = $request->user();
+
+        // Check if a new avatar file has been uploaded
+        if ($request->hasFile('avatar')) {
+            $filename = time() . '.' . $request->file('avatar')->extension();
+            $validated['avatar'] = $request->file('avatar')
+                ->storeAs('avatars', $filename, 'public');
+            $user->avatar = $validated['avatar'];
+            
+        } elseif ($request->filled('selected_avatar')) {
+            // If no file is uploaded, use the selected avatar path
+            $user->avatar = $request->input('selected_avatar');
+        }
+
+        // Save the updated user data
+        $user->save();
+
+        // Flash a success message to the session
+        session()->flash('success', 'Your profile picture is updated');
+
+        // Redirect back to the previous page
         return back();
     }
 

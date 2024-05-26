@@ -158,13 +158,15 @@
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user"
-                        src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                        src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('storage/avatars/avatar.png') }}"
+                        alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1">{{ auth()->user()->name }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <a class="dropdown-item" href="{{ route('profile') }}"><i class="ri-user-line align-middle me-1"></i>
+                    <a class="dropdown-item" href="{{ route('profile') }}"><i
+                            class="ri-user-line align-middle me-1"></i>
                         Profile</a>
                     <div class="dropdown-divider"></div>
                     <a href="javascript:void(0)" class="dropdown-item text-danger"

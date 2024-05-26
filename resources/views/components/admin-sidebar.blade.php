@@ -6,7 +6,8 @@
                     <!-- User details -->
                     <div class="user-profile text-center mt-3">
                         <div class="">
-                            <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt=""
+                            <img src="{{ auth()->guard('admin')->user()->avatar ? asset('storage/' . auth()->guard('admin')->user()->avatar) : asset('storage/avatars/avatar.png') }}"
+                                alt="{{ ucwords(auth()->guard('admin')->user()->name) }}"
                                 class="avatar-md rounded-circle">
                         </div>
                         <div class="mt-3">
@@ -138,7 +139,8 @@
                                     <ul class="sub-menu" aria-expanded="false">
                                         {{-- Knowledgebase Category --}}
                                         @can('knowledgebase-category.list')
-                                            <li class="{{ request()->routeIs('admin.knowledgebase.categories.*') ? 'mm-active' : '' }}">
+                                            <li
+                                                class="{{ request()->routeIs('admin.knowledgebase.categories.*') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.knowledgebase.categories.index') }}"
                                                     class="{{ request()->routeIs('admin.knowledgebase.categories.*') ? 'active' : '' }}">
                                                     Cateogry
@@ -147,7 +149,8 @@
                                         @endcan
                                         {{-- Knowledgebase Article --}}
                                         @can('knowledgebase-article.list')
-                                            <li class="{{ request()->routeIs('admin.knowledgebase.articles.*') ? 'mm-active' : '' }}">
+                                            <li
+                                                class="{{ request()->routeIs('admin.knowledgebase.articles.*') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.knowledgebase.articles.index') }}"
                                                     class="{{ request()->routeIs('admin.knowledgebase.articles.*') ? 'active' : '' }}">
                                                     Articles
@@ -156,7 +159,8 @@
                                         @endcan
                                         {{-- Knowledgebase Article Create --}}
                                         @can('knowledgebase-article.create')
-                                            <li class="{{ request()->routeIs('admin.knowledgebase.articles.create') ? 'mm-active' : '' }}">
+                                            <li
+                                                class="{{ request()->routeIs('admin.knowledgebase.articles.create') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.knowledgebase.articles.create') }}"
                                                     class="{{ request()->routeIs('admin.knowledgebase.articles.create') ? 'active' : '' }}">
                                                     New Article

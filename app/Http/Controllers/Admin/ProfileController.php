@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\StoreProfileRequest;
+use App\Http\Requests\Common\Avatar\AvatarRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +31,10 @@ class ProfileController extends Controller
             return $this->updatePassword($request);
         }
 
+        if ($request->has('changeAvatar')) {
+            return $this->changeAvatar($request);
+        }
+
         if ($request->has('updateProfile')) {
             return $this->updateProfile($request);
         }
@@ -49,6 +54,40 @@ class ProfileController extends Controller
 
         session()->flash('success', 'Profile updated successfully!');
 
+        return back();
+    }
+
+    /**
+     * Change Profile Avatar
+     */
+    private function changeAvatar(Request $request)
+    {
+        // Validate the request data
+        $validated = $request->validate([
+            'avatar' => 'nullable|image|mimes:png,jpg|max:2048',
+            'selected_avatar' => 'nullable|string'
+        ]);
+
+        $user = $request->user();
+
+        // Check if a new avatar file has been uploaded
+        if ($request->hasFile('avatar')) {
+            $filename = time() . '.' . $request->file('avatar')->extension();
+            $validated['avatar'] = $request->file('avatar')
+                ->storeAs('avatars', $filename, 'public');
+            $user->avatar = $validated['avatar'];
+        } elseif ($request->filled('selected_avatar')) {
+            // If no file is uploaded, use the selected avatar path
+            $user->avatar = $request->input('selected_avatar');
+        }
+
+        // Save the updated user data
+        $user->save();
+
+        // Flash a success message to the session
+        session()->flash('success', 'Your profile picture is updated');
+
+        // Redirect back to the previous page
         return back();
     }
 
