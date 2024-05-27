@@ -40,7 +40,7 @@ class InvoiceController extends Controller
         Gate::authorize('create', Invoice::class);
 
         // Get all active products and services
-        $productService = ProductService::where('is_active', 1)->get();
+        $productService = ProductService::all();
 
         // Get all active invoice status
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
