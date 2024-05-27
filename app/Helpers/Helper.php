@@ -1,10 +1,16 @@
 <?php
 
 use App\Models\AppSetting;
+use App\Models\Currency;
 use Carbon\Carbon;
 
 function DiligentCreators($appSettingName){
     return AppSetting::where('name', $appSettingName)->value('value');
+}
+
+function currency($currencyId, $fields = ['id', 'name', 'symbol']){
+    $currency = Currency::find($currencyId);
+    return $currency->getData($fields);
 }
 
 function getAllTimeZonesSelectBox($selectedValue)

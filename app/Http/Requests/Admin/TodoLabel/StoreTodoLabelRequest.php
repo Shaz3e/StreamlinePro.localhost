@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\TodoStatus;
+namespace App\Http\Requests\Admin\TodoLabel;
 
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;

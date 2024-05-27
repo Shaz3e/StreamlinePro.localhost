@@ -37,6 +37,10 @@
                     @include('admin.app-setting.mail.mail')
                 @endif
 
+                @if (request()->routeIs('admin.settings.currency'))
+                    @include('admin.app-setting.currency.currency')
+                @endif
+
             </div>
             {{-- /.email-rightbar --}}
 

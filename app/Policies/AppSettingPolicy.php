@@ -150,13 +150,28 @@ class AppSettingPolicy
      */
     public function mail(Admin $admin)
     {
-        if($admin->canAny(['mail0setting.list','mail0setting.read'])){
+        if($admin->canAny(['mail-setting.list','mail-setting.read'])){
             return true;
         }
     }
     public function mailStore(Admin $admin)
     {
         if($admin->can('mail-setting.update')){
+            return true;
+        }
+    }
+
+    /**
+     * Currency Setting
+     */
+    public function currency(Admin $admin){
+        if($admin->canAny(['currency-setting.list', 'currency-setting.read'])){
+            return true;
+        }
+    }
+
+    public function currencyStore(Admin $admin){
+        if($admin->can('currency-setting.update')){
             return true;
         }
     }

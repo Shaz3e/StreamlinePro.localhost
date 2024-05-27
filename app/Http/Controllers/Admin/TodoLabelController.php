@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\TodoStatus\StoreTodoLabelRequest;
+use App\Http\Requests\Admin\TodoLabel\StoreTodoLabelRequest;
 use App\Models\TodoLabel;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;

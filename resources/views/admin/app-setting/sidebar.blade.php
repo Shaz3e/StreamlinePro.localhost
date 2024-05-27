@@ -30,6 +30,12 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> Mail Setting
             </a>
         @endcan
+        @can('currency-setting.list')
+            <a href="{{ route('admin.settings.currency') }}"
+                class="{{ request()->routeIs('admin.settings.currency') ? 'active' : '' }}">
+                <i class="ri ri-arrow-right-s-line me-2"></i> Currency Setting
+            </a>
+        @endcan
     </div>
 </div>
 {{-- email-leftbar --}}

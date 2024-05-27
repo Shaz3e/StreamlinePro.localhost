@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\Company;
+namespace App\Livewire\Admin\Currency;
 
-use App\Models\Company;
+use App\Models\Currency;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class CompanyList extends Component
+class CurrencyList extends Component
 {
     use WithPagination;
 
@@ -31,10 +31,10 @@ class CompanyList extends Component
      */
     public function render()
     {
-        $query = Company::query();
+        $query = Currency::query();
 
         // Get all columns in the required table
-        $columns = Schema::getColumnListing('companies');
+        $columns = Schema::getColumnListing('currencies');
 
         // Filter records based on search query
         if ($this->search !== '') {
@@ -45,50 +45,29 @@ class CompanyList extends Component
             });
         }
 
-        // Apply filter for deleted records if the option is selected
-        if ($this->showDeleted) {
-            $query->onlyTrashed();
-        }
+        $currencies = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
-        $companies = $query->orderBy('id', 'desc')->paginate($this->perPage);
-
-        return view('livewire.admin.company.company-list', [
-            'companies' => $companies
+        return view('livewire.admin.currency.currency-list', [
+            'currencies' => $currencies
         ]);
-    }
-
-    /**
-     * Reset Search
-     */
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
-    /**
-     * Update perPage records
-     */
-    public function updatedPerPage()
-    {
-        $this->resetPage();
     }
 
     /**
      * Toggle Status
      */
-    public function toggleStatus($companyId)
+    public function toggleStatus($id)
     {
         // Get data
-        $company = Company::find($companyId);
+        $currency = Currency::find($id);
 
         // Check user exists
-        if (!$company) {
-            $this->dispatch('error', 'User not found!');
+        if (!$currency) {
+            $this->dispatch('error', 'Currency not found!');
             return;
         }
 
         // Change Status
-        $company->update(['is_active' => !$company->is_active]);
+        $currency->update(['is_active' => !$currency->is_active]);
         $this->dispatch('statusChanged');
     }
 
@@ -114,16 +93,16 @@ class CompanyList extends Component
         }
 
         // get id
-        $company = Company::find($this->recordToDelete);
+        $currency = Currency::find($this->recordToDelete);
 
         // Check record exists
-        if (!$company) {
+        if (!$currency) {
             $this->dispatch('error');
             return;
         }
 
         // Delete record
-        $company->delete();
+        $currency->delete();
 
         // Reset the record to delete
         $this->recordToDelete = null;
@@ -132,9 +111,9 @@ class CompanyList extends Component
     /**
      * Confirm Restore
      */
-    public function confirmRestore($companyId)
+    public function confirmRestore($id)
     {
-        $this->recordToDelete = $companyId;
+        $this->recordToDelete = $id;
         $this->dispatch('confirmRestore');
     }
 
@@ -144,7 +123,7 @@ class CompanyList extends Component
     #[On('restored')]
     public function restore()
     {
-        Company::withTrashed()->find($this->recordToDelete)->restore();
+        Currency::withTrashed()->find($this->recordToDelete)->restore();
     }
 
     /**
@@ -162,6 +141,6 @@ class CompanyList extends Component
     #[On('forceDeleted')]
     public function forceDelete()
     {
-        Company::withTrashed()->find($this->recordToDelete)->forceDelete();
+        Currency::withTrashed()->find($this->recordToDelete)->forceDelete();
     }
 }

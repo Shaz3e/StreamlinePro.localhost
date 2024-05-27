@@ -69,6 +69,9 @@ class AppSettingSeeder extends Seeder
             ['name' => 'stripe_display_name', 'value' => 'Stripe'],
             ['name' => 'stripe_hosted_checkout', 'value' => 0],
             ['name' => 'stripe_hosted_checkout_display_name', 'value' => 'Hosted Checkout'],
+
+            // Currency Setting
+            ['name' => 'currency', 'value' => 1],
         ];
 
         DB::table('app_settings')->insert($appSettings);

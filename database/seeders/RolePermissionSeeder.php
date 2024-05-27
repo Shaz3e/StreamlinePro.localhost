@@ -232,6 +232,20 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'mail-setting.list'],
             ['guard_name' => 'admin', 'name' => 'mail-setting.read'],
             ['guard_name' => 'admin', 'name' => 'mail-setting.update'],
+            
+            // Currency Setting
+            ['guard_name' => 'admin', 'name' => 'currency-setting.list'],
+            ['guard_name' => 'admin', 'name' => 'currency-setting.read'],
+            ['guard_name' => 'admin', 'name' => 'currency-setting.update'],
+
+            // Currency Article
+            ['guard_name' => 'admin', 'name' => 'currency.list'],
+            ['guard_name' => 'admin', 'name' => 'currency.create'],
+            ['guard_name' => 'admin', 'name' => 'currency.read'],
+            ['guard_name' => 'admin', 'name' => 'currency.update'],
+            ['guard_name' => 'admin', 'name' => 'currency.delete'],
+            ['guard_name' => 'admin', 'name' => 'currency.restore'],
+            ['guard_name' => 'admin', 'name' => 'currency.force.delete'],
 
             // Add more permissions here...
         ];
