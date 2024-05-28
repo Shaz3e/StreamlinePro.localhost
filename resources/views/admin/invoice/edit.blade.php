@@ -182,7 +182,7 @@
                                                 <input class="form-check-input" id="amount" type="radio"
                                                     name="discount_type" value="amount"
                                                     {{ $invoice->discount_type == 'amount' ? 'checked' : '' }}>
-                                                $
+                                                {{ $currency['symbol'] }}
                                             </label>
                                         </th>
                                         <th colspan="3"></th>

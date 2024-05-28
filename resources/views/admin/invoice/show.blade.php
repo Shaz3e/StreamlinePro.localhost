@@ -68,7 +68,11 @@
             <div class="card border border-primary">
                 <div class="card-body">
                     <div class="card-text text-center">Sub Total</div>
-                    <h4 class="card-title text-center">{{ $invoice->sub_total }}</h4>
+                    <h4 class="card-title text-center">
+                        {{ $currency['symbol'] }}
+                        {{ $invoice->sub_total }}
+                        {{ $currency['name'] }}
+                    </h4>
                 </div>
             </div>
             {{-- /.card --}}
@@ -78,7 +82,11 @@
             <div class="card border border-primary">
                 <div class="card-body">
                     <div class="card-text text-center">Total</div>
-                    <h4 class="card-title text-center">{{ $invoice->total }}</h4>
+                    <h4 class="card-title text-center">
+                        {{ $currency['symbol'] }}
+                        {{ $invoice->total }}
+                        {{ $currency['name'] }}
+                    </h4>
                 </div>
             </div>
         </div>
@@ -87,7 +95,11 @@
             <div class="card border border-primary">
                 <div class="card-body">
                     <div class="card-text text-center">Total Paid</div>
-                    <h4 class="card-title text-center">{{ $invoice->total_paid }}</h4>
+                    <h4 class="card-title text-center">
+                        {{ $currency['symbol'] }}
+                        {{ $invoice->total_paid }}
+                        {{ $currency['name'] }}
+                    </h4>
                 </div>
             </div>
         </div>
@@ -227,20 +239,26 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th style="width: 70%"><strong>Item</strong></th>
-                                    <th class="text-center" style="width: 10%"><strong>Price</strong></th>
-                                    <th class="text-center" style="width: 10%"><strong>Quantity</strong></th>
-                                    <th class="text-end" style="width: 10%"><strong>Totals</strong></th>
+                                    <th style="width: 50%"><strong>Item</strong></th>
+                                    <th style="width: 20%" class="text-center" style="width: 10%"><strong>Price</strong></th>
+                                    <th style="width: 10%" class="text-center" style="width: 10%"><strong>Quantity</strong></th>
+                                    <th style="width: 20%" class="text-end" style="width: 10%"><strong>Totals</strong></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($items as $item)
                                     <tr>
                                         <td>{{ $item->item_description }}</td>
-                                        <td class="text-center">{{ currencyFormat($item->unit_price) }}</td>
+                                        <td class="text-center">
+                                            {{ $currency['symbol'] }}
+                                            {{ currencyFormat($item->unit_price) }}
+                                            {{ $currency['name'] }}
+                                        </td>
                                         <td class="text-center">{{ $item->quantity }}</td>
                                         <td class="text-end">
+                                            {{ $currency['symbol'] }}
                                             {{ currencyFormat($item->unit_price * $item->quantity) }}
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -251,7 +269,9 @@
                                         <strong>Subtotal</strong>
                                     </td>
                                     <td class="thick-line text-end">
+                                        {{ $currency['symbol'] }}
                                         {{ $invoice->sub_total }}
+                                        {{ $currency['name'] }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -261,7 +281,9 @@
                                         <strong>Discount</strong>
                                     </td>
                                     <td class="no-line text-end">
+                                        {{ $currency['symbol'] }}
                                         {{ $invoice->discount }}
+                                        {{ $currency['name'] }}
                                     </td>
                                 </tr>
                                 @if (!is_null($invoice->tax))
@@ -272,7 +294,9 @@
                                             <strong>Tax</strong>
                                         </td>
                                         <td class="no-line text-end">
+                                            {{ $currency['symbol'] }}
                                             {{ $invoice->tax }}
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                 @endif
@@ -284,7 +308,9 @@
                                             <strong>Total</strong>
                                         </td>
                                         <td class="no-line text-end">
+                                            {{ $currency['symbol'] }}
                                             {{ $invoice->total }}
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -294,7 +320,9 @@
                                             <strong>Total Paid</strong>
                                         </td>
                                         <td class="no-line text-end">
+                                            {{ $currency['symbol'] }}
                                             {{ $invoice->total_paid }}
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -304,9 +332,11 @@
                                             <strong>Balance</strong>
                                         </td>
                                         <td class="no-line text-end">
-                                            <h4 class="m-0">
+                                            <h6 class="m-0">
+                                                {{ $currency['symbol'] }}
                                                 {{ $invoice->total - $invoice->total_paid }}
-                                            </h4>
+                                                {{ $currency['name'] }}
+                                            </h6>
                                         </td>
                                     </tr>
                                 @else
@@ -317,9 +347,11 @@
                                             <strong>Total</strong>
                                         </td>
                                         <td class="no-line text-end">
-                                            <h4 class="m-0">
+                                            <h6 class="m-0">
+                                                {{ $currency['symbol'] }}
                                                 {{ $invoice->total }}
-                                            </h4>
+                                                {{ $currency['name'] }}
+                                            </h6>
                                         </td>
                                     </tr>
                                 @endif
@@ -594,7 +626,8 @@
                             showCancelButton: false
                         });
                         // Show the row again if the delete operation fails
-                        $(this).closest('tr').show(); // This line shows the row if the AJAX call fails
+                        $(this).closest('tr')
+                    .show(); // This line shows the row if the AJAX call fails
                     }
                 });
             });

@@ -71,6 +71,9 @@ class InvoiceController extends Controller
             session()->flash('status', 'Payment was cancelled.');
         }
 
+        // Get currency
+        $currency = currency(DiligentCreators('currency'));
+
         // Get invoice items
         $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
 
@@ -79,6 +82,7 @@ class InvoiceController extends Controller
 
         return view('user.invoice.show', [
             'invoice' => $invoice,
+            'currency' => $currency,
             'items' => $items,
             'payments' => $payments,
         ]);

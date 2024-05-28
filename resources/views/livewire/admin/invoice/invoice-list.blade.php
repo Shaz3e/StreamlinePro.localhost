@@ -122,6 +122,7 @@
                                         </td>
                                         <td>
                                             <strong>
+                                                {{ $currency['symbol'] }}
                                                 {{ $invoice->total }}
                                             </strong>
                                         </td>

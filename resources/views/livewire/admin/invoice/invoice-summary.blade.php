@@ -89,7 +89,10 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <p class="text-truncate font-size-14 mb-2">Total Unpaid Amount</p>
-                        <h4 class="mb-2">{{ $totalAmount }}</h4>
+                        <h4 class="mb-2">
+                            {{ $currency['symbol'] }}
+                            {{ $totalAmount }}
+                        </h4>
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">
@@ -109,7 +112,10 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <p class="text-truncate font-size-14 mb-2">Total Paid Amount</p>
-                        <h4 class="mb-2">{{ $totalPaidAmount }}</h4>
+                        <h4 class="mb-2">
+                            {{ $currency['symbol'] }}
+                            {{ $totalPaidAmount }}
+                        </h4>
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">
@@ -129,7 +135,10 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <p class="text-truncate font-size-14 mb-2">Total Due Amount</p>
-                        <h4 class="mb-2">{{ $totalDueAmount }}</h4>
+                        <h4 class="mb-2">
+                            {{ $currency['symbol'] }}
+                            {{ $totalDueAmount }}
+                        </h4>
                     </div>
                     <div class="avatar-sm">
                         <span class="avatar-title bg-transparent text-primary rounded-3">

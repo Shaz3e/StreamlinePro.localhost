@@ -64,8 +64,11 @@ class InvoiceList extends Component
             ->orderBy('id', 'desc')
             ->paginate($this->perPage);
 
+        $currency = currency(DiligentCreators('currency'));
+
         return view('livewire.user.invoice.invoice-list', [
             'invoices' => $invoices,
+            'currency' => $currency
         ]);
     }
 }

@@ -23,6 +23,9 @@ class StripeController extends Controller
             return response()->json(['error' => 'Invoice not found'], 404);
         }
 
+        // Get currency
+        $currency = currency(DiligentCreators('currency'));
+
         // Get max amount
         $maxAmount = $invoice->total - $invoice->total_paid;
 
@@ -38,7 +41,7 @@ class StripeController extends Controller
             'line_items' => [
                 [
                     'price_data' => [
-                        'currency' => 'usd',
+                        'currency' => $currency['name'],
                         'unit_amount' => $amountInCents,
                         'product_data' => [
                             'name' => 'Payment Against Invoice# ' . $invoice->id,

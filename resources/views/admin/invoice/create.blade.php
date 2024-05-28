@@ -170,7 +170,8 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="header_note">Header Note <small class="text-muted">Text will appear before invice items</small></label>
+                                    <label for="header_note">Header Note <small class="text-muted">Text will appear before
+                                            invice items</small></label>
                                     <textarea name="header_note" class="form-control textEditor">{!! old('header_note') !!}</textarea>
                                 </div>
                             </div>
@@ -201,7 +202,7 @@
                                             <label class="form-check-label" for="amount">
                                                 <input class="form-check-input" id="amount" type="radio"
                                                     name="discount_type" value="amount">
-                                                $
+                                                {{ $currency['symbol'] }}
                                             </label>
                                         </th>
                                         <th colspan="3"></th>
@@ -268,19 +269,21 @@
                         <div class="row mt-5">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="footer_note">Footer Note <small class="text-muted">Text will appear after invoice items</small></label>
+                                    <label for="footer_note">Footer Note <small class="text-muted">Text will appear after
+                                            invoice items</small></label>
                                     <textarea name="footer_note" class="form-control textEditor">{!! old('footer_note') !!}</textarea>
                                 </div>
                             </div>
                             {{-- /.col --}}
                         </div>
                         {{-- /.row --}}
-                        
+
                         {{-- Private Note --}}
                         <div class="row mt-5">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="private_note">Private Note <small class="text-muted">This note will be visible to staff only</small></label>
+                                    <label for="private_note">Private Note <small class="text-muted">This note will be
+                                            visible to staff only</small></label>
                                     <textarea name="private_note" class="form-control textEditor">{!! old('private_note') !!}</textarea>
                                 </div>
                             </div>
@@ -328,7 +331,7 @@
                     $('#invoice_to_company').show();
                 }
             });
-            
+
             // Search Users
             $('#user_id').select2({
                 ajax: {

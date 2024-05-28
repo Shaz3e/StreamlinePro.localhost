@@ -39,6 +39,8 @@ class InvoiceController extends Controller
         // Check Authorize
         Gate::authorize('create', Invoice::class);
 
+        // Get Currency
+        $currency = currency(DiligentCreators('currency'));
         // Get all active products and services
         $productService = ProductService::all();
 
@@ -46,6 +48,7 @@ class InvoiceController extends Controller
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('admin.invoice.create', [
+            'currency' => $currency,
             'productService' => $productService,
             'invoiceLabels' => $invoiceLabels,
         ]);
@@ -161,6 +164,9 @@ class InvoiceController extends Controller
         // Check Authorize
         Gate::authorize('read', $invoice);
 
+        // Get Currency
+        $currency = currency(DiligentCreators('currency'));
+
         // Get invoice items
         $items = InvoiceItem::where('invoice_id', $invoice->id)->get();
 
@@ -178,6 +184,7 @@ class InvoiceController extends Controller
 
         return view('admin.invoice.show', [
             'invoice' => $invoice,
+            'currency' => $currency,
             'items' => $items,
             'payments' => $payments,
             'audits' => $audits,
@@ -192,6 +199,9 @@ class InvoiceController extends Controller
         // Check Authorize
         Gate::authorize('update', $invoice);
 
+        // Get Currency
+        $currency = currency(DiligentCreators('currency'));
+
         // Get all active products and services
         $productService = ProductService::where('is_active', 1)->get();
 
@@ -203,6 +213,7 @@ class InvoiceController extends Controller
 
         return view('admin.invoice.edit', [
             'invoice' => $invoice,
+            'currency' => $currency,
             'productService' => $productService,
             'invoiceLabels' => $invoiceLabels,
             'items' => $items,

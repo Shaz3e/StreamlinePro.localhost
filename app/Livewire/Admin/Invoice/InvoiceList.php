@@ -134,11 +134,14 @@ class InvoiceList extends Component
         // Get all invoices
         $invoices = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
+        $currency = currency(DiligentCreators('currency'));
+
         // Get all invoice statuses
         $invoiceLabels = InvoiceLabel::where('is_active', 1)->get();
 
         return view('livewire.admin.invoice.invoice-list', [
             'invoices' => $invoices,
+            'currency' => $currency,
             'invoiceLabels' => $invoiceLabels
         ]);
     }
