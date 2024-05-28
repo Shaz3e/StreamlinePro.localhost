@@ -19,7 +19,7 @@ class SupportTicketReplyObserver
         // Send Mail to User if its not internal ticket
         if ($supportTicket->is_internal == 0 && $supportTicket->user) {
             Mail::to($supportTicket->user->email)
-                ->send(new SupportTicketReplyCreatedEmail($supportTicketReply, $supportTicketReply->client));
+                ->queue(new SupportTicketReplyCreatedEmail($supportTicketReply, $supportTicketReply->client));
         }
     }
 

@@ -17,20 +17,20 @@ class SupportTicketObserver
         // Send Mail to User if its not internal ticket
         if ($supportTicket->is_internal == 0 && $supportTicket->user) {
             Mail::to($supportTicket->user->email)
-                ->send(new SupportTicketCreatedEmail($supportTicket, $supportTicket->user));
+                ->queue(new SupportTicketCreatedEmail($supportTicket, $supportTicket->user));
         }
 
         // Send Mail to Staff
         if ($supportTicket->admin && !$supportTicket->department) {
             Mail::to($supportTicket->admin->email)
-                ->send(new SupportTicketCreatedEmail($supportTicket, $supportTicket->admin));
+                ->queue(new SupportTicketCreatedEmail($supportTicket, $supportTicket->admin));
         }
 
         // Send Email to Department/Staff
         if ($supportTicket->department) {
             $supportTicket->department->admins->each(function (Admin $staff) use ($supportTicket) {
                 Mail::to($staff->email)
-                    ->send(new SupportTicketCreatedEmail($supportTicket, $staff)); // Pass the admin as the recipient
+                    ->queue(new SupportTicketCreatedEmail($supportTicket, $staff)); // Pass the admin as the recipient
             });
         }
     }
