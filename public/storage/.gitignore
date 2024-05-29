@@ -1,0 +1,9 @@
+*
+!avatars/
+!companies/
+!knowledgebase/
+!promotions/
+!settings/
+!support-tickets/
+!.htaccess
+!.gitignore
