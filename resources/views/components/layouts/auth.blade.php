@@ -21,9 +21,6 @@
     @stack('styles')
 
     <link href="{{ asset('assets/auth/style.css') }}" rel="stylesheet" type="text/css" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
