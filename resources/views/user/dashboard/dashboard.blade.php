@@ -1,0 +1,1 @@
+@include('user.dashboard.promotions')

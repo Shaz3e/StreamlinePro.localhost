@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\KnowledgebaseArticle;
 use App\Models\User;
+use Database\Factories\KnowledgebaseArticleFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +15,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // User::factory(1000)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        $this->call([
+            AdminSeeder::class,
+            SupportTicketProiritySeeder::class,
+            SupportTicketStatusSeeder::class,
+            TaskLabelSeeder::class,
+            TodoLabelSeeder::class,
+            InvoiceLabelSeeder::class,
+
+            // Local
+            ProductServiceSeeder::class,
+            CompanySeeder::class,
+            DepartmentSeeder::class,
+            UserSeeder::class,
+            KnowledgebaseCategorySeeder::class,
+
+            AppSettingSeeder::class,
+
+            // Run this seeder at the end
+            RolePermissionSeeder::class,
         ]);
     }
 }

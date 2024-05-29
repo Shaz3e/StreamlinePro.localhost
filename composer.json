@@ -7,9 +7,16 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "livewire/livewire": "^3.4",
+        "owen-it/laravel-auditing": "^13.6",
+        "spatie/laravel-login-link": "^1.2",
+        "spatie/laravel-permission": "^6.7",
+        "stripe/stripe-php": "^14.7",
+        "twilio/sdk": "^8.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
@@ -24,7 +31,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/Helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
