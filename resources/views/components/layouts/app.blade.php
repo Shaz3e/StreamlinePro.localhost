@@ -29,9 +29,6 @@
 
     {{-- Livewire Styles --}}
     @livewireStyles
-
-    <!-- vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body data-topbar="light">
