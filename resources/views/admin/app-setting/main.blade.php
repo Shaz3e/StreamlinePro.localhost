@@ -41,6 +41,10 @@
                     @include('admin.app-setting.currency.currency')
                 @endif
 
+                @if (request()->routeIs('admin.settings.sms'))
+                    @include('admin.app-setting.sms.sms')
+                @endif
+
             </div>
             {{-- /.email-rightbar --}}
 

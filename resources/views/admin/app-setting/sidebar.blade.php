@@ -36,6 +36,12 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> Currency Setting
             </a>
         @endcan
+        @can('sms-setting.list')
+            <a href="{{ route('admin.settings.sms') }}"
+                class="{{ request()->routeIs('admin.settings.sms') ? 'active' : '' }}">
+                <i class="ri ri-arrow-right-s-line me-2"></i> SMS Setting
+            </a>
+        @endcan
     </div>
 </div>
 {{-- email-leftbar --}}

@@ -77,6 +77,7 @@ use App\Http\Controllers\Admin\AppSetting\PaymentMethodSettingController;
 use App\Http\Controllers\Admin\AppSetting\MailSettingController;
 use App\Http\Controllers\Admin\AppSetting\CurrencySettingController;
 use App\Http\Controllers\Admin\CurrencyController;
+use App\Http\Controllers\Admin\AppSetting\SmsSettingController;
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -158,7 +159,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Mail Setting
             Route::get('mail', [MailSettingController::class, 'mail'])->name('mail');
             Route::post('mail', [MailSettingController::class, 'mailStore'])->name('mail.store');
-
+            
             // Currency Setting
             Route::get('currency', [CurrencySettingController::class, 'currency'])->name('currency');
             Route::post('currency', [CurrencySettingController::class, 'currencyStore'])->name('currency.store');
@@ -166,7 +167,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('currencies', CurrencyController::class);
             // Search Users
             Route::get('search-currencies', [CurrencyController::class, 'searchCurrencies'])
-                ->name('search.currencies');
+            ->name('search.currencies');
+
+            // SMS Setting
+            Route::get('sms', [SmsSettingController::class, 'sms'])->name('sms');
+            Route::post('sms', [SmsSettingController::class, 'smsStore'])->name('sms.store');
         });
 
         /**

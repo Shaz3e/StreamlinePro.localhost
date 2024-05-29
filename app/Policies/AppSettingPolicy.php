@@ -175,4 +175,21 @@ class AppSettingPolicy
             return true;
         }
     }
+
+    /**
+     * SMS Setting
+     */
+    public function sms(Admin $admin)
+    {
+        if($admin->canAny(['sms-setting.list', 'sms-setting.read'])){
+            return true;
+        }
+    }
+
+    public function smsStore(Admin $admin)
+    {
+        if($admin->can('sms-setting.update')){
+            return true;
+        }
+    }
 }

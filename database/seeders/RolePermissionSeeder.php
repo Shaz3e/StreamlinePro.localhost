@@ -246,6 +246,11 @@ class RolePermissionSeeder extends Seeder
             ['guard_name' => 'admin', 'name' => 'currency.delete'],
             ['guard_name' => 'admin', 'name' => 'currency.restore'],
             ['guard_name' => 'admin', 'name' => 'currency.force.delete'],
+            
+            // SMS Setting
+            ['guard_name' => 'admin', 'name' => 'sms-setting.list'],
+            ['guard_name' => 'admin', 'name' => 'sms-setting.read'],
+            ['guard_name' => 'admin', 'name' => 'sms-setting.update'],
 
             // Add more permissions here...
         ];
