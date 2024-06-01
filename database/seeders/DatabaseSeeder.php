@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             UserSeeder::class,
             KnowledgebaseCategorySeeder::class,
+            CurrencySeeder::class,
 
             AppSettingSeeder::class,
 

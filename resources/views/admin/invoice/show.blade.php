@@ -349,7 +349,7 @@
                                         <td class="no-line text-end">
                                             <h6 class="m-0">
                                                 {{ $currency['symbol'] }}
-                                                {{ $invoice->total }}
+                                                {{ currencyFormat($invoice->total) }}
                                                 {{ $currency['name'] }}
                                             </h6>
                                         </td>
