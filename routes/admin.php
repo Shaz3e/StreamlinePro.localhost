@@ -78,11 +78,15 @@ use App\Http\Controllers\Admin\AppSetting\MailSettingController;
 use App\Http\Controllers\Admin\AppSetting\CurrencySettingController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\AppSetting\SmsSettingController;
+
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
 // Roles
 use App\Http\Controllers\Admin\RolePermission\RoleController;
+
+// Countries
+use App\Http\Controllers\Admin\CountryController;
 
 // if route is /admin redirect to admin/dashboard
 
@@ -343,6 +347,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Roles
             Route::resource('roles', RoleController::class);
         });
+
+        /**
+         * Countries
+         */
+        
+        // Search Users
+        Route::get('search-countries', [CountryController::class, 'searchCountries'])
+            ->name('search.countries');
 
         /**
          * Todo Status

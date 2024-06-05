@@ -19,36 +19,65 @@
                         <table class="table">
                             <tr>
                                 <td>Name</td>
-                                <td>Company</td>
-                                <td>Email</td>
-                                <td>Status</td>
-                                <td>Created At</td>
+                                <td>{{ $user->name }}</td>
                             </tr>
                             <tr>
-                                <td>{{ $user->name }}</td>
+                                <td>Email</td>
+                                <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
+                            </tr>
+                            <tr>
+                                <td>Phone</td>
+                                <td>{{ $user->phone }}</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>{{ $user->address }}</td>
+                            </tr>
+                            <tr>
+                                <td>City</td>
+                                <td>{{ $user->city }}</td>
+                            </tr>
+                            <tr>
+                                <td>Country</td>
                                 <td>
-                                    @if ($user->company != null)
-                                        <a href="{{ route('admin.companies.show', $user->company->id) }}">
-                                            {{ $user->company->name }}
-                                        </a>
-                                    @endif
-                                </td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    @if ($user->is_active)
-                                        <span class="badge bg-success">Active</span>
+                                    @if ($user->country)
+                                        <img src="{{ asset($user->country->flag) }}" alt="{{ $user->country->name }}"
+                                            style="height: 20px;border:solid 1px black;">
+                                        {{ $user->country->name }}
                                     @else
-                                        <span class="badge bg-danger">Inactive</span>
+                                        -
                                     @endif
                                 </td>
-                                <td>{{ $user->created_at->format('l, F j, Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>
+                                    <x-is-active-badge :isActive="$user->is_active" />
+                                </td>
                             </tr>
                         </table>
                     </div>
                     {{-- /.table-responsive --}}
-
-                    <a href="{{ route('admin.users.edit', $user) }}">Edit</a>
                 </div>
+                {{-- /.card-body --}}
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{{ route('admin.users.edit', $user) }}">Edit</a>
+
+                            Created On: {{ $user->created_at->format('l F, j Y, h:iA') }}
+                        </div>
+                        {{-- /.col --}}
+                        <div class="col-6">
+                            <div class="text-end">
+                                Last Updated On: {{ $user->updated_at->format('l F, j Y, h:iA') }}
+                            </div>
+                        </div>
+                        {{-- /.col --}}
+                    </div>
+                    {{-- /.row --}}
+                </div>
+                {{-- /.card-footer --}}
             </div>
             {{-- /.card --}}
         </div>

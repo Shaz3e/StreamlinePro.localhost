@@ -37,6 +37,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KnowledgebaseCategorySeeder::class,
 
+            // Seeders for Users and Currency
+            CurrencySeeder::class,
+            CountrySeeder::class,
+
+            // App Settings
             AppSettingSeeder::class,
 
             // Run this seeder at the end

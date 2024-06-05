@@ -140,7 +140,7 @@ class StripeController extends Controller
                 $payment->invoice_id = $paymentIntent->metadata->invoice_id;
                 $payment->transaction_date = now();
                 $payment->amount = $paymentIntent->amount / 100;
-                $payment->payment_method = "Stripe";
+                $payment->payment_method = DiligentCreators('stripe_display_name');
                 $payment->save();
 
                 return response()->json(['success' => 'Payment successful!']);

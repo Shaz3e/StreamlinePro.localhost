@@ -16,7 +16,12 @@ class RegisterRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'name' => [
+            'first_name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'last_name' => [
                 'required',
                 'string',
                 'max:255',

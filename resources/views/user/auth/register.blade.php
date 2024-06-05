@@ -37,27 +37,34 @@
                     @csrf
                     <div class="row mx-5">
 
-                        <div class="col-12 mb-2">
-                            <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                value="{{ old('name') }}" required>
-                            @error('name')
+                        <div class="col-6 mb-3">
+                            <input type="text" name="first_name" class="form-control" placeholder="First Name"
+                                value="{{ old('first_name') }}" required>
+                            @error('first_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-12 mb-2">
-                            <input class="form-control input-mask" data-inputmask="'alias':'email'" placeholder="Email"
+                        <div class="col-6 mb-3">
+                            <input type="text" name="last_name" class="form-control" placeholder="Last Name"
+                                value="{{ old('last_name') }}" required>
+                            @error('last_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-12 mb-3">
+                            <input class="form-control input-mask" name="email" data-inputmask="'alias':'email'" placeholder="Email"
                                 value="{{ old('email') }}" required>
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-12 mb-2">
+                        <div class="col-12 mb-3">
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
                             @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col-12 mb-2">
+                        <div class="col-12 mb-3">
                             <input type="password" name="confirm_password" class="form-control"
                                 placeholder="Confirm Password" required>
                             @error('confirm_password')
@@ -65,13 +72,13 @@
                             @enderror
                         </div>
 
-                        <div class="col-12 mb-2">
+                        <div class="col-12 mb-3">
                             <button type="submit" class="btn btn-primary">
                                 Register
                             </button>
                         </div>
 
-                        <div class="col-12 mb-">
+                        <div class="col-12 mb-3">
                             Already registered <a href="{{ route('login') }}">Login</a> here.
                         </div>
                     </div>

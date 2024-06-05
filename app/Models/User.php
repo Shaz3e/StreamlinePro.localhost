@@ -20,9 +20,15 @@ class User extends Authenticatable implements Auditable
      * @var array<int, string>
      */
     protected $fillable = [
+        'first_name',
+        'last_name',
         'name',
         'email',
         'password',
+        'phone',
+        'address',
+        'country_id',
+        'city',
         'is_active',
         'company_id',
         'remember_token',
@@ -76,6 +82,14 @@ class User extends Authenticatable implements Auditable
     public function supportTickets()
     {
         return $this->hasMany(SupportTicket::class);
+    }
+
+    /**
+     * Country Relationship
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 
     protected function setAuditInclude()

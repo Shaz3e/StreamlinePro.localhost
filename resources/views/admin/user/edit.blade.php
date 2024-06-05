@@ -17,82 +17,142 @@
                 <form action="{{ route('admin.users.update', $user) }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     @method('put')
+                    
                     <div class="card-body">
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Full Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="name" id="name" class="form-control"
-                                    value="{{ old('name', $user->name) }}" required>
-                                @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="first_name">First Name</label>
+                                    <input type="text" name="first_name" id="first_name" class="form-control"
+                                        value="{{ old('first_name', $user->first_name) }}" maxlength="20" required />
+                                </div>
+                                @error('first_name')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
-                        </div>
-                        {{-- /.row --}}
-                        <div class="row mb-3">
-                            <label for="email" class="col-sm-2 col-form-label">Email</label>
-                            <div class="col-sm-10">
-                                <input name="email" id="email" class="form-control input-mask"
-                                    data-inputmask="'alias': 'email'" value="{{ old('email', $user->email) }}" required>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="last_name">Last Name</label>
+                                    <input type="text" name="last_name" id="last_name" class="form-control"
+                                        value="{{ old('last_name', $user->last_name) }}" maxlength="20" required />
+                                </div>
+                                @error('last_name')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        value="{{ old('email', $user->email) }}" required />
+                                </div>
                                 @error('email')
-                                    <span class="text-danger">{{ $message }}</span>
+                                    <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
-                        </div>
-                        {{-- /.row --}}
-                        <div class="row mb-3">
-                            <label for="company_id" class="col-sm-2 col-form-label">Company</label>
-                            <div class="col-sm-10">
-                                <select class="form-control select2" name="company_id" id="company_id">
-                                    <option value="">Select</option>
-                                    @if ($user->company)
-                                        <option value="{{ $user->company->id }}" selected>
-                                            {{ $user->company->name }}
-                                        </option>
-                                    @endif
-                                </select>
-                                @error('company_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        {{-- /.row --}}
-                        <div class="row mb-3">
-                            <label for="password" class="col-sm-2 col-form-label">Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" name="password" id="password" class="form-control">
-                                <span class="muted">Leave it blank if you do not want to change password.</span>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="password" id="password"
+                                            value="{{ old('password') }}" minlength="8" maxlength="64" />
+                                        <div class="input-group-append">
+                                            <button type="button" id="generatePasswordBtn"
+                                                class="btn btn-outline-primary">Generate</button>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">Leave it blank if you do not want to change password.</small>
+                                </div>
                                 @error('password')
-                                    <span class="text-danger">{{ $message }}</span>
+                                    <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
+                            {{-- /.col --}}
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
-                            <label for="confirm_password" class="col-sm-2 col-form-label">Confirm Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" name="confirm_password" id="confirm_password" class="form-control">
-                                <span class="muted">Leave it blank if you do not want to change password.</span>
-                                @error('confirm_password')
-                                    <span class="text-danger">{{ $message }}</span>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="company_id">Company</label>
+                                    <select id="company_id" name="company_id" class="form-control">
+                                        <option value="">Select</option>
+                                        @if ($user->company)
+                                            <option value="{{ $user->company->id }}">{{ $user->company->name }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                @error('company_id')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="country_id">Country</label>
+                                    <select id="country_id" name="country_id" class="form-control">
+                                        <option value="">Select</option>
+                                        @if ($user->country)
+                                        <option value="{{ $user->country->id }}" selected>{{ $user->country->name }}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                @error('country_id')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" name="city" id="city" class="form-control"
+                                        value="{{ old('city', $user->city) }}" />
+                                </div>
+                                @error('city')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="tel" name="phone" id="phone" class="form-control"
+                                        value="{{ old('phone', $user->phone) }}" maxlength="20" />
+                                </div>
+                                @error('phone')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
-                            <label for="is_active" class="col-sm-2 col-form-label">Can Login?</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" name="is_active" required>
-                                    <option value="1" {{ old('is_active', $user->is_active) ? '1' : 'selected' }}>Yes
-                                        -
-                                        User can login</option>
-                                    <option value="0" {{ old('is_active', $user->is_active) ? '0' : 'selected' }}>No -
-                                        User cannot login</option>
-                                </select>
+                            <div class="col-9">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" name="address" id="address" class="form-control"
+                                        value="{{ old('address', $user->address) }}" />
+                                </div>
+                                @error('address')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="is_active">Can Login?</label>
+                                    <select name="is_active" id="is_active" class="form-control" required>
+                                        <option value="0" {{ old('is_active', $user->is_active) == 0 ? 'selected' : '' }}>No</option>
+                                        <option value="1" {{ old('is_active', $user->is_active) == 1 ? 'selected' : '' }}>Yes</option>
+                                    </select>
+                                </div>
                                 @error('is_active')
-                                    <span class="text-danger">{{ $message }}</span>
+                                    <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>
+                            {{-- /.col --}}
                         </div>
                         {{-- /.row --}}
                     </div>
@@ -145,6 +205,37 @@
                     }
                 },
                 minimumInputLength: 3
+            });
+            // Search Country
+            $('#country_id').select2({
+                ajax: {
+                    url: '{{ route('admin.search.countries') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
+
+            // Generate Password
+            $('#generatePasswordBtn').click(function(e) {
+                let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                let result = '';
+                for (let i = 0; i < 8; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                $("#password").val(result);
             });
         });
     </script>

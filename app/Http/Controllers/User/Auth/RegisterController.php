@@ -21,7 +21,9 @@ class RegisterController extends Controller
 
         // Create User and Save to DB
         $user = new User();
-        $user->name = $validated['name'];
+        $user->first_name = $validated['first_name'];
+        $user->last_name = $validated['last_name'];
+        $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
         $user->email = $validated['email'];
         $user->password = Hash::make($validated['password']);
         $user->save();
