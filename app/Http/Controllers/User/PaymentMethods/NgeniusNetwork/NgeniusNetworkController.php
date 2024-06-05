@@ -115,15 +115,15 @@ class NgeniusNetworkController extends Controller
 
             $checkout_url = config('ngenius.' . config('ngenius.environment') . '.checkout_url');
 
-            $client = new \GuzzleHttp\Client();
-
+            
             // Disable SSL verification on production
             if (config('app.env') == 'local') {
                 $verify = false;
             } else {
                 $verify = true;
             }
-
+            
+            $client = new \GuzzleHttp\Client();
             $response = $client->request('POST', $checkout_url . '/identity/auth/access-token', [
                 'headers' => [
                     'Authorization' => 'Basic ' . config('ngenius.api_key'),
