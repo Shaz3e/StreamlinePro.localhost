@@ -27,116 +27,73 @@ class NgeniusNetworkController extends Controller
         $amountInCents = $maxAmount * 100;
 
         $apikey = config('ngenius.api_key');
+        $outlet = config('ngenius.outlet');
         $checkout_url = config('ngenius.' . config('ngenius.environment') . '.checkout_url');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $checkout_url . "/identity/auth/access-token");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "accept: application/vnd.ni-identity.v1+json",
-            "authorization: Basic " . $apikey,
-            "content-type: application/vnd.ni-identity.v1+json"
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"realmName\":\"ni\"}");
-
         // Disable SSL verification on production
         if (config('app.env') == 'local') {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        }
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-            exit();
+            $verify = false;
         } else {
-            $output = json_decode($response);
-            if (isset($output->access_token)) {
-                $access_token = $output->access_token;
-            } else {
-                echo "Error fetching access token.";
-                exit();
-            }
+            $verify = true;
         }
 
-        curl_close($ch);
+        // Generate Access Token
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', $checkout_url . '/identity/auth/access-token', [
+            'headers' => [
+                'Authorization' => 'Basic ' . $apikey,
+                'accept' => 'application/vnd.ni-identity.v1+json',
+                'content-type' => 'application/vnd.ni-identity.v1+json',
+            ],
+            'verify' => $verify,
+        ]);
 
+
+        $responseData = json_decode($response->getBody(), true);
+
+        // Get Access Token
+        $accessToken = $responseData['access_token'];
 
         // Step 2: Send the second request with the access token
-        $outlet_id = config('ngenius.outlet');
-        $url = $checkout_url . "/transactions/outlets/$outlet_id/orders";
+        $response = $client->request('POST', $checkout_url . '/transactions/outlets/' . $outlet . '/orders', [
+            'json' => [
+                'action' => 'PURCHASE',
+                'amount' => [
+                    'currencyCode' => $currency,
+                    'value' => $amountInCents,
+                ],
+                "language" => "en",
+                "emailAddress" => $invoice->user->email,
+                "billingAddress" => [
+                    "firstName" => $invoice->user->first_name,
+                    "lastName" => $invoice->user->last_name,
+                    "address1" => $invoice->user->address,
+                    "city" => $invoice->user->city,
+                    "countryCode" => $invoice->country->iso3
+                ],
+                "merchantOrderReference" => $invoice->id,
+                "merchantAttributes" => [
+                    "cancelUrl" => route('invoice.show', $invoice->id),
+                    "cancelText" => "Cancel",
+                    // "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
+                ],
+            ],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken,
+                'accept' => 'application/vnd.ni-payment.v2+json',
+                'content-type' => 'application/vnd.ni-payment.v2+json',
+            ],
+            'verify' => $verify
+        ]);
+        
+        $output = json_decode($response->getBody(), true);
 
-        $currency_code = $currency;
-        $email_address = $invoice->user->email;
-        $first_name = $invoice->user->first_name;
-        $last_name = $invoice->user->last_name; // Replace with the user's last name
-        $address1 = $invoice->user->address; // Replace with the user's address
-        $city = $invoice->user->city; // Replace with the user's city
-        $country_code = $invoice->user->country_code; // Replace with the user's country code
-        $merchant_order_reference = $invoice->id; // Replace with the reference number
-
-        $data = array(
-            "action" => "PURCHASE",
-            "amount" => array(
-                "currencyCode" => $currency_code,
-                "value" => $amountInCents
-            ),
-            "language" => "en",
-            "emailAddress" => $email_address,
-            "billingAddress" => array(
-                "firstName" => $first_name,
-                "lastName" => $last_name,
-                "address1" => $address1,
-                "city" => $city,
-                "countryCode" => $country_code
-            ),
-            "merchantOrderReference" => $merchant_order_reference,
-            "merchantAttributes" => array(
-                "cancelUrl" => route('invoice.show', $invoice->id),
-                "cancelText" => "Cancel",
-                "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
-            )
-        );
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Authorization: Bearer " . $access_token,
-            "Content-Type: application/vnd.ni-payment.v2+json",
-            "Accept: application/vnd.ni-payment.v2+json"
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-        // Disable SSL verification on production
-        if (config('app.env') == 'local') {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        }
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-            exit();
+        if (isset($output['_links']['payment']['href'])) {
+            $payment_link = $output['_links']['payment']['href'];
         } else {
-            $output = json_decode($response, true);
-
-            if (isset($output['_links']['payment']['href'])) {
-                $payment_link = $output['_links']['payment']['href'];
-            } else {
-                echo "Error fetching payment link.";
-                exit();
-            }
+            echo "Error fetching payment link.";
+            exit();
         }
-
-        curl_close($ch);
-
-        // redirect
-        // header("Location: $payment_link");
         return redirect()->away($payment_link);
     }
 
