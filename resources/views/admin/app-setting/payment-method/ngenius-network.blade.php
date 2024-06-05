@@ -134,7 +134,7 @@
         $(document).ready(function() {
             // input mask should starts with https
             $('#ngenius_domain').inputmask({
-                regex: "http://.*"
+                regex: "https://.*"
             });
         });
     </script>
