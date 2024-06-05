@@ -42,9 +42,9 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Company</th>
+                                <th>Country</th>
                                 @if (!$showDeleted)
-                                    <th>Status</th>
+                                    <th>Can Login</th>
                                 @endif
                                 <th></th>
                             </tr>
@@ -53,13 +53,30 @@
                             @foreach ($users as $user)
                                 <tr wire:key="{{ $user->id }}">
                                     <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>
+                                        <h6>{{ $user->name }}</h6>
+                                        @if ($user->company)
+                                            <strong class="d-block">
+                                                <i class="mdi mdi-office-building"></i>
+                                                <a href="{{ route('admin.companies.show', $user->company->id) }}">
+                                                    {{ $user->company->name }}
+                                                </a>
+                                            </strong>
+                                        @endif
+                                        @if ($user->phone)
+                                            <strong class="d-block">
+                                                <i class="mdi mdi-phone"></i>
+                                                {{ $user->phone }}
+                                            </strong>
+                                        @endif
+                                    </td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        @if ($user->company != null)
-                                            <a href="{{ route('admin.companies.show', $user->company->id) }}">
-                                                {{ $user->company->name }}
-                                            </a>
+                                        @if ($user->country)
+                                            <img src="{{ asset($user->country->flag) }}"
+                                                alt="{{ $user->country->name }}"
+                                                style="height: 20px;border:solid 1px black;">
+                                            {{ $user->country->name }}
                                         @endif
                                     </td>
                                     @if (!$showDeleted)

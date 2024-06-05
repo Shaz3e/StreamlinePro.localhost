@@ -13,12 +13,16 @@ class StoreUserRequest extends BaseFormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @link https://laravel.com/docs/11.x/validation#available-validation-rules
      */
     public function rules(): array
     {
         $rules = [
-            'name' => [
-                'required', 'string', 'max:255',
+            'first_name' => [
+                'required', 'string', 'max:20',
+            ],
+            'last_name' => [
+                'required', 'string', 'max:20',
             ],
             'email' => [
                 'required', 'string', 'email', 'max:255',
@@ -27,6 +31,25 @@ class StoreUserRequest extends BaseFormRequest
             'company_id' => [
                 'nullable',
                 Rule::exists('companies', 'id'),
+            ],
+            'phone' => [
+                'nullable',
+                'numeric',
+                'regex:/^[0-9]{7,20}$/'
+            ],
+            'address' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'country_id' => [
+                'nullable',
+                Rule::exists('countries', 'id'),
+            ],
+            'city' => [
+                'nullable',
+                'string',
+                'max:50',
             ],
             'is_active' => [
                 'required', 'boolean',
@@ -38,17 +61,11 @@ class StoreUserRequest extends BaseFormRequest
                 'password' => [
                     'required', 'string', 'min:8', 'max:255',
                 ],
-                'confirm_password' => [
-                    'required', 'same:password',
-                ],
             ]);
         } else {
             $rules = array_merge($rules, [
                 'password' => [
                     'nullable', 'string', 'min:8', 'max:255',
-                ],
-                'confirm_password' => [
-                    'nullable', 'same:password',
                 ],
             ]);
         }

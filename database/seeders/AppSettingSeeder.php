@@ -64,11 +64,19 @@ class AppSettingSeeder extends Seeder
             ['name' => 'can_access_support_ticket_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
             ['name' => 'can_access_invoice_summary', 'value' => json_encode(["superadmin", "tester", "developer"])],
 
-            // Payment Methods
+            /**
+             * Payment Methods
+             */
+            // Stripe
             ['name' => 'stripe', 'value' => 0],
             ['name' => 'stripe_display_name', 'value' => 'Stripe'],
             ['name' => 'stripe_hosted_checkout', 'value' => 0],
             ['name' => 'stripe_hosted_checkout_display_name', 'value' => 'Hosted Checkout'],
+            // Ngenius Network
+            ['name' => 'ngenius', 'value' => 0],
+            ['name' => 'ngenius_display_name', 'value' => 'Ngenius Network'],
+            ['name' => 'ngenius_hosted_checkout', 'value' => 0],
+            ['name' => 'ngenius_hosted_checkout_display_name', 'value' => 'Hosted Checkout'],
 
             // Currency Setting
             ['name' => 'currency', 'value' => 1],

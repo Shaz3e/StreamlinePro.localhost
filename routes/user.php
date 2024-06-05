@@ -18,6 +18,7 @@ use App\Http\Controllers\User\ProfileController;
 // Invoice
 use App\Http\Controllers\User\InvoiceController;
 use App\Http\Controllers\User\PaymentMethods\Stripe\StripeController;
+use App\Http\Controllers\User\PaymentMethods\NgeniusNetwork\NgeniusNetworkController;
 
 // Support Tickets
 use App\Http\Controllers\User\SupportTicketController;
@@ -84,15 +85,26 @@ Route::middleware('auth')->group(function () {
         Route::post('stripe/handle-payment-confirmation', [StripeController::class, 'handlePaymentConfirmation'])->name('stripe.handle-payment-confirmation');
         // Stripe Hosted Checkout
         Route::post('stripe/hosted-checkout', [StripeController::class, 'hostedCheckout'])->name('stripe.hosted.checkout');
+
+        // N-Genius Network Payment Intent
+        Route::post('ngenius-network/process-payment', [NgeniusNetworkController::class, 'processPayment'])
+            ->name('ngenius-network.process-payment');
+        Route::post('ngenius-network/handle-payment-confirmation', [NgeniusNetworkController::class, 'handlePaymentConfirmation'])
+            ->name('ngenius-network.handle-payment-confirmation');
+        // N-Genius Network Hosted Checkout
+        Route::post('ngenius-network/hosted-checkout', [NgeniusNetworkController::class, 'hostedCheckout'])
+            ->name('ngenius-network.hosted.checkout');
+        Route::get('ngenius-network', [NgeniusNetworkController::class, 'handleHostedPaymentConfirmation'])
+            ->name('ngenius-network.handle-hosted-payment-confirmation');
     });
 
 
     // Support Ticket
     Route::resource('support-tickets', SupportTicketController::class);
-    
+
     // Support Ticket Reply
     Route::post('support-tickets-reply/{supportTicketId}', [SupportTicketController::class, 'ticketReply'])
-    ->name('support-tickets.reply');
+        ->name('support-tickets.reply');
 
     // Upload attachments for support tickets
     Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])

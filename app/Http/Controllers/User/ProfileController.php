@@ -42,13 +42,19 @@ class ProfileController extends Controller
     {
         // validated data
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|max:255|unique:users,email,' . Auth::user()->id,
+            'address' => 'required|string|max:255',
+            'country_code' => 'required',
+            'city' => 'required|max:255',
         ]);
 
         // Get current user
         $user = Auth::user();
         $user->update($validated);
+        $user->name = $user->first_name . ' ' . $user->last_name;
+        $user->save();
 
         session()->flash('success', 'Profile updated successfully!');
 
@@ -116,7 +122,6 @@ class ProfileController extends Controller
             $validated['avatar'] = $request->file('avatar')
                 ->storeAs('avatars', $filename, 'public');
             $user->avatar = $validated['avatar'];
-            
         } elseif ($request->filled('selected_avatar')) {
             // If no file is uploaded, use the selected avatar path
             $user->avatar = $request->input('selected_avatar');

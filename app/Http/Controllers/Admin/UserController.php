@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Jobs\User\SendUserRegistrationEmailJob;
 use App\Mail\Admin\User\PasswordReset;
-use App\Models\Admin;
 use App\Models\Company;
 use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
@@ -55,6 +53,8 @@ class UserController extends Controller
 
         // Update record in database
         $user = User::create($validated);
+        $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
+        $user->save();
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
         if ($user->is_active) {
@@ -125,6 +125,8 @@ class UserController extends Controller
 
         // Update record in database
         $user->update($validated);
+        $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
+        $user->save();
 
         // Send password to user
         if ($request->filled('password')) {
@@ -197,7 +199,7 @@ class UserController extends Controller
             ->get();
 
         return response()->json([
-            'results' => $users->map(function($user) {
+            'results' => $users->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'text' => $user->name

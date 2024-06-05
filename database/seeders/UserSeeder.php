@@ -16,7 +16,9 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'User 1',
+                'first_name' => 'User',
+                'last_name' => 'One',
+                'name' => 'User One',
                 'email' => 'user1@email.com',
                 'password' => Hash::make('password'),
                 'company_id' => 1,
@@ -25,7 +27,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'User 2',
+                'first_name' => 'User',
+                'last_name' => 'Two',
+                'name' => 'User Two',
                 'email' => 'user2@email.com',
                 'password' => Hash::make('password'),
                 'company_id' => 2,
@@ -34,7 +38,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'User 3',
+                'first_name' => 'User',
+                'last_name' => 'Three',
+                'name' => 'User Three',
                 'email' => 'user3@email.com',
                 'password' => Hash::make('password'),
                 'company_id' => 3,
@@ -43,7 +49,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'User 4',
+                'first_name' => 'User',
+                'last_name' => 'Four',
+                'name' => 'User Four',
                 'email' => 'user4@email.com',
                 'password' => Hash::make('password'),
                 'company_id' => 4,
@@ -52,7 +60,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'User 5',
+                'first_name' => 'User',
+                'last_name' => 'Five',
+                'name' => 'User Five',
                 'email' => 'user5@email.com',
                 'password' => Hash::make('password'),
                 'company_id' => 5,

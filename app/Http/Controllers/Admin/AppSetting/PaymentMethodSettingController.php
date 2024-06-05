@@ -24,61 +24,135 @@ class PaymentMethodSettingController extends Controller
         // Check authorize
         Gate::authorize('paymentMethodStore', AppSetting::class);
 
-        // Stripe
         if ($request->has('stripePaymentMethod')) {
-            // Validate the request data based on the rules
-            $validated = $request->validate([
-                'stripe' => 'required|boolean',
-                'stripe_display_name' => 'required|max:255',
-                'stripe_hosted_checkout' => 'required|boolean',
-                'stripe_hosted_checkout_display_name' => 'required|max:255',
-                'stripe_key' => 'required|string|max:255',
-                'stripe_secret' => 'required|string|max:255',
-            ]);
-
-            // Update or create the setting in the database
-            AppSetting::updateOrCreate(
-                ['name' => 'stripe'],
-                ['value' => $validated['stripe']]
-            );
-            AppSetting::updateOrCreate(
-                ['name' => 'stripe_display_name'],
-                ['value' => $validated['stripe_display_name']]
-            );
-            AppSetting::updateOrCreate(
-                ['name' => 'stripe_hosted_checkout'],
-                ['value' => $validated['stripe_hosted_checkout']]
-            );
-            AppSetting::updateOrCreate(
-                ['name' => 'stripe_hosted_checkout_display_name'],
-                ['value' => $validated['stripe_hosted_checkout_display_name']]
-            );
-
-            $envPath = base_path('.env');
-            $envContent = File::get($envPath);
-
-            $envData = [
-                'STRIPE_KEY' => $validated['stripe_key'],
-                'STRIPE_SECRET' => $validated['stripe_secret'],
-            ];
-
-            // Update the key-value pairs in the .env content
-            foreach ($envData as $key => $value) {
-                $pattern = "/^{$key}=.*/m";
-                $replacement = "{$key}={$value}";
-                if (preg_match($pattern, $envContent)) {
-                    $envContent = preg_replace($pattern, $replacement, $envContent);
-                } else {
-                    // If the key does not exist, add it
-                    $envContent .= "\n{$key}={$value}";
-                }
-            }
-
-            File::put($envPath, $envContent);
+            $this->stripe($request);
         }
 
-        Artisan::call('optimize:clear');
+        if ($request->has('ngeniusNetworkPaymentMethod')) {
+            $this->ngeniusNetwork($request);
+        }
 
         return back()->with('success', 'Setting Saved');
+    }
+
+    /**
+     * Stripe Setting Store
+     */
+    private function stripe(Request $request)
+    {
+        // Validate the request data based on the rules
+        $validated = $request->validate([
+            'stripe' => 'required|boolean',
+            'stripe_display_name' => 'required|max:255',
+            'stripe_hosted_checkout' => 'required|boolean',
+            'stripe_hosted_checkout_display_name' => 'required|max:255',
+            'stripe_key' => 'required|string|max:255',
+            'stripe_secret' => 'required|string|max:255',
+        ]);
+
+        // Update or create the setting in the database
+        AppSetting::updateOrCreate(
+            ['name' => 'stripe'],
+            ['value' => $validated['stripe']]
+        );
+        AppSetting::updateOrCreate(
+            ['name' => 'stripe_display_name'],
+            ['value' => $validated['stripe_display_name']]
+        );
+        AppSetting::updateOrCreate(
+            ['name' => 'stripe_hosted_checkout'],
+            ['value' => $validated['stripe_hosted_checkout']]
+        );
+        AppSetting::updateOrCreate(
+            ['name' => 'stripe_hosted_checkout_display_name'],
+            ['value' => $validated['stripe_hosted_checkout_display_name']]
+        );
+
+        $envPath = base_path('.env');
+        $envContent = File::get($envPath);
+
+        $envData = [
+            'STRIPE_KEY' => $validated['stripe_key'],
+            'STRIPE_SECRET' => $validated['stripe_secret'],
+        ];
+
+        // Update the key-value pairs in the .env content
+        foreach ($envData as $key => $value) {
+            $pattern = "/^{$key}=.*/m";
+            $replacement = "{$key}={$value}";
+            if (preg_match($pattern, $envContent)) {
+                $envContent = preg_replace($pattern, $replacement, $envContent);
+            } else {
+                // If the key does not exist, add it
+                $envContent .= "\n{$key}={$value}";
+            }
+        }
+
+        File::put($envPath, $envContent);
+
+        Artisan::call('optimize:clear');
+    }
+
+    /**
+     * nGenius Network Setting Store
+     */
+    public function nGeniusNetwork(Request $request)
+    {
+
+        // Validate the request data based on the rules
+        $validated = $request->validate([
+            'ngenius' => 'required|boolean',
+            'ngenius_display_name' => 'required|max:255',
+            'ngenius_hosted_checkout' => 'required|boolean',
+            'ngenius_hosted_checkout_display_name' => 'required|max:255',
+            'ngenius_api_key' => 'required|string|max:255',
+            'ngenius_outlet' => 'required|string|max:255',
+            'ngenius_domain' => 'required|url|max:255',
+            'ngenius_environment' => 'required|in:live,sandbox',
+        ]);
+
+        // Update or create the setting in the database
+        AppSetting::updateOrCreate(
+            ['name' => 'ngenius'],
+            ['value' => $validated['ngenius']]
+        );
+        AppSetting::updateOrCreate(
+            ['name' => 'ngenius_display_name'],
+            ['value' => $validated['ngenius_display_name']]
+        );
+        AppSetting::updateOrCreate(
+            ['name' => 'ngenius_hosted_checkout'],
+            ['value' => $validated['ngenius_hosted_checkout']]
+        );
+        AppSetting::updateOrCreate(
+            ['name' => 'ngenius_hosted_checkout_display_name'],
+            ['value' => $validated['ngenius_hosted_checkout_display_name']]
+        );
+
+        $envPath = base_path('.env');
+        $envContent = File::get($envPath);
+
+        $envData = [
+            'NGENIUS_APIKEY' => $validated['ngenius_api_key'],
+            'NGENIUS_OUTLET' => $validated['ngenius_outlet'],
+            'NGENIUS_DOMAIN' => $validated['ngenius_domain'],
+            'NGENIUS_ENVIRONMENT' => $validated['ngenius_environment'],
+        ];
+
+        // Update the key-value pairs in the .env content
+        foreach ($envData as $key => $value) {
+            $pattern = "/^{$key}=.*/m";
+            $replacement = "{$key}={$value}";
+            if (preg_match($pattern, $envContent)) {
+                $envContent = preg_replace($pattern, $replacement, $envContent);
+            } else {
+                // If the key does not exist, add it
+                $envContent .= "\n{$key}={$value}";
+            }
+        }
+
+        File::put($envPath, $envContent);
+
+        Artisan::call('optimize:clear');
     }
 }
