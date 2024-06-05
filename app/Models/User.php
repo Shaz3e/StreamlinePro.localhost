@@ -89,7 +89,7 @@ class User extends Authenticatable implements Auditable
      */
     public function country()
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'country_id');
     }
 
     protected function setAuditInclude()

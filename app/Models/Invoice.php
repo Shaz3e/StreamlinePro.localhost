@@ -77,6 +77,14 @@ class Invoice extends Model implements Auditable
     }
 
     /**
+     * Country Relationship
+     */
+    public function country()
+    {
+        return $this->hasOneThrough(Country::class, User::class, 'id', 'id', 'user_id');
+    }
+
+    /**
      * Company Relationship
      */
     public function company()
