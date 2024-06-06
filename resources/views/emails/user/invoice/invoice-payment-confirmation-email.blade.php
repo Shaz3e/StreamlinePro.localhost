@@ -4,13 +4,13 @@
 This is a payment receipt for Invoice {{ $invoice->id }} sent on {{ $payment->created_at->format('l, F jS, Y') }}<br><br>
 
 ------------------------------------------------------
-Sub Total: Rs{{ $invoice->sub_total }}PKR<br>
-Total: Rs{{ $invoice->total }}PKR<br><br>
+Sub Total: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->sub_total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
+Total: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br><br>
 
-Amount: Rs{{ $payment->amount }}PKR<br>
+Amount: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $payment->amount }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 Transaction #: {{ $payment->transaction_number }}<br>
-Total Paid: Rs{{ $invoice->total_paid }}PKR<br>
-Remaining Balance: Rs{{ $invoice->total - $invoice->total_paid }}PKR<br>
+Total Paid: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total_paid }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
+Remaining Balance: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total - $invoice->total_paid }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 Status: {{ $invoice->status }}
 ------------------------------------------------------
 

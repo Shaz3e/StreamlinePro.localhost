@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\Common\Task\SendTaskOverdueReminderJob;
+use App\Jobs\PaymentMethod\NgeniusGatewayJob;
 use App\Jobs\Staff\SendTaskReminderJob;
 use App\Jobs\User\Invoice\SendInvoiceFirstOverDueNoticeJob;
 use App\Jobs\User\Invoice\SendInvoiceFirstReminderBeforeDueDateJob;
@@ -96,3 +97,5 @@ use Illuminate\Support\Facades\Schedule;
  * Update Promotion is_active status based on time
  */
 // Schedule::job(new PromotionScheduleJob)->daily();
+
+// Schedule::job(new NgeniusGatewayJob)->everyMinute();

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User\PaymentMethods\NgeniusNetwork;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\Models\NgeniusGateway;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Jeybin\Networkintl\Ngenius;
 
 class NgeniusNetworkController extends Controller
 {
@@ -69,7 +71,7 @@ class NgeniusNetworkController extends Controller
                     "lastName" => $invoice->user->last_name,
                     "address" => $invoice->user->address,
                     "city" => $invoice->user->city,
-                    "countryCode" => $invoice->country->iso2
+                    "countryCode" => $invoice->country->alpha2
                 ],
                 "merchantOrderReference" => $invoice->id,
                 "merchantAttributes" => [
@@ -93,7 +95,27 @@ class NgeniusNetworkController extends Controller
 
         if (isset($output['_links']['payment']['href'])) {
             $payment_link = $output['_links']['payment']['href'] . "&slim=" . config('ngenius.slim_mode');
+
             // \Log::info($output);
+
+            // Check if invoice exists
+            $ngeniusGatewayInvoice = NgeniusGateway::where('invoice_id', $invoice->id)->first();
+
+            if ($ngeniusGatewayInvoice) {
+                // Update data into ngenius_gateways table
+                $ngeniusGatewayInvoice->update([
+                    'reference' => $output['_embedded']['payment'][0]['orderReference'],
+                    'amount' => $maxAmount,
+                ]);
+            } else {
+                // Add data into ngenius_gateways table                
+                $ngenius = new NgeniusGateway();
+                $ngenius->invoice_id = $invoice->id;
+                $ngenius->reference = $output['_embedded']['payment'][0]['orderReference'];
+                $ngenius->outlet_id = $outlet;
+                $ngenius->amount = $maxAmount;
+                $ngenius->save();
+            }
         } else {
             echo "Error fetching payment link.";
             exit();
@@ -142,13 +164,6 @@ class NgeniusNetworkController extends Controller
             $accessToken = $responseData['access_token'];
             $tokenType = $responseData['token_type'];
 
-            // Disable SSL verification on production
-            if (config('app.env') == 'local') {
-                $verify = false;
-            } else {
-                $verify = true;
-            }
-
             $response = $client->request('GET', $checkout_url . '/transactions/outlets/' . config('ngenius.outlet') . '/orders/' . $ref, [
                 'headers' => [
                     'Authorization' => $tokenType . ' ' . $accessToken,
@@ -161,22 +176,32 @@ class NgeniusNetworkController extends Controller
             $responseData = json_decode($response->getBody(), true);
 
             $merchantOrderReference = $responseData['merchantOrderReference'];
+            $orderReference = $responseData['_embedded']['payment'][0]['orderReference'];
             $reference = $responseData['_embedded']['payment'][0]['reference'];
             $resultCode = $responseData['_embedded']['payment'][0]['authResponse']['resultCode'];
             $amount = $responseData['amount']['value'];
 
             if ($resultCode == '00') {
                 // Create new payment instance and save
-                $payment = new Payment();
-                $payment->transaction_number = $reference;
-                $payment->invoice_id = $merchantOrderReference;
-                $payment->transaction_date = now();
-                $payment->amount = $amount / 100;
-                $payment->payment_method = DiligentCreators('ngenius_hosted_checkout_display_name');
-                $payment->save();
+                $payment = Payment::where('transaction_number', $reference)->first();
 
-                session()->flash('success', 'Payment successful!');
-                return redirect()->route('invoice.show', $merchantOrderReference);
+                if (!$payment) {
+                    $payment = new Payment();
+                    $payment->transaction_number = $reference;
+                    $payment->invoice_id = $merchantOrderReference;
+                    $payment->transaction_date = now();
+                    $payment->amount = $amount / 100;
+                    $payment->payment_method = DiligentCreators('ngenius_hosted_checkout_display_name');
+                    $payment->save();
+
+                    $ngeniusGateway = NgeniusGateway::where('reference', $orderReference)->first();
+                    if ($ngeniusGateway) {
+                        $ngeniusGateway->delete();
+                    }
+
+                    session()->flash('success', 'Payment successful!');
+                    return redirect()->route('invoice.show', $merchantOrderReference);
+                }
             } else {
                 session()->flash('error', 'Payment failed!');
                 return redirect()->route('invoice.show', $merchantOrderReference);

@@ -6,7 +6,7 @@ This is the second billing notice that your invoice no. {{ $invoice->id }} which
 
 ------------------------------------------------------
 Invoice: {{ $invoice->id }}<br>
-Balance Due: Rs{{ $invoice->total - $invoice->total_paid }}PKR<br>
+Balance Due: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total - $invoice->total_paid }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 Due Date: {{ $invoice->due_date->format('l, jS M Y') }}
 ------------------------------------------------------
 
