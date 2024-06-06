@@ -67,15 +67,18 @@ class NgeniusNetworkController extends Controller
                 "billingAddress" => [
                     "firstName" => $invoice->user->first_name,
                     "lastName" => $invoice->user->last_name,
-                    "address1" => $invoice->user->address,
+                    "address" => $invoice->user->address,
                     "city" => $invoice->user->city,
-                    "countryCode" => $invoice->country->iso3
+                    "countryCode" => $invoice->country->iso2
                 ],
                 "merchantOrderReference" => $invoice->id,
                 "merchantAttributes" => [
                     "cancelUrl" => route('invoice.show', $invoice->id),
                     "cancelText" => "Cancel",
-                    // "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
+                    "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
+                    "offerOnly" => "VISA",
+                    "showPayerName" => true,
+                    // "maskPaymentInfo" => true 
                 ],
             ],
             'headers' => [
@@ -85,11 +88,12 @@ class NgeniusNetworkController extends Controller
             ],
             'verify' => $verify
         ]);
-        
+
         $output = json_decode($response->getBody(), true);
 
         if (isset($output['_links']['payment']['href'])) {
-            $payment_link = $output['_links']['payment']['href'];
+            $payment_link = $output['_links']['payment']['href'] . "&slim=" . config('ngenius.slim_mode');
+            // \Log::info($output);
         } else {
             echo "Error fetching payment link.";
             exit();
@@ -115,14 +119,14 @@ class NgeniusNetworkController extends Controller
 
             $checkout_url = config('ngenius.' . config('ngenius.environment') . '.checkout_url');
 
-            
+
             // Disable SSL verification on production
             if (config('app.env') == 'local') {
                 $verify = false;
             } else {
                 $verify = true;
             }
-            
+
             $client = new \GuzzleHttp\Client();
             $response = $client->request('POST', $checkout_url . '/identity/auth/access-token', [
                 'headers' => [
@@ -145,7 +149,7 @@ class NgeniusNetworkController extends Controller
                 $verify = true;
             }
 
-            $response = $client->request('GET', $checkout_url . '/transactions/outlets/3bb23c22-489e-4fb8-941c-eb8b166547b2/orders/' . $ref, [
+            $response = $client->request('GET', $checkout_url . '/transactions/outlets/' . config('ngenius.outlet') . '/orders/' . $ref, [
                 'headers' => [
                     'Authorization' => $tokenType . ' ' . $accessToken,
                     'accept' => 'application/vnd.ni-payment.v2+json',

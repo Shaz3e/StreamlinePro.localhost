@@ -4,6 +4,7 @@ return [
     'api_key' => env('NGENIUS_APIKEY'),
     'outlet' => env('NGENIUS_OUTLET'),
     'domain' => env('NGENIUS_DOMAIN'),
+    'slim_mode' => env('NGENIUS_SLIM_MODE'),
 
     // Set environment
     'environment' => env('NGENIUS_ENVIRONMENT', 'sandbox'), // 'live' or 'sandbox'
