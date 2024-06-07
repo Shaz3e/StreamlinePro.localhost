@@ -52,12 +52,20 @@
                 @endif
             </div>
             <div class="col-md-6 col-sm-12 text-end">
-                @if ($invoice->is_published)
-                    Published on:
-                @else
-                    Will be published on
+                <p class="m-0">
+                    @if ($invoice->is_published)
+                        Published on:
+                    @else
+                        Will be published on
+                    @endif
+                    <span>{{ $invoice->published_on->format('l, jS M Y') }}</span>
+                </p>
+                @if ($invoice->is_recurring)
+                    <p>
+                        Invoice Frequency <strong>{{ucwords($invoice->recurring_frequency)}}</strong>
+                        Next Date: <strong>{{ $invoice->recurringInvoice->next_invoice_date->format('l, jS M Y') }}</strong>
+                    </p>
                 @endif
-                <span>{{ $invoice->published_on->format('l, jS M Y') }}</span>
             </div>
         </div>
     @endif
@@ -240,9 +248,12 @@
                             <thead>
                                 <tr>
                                     <th style="width: 50%"><strong>Item</strong></th>
-                                    <th style="width: 20%" class="text-center" style="width: 10%"><strong>Price</strong></th>
-                                    <th style="width: 10%" class="text-center" style="width: 10%"><strong>Quantity</strong></th>
-                                    <th style="width: 20%" class="text-end" style="width: 10%"><strong>Totals</strong></th>
+                                    <th style="width: 20%" class="text-center" style="width: 10%"><strong>Price</strong>
+                                    </th>
+                                    <th style="width: 10%" class="text-center" style="width: 10%"><strong>Quantity</strong>
+                                    </th>
+                                    <th style="width: 20%" class="text-end" style="width: 10%"><strong>Totals</strong>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -627,7 +638,7 @@
                         });
                         // Show the row again if the delete operation fails
                         $(this).closest('tr')
-                    .show(); // This line shows the row if the AJAX call fails
+                            .show(); // This line shows the row if the AJAX call fails
                     }
                 });
             });

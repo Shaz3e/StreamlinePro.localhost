@@ -35,6 +35,10 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->date('published_on')->default(now());
 
+            $table->boolean('is_recurring')->default(false);
+            $table->date('recurring_on')->nullable();
+            $table->string('recurring_frequency')->nullable();
+
             // Store special notes for this invoice
             $table->text('header_note')->nullable();
             $table->text('footer_note')->nullable();

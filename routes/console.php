@@ -10,6 +10,7 @@ use App\Jobs\User\Invoice\SendInvoiceSecondOverDueNoticeJob;
 use App\Jobs\User\Invoice\SendInvoiceSecondReminderBeforeDueDateJob;
 use App\Jobs\User\Invoice\SendInvoiceThirdOverDueNoticeJob;
 use App\Jobs\User\Invoice\SendInvoiceThirdReminderBeforeDueDateJob;
+use App\Jobs\User\Invoice\GenerateRecurringInvoiceJob;
 use App\Jobs\User\PromotionScheduleJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -55,46 +56,61 @@ Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
 /**
  * If the deadline has passed since the creation of the task.
  * Send task overdue reminder to assigned_to and created_by
+ * Intervals: Daily
  */
-Schedule::job(new SendTaskOverdueReminderJob)->everyMinute();
+Schedule::job(new SendTaskOverdueReminderJob)->daily();
 
 /**
  * Send Invoice as email when published_date equals today
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceNotificationsJob)->daily();
 
 /**
  * Send Invoice First Reminder when due_date 3 days from now
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceFirstReminderBeforeDueDateJob)->daily();
 
 /**
  * Send Invoice First Reminder when due_date 2 days from now
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceSecondReminderBeforeDueDateJob)->daily();
 
 /**
  * Send Invoice First Reminder when due_date 1 days from now
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceThirdReminderBeforeDueDateJob)->daily();
 
  /**
  * Send Invoice First Overdue Reminder when due_date after 1 days from now
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceFirstOverDueNoticeJob)->daily();
 
 /**
  * Send Invoice Second Overdue Reminder when due_date after 2 days from now
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceSecondOverDueNoticeJob)->daily();
 
 /**
  * Send Invoice Third Overdue Reminder when due_date after 3 days from now
+ * Intervals: Daily
  */
 Schedule::job(new SendInvoiceThirdOverDueNoticeJob)->daily();
 
 /**
+ * Generate Recurring Invoice with duplicated data
+ * Intervals: Daily
+ */
+Schedule::job(new GenerateRecurringInvoiceJob)->daily();
+
+/**
  * Update Promotion is_active status based on time
+ * Intervals: Daily
  */
 Schedule::job(new PromotionScheduleJob)->daily();
 
@@ -102,5 +118,6 @@ Schedule::job(new PromotionScheduleJob)->daily();
  * Check N-Geniuse Network Gateway Payment via reference and update 
  * and Delete reference once payment is updated
  * do not run if model is empty
+ * Intervals: Every Minute
  */
 Schedule::job(new NgeniusGatewayJob)->everyMinute();

@@ -80,6 +80,14 @@ class InvoiceController extends Controller
                 'invoice_date' => 'nullable|date',
                 'due_date' => 'nullable|date',
                 'discount_type' => 'required|string',
+
+                'is_recurring' => 'required|boolean',
+                'recurring_on' => [
+                    'required_if:is_recurring,1',
+                ],
+                'recurring_frequency' => [
+                    'required_if:is_recurring,1',
+                ],
             ],
             [
                 'invoice_to.required' => 'Invoice To is required',
@@ -108,6 +116,12 @@ class InvoiceController extends Controller
         $invoice->header_note = $request->header_note;
         $invoice->footer_note = $request->footer_note;
         $invoice->private_note = $request->private_note;
+
+        if ($request->filled('is_recurring')) {
+            $invoice->is_recurring = $request->is_recurring;
+            $invoice->recurring_on = $request->recurring_on;
+            $invoice->recurring_frequency = $request->recurring_frequency;
+        }
 
         $invoice->save();
 
