@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User\PaymentMethods\NgeniusNetwork;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\Models\NgeniusGateway;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Jeybin\Networkintl\Ngenius;
 
 class NgeniusNetworkController extends Controller
 {
@@ -27,116 +29,97 @@ class NgeniusNetworkController extends Controller
         $amountInCents = $maxAmount * 100;
 
         $apikey = config('ngenius.api_key');
+        $outlet = config('ngenius.outlet');
         $checkout_url = config('ngenius.' . config('ngenius.environment') . '.checkout_url');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $checkout_url . "/identity/auth/access-token");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "accept: application/vnd.ni-identity.v1+json",
-            "authorization: Basic " . $apikey,
-            "content-type: application/vnd.ni-identity.v1+json"
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"realmName\":\"ni\"}");
-
         // Disable SSL verification on production
         if (config('app.env') == 'local') {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        }
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-            exit();
+            $verify = false;
         } else {
-            $output = json_decode($response);
-            if (isset($output->access_token)) {
-                $access_token = $output->access_token;
-            } else {
-                echo "Error fetching access token.";
-                exit();
-            }
+            $verify = true;
         }
 
-        curl_close($ch);
+        // Generate Access Token
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', $checkout_url . '/identity/auth/access-token', [
+            'headers' => [
+                'Authorization' => 'Basic ' . $apikey,
+                'accept' => 'application/vnd.ni-identity.v1+json',
+                'content-type' => 'application/vnd.ni-identity.v1+json',
+            ],
+            'verify' => $verify,
+        ]);
 
+
+        $responseData = json_decode($response->getBody(), true);
+
+        // Get Access Token
+        $accessToken = $responseData['access_token'];
 
         // Step 2: Send the second request with the access token
-        $outlet_id = config('ngenius.outlet');
-        $url = $checkout_url . "/transactions/outlets/$outlet_id/orders";
+        $response = $client->request('POST', $checkout_url . '/transactions/outlets/' . $outlet . '/orders', [
+            'json' => [
+                'action' => 'PURCHASE',
+                'amount' => [
+                    'currencyCode' => $currency,
+                    'value' => $amountInCents,
+                ],
+                "language" => "en",
+                "emailAddress" => $invoice->user->email,
+                "billingAddress" => [
+                    "firstName" => $invoice->user->first_name,
+                    "lastName" => $invoice->user->last_name,
+                    "address" => $invoice->user->address,
+                    "city" => $invoice->user->city,
+                    "countryCode" => $invoice->country->alpha2
+                ],
+                "merchantOrderReference" => $invoice->id,
+                "merchantAttributes" => [
+                    "cancelUrl" => route('invoice.show', $invoice->id),
+                    "cancelText" => "Cancel",
+                    "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
+                    "offerOnly" => "VISA",
+                    "showPayerName" => true,
+                    // "maskPaymentInfo" => true 
+                ],
+            ],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken,
+                'accept' => 'application/vnd.ni-payment.v2+json',
+                'content-type' => 'application/vnd.ni-payment.v2+json',
+            ],
+            'verify' => $verify
+        ]);
 
-        $currency_code = $currency;
-        $email_address = $invoice->user->email;
-        $first_name = $invoice->user->first_name;
-        $last_name = $invoice->user->last_name; // Replace with the user's last name
-        $address1 = $invoice->user->address; // Replace with the user's address
-        $city = $invoice->user->city; // Replace with the user's city
-        $country_code = $invoice->user->country_code; // Replace with the user's country code
-        $merchant_order_reference = $invoice->id; // Replace with the reference number
+        $output = json_decode($response->getBody(), true);
 
-        $data = array(
-            "action" => "PURCHASE",
-            "amount" => array(
-                "currencyCode" => $currency_code,
-                "value" => $amountInCents
-            ),
-            "language" => "en",
-            "emailAddress" => $email_address,
-            "billingAddress" => array(
-                "firstName" => $first_name,
-                "lastName" => $last_name,
-                "address1" => $address1,
-                "city" => $city,
-                "countryCode" => $country_code
-            ),
-            "merchantOrderReference" => $merchant_order_reference,
-            "merchantAttributes" => array(
-                "cancelUrl" => route('invoice.show', $invoice->id),
-                "cancelText" => "Cancel",
-                "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
-            )
-        );
+        if (isset($output['_links']['payment']['href'])) {
+            $payment_link = $output['_links']['payment']['href'] . "&slim=" . config('ngenius.slim_mode');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Authorization: Bearer " . $access_token,
-            "Content-Type: application/vnd.ni-payment.v2+json",
-            "Accept: application/vnd.ni-payment.v2+json"
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            // \Log::info($output);
 
-        // Disable SSL verification on production
-        if (config('app.env') == 'local') {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        }
+            // Check if invoice exists
+            $ngeniusGatewayInvoice = NgeniusGateway::where('invoice_id', $invoice->id)->first();
 
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-            exit();
-        } else {
-            $output = json_decode($response, true);
-
-            if (isset($output['_links']['payment']['href'])) {
-                $payment_link = $output['_links']['payment']['href'];
+            if ($ngeniusGatewayInvoice) {
+                // Update data into ngenius_gateways table
+                $ngeniusGatewayInvoice->update([
+                    'reference' => $output['_embedded']['payment'][0]['orderReference'],
+                    'amount' => $maxAmount,
+                ]);
             } else {
-                echo "Error fetching payment link.";
-                exit();
+                // Add data into ngenius_gateways table                
+                $ngenius = new NgeniusGateway();
+                $ngenius->invoice_id = $invoice->id;
+                $ngenius->reference = $output['_embedded']['payment'][0]['orderReference'];
+                $ngenius->outlet_id = $outlet;
+                $ngenius->amount = $maxAmount;
+                $ngenius->save();
             }
+        } else {
+            echo "Error fetching payment link.";
+            exit();
         }
-
-        curl_close($ch);
-
-        // redirect
-        // header("Location: $payment_link");
         return redirect()->away($payment_link);
     }
 
@@ -158,7 +141,6 @@ class NgeniusNetworkController extends Controller
 
             $checkout_url = config('ngenius.' . config('ngenius.environment') . '.checkout_url');
 
-            $client = new \GuzzleHttp\Client();
 
             // Disable SSL verification on production
             if (config('app.env') == 'local') {
@@ -167,6 +149,7 @@ class NgeniusNetworkController extends Controller
                 $verify = true;
             }
 
+            $client = new \GuzzleHttp\Client();
             $response = $client->request('POST', $checkout_url . '/identity/auth/access-token', [
                 'headers' => [
                     'Authorization' => 'Basic ' . config('ngenius.api_key'),
@@ -181,14 +164,7 @@ class NgeniusNetworkController extends Controller
             $accessToken = $responseData['access_token'];
             $tokenType = $responseData['token_type'];
 
-            // Disable SSL verification on production
-            if (config('app.env') == 'local') {
-                $verify = false;
-            } else {
-                $verify = true;
-            }
-
-            $response = $client->request('GET', $checkout_url . '/transactions/outlets/3bb23c22-489e-4fb8-941c-eb8b166547b2/orders/' . $ref, [
+            $response = $client->request('GET', $checkout_url . '/transactions/outlets/' . config('ngenius.outlet') . '/orders/' . $ref, [
                 'headers' => [
                     'Authorization' => $tokenType . ' ' . $accessToken,
                     'accept' => 'application/vnd.ni-payment.v2+json',
@@ -200,22 +176,32 @@ class NgeniusNetworkController extends Controller
             $responseData = json_decode($response->getBody(), true);
 
             $merchantOrderReference = $responseData['merchantOrderReference'];
+            $orderReference = $responseData['_embedded']['payment'][0]['orderReference'];
             $reference = $responseData['_embedded']['payment'][0]['reference'];
             $resultCode = $responseData['_embedded']['payment'][0]['authResponse']['resultCode'];
             $amount = $responseData['amount']['value'];
 
             if ($resultCode == '00') {
                 // Create new payment instance and save
-                $payment = new Payment();
-                $payment->transaction_number = $reference;
-                $payment->invoice_id = $merchantOrderReference;
-                $payment->transaction_date = now();
-                $payment->amount = $amount / 100;
-                $payment->payment_method = DiligentCreators('ngenius_hosted_checkout_display_name');
-                $payment->save();
+                $payment = Payment::where('transaction_number', $reference)->first();
 
-                session()->flash('success', 'Payment successful!');
-                return redirect()->route('invoice.show', $merchantOrderReference);
+                if (!$payment) {
+                    $payment = new Payment();
+                    $payment->transaction_number = $reference;
+                    $payment->invoice_id = $merchantOrderReference;
+                    $payment->transaction_date = now();
+                    $payment->amount = $amount / 100;
+                    $payment->payment_method = DiligentCreators('ngenius_hosted_checkout_display_name');
+                    $payment->save();
+
+                    $ngeniusGateway = NgeniusGateway::where('reference', $orderReference)->first();
+                    if ($ngeniusGateway) {
+                        $ngeniusGateway->delete();
+                    }
+
+                    session()->flash('success', 'Payment successful!');
+                    return redirect()->route('invoice.show', $merchantOrderReference);
+                }
             } else {
                 session()->flash('error', 'Payment failed!');
                 return redirect()->route('invoice.show', $merchantOrderReference);

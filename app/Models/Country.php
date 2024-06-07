@@ -21,4 +21,9 @@ class Country extends Model
         'flag',
         'is_active',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'country_id');
+    }
 }

@@ -26,6 +26,7 @@ class Invoice extends Model implements Auditable
         'invoice_date'  => 'date',
         'due_date'      => 'date',
         'published_on'  => 'date',
+        'recurring_on'  => 'date',
     ];
 
     /**
@@ -77,6 +78,14 @@ class Invoice extends Model implements Auditable
     }
 
     /**
+     * Country Relationship
+     */
+    public function country()
+    {
+        return $this->hasOneThrough(Country::class, User::class, 'id', 'id', 'user_id');
+    }
+
+    /**
      * Company Relationship
      */
     public function company()
@@ -106,6 +115,14 @@ class Invoice extends Model implements Auditable
     public function payments()
     {
         return $this->hasMany(Payment::class, 'invoice_id');
+    }
+
+    /**
+     * Relationship with Recurring
+     */
+    public function recurringInvoice()
+    {
+        return $this->hasOne(RecurringScheduledInvoices::class);
     }
 
     /**

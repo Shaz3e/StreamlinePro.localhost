@@ -77,14 +77,55 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div class="form-group">
-                                            <label for="published_on">Publish Date <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="published_on">Publish Date<span class="text-danger">*</span></label>
                                             <input type="date" name="published_on" class="form-control" id="published_on"
                                                 value="{{ old('published_on', now()->format('Y-m-d')) }}"
                                                 min="{{ now()->format('Y-m-d') }}" required>
                                         </div>
                                         <small class="text-muted">Invoice will be sent via email to this date</small>
                                         @error('published_on')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    {{-- /.col --}}
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <label for="is_recurring">Recurring Invoice</label>
+                                            <select name="is_recurring" class="form-control" id="is_recurring">
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                        </div>
+                                        @error('is_recurring')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    {{-- /.col --}}
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <label for="recurring_on">Recurring Date</label>
+                                            <input type="date" name="recurring_on" class="form-control" id="recurring_on"
+                                                value="{{ old('recurring_on', now()->format('Y-m-d')) }}" required>
+                                        </div>
+                                        @error('recurring_on')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    {{-- /.col --}}
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <label for="recurring_frequency">Recurring Frequency</label>
+                                            <select name="recurring_frequency" class="form-control"
+                                                id="recurring_frequency">
+                                                <option value="">Select</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="monthly">Monthly</option>
+                                                <option value="quarterly">Quarterly</option>
+                                                <option value="semiannually">Semiannually</option>
+                                                <option value="annually">Annually</option>
+                                            </select>
+                                        </div>
+                                        @error('recurring_frequency')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -126,8 +167,8 @@
                                     <div class="col-md-12 mb-3">
                                         <div class="form-group">
                                             <label for="invoice_date">Invoice Date</label>
-                                            <input type="date" name="invoice_date" class="form-control" id="invoice_date"
-                                                value="{{ old('invoice_date') }}">
+                                            <input type="date" name="invoice_date" class="form-control"
+                                                id="invoice_date" value="{{ old('invoice_date') }}">
                                         </div>
                                         <div><small class="text-muted">Invoice Creation Date for Client</small></div>
                                         @error('invoice_date')
@@ -417,6 +458,18 @@
                     }
                 ]
             })
+
+            // Recurring Invoice frequency is required with is_recurring is selected as Yes
+            const isRecurringField = document.getElementById('is_recurring');
+            const recurringFrequencyField = document.getElementById('recurring_frequency');
+
+            isRecurringField.addEventListener('change', () => {
+                if (isRecurringField.value === '1') {
+                    recurringFrequencyField.required = true;
+                } else {
+                    recurringFrequencyField.required = false;
+                }
+            });
         });
     </script>
 

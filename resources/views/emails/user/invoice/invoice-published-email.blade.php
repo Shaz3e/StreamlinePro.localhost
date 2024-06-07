@@ -13,18 +13,18 @@ Due Date: {{ $invoice->due_date ? $invoice->due_date->format('l, jS M Y') : 'N/A
 | Product Name | Price |
 |--------------|-------|
 @foreach ($products as $product)
-| {{ $product->item_description }} | Rs{{ $product->unit_price }}PKR |
+| {{ $product->item_description }} | {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $product->unit_price }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }} |
 @endforeach
 
 ------------------------------------------------------
-Sub Total: Rs{{ $invoice->sub_total }}PKR<br>
+Sub Total: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->sub_total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 @if ($invoice->discount > 0)
-Discount: Rs{{ $invoice->discount }}PKR<br>
+Discount: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->discount }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 @endif
 @if ($invoice->tax > 0)
-Tax: Rs{{ $invoice->tax }}PKR<br>
+Tax: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->tax }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 @endif
-Total: Rs{{ $invoice->total }}PKR 
+Total: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }} 
 ------------------------------------------------------
 You can login to your client area to view and pay the invoice below.
 

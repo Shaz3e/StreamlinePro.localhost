@@ -109,6 +109,7 @@ class PaymentMethodSettingController extends Controller
             'ngenius_outlet' => 'required|string|max:255',
             'ngenius_domain' => 'required|url|max:255',
             'ngenius_environment' => 'required|in:live,sandbox',
+            'ngenius_slim_mode' => 'required|in:1,2,true,false',
         ]);
 
         // Update or create the setting in the database
@@ -137,6 +138,7 @@ class PaymentMethodSettingController extends Controller
             'NGENIUS_OUTLET' => $validated['ngenius_outlet'],
             'NGENIUS_DOMAIN' => $validated['ngenius_domain'],
             'NGENIUS_ENVIRONMENT' => $validated['ngenius_environment'],
+            'NGENIUS_SLIM_MODE' => $validated['ngenius_slim_mode'],
         ];
 
         // Update the key-value pairs in the .env content
