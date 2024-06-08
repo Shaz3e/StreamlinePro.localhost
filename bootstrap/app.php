@@ -15,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web([
             RedirectAdminIfAuthenticated::class, // Redirect admin if authenticated
         ]);
-        $middleware->validateCsrfTokens(except: [
-            'webhook/*',
+        $middleware->alias([
+            'check.lock' => \App\Http\Middleware\CheckIfLockedMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

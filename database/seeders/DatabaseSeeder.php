@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            // Required Seeders
             AdminSeeder::class,
             SupportTicketProiritySeeder::class,
             SupportTicketStatusSeeder::class,
@@ -31,20 +32,20 @@ class DatabaseSeeder extends Seeder
             InvoiceLabelSeeder::class,
 
             // Local
-            ProductServiceSeeder::class,
-            CompanySeeder::class,
-            DepartmentSeeder::class,
-            UserSeeder::class,
-            KnowledgebaseCategorySeeder::class,
+            // ProductServiceSeeder::class,
+            // CompanySeeder::class,
+            // DepartmentSeeder::class,
+            // UserSeeder::class,
+            // KnowledgebaseCategorySeeder::class,
 
             // Seeders for Users and Currency
             CurrencySeeder::class,
             CountrySeeder::class,
 
-            // App Settings
+            // App Settings Required
             AppSettingSeeder::class,
 
-            // Run this seeder at the end
+            // Roles & Permissions at the end Required
             RolePermissionSeeder::class,
         ]);
     }
