@@ -257,12 +257,14 @@
                         <i class="ri-lock-unlock-line align-middle me-1"></i>
                         Lock Your Account
                     </a>
+                    
                     @hasanyrole(json_decode(DiligentCreators('can_access_pulse_dashboard')))
                     <a class="dropdown-item" href="{{ route('admin.pulse.dashboard') }}">
-                        <i class="ri-lock-unlock-line align-middle me-1"></i>
-                        Pulse
+                        <i class="ri-pulse-line align-middle me-1"></i>
+                        Pulse Dashboard
                     </a>
                     @endhasanyrole
+
                     <div class="dropdown-divider"></div>
 
                     <a href="javascript:void(0)" class="dropdown-item text-danger"
