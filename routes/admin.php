@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Auth\LockController;
 
 // Admin Dashboard
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PulseDashboardController;
 
 // Profile
 use App\Http\Controllers\Admin\ProfileController;
@@ -133,6 +134,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/', [DashboardController::class, 'dashboard'])
             ->name('dashboard');
+            
+        // Pulse Dashboard
+        Route::get('/pulse', [PulseDashboardController::class, 'dashboard'])
+            ->name('pulse.dashboard');
 
         // Profile
         Route::get('my-profile', [ProfileController::class, 'profile'])

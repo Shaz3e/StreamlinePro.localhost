@@ -85,6 +85,25 @@
                 </div>
             </div>
             {{-- /.row --}}
+            {{-- Access Pulse Dashboard --}}
+            <div class="row mb-3">
+                <label for="can_access_pulse_dashboard" class="col-sm-3 col-form-label">Who Access Pulse Dashboard</label>
+                <div class="col-sm-9">
+                    <select name="can_access_pulse_dashboard[]" id="can_access_pulse_dashboard"
+                        class="form-control select2" multiple>
+                        <option value="">Select</option>
+                        @foreach ($roles as $role)
+                        <option value="{{ $role->name }}" @if (DiligentCreators('can_access_pulse_dashboard') && in_array($role->name, json_decode(DiligentCreators('can_access_pulse_dashboard'), true))) selected @endif>
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('can_access_pulse_dashboard')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            {{-- /.row --}}
         </div>
         {{-- /.card-body --}}
         <div class="card-footer">
