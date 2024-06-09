@@ -34,9 +34,13 @@ class LoginController extends Controller
             return back();
         }
 
+        // if admin is_locked = true change to false
+        $admin->is_locked = false;
+        $admin->save();
+
         // Session regenrate
         session()->regenerate();
-        
+
         // Authenticate and Login
         Auth::guard('admin')->login($admin);
         session()->flash('success', 'Welcome ' . $admin->name);

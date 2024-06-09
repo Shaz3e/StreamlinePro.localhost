@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Auth\LockController;
 
 // Admin Dashboard
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PulseDashboardController;
 
 // Profile
 use App\Http\Controllers\Admin\ProfileController;
@@ -90,7 +91,7 @@ use App\Http\Controllers\Admin\CountryController;
 
 // if route is /admin redirect to admin/dashboard
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('/admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
 
         // Register
@@ -119,12 +120,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('auth:admin')->group(function () {
-
         // Lock
         Route::get('lock', [LockController::class, 'view'])
             ->name('lock');
         Route::post('lock', [LockController::class, 'post'])
             ->name('lock.store');
+    });
+
+    Route::middleware(['auth:admin', 'check.lock'])->group(function () {
 
         // Logout
         Route::post('logout', [LogoutController::class, 'logout'])
@@ -133,6 +136,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/', [DashboardController::class, 'dashboard'])
             ->name('dashboard');
+
+        // Pulse Dashboard
+        Route::get('/pulse', [PulseDashboardController::class, 'dashboard'])
+            ->name('pulse.dashboard');
 
         // Profile
         Route::get('my-profile', [ProfileController::class, 'profile'])
@@ -163,7 +170,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Mail Setting
             Route::get('mail', [MailSettingController::class, 'mail'])->name('mail');
             Route::post('mail', [MailSettingController::class, 'mailStore'])->name('mail.store');
-            
+
             // Currency Setting
             Route::get('currency', [CurrencySettingController::class, 'currency'])->name('currency');
             Route::post('currency', [CurrencySettingController::class, 'currencyStore'])->name('currency.store');
@@ -171,7 +178,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('currencies', CurrencyController::class);
             // Search Users
             Route::get('search-currencies', [CurrencyController::class, 'searchCurrencies'])
-            ->name('search.currencies');
+                ->name('search.currencies');
 
             // SMS Setting
             Route::get('sms', [SmsSettingController::class, 'sms'])->name('sms');
@@ -351,8 +358,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /**
          * Countries
          */
-        
-        // Search Users
+
+        // Search Countries
         Route::get('search-countries', [CountryController::class, 'searchCountries'])
             ->name('search.countries');
 

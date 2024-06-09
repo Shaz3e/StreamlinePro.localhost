@@ -248,15 +248,23 @@
                             <i class="ri-settings-2-line align-middle me-1"></i> Settings</a>
                     @endcanany
 
-                    @hasrole('developer')
+                    @hasanyrole(['developer'])
                         <a class="dropdown-item d-block" href="{{ route('admin.app-settings.index') }}">
-                            <i class="ri-settings-2-line align-middle me-1"></i> App Settings</a>
-                    @endhasrole
+                            <i class="ri-tools-line align-middle me-1"></i> App Settings</a>
+                    @endhasanyrole
+                    
+                    @hasanyrole(json_decode(DiligentCreators('can_access_pulse_dashboard')))
+                    <a class="dropdown-item" href="{{ route('admin.pulse.dashboard') }}">
+                        <i class="ri-pulse-line align-middle me-1"></i>
+                        Pulse Dashboard
+                    </a>
+                    @endhasanyrole
 
                     <a class="dropdown-item" href="{{ route('admin.lock') }}">
                         <i class="ri-lock-unlock-line align-middle me-1"></i>
                         Lock Your Account
                     </a>
+
                     <div class="dropdown-divider"></div>
 
                     <a href="javascript:void(0)" class="dropdown-item text-danger"

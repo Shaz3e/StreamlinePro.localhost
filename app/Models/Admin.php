@@ -68,6 +68,18 @@ class Admin extends Authenticatable implements Auditable
     protected $casts = [
         'department_id' => 'array', // Tells Laravel to cast the column to an array
     ];
+    
+    public function lock()
+    {
+        $this->is_locked = true;
+        $this->save();
+    }
+
+    public function unlock()
+    {
+        $this->is_locked = false;
+        $this->save();
+    }
 
     /**
      * Relationship to show admin department 

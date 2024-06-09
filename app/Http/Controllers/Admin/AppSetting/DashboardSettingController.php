@@ -33,6 +33,7 @@ class DashboardSettingController extends Controller
             'can_access_user_summary' => 'required|array|max:255',
             'can_access_support_ticket_summary' => 'required|array|max:255',
             'can_access_invoice_summary' => 'required|array|max:255',
+            'can_access_pulse_dashboard' => 'required|array|max:255',
         ];
 
         // Validate the request data based on the rules

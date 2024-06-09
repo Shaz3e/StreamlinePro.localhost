@@ -83,7 +83,7 @@
             </div>
             {{-- /.row --}}
             <div class="row mb-3">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         <label for="site_url">Site URL</label>
                         <input type="url" name="site_url" id="site_url" class="form-control"
@@ -94,13 +94,24 @@
                     @enderror
                 </div>
                 {{-- /.col --}}
-                <div class="col-6">
+                <div class="col-4">
                     <div class="form-group">
                         <label for="app_url">Application URL</label>
                         <input type="url" name="app_url" id="app_url" class="form-control"
                             value="{{ old('app_url', DiligentCreators('app_url')) }}" required>
                     </div>
                     @error('app_url')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="notification_email">Notification Email</label>
+                        <input type="email" name="notification_email" id="notification_email" class="form-control"
+                            value="{{ old('notification_email', DiligentCreators('notification_email')) }}" required>
+                    </div>
+                    @error('notification_email')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

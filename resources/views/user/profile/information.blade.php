@@ -2,8 +2,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">Update Profile</div>
-            <form action="{{ route('profile.store', $user->id) }}" method="POST" class="needs-validation"
-                novalidate>
+            <form action="{{ route('profile.store', $user->id) }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 @method('post')
                 <div class="card-body">
@@ -52,11 +51,16 @@
                     </div>
                     {{-- /.row --}}
                     <div class="row mb-3">
-                        <label for="country_code" class="col-sm-2 col-form-label">Country</label>
+                        <label for="country_id" class="col-sm-2 col-form-label">Country</label>
                         <div class="col-md-4 col-sm-4">
-                            <input type="text" name="country_code" id="country_code" class="form-control"
-                                value="{{ old('country_code', $user->country_code) }}" required>
-                            @error('country_code')
+                            <select id="country_id" name="country_id" class="form-control">
+                                <option value="">Select</option>
+                                @if ($user->country)
+                                    <option value="{{ $user->country->id }}" selected>{{ $user->country->name }}
+                                    </option>
+                                @endif
+                            </select>
+                            @error('country_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -68,6 +72,17 @@
                             <input type="text" name="city" id="city" class="form-control"
                                 value="{{ old('city', $user->city) }}" required>
                             @error('city')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    {{-- /.row --}}
+                    <div class="row mb-3">
+                        <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                        <div class="col-md-4 col-sm-4">
+                            <input type="text" name="phone" id="phone" class="form-control"
+                                value="{{ old('phone', $user->phone) }}" maxlength="20" required>
+                            @error('phone')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -88,3 +103,35 @@
     {{-- /.col --}}
 </div>
 {{-- /.row --}}
+
+@push('styles')
+    <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
+    <script>
+        // Search Country
+        $('#country_id').select2({
+            ajax: {
+                url: '{{ route('search.countries') }}',
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: function(params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.results
+                    };
+                }
+            },
+            minimumInputLength: 3
+        });
+    </script>
+@endpush

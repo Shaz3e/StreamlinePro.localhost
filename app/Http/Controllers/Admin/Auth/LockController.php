@@ -11,6 +11,10 @@ class LockController extends Controller
 {
     public function view()
     {
+        $admin = request()->user();
+        $admin->is_locked = true;
+        $admin->save();
+
         return view('admin.auth.lock');
     }
 
@@ -34,6 +38,10 @@ class LockController extends Controller
             session()->flash('error', 'Your account is deactivated. Please contact your administrator.');
             return back();
         }
+
+        // if admin is_locked = true change to false
+        $admin->is_locked = false;
+        $admin->save();
 
         // Session regenrate
         session()->regenerate();

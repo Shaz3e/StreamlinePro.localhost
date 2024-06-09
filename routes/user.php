@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CountryController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Auth
@@ -71,6 +72,10 @@ Route::middleware('auth')->group(function () {
         ->name('profile');
     Route::post('my-profile', [ProfileController::class, 'profileStore'])
         ->name('profile.store');
+
+    // Search Countries
+    Route::get('search-countries', [CountryController::class, 'searchCountries'])
+        ->name('search.countries');
 
     // Invoice
     Route::get('invoices', [InvoiceController::class, 'index'])
