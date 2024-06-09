@@ -110,28 +110,30 @@
 
 @push('scripts')
     <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/inputmask/jquery.inputmask.min.js') }}"></script>
     <script>
-        // Search Country
-        $('#country_id').select2({
-            ajax: {
-                url: '{{ route('search.countries') }}',
-                method: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        // phone should starts with +
+        $(document).ready(function() {
+            // Search Country
+            $('#country_id').select2({
+                ajax: {
+                    url: '{{ route('search.countries') }}',
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: function(params) {
+                        return {
+                            term: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.results
+                        };
+                    }
                 },
-                data: function(params) {
-                    return {
-                        term: params.term
-                    };
-                },
-                processResults: function(data) {
-                    return {
-                        results: data.results
-                    };
-                }
-            },
-            minimumInputLength: 3
+                minimumInputLength: 3
+            });
         });
     </script>
 @endpush

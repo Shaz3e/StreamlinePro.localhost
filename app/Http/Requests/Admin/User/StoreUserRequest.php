@@ -34,8 +34,8 @@ class StoreUserRequest extends BaseFormRequest
             ],
             'phone' => [
                 'nullable',
-                'numeric',
-                'regex:/^[0-9]{7,20}$/'
+                'starts_with:+',
+                'regex:/^\+[1-9]\d{1,14}$/',
             ],
             'address' => [
                 'nullable',

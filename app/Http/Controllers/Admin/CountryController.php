@@ -21,6 +21,7 @@ class CountryController extends Controller
         $countries = Country::where('name', 'like', '%' . $term . '%')
             ->orWhere('alpha2', 'like', '%' . $term . '%')
             ->orWhere('alpha3', 'like', '%' . $term . '%')
+            ->orWhere('calling_code', 'like', '%' . $term . '%')
             ->select('id', 'name')
             ->get();
 
