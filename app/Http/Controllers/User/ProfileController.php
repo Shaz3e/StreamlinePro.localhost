@@ -46,8 +46,13 @@ class ProfileController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|max:255|unique:users,email,' . Auth::user()->id,
             'address' => 'required|string|max:255',
-            'country_code' => 'required',
-            'city' => 'required|max:255',
+            'country_id' => 'required|exists:countries,id',
+            'city' => 'required|max:255',            
+            'phone' => [
+                'nullable',
+                'numeric',
+                'regex:/^[0-9]{7,20}$/'
+            ],
         ]);
 
         // Get current user

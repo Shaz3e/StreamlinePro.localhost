@@ -359,7 +359,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
          * Countries
          */
 
-        // Search Users
+        // Search Countries
         Route::get('search-countries', [CountryController::class, 'searchCountries'])
             ->name('search.countries');
 
