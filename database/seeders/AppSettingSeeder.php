@@ -16,8 +16,9 @@ class AppSettingSeeder extends Seeder
         $appSettings = [
             // General Setting
             ['name' => 'site_name', 'value' => 'Stream Line Pro'],
-            ['name' => 'site_url', 'value' => null],
-            ['name' => 'app_url', 'value' => null],
+            ['name' => 'site_url', 'value' => config('app.url')],
+            ['name' => 'app_url', 'value' => config('app.url')],
+            ['name' => 'notification_email', 'value' => null],
             ['name' => 'site_logo_light', 'value' => 'settings/logo/logo-light.png'],
             ['name' => 'site_logo_dark', 'value' => 'settings/logo/logo-dark.png'],
             ['name' => 'site_logo_small', 'value' => 'settings/logo/logo-sm.png'],

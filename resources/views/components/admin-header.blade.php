@@ -248,7 +248,7 @@
                             <i class="ri-settings-2-line align-middle me-1"></i> Settings</a>
                     @endcanany
 
-                    @hasanyrole(['superadmin', 'developer'])
+                    @hasanyrole(['developer'])
                         <a class="dropdown-item d-block" href="{{ route('admin.app-settings.index') }}">
                             <i class="ri-tools-line align-middle me-1"></i> App Settings</a>
                     @endhasanyrole
