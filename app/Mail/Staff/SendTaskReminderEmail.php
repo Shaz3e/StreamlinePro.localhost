@@ -45,7 +45,7 @@ class SendTaskReminderEmail extends Mailable
             with: [
                 'task' => $this->task,
                 'time' => $this->time,
-                'url' => config('app.url') . '/tasks/' . $this->task->id,
+                'url' => config('app.url') . '/admin/tasks/' . $this->task->id,
             ]
         );
     }
