@@ -92,6 +92,14 @@ class User extends Authenticatable implements Auditable
         return $this->belongsTo(Country::class, 'country_id');
     }
 
+    /**
+     * User's notifications
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
+
     protected function setAuditInclude()
     {
         // Get all columns from the model's table

@@ -57,13 +57,18 @@
                             </button>
                         </div>
 
+                        @if (DiligentCreators('can_user_register') == 1)
                         <div class="col-12 mb-">
                             Do not have an account <a href="{{ route('register') }}">Register</a>.
                         </div>
+                        @endif
+
+                        @if (DiligentCreators('can_user_reset_password') == 1)
                         <div class="col-12 mb-">
                             Forgot Password <a href="{{ route('forgot.password') }}">Click here</a> to
                             reset.
                         </div>
+                        @endif
 
                     </div>
                 </form>

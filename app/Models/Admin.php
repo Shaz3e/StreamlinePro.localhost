@@ -119,4 +119,12 @@ class Admin extends Authenticatable implements Auditable
             ->where('is_completed', 0)
             ->where('due_date', '<', now());
     }
+
+    /**
+     * User's notifications
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'admin_id');
+    }
 }

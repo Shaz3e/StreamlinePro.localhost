@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceLabel;
+use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\ProductService;
 use App\Trait\Admin\FormHelper;
