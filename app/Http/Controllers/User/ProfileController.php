@@ -47,7 +47,7 @@ class ProfileController extends Controller
             'email' => 'required|string|max:255|unique:users,email,' . Auth::user()->id,
             'address' => 'required|string|max:255',
             'country_id' => 'required|exists:countries,id',
-            'city' => 'required|max:255',            
+            'city' => 'required|max:255',
             'phone' => [
                 'required',
                 'starts_with:+',
@@ -56,10 +56,15 @@ class ProfileController extends Controller
         ]);
 
         // Get current user
-        $user = Auth::user();
+        $user = $request->user();
+        
+        // Ensure first_name and last_name are part of the validated data
+        if (isset($validated['first_name']) && isset($validated['last_name'])) {
+            $validated['name'] = $validated['first_name'] . ' ' . $validated['last_name'];
+        }
+
+        // Update user with validated data
         $user->update($validated);
-        $user->name = $user->first_name . ' ' . $user->last_name;
-        $user->save();
 
         session()->flash('success', 'Profile updated successfully!');
 
@@ -82,7 +87,7 @@ class ProfileController extends Controller
         }
 
         // Get current user
-        $user = Auth::user();
+        $user = $request->user();
 
         // If token session exists
         if (!session()->has('token')) {

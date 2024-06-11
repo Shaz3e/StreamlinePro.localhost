@@ -24,7 +24,7 @@ class AuthenticationSettingController extends Controller
 
         // Define validation rules for the request
         $rules = [
-            'can_customer_register' => 'required|boolean',
+            'can_user_register' => 'required|boolean',
             'can_user_reset_password' => 'required|boolean',
             'can_admin_register' => 'required|boolean',
             'can_admin_reset_password' => 'required|boolean',

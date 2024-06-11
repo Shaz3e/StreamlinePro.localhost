@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
+use App\Observers\CompanyObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\SupportTicketObserver;
@@ -27,6 +29,9 @@ class ObserverServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Company
+        Company::observe(CompanyObserver::class);
+        
         // Invoice
         Invoice::observe(InvoiceObserver::class);
         Payment::observe(PaymentObserver::class);
