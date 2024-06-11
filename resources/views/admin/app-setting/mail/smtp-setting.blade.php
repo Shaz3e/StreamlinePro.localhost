@@ -46,9 +46,9 @@
                     <div class="form-group">
                         <label for="smtp_encryptions">SMTP Encryption</label>
                         <select name="smtp_encryptions" id="smtp_encryptions" class="form-control" required>
-                            <option value="null">None</option>
-                            <option value="ssl">SSL</option>
-                            <option value="tls">TLS</option>
+                            <option value="null" {{ config('mail.mailers.smtp.encryption') == null ? 'selected' : '' }}>None</option>
+                            <option value="ssl" {{ config('mail.mailers.smtp.encryption') == 'ssl' ? 'selected' : '' }}>SSL</option>
+                            <option value="tls" {{ config('mail.mailers.smtp.encryption') == 'tls' ? 'selected' : '' }}>TLS</option>
                         </select>
                     </div>
                 </div>
