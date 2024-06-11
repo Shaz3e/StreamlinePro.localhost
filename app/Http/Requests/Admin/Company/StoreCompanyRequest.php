@@ -17,7 +17,7 @@ class StoreCompanyRequest extends BaseFormRequest
     {
         return [
             'name' => [
-                'required', 'string', 'max:255',
+                'required', 'string', 'max:30',
                 Rule::unique('companies', 'name')->ignore($this->company),
             ],
             'email' => [

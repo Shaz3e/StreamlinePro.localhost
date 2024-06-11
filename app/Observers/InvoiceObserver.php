@@ -2,8 +2,11 @@
 
 namespace App\Observers;
 
+use App\Mail\User\Invoice\InvoicePublishedEmail;
 use App\Models\Invoice;
 use App\Models\RecurringScheduledInvoices;
+use Illuminate\Support\Facades\Mail;
+use PDO;
 
 class InvoiceObserver
 {
@@ -43,6 +46,17 @@ class InvoiceObserver
                 'next_invoice_date' => $nextInvoiceDate,
                 'status' => 'Generated',
             ]);
+        }
+
+        // Send invoice pulished notification to user
+        if ($invoice->is_published) {
+            if ($invoice->user) {
+                Mail::to($invoice->user->email)->send(new InvoicePublishedEmail($invoice));
+            }
+            // Send invoice pulished notification to company
+            if ($invoice->company) {
+                Mail::to($invoice->company->email)->send(new InvoicePublishedEmail($invoice));
+            }
         }
     }
 
