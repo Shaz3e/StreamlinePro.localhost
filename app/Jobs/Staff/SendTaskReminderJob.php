@@ -22,7 +22,9 @@ class SendTaskReminderJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this->tasks = Task::where('due_date', '>', now())->get();
+        $this->tasks = Task::where('due_date', '>', now())
+            ->where('is_completed', false)
+            ->get();
     }
 
     /**
@@ -30,20 +32,20 @@ class SendTaskReminderJob implements ShouldQueue
      */
     public function handle(): void
     {
-        foreach($this->tasks as $task){
+        foreach ($this->tasks as $task) {
             // Calculate remaining time
             $remainingTime = $task->due_date->diffInMinutes(now());
 
-            if($remainingTime <= 15){
+            if ($remainingTime <= 15) {
                 // send 15-minute reminder email
                 $this->sendTaskReminderEmail($task, '15 Minutes');
-            }else if($remainingTime <= 60){
+            } else if ($remainingTime <= 60) {
                 // send 1-hour reminder email
                 $this->sendTaskReminderEmail($task, '1 Hour');
-            }else if($remainingTime <= 360){
+            } else if ($remainingTime <= 360) {
                 // send 6-hour reminder email
                 $this->sendTaskReminderEmail($task, '6 Hours');
-            }elseif($remainingTime <= 1440){
+            } elseif ($remainingTime <= 1440) {
                 // send 24-hour reminder email
                 $this->sendTaskReminderEmail($task, '24 Hours');
             }
