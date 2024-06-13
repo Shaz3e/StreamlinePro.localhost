@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Jobs\User\SendUserRegistrationEmailJob;
-use App\Mail\Admin\User\PasswordReset;
 use App\Models\Company;
 use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
 
 class UserController extends Controller
@@ -129,16 +127,7 @@ class UserController extends Controller
         $user->save();
 
         // Send password to user
-        if ($request->filled('password')) {
-            $mailData = [
-                'url' => config('app.url'),
-                'name' => $user->name,
-                'email' => $user->email,
-                'password' => $request->password,
-            ];
-
-            Mail::to($mailData['email'])->send(new PasswordReset($mailData));
-        }
+        
 
         // Flash message
         session()->flash('success', 'User updated successfully!');

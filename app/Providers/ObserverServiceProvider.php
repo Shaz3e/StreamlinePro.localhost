@@ -7,11 +7,13 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
+use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\SupportTicketObserver;
 use App\Observers\SupportTicketReplyObserver;
+use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
 class ObserverServiceProvider extends ServiceProvider
@@ -29,6 +31,9 @@ class ObserverServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // User
+        User::observe(UserObserver::class);
+        
         // Company
         Company::observe(CompanyObserver::class);
         
