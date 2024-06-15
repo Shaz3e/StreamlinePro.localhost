@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Mail\User;
+namespace App\Mail\Staff;
 
+use App\Models\Admin;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
-class SendUserRegistrationEmail extends Mailable
+class PasswordResetStaff extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $staff;
+    public $token;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct(Admin $staff, $token)
     {
-        $this->user = $user;
+        $this->staff = $staff;
+        $this->token = $token;
     }
 
     /**
@@ -30,7 +32,7 @@ class SendUserRegistrationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Email',
+            subject: 'Your Password is Reset',
         );
     }
 
@@ -39,16 +41,14 @@ class SendUserRegistrationEmail extends Mailable
      */
     public function content(): Content
     {
-        $token = Str::random(64);
-        $this->user->update([
-            'remember_token' => $token
-        ]);
-
         return new Content(
-            markdown: 'emails.user.send-user-registration-email',
+            markdown: 'emails.staff.password-reset-staff',
             with: [
-                'user' => $this->user,
-                'url' => config('app.url') . '/login?token=' . $token,
+                'staff' => $this->staff,
+                'url' => route('admin.password.reset', [
+                    'email' => $this->staff->email,
+                    'token' => $this->token,
+                ]),
             ],
         );
     }
