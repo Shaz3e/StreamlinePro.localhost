@@ -126,9 +126,6 @@ class UserController extends Controller
         $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
         $user->save();
 
-        // Send password to user
-        
-
         // Flash message
         session()->flash('success', 'User updated successfully!');
 
