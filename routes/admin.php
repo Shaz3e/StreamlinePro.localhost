@@ -45,6 +45,11 @@ use App\Http\Controllers\Admin\ProductServiceController;
 use App\Http\Controllers\Admin\Knowledgebase\KnowledgebaseCategoryController;
 use App\Http\Controllers\Admin\Knowledgebase\KnowledgebaseArticleController;
 
+// Bulk Email
+use App\Http\Controllers\Admin\BulkEmailController;
+use App\Http\Controllers\Admin\BulkUserEmailController;
+use App\Http\Controllers\Admin\BulkStaffEmailController;
+
 // Support Ticket Priority
 use App\Http\Controllers\Admin\TicketPriorityController;
 
@@ -316,6 +321,18 @@ Route::prefix('/admin')->name('admin.')->group(function () {
                 ->name('article.audit');
             Route::get('article-audit/delete/{id}', [KnowledgebaseArticleController::class, 'deleteAudit'])
                 ->name('article.audit.delete');
+        });
+
+        // Email Management
+        Route::prefix('email-management')->name('email-management.')->group(function () {
+            /**
+             * Send Bulk Email
+             */
+
+            // Send to selected users
+            Route::resource('bulk-emails', BulkEmailController::class);
+            Route::resource('bulk-email-users', BulkUserEmailController::class);
+            Route::resource('bulk-email-staff', BulkStaffEmailController::class);
         });
 
         /**

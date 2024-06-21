@@ -171,6 +171,28 @@
                                 </li>
                             @endcanany
 
+                            {{-- Email Management --}}
+                            @canany(['bulk-email.list'])
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="ri-mail-send-line"></i>
+                                        <span>Email</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        {{-- Bulk Email --}}
+                                        @can('bulk-email.list')
+                                            <li
+                                                class="{{ request()->routeIs('admin.email-management.bulk-emails.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.email-management.bulk-emails.index') }}"
+                                                    class="{{ request()->routeIs('admin.email-management.bulk-emails.*') ? 'active' : '' }}">
+                                                    Send Bulk Emails
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcanany
+
                             {{-- Manage --}}
                             @canany(['staff.list', 'department.list', 'role.list'])
                                 <li>

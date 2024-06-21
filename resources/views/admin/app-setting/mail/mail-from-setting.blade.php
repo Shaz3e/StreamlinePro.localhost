@@ -22,6 +22,18 @@
                     </div>
                 </div>
                 {{-- /.col --}}
+                <div class="col-md-12 col-sm-12 mt-3">
+                    <label for="daily_email_sending_limit">Daily Email Sending Limit</label>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="number" name="daily_email_sending_limit" id="daily_email_sending_limit"
+                                class="form-control"
+                                value="{{ old('daily_email_sending_limit', DiligentCreators('daily_email_sending_limit')) }}"
+                                required />
+                        </div>
+                    </div>
+                </div>
+                {{-- /.col --}}
             </div>
             {{-- /.row --}}
         </div>
