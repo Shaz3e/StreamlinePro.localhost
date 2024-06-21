@@ -61,9 +61,6 @@ return [
     'bulk-email' => [
         'list', 'create', 'read', 'update', 'delete', 'restore', 'force.delete'
     ],
-    // 'email' => [
-    //     'list', 'create', 'read', 'update', 'delete', 'restore', 'force.delete'
-    // ],
     'general-setting' => [
         'list', 'read', 'update',
     ],

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('bulk_email_id');
+            $table->foreign('bulk_email_id')->references('id')->on('bulk_emails')->onDelete('cascade');
             $table->string('email');
             $table->string('subject');
             $table->longText('content');
