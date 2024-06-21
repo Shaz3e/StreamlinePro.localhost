@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\KnowledgebaseArticle;
-use App\Models\User;
-use Database\Factories\KnowledgebaseArticleFactory;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -45,7 +41,13 @@ class DatabaseSeeder extends Seeder
             // App Settings Required
             AppSettingSeeder::class,
 
-            // Roles & Permissions at the end Required
+            // Create Permissions
+            PermissionsSeeder::class,
+
+            // Create Roles
+            RolesSeeder::class,
+
+            // Sync Roles & Permissions
             RolePermissionSeeder::class,
         ]);
     }
