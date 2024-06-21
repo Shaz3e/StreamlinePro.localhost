@@ -70,9 +70,7 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <x-form.button />
-                        <x-form.button-save-view />
-                        <x-form.button-save-create-new />
+                        <x-form.button text="Save"/>
                     </div>
                     {{-- /.card-footer --}}
                 </div>
