@@ -77,19 +77,19 @@
                         <div class="d-grid">
                             @env('local')
                             <div class="mb-2">
-                                <x-login-link label="Login as User 1" email="user1@email.com"
+                                <x-login-link label="Login as User 1" key="1"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 2" email="user2@email.com"
+                                <x-login-link label="Login as User 2" key="2"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 3" email="user3@email.com"
+                                <x-login-link label="Login as User 3" key="3"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 4" email="user4@email.com"
+                                <x-login-link label="Login as User 4" key="4"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 5" email="user5@email.com"
+                                <x-login-link label="Login as User 5" key="5"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
                                 @endenv
