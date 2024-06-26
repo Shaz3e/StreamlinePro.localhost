@@ -41,26 +41,4 @@ class BulkEmail extends Model
     {
         return Admin::whereIn('id', $this->admin_id ?: [])->get();
     }
-
-    public function getPublishStatusBadge()
-    {
-        if ($this->is_publish) {
-            return '<span class="badge bg-success">Published</span>';
-        } else {
-            return '<span class="badge bg-info">Draft</span>';
-        }
-    }
-    public function getSentStatusBadge()
-    {
-        if ($this->is_sent) {
-            return '<span class="badge bg-success">Sent</span>';
-        } else {
-            return '<span class="badge bg-info">Pending</span>';
-        }
-    }
-
-    public function emails()
-    {
-        return $this->hasMany(Email::class);
-    }
 }

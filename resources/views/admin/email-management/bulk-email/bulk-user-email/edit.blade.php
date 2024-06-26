@@ -71,7 +71,9 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <x-form.button text="Save"/>
+                        <x-form.button />
+                        <x-form.button-save-view />
+                        <x-form.button-save-create-new />
                     </div>
                     {{-- /.card-footer --}}
                 </div>

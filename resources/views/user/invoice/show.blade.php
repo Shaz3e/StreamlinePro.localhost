@@ -48,7 +48,6 @@
         </div>
         {{-- /.row --}}
     @endif
-
     {{-- Invoice View --}}
     <div class="row">
         <div class="col-12">
@@ -271,6 +270,57 @@
                         </div>
                     </div> <!-- end row -->
 
+
+                    {{-- Payment Methods --}}
+                    @if ($invoice->total !== $invoice->total_paid)
+                        <ul class="list-inline mb-0 mt-5">
+
+                            {{-- Stripe Payments --}}
+                            @if (DiligentCreators('stripe') == 1)
+                                <li class="list-inline-item">
+                                    <button type="button" class="btn btn-dark waves-effect waves-light"
+                                        data-bs-toggle="modal" data-bs-target="#addStripePayment">
+                                        {{ DiligentCreators('stripe_display_name') }}
+                                    </button>
+                                    @include('user.invoice.stripe.form')
+                                </li>
+                            @endif
+                            @if (DiligentCreators('stripe_hosted_checkout') == 1)
+                                <li class="list-inline-item">
+                                    <form action="{{ route('payment-method.stripe.hosted.checkout') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
+                                        <button type="submit" class="btn btn-dark waves-effect waves-light">
+                                            {{ DiligentCreators('stripe_hosted_checkout_display_name') }}
+                                        </button>
+                                    </form>
+                                </li>
+                            @endif
+
+                            {{-- N-Genius Network Payment --}}
+                            @if (DiligentCreators('ngenius') == 1)
+                                <li class="list-inline-item">
+                                    <button type="button" class="btn btn-dark waves-effect waves-light"
+                                        data-bs-toggle="modal" data-bs-target="#addNGeniusNetworkPayment">
+                                        {{ DiligentCreators('ngenius_display_name') }}
+                                    </button>
+                                    @include('user.invoice.ngenius-network.form')
+                                </li>
+                            @endif
+                            @if (DiligentCreators('ngenius_hosted_checkout') == 1)
+                                <li class="list-inline-item">
+                                    <form action="{{ route('payment-method.ngenius-network.hosted.checkout') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
+                                        <button type="submit" class="btn btn-dark waves-effect waves-light">
+                                            {{ DiligentCreators('ngenius_hosted_checkout_display_name') }}
+                                        </button>
+                                    </form>
+                                </li>
+                            @endif
+                        </ul>
+                    @endif
+
                     {{-- Footer Note --}}
                     @if (!is_null($invoice->footer_note))
                         <div class="row mt-5">
@@ -287,13 +337,6 @@
         </div> <!-- end col -->
     </div>
     {{-- /.row --}}
-
-    {{-- Payment Methods --}}
-    <div class="row mb-3">
-        <div class="col-12">
-            @include('user.invoice.payment-methods')
-        </div>
-    </div>
 
     {{-- Transaction Details --}}
     <div class="row">

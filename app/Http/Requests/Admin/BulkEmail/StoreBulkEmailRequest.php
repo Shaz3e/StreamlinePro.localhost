@@ -40,7 +40,7 @@ class StoreBulkEmailRequest extends BaseFormRequest
             'user_id' => 'required_if:send_to,user',
             'admin_id' => 'required_if:send_to,staff',
             'send_date' => [
-                'required',
+                'nullable',
                 'date_format:"Y-m-d H:i:s"',
                 'after_or_equal:' . Carbon::now()->format('Y-m-d H:i:s'),
             ],

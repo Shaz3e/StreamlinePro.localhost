@@ -90,10 +90,18 @@
                                             <small>{{ $email->send_date->format('d M Y H:i A') }}</small>
                                         </td>
                                         <td>
-                                            {!! $email->getPublishStatusBadge() !!}
+                                            @if ($email->is_publish)
+                                                <span class="badge bg-success">Published</span>
+                                            @else
+                                                <span class="badge bg-info">Draft</span>
+                                            @endif
                                         </td>
                                         <td>
-                                            {!! $email->getSentStatusBadge() !!}
+                                            @if ($email->is_sent)
+                                                <span class="badge bg-success">Sent</span>
+                                            @else
+                                                <span class="badge bg-warning">Pending</span>
+                                            @endif
                                         </td>
                                         <td class="text-right">
                                             @if ($showDeleted)

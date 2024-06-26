@@ -44,7 +44,6 @@ class StoreBulkEmailJob implements ShouldQueue
             if ($email->user_id) {
                 foreach ($email->users as $user) {
                     Email::create([
-                        'bulk_email_id' => $email->id,
                         'email' => $user->email,
                         'subject' => $email->subject,
                         'content' => $email->content,
@@ -57,7 +56,6 @@ class StoreBulkEmailJob implements ShouldQueue
             if ($email->admin_id) {
                 foreach ($email->staff as $staff) {
                     Email::create([
-                        'bulk_email_id' => $email->id,
                         'email' => $staff->email,
                         'subject' => $email->subject,
                         'content' => $email->content,

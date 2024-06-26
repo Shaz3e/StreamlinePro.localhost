@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\BulkEmail;
-use App\Models\Email;
 use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Carbon\Carbon;
@@ -54,7 +53,7 @@ class BulkUserEmailController extends Controller
             'subject' => 'required|string|max:255',
             'content' => 'nullable|string',
             'is_publish' => 'required|boolean',
-            'send_date' => 'required|date_format:"d-M-Y h:i A"|after_or_equal:' . now()->format('d-M-Y h:i A'),
+            'send_date' => 'nullable|date_format:"d-M-Y h:i A"|after_or_equal:' . now()->format('d-M-Y h:i A'),
         ]);
 
         // Fetch user IDs from users table where is_active = 1
@@ -83,11 +82,8 @@ class BulkUserEmailController extends Controller
         // Check Authorize
         Gate::authorize('view', $bulkEmailUser);
 
-        $emailList = Email::where('bulk_email_id', $bulkEmailUser->id)->paginate(10);
-
         return view('admin.email-management.bulk-email.bulk-user-email.show', [
             'bulkEmailUser' => $bulkEmailUser,
-            'emailList' => $emailList,
         ]);
     }
 
@@ -139,7 +135,7 @@ class BulkUserEmailController extends Controller
             'subject' => 'required|string|max:255',
             'content' => 'nullable|string',
             'is_publish' => 'required|boolean',
-            'send_date' => 'required|date_format:"d-M-Y h:i A"|after_or_equal:' . now()->format('d-M-Y h:i A'),
+            'send_date' => 'nullable|date_format:"d-M-Y h:i A"|after_or_equal:' . now()->format('d-M-Y h:i A'),
         ]);
 
         $bulkEmailUser->subject = $validated['subject'];

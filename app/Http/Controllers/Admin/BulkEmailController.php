@@ -60,7 +60,7 @@ class BulkEmailController extends Controller
         // Check Authorize
         Gate::authorize('view', $bulkEmail);
 
-        return view('admin.email-management.bulk-email.show', [
+        return view('admin.email-managment.bulk-email.show', [
             'bulkEmail' => $bulkEmail,
         ]);
     }

@@ -176,7 +176,7 @@
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                                         <i class="ri-mail-send-line"></i>
-                                        <span>Email</span>
+                                        <span>Email Management</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
                                         {{-- Bulk Email --}}
@@ -185,7 +185,21 @@
                                                 class="{{ request()->routeIs('admin.email-management.bulk-emails.*') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.email-management.bulk-emails.index') }}"
                                                     class="{{ request()->routeIs('admin.email-management.bulk-emails.*') ? 'active' : '' }}">
-                                                    Send Bulk Emails
+                                                    Send Email
+                                                </a>
+                                            </li>
+                                            <li
+                                                class="{{ request()->routeIs('admin.email-management.bulk-email-users.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.email-management.bulk-email-users.create') }}"
+                                                    class="{{ request()->routeIs('admin.email-management.bulk-email-users.*') ? 'active' : '' }}">
+                                                    Send Email All Users
+                                                </a>
+                                            </li>
+                                            <li
+                                                class="{{ request()->routeIs('admin.email-management.bulk-email-staff.*') ? 'mm-active' : '' }}">
+                                                <a href="{{ route('admin.email-management.bulk-email-staff.create') }}"
+                                                    class="{{ request()->routeIs('admin.email-management.bulk-email-staff.*') ? 'active' : '' }}">
+                                                    Send Email All Staff
                                                 </a>
                                             </li>
                                         @endcan

@@ -15,7 +15,6 @@ class Email extends Model
     const STATUS_FAILED = 'Failed';
 
     protected $fillable = [
-        'bulk_email_id',
         'email',
         'subject',
         'content',
@@ -25,11 +24,6 @@ class Email extends Model
 
     // SoftDeletes
     protected $dates = ['deleted_at'];
-
-    protected $casts = [
-        'send_date' => 'datetime:Y-m-d H:i:s',
-        'sent_at' => 'datetime:Y-m-d H:i:s',
-    ];
 
     /**
      * Get Email statuses
