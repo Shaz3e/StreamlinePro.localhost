@@ -3,6 +3,9 @@
 
 Your account has been created. you can click the button below to login in to your account.
 
+**Email:** {{ $user->email }}  
+**Password:** {{ $password }}
+
 <x-mail::button :url="$url">
 Login Now
 </x-mail::button>

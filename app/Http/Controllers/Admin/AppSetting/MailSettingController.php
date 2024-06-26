@@ -30,7 +30,14 @@ class MailSettingController extends Controller
             $validated = $request->validate([
                 'mail_from_name' => 'required|max:255',
                 'mail_from_address' => 'required|max:255',
+                'daily_email_sending_limit' => 'required|integer',
             ]);
+
+            // Update or create the setting in the database
+            AppSetting::updateOrCreate(
+                ['name' => 'daily_email_sending_limit'],
+                ['value' => $validated['daily_email_sending_limit']]
+            );
 
             $envPath = base_path('.env');
             $envContent = File::get($envPath);

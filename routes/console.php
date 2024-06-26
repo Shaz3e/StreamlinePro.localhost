@@ -1,5 +1,7 @@
 <?php
 
+use App\Jobs\Admin\BulkEmail\SendEmailJob;
+use App\Jobs\Admin\BulkEmail\StoreBulkEmailJob;
 use App\Jobs\Common\Task\SendTaskOverdueReminderJob;
 use App\Jobs\PaymentMethod\NgeniusGatewayJob;
 use App\Jobs\Staff\SendTaskReminderJob;
@@ -121,3 +123,15 @@ use Illuminate\Support\Facades\Schedule;
  * Intervals: Every Minute
  */
 // Schedule::job(new NgeniusGatewayJob)->everyMinute();
+
+/**
+ * Store single record from bulk_emails table into emails table
+ * Intervals: Every Minute
+ */
+// Schedule::job(new StoreBulkEmailJob)->everyMinute();
+
+/**
+ * Send Emails from emails table
+ * Intervals: Daily
+ */
+// Schedule::job(new SendEmailJob)->daily();

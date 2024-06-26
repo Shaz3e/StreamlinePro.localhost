@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Mail\User;
+namespace App\Mail\Admin\BulkEmail;
 
+use App\Models\Email;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 
-class SendUserRegistrationEmail extends Mailable
+class SendEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $password;
+    public Email $email;
+    public $recipient; // This will hold either User or Admin object
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user, $password)
+    public function __construct(Email $email, $recipient)
     {
-        $this->user = $user;
-        $this->password = $password;
+        $this->email = $email;
+        $this->recipient = $recipient;
     }
 
     /**
@@ -32,7 +32,7 @@ class SendUserRegistrationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Email',
+            subject: $this->email->subject,
         );
     }
 
@@ -41,18 +41,12 @@ class SendUserRegistrationEmail extends Mailable
      */
     public function content(): Content
     {
-        $token = Str::random(64);
-        $this->user->update([
-            'remember_token' => $token
-        ]);
-
         return new Content(
-            markdown: 'emails.user.send-user-registration-email',
+            view: 'emails.admin.send-bulk-emails.send-email',
             with: [
-                'user' => $this->user,
-                'password' => $this->password,
-                'url' => config('app.url') . '/login',
-                // 'url' => config('app.url') . '/login?token=' . $token,
+                'subject' => $this->email->subject,
+                'content' => $this->email->content,
+                'recipient' => $this->recipient,
             ],
         );
     }

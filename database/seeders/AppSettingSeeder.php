@@ -79,6 +79,9 @@ class AppSettingSeeder extends Seeder
             ['name' => 'ngenius_display_name', 'value' => 'Ngenius Network'],
             ['name' => 'ngenius_hosted_checkout', 'value' => 0],
             ['name' => 'ngenius_hosted_checkout_display_name', 'value' => 'Hosted Checkout'],
+            
+            // Mail Setting
+            ['name' => 'daily_email_sending_limit', 'value' => 300],
 
             // Currency Setting
             ['name' => 'currency', 'value' => 1],
