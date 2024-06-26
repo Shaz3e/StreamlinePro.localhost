@@ -49,6 +49,9 @@ class UserController extends Controller
         // Validate data
         $validated = $request->validated();
 
+        // Extract the password
+        $password = $validated['password'];
+
         // Update record in database
         $user = User::create($validated);
         $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
@@ -56,7 +59,7 @@ class UserController extends Controller
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
         if ($user->is_active) {
-            SendUserRegistrationEmailJob::dispatch($user);
+            SendUserRegistrationEmailJob::dispatch($user, $password);
         }
 
         session()->flash('success', 'User created successfully!');

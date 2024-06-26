@@ -21,7 +21,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        if (request()->filled('password')) {
+        if (!request()->filled('email') && request()->filled('password')) {
             $mailData = [
                 'url' => config('app.url'),
                 'name' => $user->name,
@@ -29,7 +29,7 @@ class UserObserver
                 'password' => request()->password,
             ];
 
-            Mail::to($mailData['email'])->queue(new PasswordReset($mailData));
+            Mail::to($mailData['email'])->send(new PasswordReset($mailData));
         }
     }
 

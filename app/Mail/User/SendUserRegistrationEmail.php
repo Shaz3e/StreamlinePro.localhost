@@ -15,13 +15,15 @@ class SendUserRegistrationEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+    public $password;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -48,7 +50,9 @@ class SendUserRegistrationEmail extends Mailable
             markdown: 'emails.user.send-user-registration-email',
             with: [
                 'user' => $this->user,
-                'url' => config('app.url') . '/login?token=' . $token,
+                'password' => $this->password,
+                'url' => config('app.url') . '/login',
+                // 'url' => config('app.url') . '/login?token=' . $token,
             ],
         );
     }
