@@ -78,7 +78,7 @@ class NgeniusNetworkController extends Controller
                     "cancelUrl" => route('invoice.show', $invoice->id),
                     "cancelText" => "Cancel",
                     "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
-                    "offerOnly" => "VISA",
+                    // "offerOnly" => "VISA",
                     "showPayerName" => true,
                     // "maskPaymentInfo" => true 
                 ],
