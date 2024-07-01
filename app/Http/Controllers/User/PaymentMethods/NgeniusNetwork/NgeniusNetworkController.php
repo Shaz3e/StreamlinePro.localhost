@@ -78,8 +78,8 @@ class NgeniusNetworkController extends Controller
                     "cancelUrl" => route('invoice.show', $invoice->id),
                     "cancelText" => "Cancel",
                     "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
-                    // "offerOnly" => "VISA",
-                    "showPayerName" => true,
+                    // "offerOnly" => "VISA", // Only visa card accepted // https://docs.ngenius-payments.com/reference/pre-populate-cardholders-name-on-pay-page
+                    // "showPayerName" => true, // Payer can enter name
                     // "maskPaymentInfo" => true 
                 ],
             ],
