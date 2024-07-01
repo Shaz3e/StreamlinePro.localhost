@@ -5,7 +5,7 @@
 This is a notice that an invoice has been generated on {{ $invoice->published_on->format('l, jS M Y') }}.<br><br>
 
 Invoice #{{ $invoice->id}}<br>
-Amount Due: Rs{{ $invoice->total }}PKR<br>
+Amount Due: {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
 Due Date: {{ $invoice->due_date ? $invoice->due_date->format('l, jS M Y') : 'N/A'}}<br>
 
 ### Invoice Items
