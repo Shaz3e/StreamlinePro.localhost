@@ -3,21 +3,21 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="{{ route('dashboard') }}" class="logo logo-dark">
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="logo-sm" height="22">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}" alt="{{ DiligentCreators('site_name') }}" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('assets/images/logo-dark.png') }}" alt="logo-dark" height="20">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_dark')) }}" alt="{{ DiligentCreators('site_name') }}" height="20">
                     </span>
                 </a>
 
-                <a href="{{ route('dashboard') }}" class="logo logo-light">
+                <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="logo-sm-light" height="22">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}" alt="{{ DiligentCreators('site_name') }}" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('assets/images/logo-light.png') }}" alt="logo-light" height="20">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_light')) }}" alt="{{ DiligentCreators('site_name') }}" height="20">
                     </span>
                 </a>
             </div>
