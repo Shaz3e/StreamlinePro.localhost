@@ -21,7 +21,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        if (request()->filled('password')) {
+        if ($user->isDirty('password')) {
             $mailData = [
                 'url' => config('app.url'),
                 'name' => $user->name,
