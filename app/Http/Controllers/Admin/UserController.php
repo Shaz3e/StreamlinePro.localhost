@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
-use App\Jobs\User\SendUserRegistrationEmailJob;
+use App\Mail\User\SendUserRegistrationEmail;
 use App\Models\Company;
 use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
 
 class UserController extends Controller
@@ -59,8 +60,9 @@ class UserController extends Controller
         $user->save();
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
-        if($request->is_active == 1){
-            SendUserRegistrationEmailJob::dispatch($user, $password);
+        if ($request->is_active == 1) {
+            Mail::to($user->email)
+                ->send(new SendUserRegistrationEmail($user, $request->password));
         }
 
         session()->flash('success', 'User created successfully!');
