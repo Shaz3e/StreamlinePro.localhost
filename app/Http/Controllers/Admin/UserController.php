@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use OwenIt\Auditing\Models\Audit;
 
 class UserController extends Controller
@@ -58,7 +59,7 @@ class UserController extends Controller
         $user->save();
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
-        if ($user->is_active) {
+        if($request->is_active == 1){
             SendUserRegistrationEmailJob::dispatch($user, $password);
         }
 
