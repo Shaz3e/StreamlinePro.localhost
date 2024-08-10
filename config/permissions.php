@@ -88,4 +88,7 @@ return [
     'sms-setting' => [
         'list', 'read', 'update',
     ],
+    'cronjobs-setting' => [
+        'list', 'read', 'update',
+    ],
 ];

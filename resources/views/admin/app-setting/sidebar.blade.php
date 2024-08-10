@@ -42,6 +42,12 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> SMS Setting
             </a>
         @endcan
+        @can('cronjobs-setting.list')
+            <a href="{{ route('admin.settings.cronjobs') }}"
+                class="{{ request()->routeIs('admin.settings.cronjobs') ? 'active' : '' }}">
+                <i class="ri ri-arrow-right-s-line me-2"></i> Cron Jobs Setting
+            </a>
+        @endcan
     </div>
 </div>
 {{-- email-leftbar --}}

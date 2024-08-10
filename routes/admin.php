@@ -78,6 +78,7 @@ use App\Http\Controllers\Admin\InvoiceLabelController;
 use App\Http\Controllers\Admin\AppSetting\AppSettingController;
 use App\Http\Controllers\Admin\AppSetting\GeneralSettingController;
 use App\Http\Controllers\Admin\AppSetting\AuthenticationSettingController;
+use App\Http\Controllers\Admin\AppSetting\CronJobSettingController;
 use App\Http\Controllers\Admin\AppSetting\DashboardSettingController;
 use App\Http\Controllers\Admin\AppSetting\PaymentMethodSettingController;
 use App\Http\Controllers\Admin\AppSetting\MailSettingController;
@@ -188,6 +189,11 @@ Route::prefix('/admin')->name('admin.')->group(function () {
             // SMS Setting
             Route::get('sms', [SmsSettingController::class, 'sms'])->name('sms');
             Route::post('sms', [SmsSettingController::class, 'smsStore'])->name('sms.store');
+
+            // Cronjob Setting
+            Route::get('cronjobs', [CronJobSettingController::class, 'cronjobs'])->name('cronjobs');
+            Route::post('cronjobs', [CronJobSettingController::class, 'cronjobsStore'])->name('cronjobs.store');
+            
         });
 
         /**
