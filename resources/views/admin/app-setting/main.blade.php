@@ -44,6 +44,10 @@
                 @if (request()->routeIs('admin.settings.sms'))
                     @include('admin.app-setting.sms.sms')
                 @endif
+                
+                @if (request()->routeIs('admin.settings.cronjobs'))
+                    @include('admin.app-setting.cronjobs.cronjobs')
+                @endif
 
             </div>
             {{-- /.email-rightbar --}}

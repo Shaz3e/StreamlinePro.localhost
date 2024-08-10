@@ -192,4 +192,21 @@ class AppSettingPolicy
             return true;
         }
     }
+
+    /**
+     * CronJob Setting
+     */
+    public function cronjobs(Admin $admin)
+    {
+        if($admin->canAny(['cronjobs-setting.list', 'cronjobs-setting.read'])){
+            return true;
+        }
+    }
+
+    public function cronjobsStore(Admin $admin)
+    {
+        if($admin->can('cronjobs-setting.update')){
+            return true;
+        }
+    }
 }

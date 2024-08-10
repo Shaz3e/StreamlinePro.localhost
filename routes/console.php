@@ -53,68 +53,90 @@ use Illuminate\Support\Facades\Schedule;
  * - Every 12 hours
  * - Every 24 hours
  */
-// Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
+if (DiligentCreators('SendTaskReminderJob') == 1) {
+    Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
+}
 
 /**
  * If the deadline has passed since the creation of the task.
  * Send task overdue reminder to assigned_to and created_by
  * Intervals: Daily
  */
-// Schedule::job(new SendTaskOverdueReminderJob)->daily();
+if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
+    Schedule::job(new SendTaskOverdueReminderJob)->daily();
+}
 
 /**
  * Send Invoice as email when published_date equals today
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceNotificationsJob)->daily();
+if (DiligentCreators('SendInvoiceNotificationsJob') == 1) {
+    Schedule::job(new SendInvoiceNotificationsJob)->daily();
+}
 
 /**
  * Send Invoice First Reminder when due_date 3 days from now
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceFirstReminderBeforeDueDateJob)->daily();
+if (DiligentCreators('SendInvoiceFirstReminderBeforeDueDateJob') == 1) {
+    Schedule::job(new SendInvoiceFirstReminderBeforeDueDateJob)->daily();
+}
 
 /**
  * Send Invoice First Reminder when due_date 2 days from now
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceSecondReminderBeforeDueDateJob)->daily();
+if (DiligentCreators('SendInvoiceSecondReminderBeforeDueDateJob') == 1) {
+    Schedule::job(new SendInvoiceSecondReminderBeforeDueDateJob)->daily();
+}
 
 /**
  * Send Invoice First Reminder when due_date 1 days from now
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceThirdReminderBeforeDueDateJob)->daily();
+if (DiligentCreators('SendInvoiceThirdReminderBeforeDueDateJob') == 1) {
+    Schedule::job(new SendInvoiceThirdReminderBeforeDueDateJob)->daily();
+}
 
- /**
+/**
  * Send Invoice First Overdue Reminder when due_date after 1 days from now
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceFirstOverDueNoticeJob)->daily();
+if (DiligentCreators('SendInvoiceFirstOverDueNoticeJob') == 1) {
+    Schedule::job(new SendInvoiceFirstOverDueNoticeJob)->daily();
+}
 
 /**
  * Send Invoice Second Overdue Reminder when due_date after 2 days from now
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceSecondOverDueNoticeJob)->daily();
+if (DiligentCreators('SendInvoiceSecondOverDueNoticeJob') == 1) {
+    Schedule::job(new SendInvoiceSecondOverDueNoticeJob)->daily();
+}
 
 /**
  * Send Invoice Third Overdue Reminder when due_date after 3 days from now
  * Intervals: Daily
  */
-// Schedule::job(new SendInvoiceThirdOverDueNoticeJob)->daily();
+if (DiligentCreators('SendInvoiceThirdOverDueNoticeJob') == 1) {
+    Schedule::job(new SendInvoiceThirdOverDueNoticeJob)->daily();
+}
 
 /**
  * Generate Recurring Invoice with duplicated data
  * Intervals: Daily
  */
-// Schedule::job(new GenerateRecurringInvoiceJob)->daily();
+if (DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
+    Schedule::job(new GenerateRecurringInvoiceJob)->daily();
+}
 
 /**
  * Update Promotion is_active status based on time
  * Intervals: Daily
  */
-// Schedule::job(new PromotionScheduleJob)->daily();
+if (DiligentCreators('PromotionScheduleJob') == 1) {
+    Schedule::job(new PromotionScheduleJob)->daily();
+}
 
 /**
  * Check N-Geniuse Network Gateway Payment via reference and update 
@@ -122,16 +144,22 @@ use Illuminate\Support\Facades\Schedule;
  * do not run if model is empty
  * Intervals: Every Minute
  */
-// Schedule::job(new NgeniusGatewayJob)->everyMinute();
+if (DiligentCreators('NgeniusGatewayJob') == 1) {
+    Schedule::job(new NgeniusGatewayJob)->everyMinute();
+}
 
 /**
  * Store single record from bulk_emails table into emails table
  * Intervals: Every Minute
  */
-// Schedule::job(new StoreBulkEmailJob)->everyMinute();
+if (DiligentCreators('StoreBulkEmailJob') == 1) {
+    Schedule::job(new StoreBulkEmailJob)->everyMinute();
+}
 
 /**
  * Send Emails from emails table
  * Intervals: Daily
  */
-// Schedule::job(new SendEmailJob)->daily();
+if (DiligentCreators('SendEmailJob') == 1) {
+    Schedule::job(new SendEmailJob)->daily();
+}
