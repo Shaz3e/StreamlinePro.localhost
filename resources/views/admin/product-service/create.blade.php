@@ -45,8 +45,10 @@
                                 <div class="form-group">
                                     <label for="type">Type</label>
                                     <select name="type" class="form-control" id="type" required>
-                                        <option value="product" {{ old('type') == 'product' ? 'selected' : '' }}>Show</option>
-                                        <option value="service" {{ old('type') == 'service' ? 'selected' : '' }}>Hide</option>
+                                        <option value="product" {{ old('type') == 'product' ? 'selected' : '' }}>Show
+                                        </option>
+                                        <option value="service" {{ old('type') == 'service' ? 'selected' : '' }}>Hide
+                                        </option>
                                     </select>
                                 </div>
                                 @error('type')
