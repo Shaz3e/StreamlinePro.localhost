@@ -66,8 +66,6 @@
                                             <br />
                                         @endif
                                         {{ $todo->title }}
-                                        <br />
-                                        {!! $todo->todo_details !!}
                                     </td>
                                     <td>
                                         @if ($todo->todo_label_id)
