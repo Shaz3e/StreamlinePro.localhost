@@ -47,7 +47,13 @@ class InvoiceObserver
                 'status' => 'Generated',
             ]);
         }
+    }
 
+    /**
+     * Handle the Invoice "updated" event.
+     */
+    public function updated(Invoice $invoice): void
+    {
         // Send invoice pulished notification to user
         if ($invoice->is_published) {
             if ($invoice->user) {
@@ -58,14 +64,6 @@ class InvoiceObserver
                 Mail::to($invoice->company->email)->send(new InvoicePublishedEmail($invoice));
             }
         }
-    }
-
-    /**
-     * Handle the Invoice "updated" event.
-     */
-    public function updated(Invoice $invoice): void
-    {
-        //
     }
 
     /**
