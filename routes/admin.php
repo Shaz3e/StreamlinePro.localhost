@@ -85,7 +85,7 @@ use App\Http\Controllers\Admin\AppSetting\MailSettingController;
 use App\Http\Controllers\Admin\AppSetting\CurrencySettingController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\AppSetting\SmsSettingController;
-
+use App\Http\Controllers\Admin\AppSetting\TawkToLiveChatSettingController;
 // Permission
 use App\Http\Controllers\Admin\RolePermission\PermissionController;
 
@@ -190,10 +190,15 @@ Route::prefix('/admin')->name('admin.')->group(function () {
             Route::get('sms', [SmsSettingController::class, 'sms'])->name('sms');
             Route::post('sms', [SmsSettingController::class, 'smsStore'])->name('sms.store');
 
+            // Tawk To Live Chat
+            Route::get('tawk-to-live-chat', [TawkToLiveChatSettingController::class, 'tawkToChat'])
+                ->name('tawk-to-chat');
+            Route::post('tawk-to-live-chat', [TawkToLiveChatSettingController::class, 'tawkToChatStore'])
+                ->name('tawk-to-chat.store');
+
             // Cronjob Setting
             Route::get('cronjobs', [CronJobSettingController::class, 'cronjobs'])->name('cronjobs');
             Route::post('cronjobs', [CronJobSettingController::class, 'cronjobsStore'])->name('cronjobs.store');
-            
         });
 
         /**

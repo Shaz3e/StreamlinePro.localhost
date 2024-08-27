@@ -42,6 +42,12 @@
                 <i class="ri ri-arrow-right-s-line me-2"></i> SMS Setting
             </a>
         @endcan
+        @can('tawk-to-chat-setting.list')
+            <a href="{{ route('admin.settings.tawk-to-chat') }}"
+                class="{{ request()->routeIs('admin.settings.tawk-to-chat') ? 'active' : '' }}">
+                <i class="ri ri-arrow-right-s-line me-2"></i> Tawkto LiveChat
+            </a>
+        @endcan
         @can('cronjobs-setting.list')
             <a href="{{ route('admin.settings.cronjobs') }}"
                 class="{{ request()->routeIs('admin.settings.cronjobs') ? 'active' : '' }}">

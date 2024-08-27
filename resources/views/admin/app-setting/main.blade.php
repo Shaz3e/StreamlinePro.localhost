@@ -20,7 +20,7 @@
                 @if (request()->routeIs('admin.settings.general'))
                     @include('admin.app-setting.general.general')
                 @endif
-                
+
                 @if (request()->routeIs('admin.settings.authentication'))
                     @include('admin.app-setting.authentication.authentication')
                 @endif
@@ -44,7 +44,11 @@
                 @if (request()->routeIs('admin.settings.sms'))
                     @include('admin.app-setting.sms.sms')
                 @endif
-                
+
+                @if (request()->routeIs('admin.settings.tawk-to-chat'))
+                    @include('admin.app-setting.tawk-to-chat.tawk-to-chat')
+                @endif
+
                 @if (request()->routeIs('admin.settings.cronjobs'))
                     @include('admin.app-setting.cronjobs.cronjobs')
                 @endif
@@ -57,7 +61,6 @@
 
     </div>
     {{-- /.row --}}
-
 @endsection
 
 @push('styles')
