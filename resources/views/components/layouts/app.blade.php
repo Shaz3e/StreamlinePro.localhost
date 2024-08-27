@@ -70,7 +70,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="alert alert-danger">
-                                    <strong>Change Your Password</strong> We strongly recommand to change your password before proceeding further as this the temporarly login session.
+                                    <strong>Change Your Password</strong> We strongly recommand to change your password
+                                    before proceeding further as this the temporarly login session.
                                 </div>
                             </div>
                         </div>
@@ -147,6 +148,35 @@
     @stack('scripts')
 
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
+
+    @if (DiligentCreators('tawk_to_property') != '' && DiligentCreators('tawk_to_widget') != '')
+        <script type="text/javascript">
+            var Tawk_API = Tawk_API || {},
+                Tawk_LoadStart = new Date();
+            // Set Clietn Name and Email as Visitor Screen
+            Tawk_API.visitor = {
+                name: '{{ auth()->user()->first_name }}' + ' ' + '{{ auth()->user()->last_name }}',
+                email: '{{ auth()->user()->email }}'
+            };
+            // Load Tawk Script
+            Tawk_API.onLoad = function() {
+                Tawk_API.setAttributes({
+                    'name': '{{ auth()->user()->first_name }}' + ' ' + '{{ auth()->user()->last_name }}',
+                    'email': '{{ auth()->user()->email }}'
+                }, function(error) {});
+            };
+            (function() {
+                var s1 = document.createElement("script"),
+                    s0 = document.getElementsByTagName("script")[0];
+                s1.async = true;
+                s1.src = 'https://embed.tawk.to/' + '{{ DiligentCreators('tawk_to_property') }}' + '/' +
+                    '{{ DiligentCreators('tawk_to_widget') }}';
+                s1.charset = 'UTF-8';
+                s1.setAttribute('crossorigin', '*');
+                s0.parentNode.insertBefore(s1, s0);
+            })();
+        </script>
+    @endif
 
     <x-appjs />
 
