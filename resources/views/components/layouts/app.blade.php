@@ -149,20 +149,25 @@
 
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
 
+    <x-appjs />
+
     @if (DiligentCreators('tawk_to_property') != '' && DiligentCreators('tawk_to_widget') != '')
         <script type="text/javascript">
+            var fullname = "{{ auth()->user()->first_name }}" + " " + "{{ auth()->user()->last_name }}";
+            var authEmail = "{{ auth()->user()->email }}";
+            console.log(fullname);
             var Tawk_API = Tawk_API || {},
                 Tawk_LoadStart = new Date();
-            // Set Clietn Name and Email as Visitor Screen
+            // Set Client Name and Email as Visitor Screen
             Tawk_API.visitor = {
-                name: '{{ auth()->user()->first_name }}' + ' ' + '{{ auth()->user()->last_name }}',
-                email: '{{ auth()->user()->email }}'
+                name: fullname,
+                email: authEmail,
             };
             // Load Tawk Script
             Tawk_API.onLoad = function() {
                 Tawk_API.setAttributes({
-                    'name': '{{ auth()->user()->first_name }}' + ' ' + '{{ auth()->user()->last_name }}',
-                    'email': '{{ auth()->user()->email }}'
+                    'name': fullname,
+                    'email': authEmail,
                 }, function(error) {});
             };
             (function() {
@@ -177,8 +182,6 @@
             })();
         </script>
     @endif
-
-    <x-appjs />
 
     {{-- Livewire Scripts --}}
     @livewireScripts
