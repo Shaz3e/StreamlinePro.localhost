@@ -23,7 +23,8 @@
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.invoice-labels.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.invoice-labels.create') }}"
+                    class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -39,6 +40,7 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Name</th>
                                 @if (!$showDeleted)
                                     <th>Status</th>
@@ -47,8 +49,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $invoiceLabelList->total();
+                                $currentPage = $invoiceLabelList->currentPage();
+                                $perPage = $invoiceLabelList->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($invoiceLabelList as $invoiceLabel)
                                 <tr wire:key="{{ $invoiceLabel->id }}">
+                                    <td>{{ $id }}</td>
                                     <td>
                                         <span class="badge"
                                             style="background-color:{{ $invoiceLabel->bg_color }}; color:{{ $invoiceLabel->text_color }}">

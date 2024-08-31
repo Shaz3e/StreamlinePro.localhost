@@ -42,13 +42,16 @@
             </select>
         </div>
         <div class="col-md-2 col-sm-12">
-            <input type="search" wire:model.live="searchUser" class="form-control form-control-sm" placeholder="Search By User...">
+            <input type="search" wire:model.live="searchUser" class="form-control form-control-sm"
+                placeholder="Search By User...">
         </div>
         <div class="col-md-2 col-sm-12">
-            <input type="search" wire:model.live="searchStaff" class="form-control form-control-sm" placeholder="Search By Staff...">
+            <input type="search" wire:model.live="searchStaff" class="form-control form-control-sm"
+                placeholder="Search By Staff...">
         </div>
         <div class="col-md-2 col-sm-12">
-            <input type="search" wire:model.live="searchDepartment" class="form-control form-control-sm" placeholder="Search By Department...">
+            <input type="search" wire:model.live="searchDepartment" class="form-control form-control-sm"
+                placeholder="Search By Department...">
         </div>
         <div class="col-md-2 col-sm-12">
             <select wire:model.live="filterByStatusTickets" class="form-control form-control-sm form-control-border">
@@ -91,6 +94,7 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
+                                <th style="width: 5%">#</th>
                                 <th style="width: 10%">Ticket#</th>
                                 <th style="width: 45%">Ticket</th>
                                 <th style="width: 10%">Status</th>
@@ -99,8 +103,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $tickets->total();
+                                $currentPage = $tickets->currentPage();
+                                $perPage = $tickets->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($tickets as $ticket)
                                 <tr wire:key="{{ $ticket->id }}">
+                                    <td>{{ $id-- }}</td>
                                     <td>
                                         <a class="text-black"
                                             href="{{ route('admin.support-tickets.show', $ticket->id) }}">

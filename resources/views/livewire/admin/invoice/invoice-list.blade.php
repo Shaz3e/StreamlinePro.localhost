@@ -1,7 +1,7 @@
 <div>
     {{-- Invoice Summary Report --}}
     @include('livewire.admin.invoice.invoice-summary')
-    
+
     {{-- Invoice Search & Filters --}}
     <div class="row mb-3">
         <div class="col-md-1 col-sm-12 mb-2">
@@ -74,7 +74,7 @@
         </div>
         {{-- /.col --}}
     </div>
-    {{-- /.row --}}    
+    {{-- /.row --}}
 
     <div class="row">
         <div class="col-12">
@@ -84,6 +84,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th style="width: 55%">Invoice Details</th>
                                     <th style="10%">Status</th>
                                     <th style="10%">Price</th>
@@ -92,8 +93,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $invoices->total();
+                                    $currentPage = $invoices->currentPage();
+                                    $perPage = $invoices->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($invoices as $invoice)
                                     <tr wire:key="{{ $invoice->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>
                                             <a href="{{ route('admin.invoices.show', $invoice->id) }}">
                                                 Invoice# {{ $invoice->id }}

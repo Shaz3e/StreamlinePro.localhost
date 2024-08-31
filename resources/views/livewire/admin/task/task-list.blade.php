@@ -81,6 +81,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th style="width: 5%">#</th>
                                     <th style="width: 30%">Tasks</th>
                                     <th style="width: 12%"><small>Started At</small></th>
                                     <th style="width: 12%"><small>Completed At</small></th>
@@ -91,8 +92,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $tasks->total();
+                                    $currentPage = $tasks->currentPage();
+                                    $perPage = $tasks->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($tasks as $task)
                                     <tr wire:key="{{ $task->id }}">
+                                        <td>{{ $id }}</td>
                                         <td>
                                             <h4>{{ $task->title }}</h4>
                                             <span class="badge"

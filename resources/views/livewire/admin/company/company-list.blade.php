@@ -39,6 +39,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
@@ -51,8 +52,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+                                @php
+                                    $totalRecords = $companies->total();
+                                    $currentPage = $companies->currentPage();
+                                    $perPage = $companies->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($companies as $company)
                                     <tr wire:key="{{ $company->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>
                                             @if ($company->logo != null)
                                                 <a href="{{ asset('storage/' . $company->logo) }}"

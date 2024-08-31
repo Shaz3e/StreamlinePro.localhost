@@ -50,6 +50,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th style="width: 5%">#</th>
                                     <th style="width: 55%">Title</th>
                                     <th style="width: 10%">Category</th>
                                     <th style="width: 10%">Author</th>
@@ -60,8 +61,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $articles->total();
+                                    $currentPage = $articles->currentPage();
+                                    $perPage = $articles->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($articles as $article)
                                     <tr wire:key="{{ $article->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>{{ $article->title }}</td>
                                         <td>{{ $article->category->name }}</td>
                                         <td>{{ $article->author->name }}</td>

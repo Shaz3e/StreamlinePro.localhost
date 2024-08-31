@@ -56,6 +56,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th style="width: 5%">#</th>
                                     <th style="width: 35%">Name</th>
                                     <th style="30%">Image</th>
                                     <th style="10%">Featured</th>
@@ -66,8 +67,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $promotions->total();
+                                    $currentPage = $promotions->currentPage();
+                                    $perPage = $promotions->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($promotions as $promotion)
                                     <tr wire:key="{{ $promotion->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>{{ $promotion->name }}</td>
                                         <td>
                                             <a class="promotion-image-lightbox"

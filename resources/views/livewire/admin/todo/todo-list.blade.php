@@ -49,6 +49,7 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
+                                <th style="width: 40%">#</th>
                                 <th style="width: 60%">My Todo</th>
                                 <th style="width: 10%">Label</th>
                                 <th style="width: 10%"></th>
@@ -56,9 +57,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $todos->total();
+                                $currentPage = $todos->currentPage();
+                                $perPage = $todos->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($todos as $todo)
                                 <tr wire:key="{{ $todo->id }}">
-
+                                    <td>{{ $id-- }}</td>
                                     <td>
                                         @if ($todo->reminder)
                                             <span
