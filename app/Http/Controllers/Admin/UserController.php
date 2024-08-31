@@ -51,9 +51,6 @@ class UserController extends Controller
         // Validate data
         $validated = $request->validated();
 
-        // Extract the password
-        $password = $validated['password'];
-
         // Update record in database
         $user = User::create($validated);
         $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
