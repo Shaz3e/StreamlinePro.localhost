@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Mail\User\SendUserRegistrationEmail;
 use App\Models\Company;
+use App\Models\ProductService;
 use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
@@ -37,7 +38,11 @@ class UserController extends Controller
         // Check Authorize
         Gate::authorize('create', User::class);
 
-        return view('admin.user.create');
+        $products = ProductService::all();
+
+        return view('admin.user.create', [
+            'products' => $products
+        ]);
     }
 
     /**
@@ -55,6 +60,11 @@ class UserController extends Controller
         $user = User::create($validated);
         $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
         $user->save();
+
+        // Sync selected products/services to the user
+        if ($request->has('product_service')) {
+            $user->productsServices()->sync($request->product_service);
+        }
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
         if ($request->is_active == 1) {
@@ -100,11 +110,20 @@ class UserController extends Controller
         // Check Authorize
         Gate::authorize('update', $user);
 
+        // get all active companies
         $companies = Company::where('is_active', 1)->get();
+
+        // get all products
+        $products = ProductService::all();
+
+        // Retrieve the IDs of the products already assigned to the user
+        $userProductIds = $user->productsServices->pluck('id')->toArray();
 
         return view('admin.user.edit', [
             'user' => $user,
             'companies' => $companies,
+            'products' => $products,
+            'userProductIds' => $userProductIds,
         ]);
     }
 
@@ -130,6 +149,11 @@ class UserController extends Controller
         $user->update($validated);
         $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
         $user->save();
+
+        // Sync selected products/services to the user
+        if ($request->has('product_service')) {
+            $user->productsServices()->sync($request->product_service);
+        }
 
         // Flash message
         session()->flash('success', 'User updated successfully!');

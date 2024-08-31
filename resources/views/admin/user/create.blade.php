@@ -120,13 +120,31 @@
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
-                            <div class="col-9">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label for="address">Address</label>
                                     <input type="text" name="address" id="address" class="form-control"
                                         value="{{ old('address') }}" />
                                 </div>
                                 @error('address')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="product_service">Assign Product</label>
+                                    <select name="product_service[]" id="product_service" class="form-control select2"
+                                        multiple>
+                                        @foreach ($products as $product)
+                                            <option value="{{ $product->id }}"
+                                                {{ in_array($product->id, old('product_service', [])) ? 'selected' : '' }}>
+                                                {{ $product->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('product_service')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror
                             </div>

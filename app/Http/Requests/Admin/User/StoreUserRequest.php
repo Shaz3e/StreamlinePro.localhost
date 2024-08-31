@@ -19,13 +19,20 @@ class StoreUserRequest extends BaseFormRequest
     {
         $rules = [
             'first_name' => [
-                'required', 'string', 'max:20',
+                'required',
+                'string',
+                'max:20',
             ],
             'last_name' => [
-                'required', 'string', 'max:20',
+                'required',
+                'string',
+                'max:20',
             ],
             'email' => [
-                'required', 'string', 'email', 'max:255',
+                'required',
+                'string',
+                'email',
+                'max:255',
                 Rule::unique('users', 'email')->ignore($this->user),
             ],
             'company_id' => [
@@ -51,21 +58,32 @@ class StoreUserRequest extends BaseFormRequest
                 'string',
                 'max:50',
             ],
+            'product_service' => [
+                'nullable',
+                Rule::exists('products_services', 'id'),
+            ],
             'is_active' => [
-                'required', 'boolean',
+                'required',
+                'boolean',
             ],
         ];
 
         if ($this->method() === 'POST') {
             $rules = array_merge($rules, [
                 'password' => [
-                    'required', 'string', 'min:8', 'max:255',
+                    'required',
+                    'string',
+                    'min:8',
+                    'max:255',
                 ],
             ]);
         } else {
             $rules = array_merge($rules, [
                 'password' => [
-                    'nullable', 'string', 'min:8', 'max:255',
+                    'nullable',
+                    'string',
+                    'min:8',
+                    'max:255',
                 ],
             ]);
         }

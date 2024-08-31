@@ -34,7 +34,6 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-
         // if password changed send an email to user
         if ($user->isDirty('password')) {
             $mailData = [
