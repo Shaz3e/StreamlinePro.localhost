@@ -15,17 +15,26 @@ class KnowledgebaseArticleRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
+            'product_service' => [
+                'nullable',
+                Rule::exists('products_services', 'id'),
+            ],
             'category_id' => [
-                'required', 'exists:knowledgebase_categories,id',
+                'nullable',
+                'exists:knowledgebase_categories,id',
             ],
             'author_id' => [
-                'required', 'exists:admins,id',
+                'nullable',
+                Rule::exists('admins', 'id'),
             ],
             'title' => [
-                'required', 'max:255',
+                'required',
+                'max:255',
             ],
             'slug' => [
-                'required', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                'required',
+                'max:255',
+                'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
                 Rule::unique('knowledgebase_categories', 'slug')->ignore($this->article),
             ],
             'content' => [

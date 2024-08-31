@@ -71,7 +71,11 @@
                                     <tr wire:key="{{ $article->id }}">
                                         <td>{{ $id-- }}</td>
                                         <td>{{ $article->title }}</td>
-                                        <td>{{ $article->category->name }}</td>
+                                        <td>
+                                            @if ($article->category)
+                                                {{ $article->category->name }}
+                                            @endif
+                                        </td>
                                         <td>{{ $article->author->name }}</td>
                                         @if (!$showDeleted)
                                             <td>

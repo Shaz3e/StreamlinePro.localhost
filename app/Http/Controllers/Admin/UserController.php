@@ -151,9 +151,7 @@ class UserController extends Controller
         $user->save();
 
         // Sync selected products/services to the user
-        if ($request->has('product_service')) {
-            $user->products()->sync($request->product_service);
-        }
+        $user->products()->sync($request->product_service);
 
         // Flash message
         session()->flash('success', 'User updated successfully!');
