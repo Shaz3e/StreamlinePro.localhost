@@ -58,9 +58,9 @@ class InvoiceList extends Component
 
         $invoices = $query->where([
             'user_id' => auth()->user()->id,
-            // 'is_published' => 1,
+            'is_published' => 1,
         ])
-        // ->where('published_on', '<', now())
+            ->where('published_on', '<', now())
             ->orderBy('id', 'desc')
             ->paginate($this->perPage);
 
