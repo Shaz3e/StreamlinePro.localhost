@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Schedule;
 |       By introducing a short delay between jobs, you can prevent the queue worker from overwhelming
 |       your application or server with too many requests at once.
 |   2) Allows for queue recovery:
-|       If the queue worker crashes or is restarted, 
+|       If the queue worker crashes or is restarted,
 |       the --sleep option ensures that it will wait for a short period before processing new jobs,
 |       allowing the queue to recover and preventing duplicate processing.
 |   3) Improves performance:
@@ -139,7 +139,7 @@ if (DiligentCreators('PromotionScheduleJob') == 1) {
 }
 
 /**
- * Check N-Geniuse Network Gateway Payment via reference and update 
+ * Check N-Geniuse Network Gateway Payment via reference and update
  * and Delete reference once payment is updated
  * do not run if model is empty
  * Intervals: Every Minute
