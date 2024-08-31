@@ -13,7 +13,20 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        //
+        $user->name = $user->first_name . ' ' . $user->last_name;
+        $user->save();
+    }
+
+    /**
+     * Handle the User "updating" event.
+     *
+     * @param  mixed $user
+     * @return void
+     */
+    public function updating(User $user): void
+    {
+        // Concatenate first name and last name to form the full name before saving
+        $user->name = $user->first_name . ' ' . $user->last_name;
     }
 
     /**
@@ -21,6 +34,8 @@ class UserObserver
      */
     public function updated(User $user): void
     {
+
+        // if password changed send an email to user
         if ($user->isDirty('password')) {
             $mailData = [
                 'url' => config('app.url'),
