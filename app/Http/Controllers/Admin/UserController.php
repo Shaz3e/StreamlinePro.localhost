@@ -63,7 +63,7 @@ class UserController extends Controller
 
         // Sync selected products/services to the user
         if ($request->has('product_service')) {
-            $user->productsServices()->sync($request->product_service);
+            $user->products()->sync($request->product_service);
         }
 
         // Only Dispatch a job to send user registration email if uer can login is enabled
@@ -117,7 +117,7 @@ class UserController extends Controller
         $products = ProductService::all();
 
         // Retrieve the IDs of the products already assigned to the user
-        $userProductIds = $user->productsServices->pluck('id')->toArray();
+        $userProductIds = $user->products->pluck('id')->toArray();
 
         return view('admin.user.edit', [
             'user' => $user,
@@ -152,7 +152,7 @@ class UserController extends Controller
 
         // Sync selected products/services to the user
         if ($request->has('product_service')) {
-            $user->productsServices()->sync($request->product_service);
+            $user->products()->sync($request->product_service);
         }
 
         // Flash message

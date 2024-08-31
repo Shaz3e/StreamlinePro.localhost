@@ -112,7 +112,7 @@ class User extends Authenticatable implements Auditable
     /**
      * Product or Services relationship
      */
-    public function productsServices()
+    public function products()
     {
         return $this->belongsToMany(ProductService::class, 'product_service_user')
             ->withTimestamps();

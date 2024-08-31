@@ -52,7 +52,7 @@
                             <tr>
                                 <td>Product or Services</td>
                                 <td>
-                                    @foreach ($user->productsServices as $product)
+                                    @foreach ($user->products as $product)
                                         <span class="badge bg-success">{{ $product->name }}</span>
                                     @endforeach
                                 </td>
