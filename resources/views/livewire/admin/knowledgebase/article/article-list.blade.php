@@ -52,6 +52,7 @@
                                 <tr>
                                     <th style="width: 5%">#</th>
                                     <th style="width: 55%">Title</th>
+                                    <th style="width: 10%">Product/Services</th>
                                     <th style="width: 10%">Category</th>
                                     <th style="width: 10%">Author</th>
                                     @if (!$showDeleted)
@@ -71,6 +72,11 @@
                                     <tr wire:key="{{ $article->id }}">
                                         <td>{{ $id-- }}</td>
                                         <td>{{ $article->title }}</td>
+                                        <td>
+                                            @foreach ($article->products as $product)
+                                                <span class="badge bg-success">{{ $product->name }}</span>
+                                            @endforeach
+                                        </td>
                                         <td>
                                             @if ($article->category)
                                                 {{ $article->category->name }}
