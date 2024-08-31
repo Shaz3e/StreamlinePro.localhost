@@ -62,8 +62,10 @@ class UserController extends Controller
                 ->send(new SendUserRegistrationEmail($user, $request->password));
         }
 
+        // success message
         session()->flash('success', 'User created successfully!');
 
+        // return to route
         return $this->saveAndRedirect($request, 'users', $user->id);
     }
 
