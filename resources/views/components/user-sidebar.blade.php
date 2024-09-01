@@ -5,15 +5,16 @@
 
                     <!-- User details -->
                     <div class="user-profile text-center mt-3">
-                        
+
                         <div class="">
                             <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('storage/avatars/avatar.png') }}"
-                                alt="{{ ucwords(auth()->user()->name) }}"
-                                class="avatar-md rounded-circle">
+                                alt="{{ ucwords(auth()->user()->name) }}" class="avatar-md rounded-circle">
                         </div>
                         <div class="mt-3">
                             <h4 class="font-size-16 mb-1">{{ auth()->user()->name }}</h4>
-                            <span class="text-muted"><i class="ri-record-circle-line align-middle font-size-14 text-success"></i> Online</span>
+                            <span class="text-muted"><i
+                                    class="ri-record-circle-line align-middle font-size-14 text-success"></i>
+                                Online</span>
                         </div>
                     </div>
 
@@ -42,7 +43,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.dashboard') }}" class="waves-effect">
+                                <a href="{{ route('knowledgebase.dashboard') }}" class="waves-effect">
                                     <i class="ri-file-list-3-line"></i>
                                     <span>Knowledgebase</span>
                                 </a>

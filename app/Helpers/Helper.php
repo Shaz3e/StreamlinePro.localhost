@@ -4,25 +4,27 @@ use App\Models\AppSetting;
 use App\Models\Currency;
 use Carbon\Carbon;
 
-function DiligentCreators($appSettingName){
+function DiligentCreators($appSettingName)
+{
     return AppSetting::where('name', $appSettingName)->value('value');
 }
 
-function currency($currencyId, $fields = ['id', 'name', 'symbol']){
+function currency($currencyId, $fields = ['id', 'name', 'symbol'])
+{
     $currency = Currency::find($currencyId);
     return $currency->getData($fields);
 }
 
 function getAllTimeZonesSelectBox($selectedValue)
 {
-	echo '<select name="site_timezone" class="form-control select2" id="site_timezone" required="required">';
-	echo '<option value="">-- Select Time Zone --</option>';
-	$tzlist = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
-	foreach ($tzlist as $value) {
-		$selected = ($value === $selectedValue) ? 'selected="selected"' : '';
-		echo '<option value="' . $value . '" ' . $selected . '>' . $value . '</option>';
-	}
-	echo '</select>';
+    echo '<select name="site_timezone" class="form-control select2" id="site_timezone" required="required">';
+    echo '<option value="">-- Select Time Zone --</option>';
+    $tzlist = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+    foreach ($tzlist as $value) {
+        $selected = ($value === $selectedValue) ? 'selected="selected"' : '';
+        echo '<option value="' . $value . '" ' . $selected . '>' . $value . '</option>';
+    }
+    echo '</select>';
 }
 
 function calcTime($startTime, $endTime)
@@ -49,5 +51,15 @@ function calcTime($startTime, $endTime)
 
 function currencyFormat($value)
 {
-    return number_format($value,2);
+    return number_format($value, 2);
+}
+
+/**
+ * Convert HTML to Text
+ */
+function shortTextWithOutHtml($text, $limit = 255)
+{
+    $plainText = strip_tags($text);
+    $limitedText = (strlen($plainText) > $limit) ? substr($plainText, 0, $limit) . "..." : $plainText;
+    return $limitedText;
 }
