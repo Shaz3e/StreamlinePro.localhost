@@ -5,6 +5,7 @@ namespace App\Livewire\User\SupportTicket;
 use App\Models\InvoiceLabel;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketPriority;
+use App\Models\SupportTicketReply;
 use App\Models\SupportTicketStatus;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\Url;
@@ -32,7 +33,16 @@ class SupportTicketList extends Component
 
     public function render()
     {
-        $query = SupportTicket::query();
+        $query = SupportTicket::with('getTicketReplies')
+            ->where('user_id', auth()->user()->id)
+            ->where('is_internal', false)
+            ->orderBy(
+                SupportTicketReply::select('updated_at')
+                    ->whereColumn('support_tickets.id', 'support_ticket_replies.support_ticket_id')
+                    ->orderBy('updated_at', 'desc')
+                    ->limit(1),
+                'desc'
+            );
 
         // Get all columns in the required table
         $columns = Schema::getColumnListing('support_tickets');
@@ -54,9 +64,7 @@ class SupportTicketList extends Component
             $query->where('support_ticket_priority_id', $this->filterByPriorityTickets);
         }
 
-        $supportTickets = $query->where('user_id', auth()->user()->id)
-            ->orderBy('id', 'desc')
-            ->paginate($this->perPage);
+        $supportTickets = $query->paginate($this->perPage);
 
         $getTicketStatuses = SupportTicketStatus::where('is_active', 1)->get();
         $getTicketPriorities = SupportTicketPriority::where('is_active', 1)->get();

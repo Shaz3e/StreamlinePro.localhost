@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($replies as $reply)
+                    @foreach ($supportTicketReplies as $reply)
                         <tr wire:key="{{ $reply->id }}">
                             <td>
                                 <a href="{{ route('admin.support-tickets.show', $reply->support_ticket_id) }}">
@@ -33,14 +33,10 @@
                             </td>
                             <td>
                                 @if ($reply->client_reply_by)
-                                    <a href="{{ route('admin.users.show', $reply->client->id) }}">
-                                        {{ $reply->client->name }}
-                                    </a>
+                                    {{ $reply->client->name }}
                                 @endif
                                 @if ($reply->staff_reply_by)
-                                    <a href="{{ route('admin.staff.show', $reply->staff->id) }}">
-                                        {{ $reply->staff->name }}
-                                    </a>
+                                    {{ $reply->staff->name }}
                                 @endif
                             </td>
                         </tr>

@@ -23,7 +23,7 @@
                         {{-- /.col --}}
                         <div class="col-md-3">
                             <small>Department</small><br>
-                            <strong>{{ $supportTicket->department->name ? $supportTicket->department->name : 'N/A' }}</strong>
+                            <strong>{{ $supportTicket->department ? $supportTicket->department->name : 'N/A' }}</strong>
                         </div>
                         {{-- /.col --}}
                         <div class="col-md-3">

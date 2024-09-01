@@ -19,6 +19,7 @@ use App\Http\Controllers\User\ProfileController;
 
 // Invoice
 use App\Http\Controllers\User\InvoiceController;
+use App\Http\Controllers\User\KnowledgebaseDashboardController;
 use App\Http\Controllers\User\PaymentMethods\Stripe\StripeController;
 use App\Http\Controllers\User\PaymentMethods\NgeniusNetwork\NgeniusNetworkController;
 
@@ -118,4 +119,18 @@ Route::middleware('auth')->group(function () {
     // Upload attachments for support tickets
     Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
         ->name('support-tickets.upload-attachments');
+
+    // Knowledgebase prefix
+    Route::prefix('knowledgebase')->name('knowledgebase.')->group(function () {
+        // Knowledgebase Dashboard
+        Route::get('/', [KnowledgebaseDashboardController::class, 'dashboard'])
+            ->name('dashboard');
+        // Knowledgebase Categories
+        Route::get('/categories/{slug}', [KnowledgebaseDashboardController::class, 'categories'])
+            ->name('categories');
+
+        // Knowledgebase Article
+        Route::get('/article/{slug}', [KnowledgebaseDashboardController::class, 'article'])
+            ->name('article');
+    });
 });

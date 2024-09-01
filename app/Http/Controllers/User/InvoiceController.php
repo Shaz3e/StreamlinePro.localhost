@@ -26,7 +26,7 @@ class InvoiceController extends Controller
             ->first();
 
         if (!$invoice) {
-            return redirect()->route('invoice.index')->with('error', 'Invoice is not exists');
+            return redirect()->route('invoice.index')->with('error', 'Invoice not found');
         }
 
         // Check the status parameter

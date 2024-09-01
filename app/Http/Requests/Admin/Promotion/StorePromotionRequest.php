@@ -16,7 +16,7 @@ class StorePromotionRequest extends BaseFormRequest
     {
         $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
             'is_active' => ['required', 'boolean'],
             'is_featured' => ['required', 'boolean'],
             'start_date' => [
@@ -38,13 +38,17 @@ class StorePromotionRequest extends BaseFormRequest
         if ($this->method() === 'POST') {
             $rules = array_merge($rules, [
                 'image' => [
-                    'required', 'image', 'max:5120',
+                    'required',
+                    'image',
+                    'max:5120',
                 ],
             ]);
         } else {
             $rules = array_merge($rules, [
                 'image' => [
-                    'nullable', 'image', 'max:5120',
+                    'nullable',
+                    'image',
+                    'max:5120',
                 ],
             ]);
         }

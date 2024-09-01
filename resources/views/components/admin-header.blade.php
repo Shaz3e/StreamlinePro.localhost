@@ -5,19 +5,23 @@
             <div class="navbar-brand-box">
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}" alt="{{ DiligentCreators('site_name') }}" height="22">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_dark')) }}" alt="{{ DiligentCreators('site_name') }}" height="20">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_dark')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="20">
                     </span>
                 </a>
 
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}" alt="{{ DiligentCreators('site_name') }}" height="22">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_light')) }}" alt="{{ DiligentCreators('site_name') }}" height="20">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_light')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="20">
                     </span>
                 </a>
             </div>
@@ -27,12 +31,12 @@
             </button>
 
             <!-- App Search-->
-            <form class="app-search d-none d-lg-block">
+            {{-- <form class="app-search d-none d-lg-block">
                 <div class="position-relative">
                     <input type="text" class="form-control" placeholder="Search...">
                     <span class="ri-search-line"></span>
                 </div>
-            </form>
+            </form> --}}
 
         </div>
 
@@ -133,7 +137,7 @@
                 </button>
             </div>
 
-            <div class="dropdown d-inline-block">
+            {{-- <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon waves-effect"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
@@ -220,7 +224,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="dropdown d-inline-block user-dropdown">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
@@ -252,12 +256,12 @@
                         <a class="dropdown-item d-block" href="{{ route('admin.app-settings.index') }}">
                             <i class="ri-tools-line align-middle me-1"></i> App Settings</a>
                     @endhasanyrole
-                    
+
                     @hasanyrole(json_decode(DiligentCreators('can_access_pulse_dashboard')))
-                    <a class="dropdown-item" href="{{ route('admin.pulse.dashboard') }}">
-                        <i class="ri-pulse-line align-middle me-1"></i>
-                        Pulse Dashboard
-                    </a>
+                        <a class="dropdown-item" href="{{ route('admin.pulse.dashboard') }}">
+                            <i class="ri-pulse-line align-middle me-1"></i>
+                            Pulse Dashboard
+                        </a>
                     @endhasanyrole
 
                     <a class="dropdown-item" href="{{ route('admin.lock') }}">

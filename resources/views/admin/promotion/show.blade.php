@@ -79,6 +79,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                <img class="card-img-bottom w-100" src="{{ asset('storage/' . $promotion->image) }}" alt="Card image cap">
                 <div class="card-body">
                     <h3 class="card-title">{{ $promotion->name }}</h3>
                     <div class="card-text">{!! $promotion->description !!}</div>
@@ -90,7 +91,6 @@
                         </small>
                     </p>
                 </div>
-                <img class="card-img-bottom w-100" src="{{ asset('storage/' . $promotion->image) }}" alt="Card image cap">
             </div>
         </div>
     </div>

@@ -88,10 +88,9 @@ class SupportTicketController extends Controller
      */
     public function show(SupportTicket $supportTicket)
     {
-        $supportTicket->where('user_id', auth()->user()->id)->get();
-
-        if (!$supportTicket) {
-            return redirect()->route('support-tickets.index')->with('error', 'Support Ticket is not exists');
+        // Check if the ticket exists and belongs to the authenticated user or if it's internal
+        if (!$supportTicket || $supportTicket->user_id !== auth()->user()->id || $supportTicket->is_internal) {
+            return redirect()->route('support-tickets.index')->with('error', 'Support Ticket does not exist');
         }
 
         // Get attachments

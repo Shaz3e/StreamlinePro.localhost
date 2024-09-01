@@ -52,8 +52,8 @@
                         </div>
                         {{-- /.col --}}
                         <div class="col-6 text-end">
-                            <p>Created at {{ $article->created_at }}</p>
-                            <p>Modified at {{ $article->updated_at }}</p>
+                            <p>Created at {{ $article->created_at->format('F j, Y, g:i A') }}</p>
+                            <p>Modified at {{ $article->updated_at->format('F j, Y, g:i A') }}</p>
                         </div>
                         {{-- /.col --}}
                     </div>
