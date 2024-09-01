@@ -5,19 +5,23 @@
             <div class="navbar-brand-box">
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}" alt="{{ DiligentCreators('site_name') }}" height="22">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_dark')) }}" alt="{{ DiligentCreators('site_name') }}" height="20">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_dark')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="20">
                     </span>
                 </a>
 
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}" alt="{{ DiligentCreators('site_name') }}" height="22">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_small')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_light')) }}" alt="{{ DiligentCreators('site_name') }}" height="20">
+                        <img src="{{ asset('storage/' . DiligentCreators('site_logo_light')) }}"
+                            alt="{{ DiligentCreators('site_name') }}" height="20">
                     </span>
                 </a>
             </div>
@@ -27,12 +31,12 @@
             </button>
 
             <!-- App Search-->
-            <form class="app-search d-none d-lg-block">
+            {{-- <form class="app-search d-none d-lg-block">
                 <div class="position-relative">
                     <input type="text" class="form-control" placeholder="Search...">
                     <span class="ri-search-line"></span>
                 </div>
-            </form>
+            </form> --}}
         </div>
 
         <div class="d-flex">
@@ -65,7 +69,7 @@
                 </button>
             </div>
 
-            @livewire('common.notifications.notification-list')
+            {{-- @livewire('common.notifications.notification-list') --}}
 
             <div class="dropdown d-inline-block user-dropdown">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
@@ -92,6 +96,12 @@
                         @method('POST')
                     </form>
                 </div>
+            </div>
+
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
+                    <i class="ri-settings-2-line"></i>
+                </button>
             </div>
         </div>
     </div>
