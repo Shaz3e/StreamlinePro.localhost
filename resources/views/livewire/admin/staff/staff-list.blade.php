@@ -51,9 +51,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $staffList->total();
+                                $currentPage = $staffList->currentPage();
+                                $perPage = $staffList->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($staffList as $staff)
                                 <tr wire:key="{{ $staff->id }}">
-                                    <td>{{ $staff->id }}</td>
+                                    <td>{{ $id-- }}</td>
                                     <td>{{ $staff->name }}</td>
                                     <td>{{ $staff->email }}</td>
                                     <td>

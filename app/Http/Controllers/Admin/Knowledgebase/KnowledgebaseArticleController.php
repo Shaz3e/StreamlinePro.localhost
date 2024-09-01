@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Knowledgebase\KnowledgebaseArticleRequest;
 use App\Models\Admin;
 use App\Models\KnowledgebaseArticle;
 use App\Models\KnowledgebaseCategory;
+use App\Models\ProductService;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -42,9 +43,13 @@ class KnowledgebaseArticleController extends Controller
         // Get all active authors from admins table
         $authors = Admin::where('is_active', 1)->get();
 
+        // Get all products/services
+        $products = ProductService::all();
+
         return view('admin.knowledgebase.article.create', [
             'categories' => $categories,
             'authors' => $authors,
+            'products' => $products
         ]);
     }
 
@@ -69,6 +74,9 @@ class KnowledgebaseArticleController extends Controller
         // Update record in database
         $article = KnowledgebaseArticle::create($validated);
 
+        if ($request->has('product_service')) {
+            $article->products()->sync($request->product_service);
+        }
 
         session()->flash('success', 'Knowledgebase Article has been created successfully!');
 
@@ -108,14 +116,22 @@ class KnowledgebaseArticleController extends Controller
 
         // Get all active knowledagebase categories
         $categories = KnowledgebaseCategory::where('is_active', 1)->get();
-        
+
         // Get all active authors from admins table
         $authors = Admin::where('is_active', 1)->get();
+
+        // Get products/services
+        $products = ProductService::all();
+
+        // Get article listed in products/services
+        $articleProducts = $article->products->pluck('id')->toArray();
 
         return view('admin.knowledgebase.article.edit', [
             'article' => $article,
             'categories' => $categories,
             'authors' => $authors,
+            'products' => $products,
+            'articleProducts' => $articleProducts,
         ]);
     }
 
@@ -145,6 +161,8 @@ class KnowledgebaseArticleController extends Controller
 
         // Update record in database
         $article->update($validated);
+
+        $article->products()->sync($request->product_service);
 
         // Flash message
         session()->flash('success', 'Knowledgebaes Article has been updated successfully!');

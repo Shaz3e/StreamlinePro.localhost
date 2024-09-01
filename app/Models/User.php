@@ -108,4 +108,13 @@ class User extends Authenticatable implements Auditable
         // Set the $auditInclude property to include all columns
         $this->auditInclude = $columns;
     }
+
+    /**
+     * Product or Services relationship
+     */
+    public function products()
+    {
+        return $this->belongsToMany(ProductService::class, 'product_service_user')
+            ->withTimestamps();
+    }
 }

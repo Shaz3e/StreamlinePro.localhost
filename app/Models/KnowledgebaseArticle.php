@@ -31,7 +31,7 @@ class KnowledgebaseArticle extends Model implements Auditable
     {
         return $this->belongsTo(Admin::class, 'author_id');
     }
-    
+
     /**
      * Category relationship
      */
@@ -47,5 +47,14 @@ class KnowledgebaseArticle extends Model implements Auditable
 
         // Set the $auditInclude property to include all columns
         $this->auditInclude = $columns;
+    }
+
+    /**
+     * Product/Services relationship
+     */
+    public function products()
+    {
+        return $this->belongsToMany(ProductService::class, 'product_service_article')
+            ->withTimestamps();
     }
 }

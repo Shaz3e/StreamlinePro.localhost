@@ -50,6 +50,14 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Product or Services</td>
+                                <td>
+                                    @foreach ($user->products as $product)
+                                        <span class="badge bg-success">{{ $product->name }}</span>
+                                    @endforeach
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Status</td>
                                 <td>
                                     <x-is-active-badge :isActive="$user->is_active" />

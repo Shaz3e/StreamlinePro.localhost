@@ -23,7 +23,8 @@
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.task-labels.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.task-labels.create') }}"
+                    class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -39,6 +40,7 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Name</th>
                                 @if (!$showDeleted)
                                     <th>Status</th>
@@ -47,8 +49,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $taskLabels->total();
+                                $currentPage = $taskLabels->currentPage();
+                                $perPage = $taskLabels->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($taskLabels as $taskLabel)
                                 <tr wire:key="{{ $taskLabel->id }}">
+                                    <td>{{ $id-- }}</td>
                                     <td>
                                         <span class="badge"
                                             style="background-color:{{ $taskLabel->bg_color }}; color:{{ $taskLabel->text_color }}">

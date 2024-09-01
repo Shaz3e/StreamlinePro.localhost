@@ -64,7 +64,25 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <div class="form-group">
-                                    <select id="category_id" name="category_id" class="form-control select2" required>
+                                    <select id="product_service" name="product_service[]" class="form-control select2"
+                                        multiple>
+                                        <option value="">Select Product/Service</option>
+                                        @foreach ($products as $product)
+                                            <option value="{{ $product->id }}"
+                                                {{ in_array($product->id, old('product_service', [])) ? 'selected' : '' }}>
+                                                {{ $product->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('product_service')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-12 mb-3">
+                                <div class="form-group">
+                                    <select id="category_id" name="category_id" class="form-control select2">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
@@ -81,7 +99,7 @@
                             {{-- /.col --}}
                             <div class="col-12 mb-3">
                                 <div class="form-group">
-                                    <select id="author_id" name="author_id" class="form-control select2" required>
+                                    <select id="author_id" name="author_id" class="form-control select2">
                                         <option value="">Select Author</option>
                                         @foreach ($authors as $author)
                                             <option value="{{ $author->id }}"

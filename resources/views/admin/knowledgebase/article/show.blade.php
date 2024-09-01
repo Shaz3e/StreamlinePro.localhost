@@ -33,9 +33,16 @@
                     <div class="row">
                         <div class="col-6">
                             <p>
-                                Listed in <a
-                                    href="{{ route('admin.knowledgebase.categories.show', $article->category_id) }}"
-                                    class="card-link">{{ $article->category->name }}</a>
+                                Listed in
+                                @if ($article->category)
+                                    <a href="{{ route('admin.knowledgebase.categories.show', $article->category_id) }}"
+                                        class="card-link">{{ $article->category->name }}</a>
+                                @else
+                                    <a href="#" class="card-link">Uncategorized</a>
+                                @endif
+                                @foreach ($article->products as $product)
+                                    <span class="badge bg-success">{{ $product->name }}</span>
+                                @endforeach
                             </p>
                             <p>
                                 Created By <a href="{{ route('admin.users.show', $article->author_id) }}"

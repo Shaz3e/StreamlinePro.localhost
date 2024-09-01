@@ -97,7 +97,7 @@ use App\Http\Controllers\Admin\CountryController;
 
 // if route is /admin redirect to admin/dashboard
 
-Route::prefix('/admin')->name('admin.')->group(function () {
+Route::prefix('/backoffice')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
 
         // Register

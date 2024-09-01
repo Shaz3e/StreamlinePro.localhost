@@ -56,6 +56,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Subject</th>
                                     <th>Send To</th>
                                     <th>Send Date</th>
@@ -65,8 +66,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $bulkEmails->total();
+                                    $currentPage = $bulkEmails->currentPage();
+                                    $perPage = $bulkEmails->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($bulkEmails as $email)
                                     <tr wire:key="{{ $email->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>{{ $email->subject }}</td>
                                         <td>
                                             @if (!is_null($email->user_id))

@@ -48,6 +48,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Price</th>
                                     @if (!$showDeleted)
@@ -57,13 +58,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $productsServices->total();
+                                    $currentPage = $productsServices->currentPage();
+                                    $perPage = $productsServices->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($productsServices as $productService)
                                     <tr wire:key="{{ $productService->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>{{ $productService->name }}</td>
                                         <td>{{ $productService->price }}</td>
                                         @if (!$showDeleted)
                                             <td>
-                                                <input type="checkbox" wire:change="toggleStatus({{ $productService->id }})"
+                                                <input type="checkbox"
+                                                    wire:change="toggleStatus({{ $productService->id }})"
                                                     id="is_active_{{ $productService->id }}" switch="bool"
                                                     {{ $productService->is_active ? 'checked' : '' }} />
                                                 <label for="is_active_{{ $productService->id }}" data-on-label="Yes"

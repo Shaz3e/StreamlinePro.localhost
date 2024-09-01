@@ -30,7 +30,25 @@ class ProductService extends Model implements Auditable
     }
 
     public function invoices()
-{
-    return $this->belongsToMany(Invoice::class)->withPivot('quantity', 'price');
-}
+    {
+        return $this->belongsToMany(Invoice::class)->withPivot('quantity', 'price');
+    }
+
+    /**
+     * User product services relationship
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'product_service_user')
+            ->withTimestamps();
+    }
+
+    /**
+     * Knowledgebase Article Relationship
+     */
+    public function articles()
+    {
+        return $this->belongsToMany(KnowledgebaseArticle::class, 'product_service_article')
+            ->withTimestamps();
+    }
 }

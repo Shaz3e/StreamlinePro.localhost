@@ -42,6 +42,7 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Products/Services</th>
                                 <th>Country</th>
                                 @if (!$showDeleted)
                                     <th>Can Login</th>
@@ -50,9 +51,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $users->total();
+                                $currentPage = $users->currentPage();
+                                $perPage = $users->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($users as $user)
                                 <tr wire:key="{{ $user->id }}">
-                                    <td>{{ $user->id }}</td>
+                                    <td>{{ $id-- }}</td>
                                     <td>
                                         <h6>{{ $user->name }}</h6>
                                         @if ($user->company)
@@ -71,6 +78,11 @@
                                         @endif
                                     </td>
                                     <td>{{ $user->email }}</td>
+                                    <td>
+                                        @foreach ($user->products as $product)
+                                            <span class="badge bg-success">{{ $product->name }}</span>
+                                        @endforeach
+                                    </td>
                                     <td>
                                         @if ($user->country)
                                             <img src="{{ asset($user->country->flag) }}"

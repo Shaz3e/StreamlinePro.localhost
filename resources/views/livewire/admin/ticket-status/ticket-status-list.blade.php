@@ -23,7 +23,8 @@
         {{-- /.col --}}
         <div class="col-md-2 col-sm-12 mb-2">
             <div class="d-grid">
-                <a href="{{ route('admin.ticket-status.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
+                <a href="{{ route('admin.ticket-status.create') }}"
+                    class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
                 </a>
             </div>
@@ -39,6 +40,7 @@
                     <table id="data" class="table table-striped table-hover">
                         <thead>
                             <tr>
+                                <th style="width: 5%">#</th>
                                 <th style="width: 70%">Name</th>
                                 @if (!$showDeleted)
                                     <th style="width: 10%">Status</th>
@@ -47,8 +49,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalRecords = $ticketStatusList->total();
+                                $currentPage = $ticketStatusList->currentPage();
+                                $perPage = $ticketStatusList->perPage();
+                                $id = $totalRecords - ($currentPage - 1) * $perPage;
+                            @endphp
                             @foreach ($ticketStatusList as $ticketStatus)
                                 <tr wire:key="{{ $ticketStatus->id }}">
+                                    <td>{{ $id-- }}</td>
                                     <td>
                                         <span class="badge"
                                             style="background-color:{{ $ticketStatus->bg_color }}; color:{{ $ticketStatus->text_color }}">

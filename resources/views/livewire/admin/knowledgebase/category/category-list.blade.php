@@ -40,6 +40,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Slug</th>
                                     @if (!$showDeleted)
@@ -49,8 +50,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $categories->total();
+                                    $currentPage = $categories->currentPage();
+                                    $perPage = $categories->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($categories as $category)
                                     <tr wire:key="{{ $category->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->slug }}</td>
                                         @if (!$showDeleted)

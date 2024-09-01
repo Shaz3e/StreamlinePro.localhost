@@ -40,6 +40,7 @@
                         <table id="data" class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Staff</th>
                                     @if (!$showDeleted)
@@ -49,8 +50,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $totalRecords = $departments->total();
+                                    $currentPage = $departments->currentPage();
+                                    $perPage = $departments->perPage();
+                                    $id = $totalRecords - ($currentPage - 1) * $perPage;
+                                @endphp
                                 @foreach ($departments as $department)
                                     <tr wire:key="{{ $department->id }}">
+                                        <td>{{ $id-- }}</td>
                                         <td>{{ $department->name }}</td>
                                         <td>
                                             @if ($department->admins()->count() > 0)

@@ -17,7 +17,7 @@
                 <form action="{{ route('admin.users.update', $user) }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     @method('put')
-                    
+
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-3">
@@ -95,7 +95,8 @@
                                     <select id="country_id" name="country_id" class="form-control">
                                         <option value="">Select</option>
                                         @if ($user->country)
-                                        <option value="{{ $user->country->id }}" selected>{{ $user->country->name }}</option>
+                                            <option value="{{ $user->country->id }}" selected>{{ $user->country->name }}
+                                            </option>
                                         @endif
                                     </select>
                                 </div>
@@ -129,7 +130,7 @@
                         </div>
                         {{-- /.row --}}
                         <div class="row mb-3">
-                            <div class="col-9">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label for="address">Address</label>
                                     <input type="text" name="address" id="address" class="form-control"
@@ -142,10 +143,30 @@
                             {{-- /.col --}}
                             <div class="col-3">
                                 <div class="form-group">
+                                    <label for="product_service">Assign Product</label>
+                                    <select name="product_service[]" id="product_service" class="form-control select2"
+                                        multiple>
+                                        @foreach ($products as $product)
+                                            <option value="{{ $product->id }}"
+                                                {{ in_array($product->id, old('product_service', $userProductIds)) ? 'selected' : '' }}>
+                                                {{ $product->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('product_service')
+                                    <div><span class="text-danger">{{ $message }}</span></div>
+                                @enderror
+                            </div>
+                            {{-- /.col --}}
+                            <div class="col-3">
+                                <div class="form-group">
                                     <label for="is_active">Can Login?</label>
                                     <select name="is_active" id="is_active" class="form-control" required>
-                                        <option value="0" {{ old('is_active', $user->is_active) == 0 ? 'selected' : '' }}>No</option>
-                                        <option value="1" {{ old('is_active', $user->is_active) == 1 ? 'selected' : '' }}>Yes</option>
+                                        <option value="0"
+                                            {{ old('is_active', $user->is_active) == 0 ? 'selected' : '' }}>No</option>
+                                        <option value="1"
+                                            {{ old('is_active', $user->is_active) == 1 ? 'selected' : '' }}>Yes</option>
                                     </select>
                                 </div>
                                 @error('is_active')
