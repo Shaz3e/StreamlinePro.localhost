@@ -1,4 +1,7 @@
-@include('user.dashboard.promotions')
+{{-- Promotions --}}
+@if (count($promotions) > 0)
+    @include('user.dashboard.promotions')
+@endif
 
 {{-- My Products --}}
 @include('user.dashboard.products')

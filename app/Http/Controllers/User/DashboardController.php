@@ -13,7 +13,6 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-
         // Fetch active promotions
         $promotions = Promotion::where('is_active', 1)
             ->orderBy('is_featured', 'desc')

@@ -66,7 +66,6 @@
                                     <label for="description">Promotion Description</label>
                                     <textarea name="description" class="form-control textEditor" id="description">{!! $promotion->description !!}</textarea>
                                 </div>
-                                <small class="text-muted">For internal use only</small>
                                 @error('description')
                                     <div><span class="text-danger">{{ $message }}</span></div>
                                 @enderror

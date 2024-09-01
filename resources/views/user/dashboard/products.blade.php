@@ -9,6 +9,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">{{ $product->name }}</h4>
+                            {{-- <small>{{ $currency['symbol'] }}{{ $product->price }}</small> --}}
                         </div>
                         {{-- /.card-body --}}
                     </div>
