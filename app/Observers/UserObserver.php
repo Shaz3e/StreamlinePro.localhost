@@ -76,8 +76,10 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        $mailable = new DeletedEmail($user);
-        SystemNotificationJob::dispatch($mailable);
+        if (!$user->isForceDeleting()) {
+            $mailable = new DeletedEmail($user);
+            SystemNotificationJob::dispatch($mailable);
+        }
     }
 
     /**
@@ -94,14 +96,8 @@ class UserObserver
      */
     public function forceDeleted(User $user): void
     {
-        Mail::to(DiligentCreators('notification_email'))->send(new ForceDeletedEmail($user));
-        $user->products()->detach();
-
-        // try {
-        //     Mail::to(DiligentCreators('notification_email'))->send(new ForceDeletedEmail($user));
-        // } catch (\Exception $e) {
-        //     logger()->error('Failed to send ForceDeletedEmail: ' . $e->getMessage());
-        // }
+        Mail::to(DiligentCreators('notification_email'))
+            ->send(new ForceDeletedEmail($user));
 
         $user->products()->detach();
     }

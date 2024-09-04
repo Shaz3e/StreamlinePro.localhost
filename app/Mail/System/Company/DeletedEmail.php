@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\System\User;
+namespace App\Mail\System\Company;
 
 use App\Mail\System\SystemEmail;
 use Illuminate\Bus\Queueable;
@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ForceDeletedEmail extends SystemEmail
+class DeletedEmail extends SystemEmail
 {
     use Queueable, SerializesModels;
 
@@ -18,10 +18,10 @@ class ForceDeletedEmail extends SystemEmail
     /**
      * Create a new message instance.
      */
-    public function __construct(public $user)
+    public function __construct(public $company)
     {
-        $this->subject = 'Notification: User has been permanently deleted';
-        $this->user = $user;
+        $this->subject = 'Company has been temporary deleted';
+        $this->company = $company;
     }
 
     /**
@@ -40,10 +40,10 @@ class ForceDeletedEmail extends SystemEmail
     public function content(): Content
     {
         return new Content(
-            view: 'mail.system.user.force-deleted',
+            view: 'mail.system.company.deleted',
             with: [
                 'subject' => $this->subject,
-                'user' => $this->user,
+                'company' => $this->company,
             ]
         );
     }
