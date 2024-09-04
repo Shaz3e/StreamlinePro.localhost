@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreUserRequest;
-use App\Mail\User\SendUserRegistrationEmail;
 use App\Models\Company;
 use App\Models\ProductService;
 use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use OwenIt\Auditing\Models\Audit;
 
 class UserController extends Controller
@@ -58,18 +55,10 @@ class UserController extends Controller
 
         // Update record in database
         $user = User::create($validated);
-        $user->name = $validated['first_name'] . ' ' . $validated['last_name'];
-        $user->save();
 
         // Sync selected products/services to the user
         if ($request->has('product_service')) {
             $user->products()->sync($request->product_service);
-        }
-
-        // Only Dispatch a job to send user registration email if uer can login is enabled
-        if ($request->is_active == 1) {
-            Mail::to($user->email)
-                ->send(new SendUserRegistrationEmail($user, $request->password));
         }
 
         // success message
