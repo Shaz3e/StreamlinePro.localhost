@@ -26,6 +26,10 @@ class SystemNotificationJob implements ShouldQueue
      */
     public function handle(MailService $mailService): void
     {
-        $mailService->sendEmail($this->mailable, DiligentCreators('notification_email'));
+        $notificationEmail = DiligentCreators('notification_email');
+
+        if (!is_null($notificationEmail)) {
+            $mailService->sendEmail($this->mailable, DiligentCreators('notification_email'));
+        }
     }
 }
