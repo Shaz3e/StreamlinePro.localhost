@@ -16,31 +16,31 @@ class CompanySeeder extends Seeder
         $companies = [
             [
                 'name' => 'Company 1',
-                'email' => 'company1@email.com',
+                'email' => 'company1@shaz3e.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Company 2',
-                'email' => 'company2@email.com',
+                'email' => 'company2@shaz3e.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Company 3',
-                'email' => 'company3@email.com',
+                'email' => 'company3@shaz3e.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Company 4',
-                'email' => 'company4@email.com',
+                'email' => 'company4@shaz3e.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Company 5',
-                'email' => 'company5@email.com',
+                'email' => 'company5@shaz3e.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

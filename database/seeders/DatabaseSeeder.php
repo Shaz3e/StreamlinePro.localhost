@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
             InvoiceLabelSeeder::class,
 
             // Local
-            // ProductServiceSeeder::class,
-            // CompanySeeder::class,
-            // DepartmentSeeder::class,
-            // UserSeeder::class,
-            // KnowledgebaseCategorySeeder::class,
+            ProductServiceSeeder::class,
+            CompanySeeder::class,
+            DepartmentSeeder::class,
+            UserSeeder::class,
+            KnowledgebaseCategorySeeder::class,
 
             // Seeders for Users and Currency
             CurrencySeeder::class,
