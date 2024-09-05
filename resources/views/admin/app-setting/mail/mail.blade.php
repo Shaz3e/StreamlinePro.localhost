@@ -4,5 +4,8 @@
 {{-- SMTP Settings --}}
 @include('admin.app-setting.mail.smtp-setting')
 
+{{-- Backup SMTP Settings --}}
+@include('admin.app-setting.mail.backup-smtp-setting')
+
 
 

@@ -10,8 +10,6 @@ use App\Models\SupportTicketReply;
 use App\Models\SupportTicketStatus;
 use Illuminate\Http\Request;
 
-use function Ramsey\Uuid\v1;
-
 class SupportTicketController extends Controller
 {
     /**

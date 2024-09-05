@@ -15,7 +15,9 @@ class StoreSupportTicketRequest extends BaseFormRequest
     {
         return [
             'title' => [
-                'required', 'string', 'max:255',
+                'required',
+                'string',
+                'max:255',
             ],
             'message' => [
                 'required',
@@ -30,19 +32,29 @@ class StoreSupportTicketRequest extends BaseFormRequest
                 'boolean',
             ],
             'user_id' => [
-                'nullable', 'integer', 'exists:users,id',
+                'required',
+                'integer',
+                'exists:users,id',
             ],
             'admin_id' => [
-                'nullable', 'integer', 'exists:admins,id',
+                'nullable',
+                'integer',
+                'exists:admins,id',
             ],
             'department_id' => [
-                'nullable', 'integer', 'exists:departments,id',
+                'nullable',
+                'integer',
+                'exists:departments,id',
             ],
             'support_ticket_status_id' => [
-                'required', 'integer', 'exists:support_ticket_statuses,id',
+                'required',
+                'integer',
+                'exists:support_ticket_statuses,id',
             ],
             'support_ticket_priority_id' => [
-                'required', 'integer', 'exists:support_ticket_priorities,id',
+                'required',
+                'integer',
+                'exists:support_ticket_priorities,id',
             ],
         ];
     }

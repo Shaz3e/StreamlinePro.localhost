@@ -21,7 +21,7 @@
                         <div class="row mb-3">
                             <div class="col-md-9">
                                 <div class="form-group">
-                                    <label for="title">Subject</label>
+                                    <label for="title">Subject <strong class="text-danger">*</strong></label>
                                     <input type="text" id="title" name="title" class="form-control"
                                         value="{{ old('title') }}" required>
                                 </div>
@@ -32,7 +32,8 @@
                             {{-- /.col --}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="department_id">Select Department</label>
+                                    <label for="department_id">Select Department <strong
+                                            class="text-danger">*</strong></label>
                                     <select id="department_id" name="department_id" class="form-control select2">
                                         <option value="">Select</option>
                                         @foreach ($departments as $department)
@@ -54,7 +55,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="message">Ticket Details</label>
+                                    <label for="message">Ticket Details <strong class="text-danger">*</strong></label>
                                     <textarea id="message" name="message" class="form-control" rows="5" required>{{ old('message') }}</textarea>
                                 </div>
                                 @error('message')
