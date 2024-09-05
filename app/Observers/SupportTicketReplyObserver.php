@@ -2,10 +2,12 @@
 
 namespace App\Observers;
 
-use App\Mail\SupportTicket\SupportTicketReplyCreatedEmail;
+use App\Jobs\SendEmailJob;
+use App\Jobs\SystemNotificationJob;
+use App\Mail\System\SupportTicket\ReplyCreatedEmail;
+use App\Mail\User\SupportTicket\ReplyCreatedEmail as SupportTicketReplyCreatedEmail;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
-use Illuminate\Support\Facades\Mail;
 
 class SupportTicketReplyObserver
 {
@@ -18,9 +20,12 @@ class SupportTicketReplyObserver
 
         // Send Mail to User if its not internal ticket
         if ($supportTicket->is_internal == 0 && $supportTicket->user) {
-            // Mail::to($supportTicket->user->email)
-            //     ->queue(new SupportTicketReplyCreatedEmail($supportTicketReply, $supportTicketReply->client));
+            $mailable = new SupportTicketReplyCreatedEmail($supportTicketReply);
+            SendEmailJob::dispatch($mailable, $supportTicket->user->email);
         }
+
+        $mailable = new ReplyCreatedEmail($supportTicketReply);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
