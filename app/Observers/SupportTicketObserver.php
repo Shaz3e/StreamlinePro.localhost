@@ -2,7 +2,14 @@
 
 namespace App\Observers;
 
-use App\Mail\SupportTicket\SupportTicketCreatedEmail;
+use App\Jobs\SendEmailJob;
+use App\Jobs\SystemNotificationJob;
+use App\Mail\System\SupportTicket\CreatedEmail;
+use App\Mail\System\SupportTicket\DeletedEmail;
+use App\Mail\System\SupportTicket\ForceDeletedEmail;
+use App\Mail\System\SupportTicket\RestoredEmail;
+use App\Mail\System\SupportTicket\UpdatedEmail;
+use App\Mail\User\SupportTicket\CreatedEmail as SupportTicketCreatedEmail;
 use App\Models\Admin;
 use App\Models\SupportTicket;
 use Illuminate\Support\Facades\Mail;
@@ -14,25 +21,28 @@ class SupportTicketObserver
      */
     public function created(SupportTicket $supportTicket): void
     {
-        // Send Mail to User if its not internal ticket
-        // if ($supportTicket->is_internal == 0 && $supportTicket->user) {
-        //     Mail::to($supportTicket->user->email)
-        //         ->queue(new SupportTicketCreatedEmail($supportTicket, $supportTicket->user));
-        // }
+        // Send Mail to Client
+        if (!$supportTicket->is_internal) {
+            $mailable = new SupportTicketCreatedEmail($supportTicket);
+            SendEmailJob::dispatch($mailable, $supportTicket->user->email);
+        }
 
         // Send Mail to Staff
-        // if ($supportTicket->admin && !$supportTicket->department) {
-        //     Mail::to($supportTicket->admin->email)
-        //         ->queue(new SupportTicketCreatedEmail($supportTicket, $supportTicket->admin));
-        // }
+        if ($supportTicket->admin && !$supportTicket->department) {
+            $mailable = new CreatedEmail($supportTicket);
+            SendEmailJob::dispatch($mailable, $supportTicket->admin->email);
+        }
 
         // Send Email to Department/Staff
-        // if ($supportTicket->department) {
-        //     $supportTicket->department->admins->each(function (Admin $staff) use ($supportTicket) {
-        //         Mail::to($staff->email)
-        //             ->queue(new SupportTicketCreatedEmail($supportTicket, $staff)); // Pass the admin as the recipient
-        //     });
-        // }
+        if ($supportTicket->department) {
+            $supportTicket->department->admins->each(function (Admin $staff) use ($supportTicket) {
+                $mailable = new CreatedEmail($supportTicket);
+                SendEmailJob::dispatch($mailable, $staff->email);
+            });
+        }
+
+        $mailable = new CreatedEmail($supportTicket);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -40,7 +50,8 @@ class SupportTicketObserver
      */
     public function updated(SupportTicket $supportTicket): void
     {
-        //
+        $mailable = new UpdatedEmail($supportTicket);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -48,7 +59,10 @@ class SupportTicketObserver
      */
     public function deleted(SupportTicket $supportTicket): void
     {
-        //
+        if (!$supportTicket->isForceDeleting()) {
+            $mailable = new DeletedEmail($supportTicket);
+            SystemNotificationJob::dispatch($mailable);
+        }
     }
 
     /**
@@ -56,7 +70,8 @@ class SupportTicketObserver
      */
     public function restored(SupportTicket $supportTicket): void
     {
-        //
+        $mailable = new RestoredEmail($supportTicket);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -64,6 +79,7 @@ class SupportTicketObserver
      */
     public function forceDeleted(SupportTicket $supportTicket): void
     {
-        //
+        Mail::to(DiligentCreators('notification_email'))
+            ->send(new ForceDeletedEmail($supportTicket));
     }
 }

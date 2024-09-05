@@ -22,7 +22,7 @@
                         <div class="row mb-3">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label for="title">Subject</label>
+                                    <label for="title">Subject <strong class="text-danger">*</strong></label>
                                     <input type="text" id="title" name="title" class="form-control"
                                         value="{{ old('title', $supportTicket->title) }}" required>
                                 </div>
@@ -33,7 +33,7 @@
                             {{-- /.col --}}
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="is_internal">Internal Ticket</label>
+                                    <label for="is_internal">Internal Ticket <strong class="text-danger">*</strong></label>
                                     <select id="is_internal" name="is_internal" class="form-control">
                                         <option value="0"
                                             {{ old('is_internal', $supportTicket->is_internal) == 0 ? 'selected' : '' }}>No
@@ -71,7 +71,7 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="message">Ticket Details</label>
+                                    <label for="message">Ticket Details <strong class="text-danger">*</strong></label>
                                     <textarea id="message" name="message" class="form-control textEditor" required>{{ old('message', $supportTicket->message) }}</textarea>
                                 </div>
                                 @error('message')
@@ -84,7 +84,7 @@
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="user_id">Select Client</label>
+                                    <label for="user_id">Select Client <strong class="text-danger">*</strong></label>
                                     <select id="user_id" name="user_id" class="form-control">
                                         <option value="">Select</option>
                                         @if ($supportTicket->user)
@@ -118,7 +118,8 @@
                             {{-- /.col --}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="support_ticket_status_id">Ticket Status</label>
+                                    <label for="support_ticket_status_id">Ticket Status <strong
+                                            class="text-danger">*</strong></label>
                                     <select id="support_ticket_status_id" name="support_ticket_status_id"
                                         class="form-control select2" required>
                                         <option value="">Select</option>
@@ -137,7 +138,8 @@
                             {{-- /.col --}}
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="support_ticket_priority_id">Ticket Priority</label>
+                                    <label for="support_ticket_priority_id">Ticket Priority <strong
+                                            class="text-danger">*</strong></label>
                                     <select id="support_ticket_priority_id" name="support_ticket_priority_id"
                                         class="form-control select2" required>
                                         <option value="">Select</option>
