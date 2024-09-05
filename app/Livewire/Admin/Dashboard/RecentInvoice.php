@@ -9,8 +9,11 @@ class RecentInvoice extends Component
 {
     public function render()
     {
+        $currency = currency(DiligentCreators('currency'));
+
         $invoices = Invoice::latest()->take(5)->get();
-        return view('livewire.admin.dashboard.recent-invoice',[
+        return view('livewire.admin.dashboard.recent-invoice', [
+            'currency' => $currency,
             'invoices' => $invoices
         ]);
     }

@@ -8,7 +8,7 @@
                         <th>Invoice#</th>
                         <th>ٰInvoice To</th>
                         <th class="text-center">Status</th>
-                        <th class="text-end">Amount</th>
+                        <th class="text-end">Invoice Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,10 @@
                                     {{ $invoice->getStatus() }}
                                 </span>
                             </td>
-                            <td class="text-end">{{ $invoice->total }}</td>
+                            <td class="text-end">
+                                {{ $currency['symbol'] }}
+                                {{ currencyFormat($invoice->total) }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

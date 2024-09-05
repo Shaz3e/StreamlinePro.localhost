@@ -21,7 +21,7 @@ class InvoiceList extends Component
 
     // Filter Invoice Status
     #[Url()]
-    public $filterStatus = 'Unpaid';
+    public $filterStatus;
     public $invoiceStatuses;
 
     public function mount()

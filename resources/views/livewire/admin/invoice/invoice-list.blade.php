@@ -85,8 +85,8 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th style="width: 55%">Invoice Details</th>
-                                    <th style="10%">Status</th>
+                                    <th style="width: 45%">Invoice Details</th>
+                                    <th style="20%">Status</th>
                                     <th style="10%">Price</th>
                                     <th style="width: 10%">Label</th>
                                     <th style="width: 15%"></th>
@@ -129,10 +129,26 @@
                                                 class="badge {{ $invoice->getStatusColor() }}">{{ $invoice->getStatus() }}</strong>
                                         </td>
                                         <td>
-                                            <strong>
-                                                {{ $currency['symbol'] }}
-                                                {{ $invoice->total }}
-                                            </strong>
+                                            <span>Total:
+                                                <strong>
+                                                    {{ $currency['symbol'] }}
+                                                    {{ $invoice->total }}
+                                                </strong>
+                                            </span>
+                                            <br>
+                                            <span>Paid:
+                                                <strong>
+                                                    {{ $currency['symbol'] }}
+                                                    {{ $invoice->payments->sum('amount') }}
+                                                </strong>
+                                            </span>
+                                            <br>
+                                            <span>Balance:
+                                                <strong>
+                                                    {{ $currency['symbol'] }}
+                                                    {{ $invoice->total - $invoice->payments->sum('amount') }}
+                                                </strong>
+                                            </span>
                                         </td>
                                         <td>
                                             <span class="badge"
