@@ -2,7 +2,17 @@
 
 namespace App\Observers;
 
-use App\Mail\Admin\User\PasswordReset;
+use App\Jobs\SendEmailJob;
+use App\Jobs\SystemNotificationJob;
+use App\Mail\System\User\ChangePasswordEmail as UserChangePasswordEmail;
+use App\Mail\System\User\CreatedEmail;
+use App\Mail\System\User\DeletedEmail;
+use App\Mail\System\User\ForceDeletedEmail;
+use App\Mail\System\User\InfoChangedEmail as UserInfoChangedEmail;
+use App\Mail\System\User\RestoredEmail;
+use App\Mail\User\Auth\ChangePasswordEmail;
+use App\Mail\User\Auth\InfoChangedEmail;
+use App\Mail\User\Auth\RegisterEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,6 +25,14 @@ class UserObserver
     {
         $user->name = $user->first_name . ' ' . $user->last_name;
         $user->save();
+
+        if ($user->is_active == 1) {
+            $mailable = new RegisterEmail($user, request()->password);
+            SendEmailJob::dispatch($mailable, $user->email);
+        }
+
+        $mailable = new CreatedEmail($user);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -34,16 +52,22 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        // if password changed send an email to user
-        if ($user->isDirty('password')) {
-            $mailData = [
-                'url' => config('app.url'),
-                'name' => $user->name,
-                'email' => $user->email,
-                'password' => request()->password,
-            ];
+        if (!$user->isDirty('first_name') && $user->isDirty('password')) {
+            if (request()->filled('password')) {
+                $mailable = new ChangePasswordEmail($user, request()->password);
+                SendEmailJob::dispatch($mailable, $user->email);
 
-            Mail::to($mailData['email'])->send(new PasswordReset($mailData));
+                $mailable = new UserChangePasswordEmail($user, request()->password);
+                SystemNotificationJob::dispatch($mailable);
+            }
+        }
+
+        if ($user->isDirty() && !$user->isDirty('password')) {
+            $mailable = new InfoChangedEmail($user);
+            SendEmailJob::dispatch($mailable, $user->email);
+
+            $mailable = new UserInfoChangedEmail($user);
+            SystemNotificationJob::dispatch($mailable);
         }
     }
 
@@ -52,7 +76,10 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        //
+        if (!$user->isForceDeleting()) {
+            $mailable = new DeletedEmail($user);
+            SystemNotificationJob::dispatch($mailable);
+        }
     }
 
     /**
@@ -60,7 +87,8 @@ class UserObserver
      */
     public function restored(User $user): void
     {
-        //
+        $mailable = new RestoredEmail($user);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -68,6 +96,9 @@ class UserObserver
      */
     public function forceDeleted(User $user): void
     {
-        //
+        Mail::to(DiligentCreators('notification_email'))
+            ->send(new ForceDeletedEmail($user));
+
+        $user->products()->detach();
     }
 }

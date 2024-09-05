@@ -26,6 +26,17 @@
                                 <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
                             </tr>
                             <tr>
+                                <td>Company</td>
+                                <td>
+                                    @if ($user->company)
+                                        <a href="{{ route('admin.companies.show', $user->company_id) }}">
+                                            {{ $user->company->name }}
+                                        </a>
+                                    @endif
+
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Phone</td>
                                 <td>{{ $user->phone }}</td>
                             </tr>

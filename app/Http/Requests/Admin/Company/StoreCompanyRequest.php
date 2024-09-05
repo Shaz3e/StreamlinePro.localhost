@@ -17,28 +17,39 @@ class StoreCompanyRequest extends BaseFormRequest
     {
         return [
             'name' => [
-                'required', 'string', 'max:30',
+                'required',
+                'string',
+                'max:100',
                 Rule::unique('companies', 'name')->ignore($this->company),
             ],
             'email' => [
-                'required', 'email', 'max:255',
+                'required',
+                'email',
+                'max:255',
                 Rule::unique('companies', 'email')->ignore($this->company),
             ],
             'phone' => [
-                'nullable', 'string', 'max:255',
+                'nullable',
+                'string',
+                'max:255',
                 Rule::unique('companies', 'phone')->ignore($this->company),
             ],
             'website' => [
-                'nullable', 'url', 'max:255',
+                'nullable',
+                'url',
+                'max:255',
             ],
             'country' => [
-                'nullable', 'max:255',
+                'nullable',
+                'max:255',
             ],
             'address' => [
-                'nullable', 'max:255',
+                'nullable',
+                'max:255',
             ],
             'is_active' => [
-                'required', 'boolean',
+                'required',
+                'boolean',
             ],
             'logo' => [
                 'nullable',

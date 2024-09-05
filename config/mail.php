@@ -48,6 +48,14 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        'backup_smtp' => [
+            'host' => env('MAIL_BACKUP_HOST', '127.0.0.1'),
+            'port' => env('MAIL_BACKUP_PORT', 2525),
+            'encryption' => env('MAIL_BACKUP_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_BACKUP_USERNAME'),
+            'password' => env('MAIL_BACKUP_PASSWORD'),
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],
