@@ -30,14 +30,14 @@ class PaymentObserver
         $invoice->save();
 
         // Send email notification
-        if ($invoice->user) {
-            Mail::to($invoice->user->email)
-                ->queue(new InvoicePaymentConfirmationEmail($invoice, $payment));
-        }
-        if ($invoice->company) {
-            Mail::to($invoice->company->email)
-                ->queue(new InvoicePaymentConfirmationEmail($invoice, $payment));
-        }
+        // if ($invoice->user) {
+        //     Mail::to($invoice->user->email)
+        //         ->queue(new InvoicePaymentConfirmationEmail($invoice, $payment));
+        // }
+        // if ($invoice->company) {
+        //     Mail::to($invoice->company->email)
+        //         ->queue(new InvoicePaymentConfirmationEmail($invoice, $payment));
+        // }
     }
 
     /**
