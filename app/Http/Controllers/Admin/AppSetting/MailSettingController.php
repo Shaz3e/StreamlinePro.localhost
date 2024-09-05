@@ -85,6 +85,35 @@ class MailSettingController extends Controller
             File::put($envPath, $envContent);
         }
 
+        if ($request->has('mailBackupSmtpSetting')) {
+            // Validate the request data based on the rules
+            $validated = $request->validate([
+                'backup_smtp_email' => 'required|email|max:255',
+                'backup_smtp_password' => 'required|max:255',
+                'backup_smtp_host' => 'required|max:255',
+                'backup_smtp_port' => 'required|max:255',
+                'backup_smtp_encryptions' => 'required|max:255',
+            ]);
+
+            $envPath = base_path('.env');
+            $envContent = File::get($envPath);
+
+            $envData = [
+                'MAIL_BACKUP_USERNAME' => $validated['backup_smtp_email'],
+                'MAIL_BACKUP_PASSWORD' => "\"{$validated['backup_smtp_password']}\"",
+                'MAIL_BACKUP_HOST' => $validated['backup_smtp_host'],
+                'MAIL_BACKUP_PORT' => $validated['backup_smtp_port'],
+                'MAIL_BACKUP_ENCRYPTION' => $validated['backup_smtp_encryptions'],
+            ];
+
+            // Update the key-value pairs
+            foreach ($envData as $key => $value) {
+                $envContent = preg_replace("/^{$key}=.*/m", "{$key}={$value}", $envContent);
+            }
+
+            File::put($envPath, $envContent);
+        }
+
         // Optimize Clear
         Artisan::call('optimize:clear');
 
