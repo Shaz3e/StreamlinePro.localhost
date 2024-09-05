@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceLabel;
-use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\ProductService;
 use App\Trait\Admin\FormHelper;
@@ -135,7 +134,7 @@ class InvoiceController extends Controller
             $request->has('tax_value') &&
             $request->has('product_total')
         ) {
-            // Extract the product details from the request            
+            // Extract the product details from the request
             $items = request()->input('item_description');
             $quantities = request()->input('quantity');
             $unitPrices = request()->input('unit_price');
