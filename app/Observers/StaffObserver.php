@@ -16,7 +16,7 @@ class StaffObserver
      */
     public function created(Admin $admin): void
     {
-        Mail::to($admin->email)->send(new CreateStaffEmail($admin));
+        // Mail::to($admin->email)->send(new CreateStaffEmail($admin));
     }
 
     /**
@@ -39,8 +39,8 @@ class StaffObserver
 
             $token = Str::random(60);
 
-            Mail::to($admin->email)
-                ->send(new PasswordResetStaff($admin, $token));
+            // Mail::to($admin->email)
+            //     ->send(new PasswordResetStaff($admin, $token));
         }
     }
 

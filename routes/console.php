@@ -54,7 +54,7 @@ use Illuminate\Support\Facades\Schedule;
  * - Every 24 hours
  */
 if (DiligentCreators('SendTaskReminderJob') == 1) {
-    Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
+    // Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
 }
 
 /**
@@ -63,7 +63,7 @@ if (DiligentCreators('SendTaskReminderJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
-    Schedule::job(new SendTaskOverdueReminderJob)->daily();
+    // Schedule::job(new SendTaskOverdueReminderJob)->daily();
 }
 
 /**
@@ -71,7 +71,7 @@ if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceNotificationsJob') == 1) {
-    Schedule::job(new SendInvoiceNotificationsJob)->daily();
+    // Schedule::job(new SendInvoiceNotificationsJob)->daily();
 }
 
 /**
@@ -79,7 +79,7 @@ if (DiligentCreators('SendInvoiceNotificationsJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceFirstReminderBeforeDueDateJob') == 1) {
-    Schedule::job(new SendInvoiceFirstReminderBeforeDueDateJob)->daily();
+    // Schedule::job(new SendInvoiceFirstReminderBeforeDueDateJob)->daily();
 }
 
 /**
@@ -87,7 +87,7 @@ if (DiligentCreators('SendInvoiceFirstReminderBeforeDueDateJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceSecondReminderBeforeDueDateJob') == 1) {
-    Schedule::job(new SendInvoiceSecondReminderBeforeDueDateJob)->daily();
+    // Schedule::job(new SendInvoiceSecondReminderBeforeDueDateJob)->daily();
 }
 
 /**
@@ -95,7 +95,7 @@ if (DiligentCreators('SendInvoiceSecondReminderBeforeDueDateJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceThirdReminderBeforeDueDateJob') == 1) {
-    Schedule::job(new SendInvoiceThirdReminderBeforeDueDateJob)->daily();
+    // Schedule::job(new SendInvoiceThirdReminderBeforeDueDateJob)->daily();
 }
 
 /**
@@ -103,7 +103,7 @@ if (DiligentCreators('SendInvoiceThirdReminderBeforeDueDateJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceFirstOverDueNoticeJob') == 1) {
-    Schedule::job(new SendInvoiceFirstOverDueNoticeJob)->daily();
+    // Schedule::job(new SendInvoiceFirstOverDueNoticeJob)->daily();
 }
 
 /**
@@ -111,7 +111,7 @@ if (DiligentCreators('SendInvoiceFirstOverDueNoticeJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceSecondOverDueNoticeJob') == 1) {
-    Schedule::job(new SendInvoiceSecondOverDueNoticeJob)->daily();
+    // Schedule::job(new SendInvoiceSecondOverDueNoticeJob)->daily();
 }
 
 /**
@@ -119,7 +119,7 @@ if (DiligentCreators('SendInvoiceSecondOverDueNoticeJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendInvoiceThirdOverDueNoticeJob') == 1) {
-    Schedule::job(new SendInvoiceThirdOverDueNoticeJob)->daily();
+    // Schedule::job(new SendInvoiceThirdOverDueNoticeJob)->daily();
 }
 
 /**
@@ -127,7 +127,7 @@ if (DiligentCreators('SendInvoiceThirdOverDueNoticeJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
-    Schedule::job(new GenerateRecurringInvoiceJob)->daily();
+    // Schedule::job(new GenerateRecurringInvoiceJob)->daily();
 }
 
 /**
@@ -135,7 +135,7 @@ if (DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('PromotionScheduleJob') == 1) {
-    Schedule::job(new PromotionScheduleJob)->daily();
+    // Schedule::job(new PromotionScheduleJob)->daily();
 }
 
 /**
@@ -145,7 +145,7 @@ if (DiligentCreators('PromotionScheduleJob') == 1) {
  * Intervals: Every Minute
  */
 if (DiligentCreators('NgeniusGatewayJob') == 1) {
-    Schedule::job(new NgeniusGatewayJob)->everyMinute();
+    // Schedule::job(new NgeniusGatewayJob)->everyMinute();
 }
 
 /**
@@ -153,7 +153,7 @@ if (DiligentCreators('NgeniusGatewayJob') == 1) {
  * Intervals: Every Minute
  */
 if (DiligentCreators('StoreBulkEmailJob') == 1) {
-    Schedule::job(new StoreBulkEmailJob)->everyMinute();
+    // Schedule::job(new StoreBulkEmailJob)->everyMinute();
 }
 
 /**
@@ -161,5 +161,5 @@ if (DiligentCreators('StoreBulkEmailJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendEmailJob') == 1) {
-    Schedule::job(new SendEmailJob)->daily();
+    // Schedule::job(new SendEmailJob)->daily();
 }
