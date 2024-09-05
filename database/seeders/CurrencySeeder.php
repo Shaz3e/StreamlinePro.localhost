@@ -19,6 +19,11 @@ class CurrencySeeder extends Seeder
                 'symbol' => '$',
                 'is_active' => true,
             ],
+            [
+                'name' => 'PKR',
+                'symbol' => 'Rs.',
+                'is_active' => true,
+            ],
         ];
 
         DB::table('currencies')->insert($currencies);
