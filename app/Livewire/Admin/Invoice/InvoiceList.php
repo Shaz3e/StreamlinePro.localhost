@@ -40,7 +40,7 @@ class InvoiceList extends Component
 
     // Filter Invoice Status
     #[Url()]
-    public $filterStatus = 'Unpaid';
+    public $filterStatus;
     public $invoiceStatuses;
 
     // Filter Invoice Label
@@ -55,9 +55,8 @@ class InvoiceList extends Component
     public $totalPaidInvoices = '';
     public $cancelledInvoices = '';
 
-    public $totalAmount = '';
+    public $totalUnpaidAmount = '';
     public $totalPaidAmount = '';
-    public $totalDueAmount = '';
 
     public function mount()
     {
@@ -76,16 +75,12 @@ class InvoiceList extends Component
         $this->cancelledInvoices = Invoice::where('status', $cancelled)->count();
 
         // Total Amount
-        $this->totalAmount = Invoice::where([
-            'status' => $statusUnpaid,
-        ])->sum('total');
+        $totalAmount = Invoice::sum('total');
+
         // Total Paid Amount
-        $this->totalPaidAmount = Invoice::where([
-            'status' => $partialPaid,
-            'status' => $totalPaid,
-        ])->sum('total_paid');
-        // Due Amount
-        $this->totalDueAmount = $this->totalAmount - $this->totalPaidAmount;
+        $this->totalPaidAmount = Invoice::sum('total_paid');
+        // Total Unpaid Amount
+        $this->totalUnpaidAmount = $totalAmount - $this->totalPaidAmount;
     }
 
     /**

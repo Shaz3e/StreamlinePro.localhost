@@ -40,16 +40,22 @@ class StoreTaskRequest extends BaseFormRequest
     {
         return [
             'title' => [
-                'required', 'string', 'max:255',
+                'required',
+                'string',
+                'max:255',
             ],
             'description' => [
                 'required'
             ],
             'task_label_id' => [
-                'required', 'integer', 'exists:task_labels,id'
+                'required',
+                'integer',
+                'exists:task_labels,id'
             ],
             'assigned_to' => [
-                'required', 'integer', 'exists:admins,id'
+                'required',
+                'integer',
+                'exists:admins,id'
             ],
             'start_date' => [
                 'nullable',

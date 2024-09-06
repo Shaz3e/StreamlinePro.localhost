@@ -31,8 +31,12 @@
                                     {{ $invoice->getStatus() }}
                                 </span>
                             </td>
-                            <td class="text-end">{{ $invoice->total_paid }}</td>
-                            <td class="text-end"><a href="{{ route('admin.invoices.show', $invoice->id) }}">{{ $invoice->id }}</a></td>
+                            <td class="text-end">
+                                {{ $currency['symbol'] }}
+                                {{ $invoice->total_paid }}
+                            </td>
+                            <td class="text-end"><a
+                                    href="{{ route('admin.invoices.show', $invoice->id) }}">{{ $invoice->id }}</a></td>
                         </tr>
                     @endforeach
                 </tbody>
