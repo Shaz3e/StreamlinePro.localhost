@@ -33,7 +33,7 @@ class TaskController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {// Check Authorize
+    { // Check Authorize
         Gate::authorize('create', Task::class);
 
         // Get all active task list
@@ -57,9 +57,7 @@ class TaskController extends Controller
 
         // Update record in database
         $task = Task::create($validated);
-        $task->created_by = auth()->user()->id;
-        $task->save();
-        
+
         // Send SMS
         // $this->sendSms($task->assignee->mobile,$task->title);
 
