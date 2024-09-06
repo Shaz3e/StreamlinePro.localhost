@@ -2,6 +2,7 @@
 
 use App\Jobs\Staff\Task\OverdueReminderJob;
 use App\Jobs\Staff\Task\ReminderJob;
+use App\Jobs\User\PromotionScheduleJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -123,7 +124,7 @@ if (DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('PromotionScheduleJob') == 1) {
-    // Schedule::job(new PromotionScheduleJob)->daily();
+    Schedule::job(new PromotionScheduleJob)->daily();
 }
 
 /**
