@@ -1,19 +1,7 @@
 <?php
 
-use App\Jobs\Admin\BulkEmail\SendEmailJob;
-use App\Jobs\Admin\BulkEmail\StoreBulkEmailJob;
-use App\Jobs\Common\Task\SendTaskOverdueReminderJob;
-use App\Jobs\PaymentMethod\NgeniusGatewayJob;
-use App\Jobs\Staff\SendTaskReminderJob;
-use App\Jobs\User\Invoice\SendInvoiceFirstOverDueNoticeJob;
-use App\Jobs\User\Invoice\SendInvoiceFirstReminderBeforeDueDateJob;
-use App\Jobs\User\Invoice\SendInvoiceNotificationsJob;
-use App\Jobs\User\Invoice\SendInvoiceSecondOverDueNoticeJob;
-use App\Jobs\User\Invoice\SendInvoiceSecondReminderBeforeDueDateJob;
-use App\Jobs\User\Invoice\SendInvoiceThirdOverDueNoticeJob;
-use App\Jobs\User\Invoice\SendInvoiceThirdReminderBeforeDueDateJob;
-use App\Jobs\User\Invoice\GenerateRecurringInvoiceJob;
-use App\Jobs\User\PromotionScheduleJob;
+use App\Jobs\Staff\Task\OverdueReminderJob;
+use App\Jobs\Staff\Task\ReminderJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -54,7 +42,7 @@ use Illuminate\Support\Facades\Schedule;
  * - Every 24 hours
  */
 if (DiligentCreators('SendTaskReminderJob') == 1) {
-    // Schedule::job(new SendTaskReminderJob)->everyFifteenMinutes();
+    Schedule::job(new ReminderJob)->everyFifteenMinutes();
 }
 
 /**
@@ -63,7 +51,7 @@ if (DiligentCreators('SendTaskReminderJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
-    // Schedule::job(new SendTaskOverdueReminderJob)->daily();
+    Schedule::job(new OverdueReminderJob)->daily();
 }
 
 /**
