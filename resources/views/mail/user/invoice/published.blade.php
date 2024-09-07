@@ -12,9 +12,12 @@
 
     <p>
         Invoice #{{ $invoice->id }}<br>
-        Amount Due:
-        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
-        Due Date: {{ $invoice->due_date ? $invoice->due_date->format('l, jS M Y') : 'N/A' }}
+        Invoice Amount:
+        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}
+        @if ($invoice->due_date)
+            <br>
+            Due Date: {{ $invoice->due_date ? $invoice->due_date->format('l, jS M Y') : 'N/A' }}
+        @endif
     </p>
 
     <h5>Invoice Items</h5>
@@ -42,17 +45,25 @@
 
     <p>
         Sub Total:
-        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->sub_total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
-        @if ($invoice->discount > 0)
+        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}
+        {{ $invoice->sub_total }}
+        {{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
+        @if ($invoice->discount)
             Discount:
-            {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->discount }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
+            {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}
+            {{ $invoice->discount }}
+            {{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
         @endif
-        @if ($invoice->tax > 0)
+        @if ($invoice->tax)
             Tax:
-            {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->tax }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
+            {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}
+            {{ $invoice->tax }}
+            {{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
         @endif
         Total:
-        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}{{ $invoice->total }}{{ currency(DiligentCreators('currency'), ['name'])['name'] }}
+        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}
+        {{ $invoice->total }}
+        {{ currency(DiligentCreators('currency'), ['name'])['name'] }}
     </p>
 
     <hr>

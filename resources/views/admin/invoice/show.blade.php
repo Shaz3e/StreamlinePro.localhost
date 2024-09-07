@@ -62,7 +62,7 @@
                 </p>
                 @if ($invoice->is_recurring)
                     <p>
-                        Invoice Frequency <strong>{{ucwords($invoice->recurring_frequency)}}</strong>
+                        Invoice Frequency <strong>{{ ucwords($invoice->recurring_frequency) }}</strong>
                         Next Date: <strong>{{ $invoice->recurringInvoice->next_invoice_date->format('l, jS M Y') }}</strong>
                     </p>
                 @endif
@@ -395,7 +395,12 @@
                 </div>
                 {{-- /.card-header --}}
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="transactionLoading" style="display: none;">
+                        <div class="spinner-border text-secondary m-1" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="table-responsive transactions-table">
                         <table class="table table-hover table-bordered" id="transactions-table">
                             <thead>
                                 <tr>
@@ -609,6 +614,9 @@
             $('.removePayment').click(function(e) {
                 e.preventDefault();
                 const paymentId = $(this).data('payment-id');
+                // Hide #transactions-table
+                $('.transactions-table').hide();
+                $('.transactionLoading').show();
                 // Hide the row
                 $(this).closest('tr').hide(); // This line hides the row containing the delete button
                 $.ajax({
@@ -626,7 +634,7 @@
                             icon: 'success',
                             showCancelButton: false
                         });
-                        location.reload();
+                        // location.reload();
                     },
                     error: function(error) {
                         // console.error('Error:', error);

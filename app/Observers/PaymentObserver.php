@@ -2,9 +2,15 @@
 
 namespace App\Observers;
 
+use App\Jobs\SendEmailJob;
+use App\Jobs\SystemNotificationJob;
+use App\Mail\System\Invoice\PaymentConfirmationEmail as SystemInvoicePaymentConfirmationEmail;
+use App\Mail\System\Invoice\PaymentDeletedEmail;
 use App\Mail\User\Invoice\InvoicePaymentConfirmationEmail;
+use App\Mail\User\Invoice\PaymentConfirmationEmail;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class PaymentObserver
@@ -29,15 +35,30 @@ class PaymentObserver
         // Save the updated invoice
         $invoice->save();
 
-        // Send email notification
-        // if ($invoice->user) {
-        //     Mail::to($invoice->user->email)
-        //         ->queue(new InvoicePaymentConfirmationEmail($invoice, $payment));
-        // }
-        // if ($invoice->company) {
-        //     Mail::to($invoice->company->email)
-        //         ->queue(new InvoicePaymentConfirmationEmail($invoice, $payment));
-        // }
+        // Send email to user only
+        if ($invoice->user) {
+            $mailable = new PaymentConfirmationEmail($invoice, $payment);
+            SendEmailJob::dispatch($mailable, $invoice->user->email);
+        }
+
+        // Send email to company
+        if ($invoice->company) {
+
+            if ($invoice->company->users->count() >= 1) {
+                // Send invoice pulished notification to all users in company
+                $invoice->company->users->each(function (User $client) use ($invoice, $payment) {
+                    $mailable = new PaymentConfirmationEmail($invoice, $payment);
+                    SendEmailJob::dispatch($mailable, $client->email);
+                });
+            } else {
+                // Send invoice published notification to company email
+                $mailable = new PaymentConfirmationEmail($invoice, $payment);
+                SendEmailJob::dispatch($mailable, $invoice->company->email);
+            }
+        }
+        // System notification
+        $mailable = new SystemInvoicePaymentConfirmationEmail($invoice, $payment);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -66,6 +87,10 @@ class PaymentObserver
         } elseif ($invoice->total_paid != $invoice->total) {
             $invoice->status = Invoice::STATUS_PARTIALLY_PAID;
         }
+
+        // Send system notification
+        Mail::to(DiligentCreators('notification_email'))
+            ->send(new PaymentDeletedEmail($invoice, $payment));
 
         // Save the updated invoice
         $invoice->save();

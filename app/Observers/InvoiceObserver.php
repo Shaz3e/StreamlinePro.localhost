@@ -61,11 +61,10 @@ class InvoiceObserver
     public function updated(Invoice $invoice): void
     {
         if (!$invoice->is_published) {
-            logger()->info('updated');
         }
 
         // Send invoice pulished notification to user
-        if ($invoice->is_published) {
+        if ($invoice->is_published && !$invoice->total_paid) {
 
             // Send email to user only
             if ($invoice->user) {
