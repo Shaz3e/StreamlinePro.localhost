@@ -7,6 +7,10 @@
     <p>
         From: {{ $invoice->user->name ?? $invoice->company->name }}<br>
         Invoice #{{ $invoice->id }}<br>
+        Deleted Payment:
+        {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}
+        {{ $payment->amount }}
+        {{ currency(DiligentCreators('currency'), ['name'])['name'] }}<br>
         Amount:
         {{ currency(DiligentCreators('currency'), ['symbol'])['symbol'] }}
         {{ $invoice->total }}
