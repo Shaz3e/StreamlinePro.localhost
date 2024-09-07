@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div class="modal fade" id="selectProductService" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="selectProductServiceLabel" aria-hidden="true">
+<div class="modal fade" id="selectProductService" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    role="dialog" aria-labelledby="selectProductServiceLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -21,7 +21,10 @@
                             @foreach ($productService as $productOrService)
                                 <tr>
                                     <td>{{ $productOrService->name }}</td>
-                                    <td>{{ $productOrService->price }}</td>
+                                    <td>
+                                        {{ $currency['symbol'] }}{{ $productOrService->price }}
+                                        {{ $currency['name'] }}
+                                    </td>
                                     <td>
                                         <button type="button"
                                             class="btn btn-sm btn-success waves-effect waves-light add-item"

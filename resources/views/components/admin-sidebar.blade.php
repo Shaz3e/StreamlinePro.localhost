@@ -185,7 +185,7 @@
                                                 class="{{ request()->routeIs('admin.email-management.bulk-emails.*') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.email-management.bulk-emails.index') }}"
                                                     class="{{ request()->routeIs('admin.email-management.bulk-emails.*') ? 'active' : '' }}">
-                                                    Send Email
+                                                    Bulk Email List
                                                 </a>
                                             </li>
                                             <li
@@ -295,7 +295,8 @@
                                         @endcan
                                         {{-- Ticket Priority --}}
                                         @can('ticket-priority.list')
-                                            <li class="{{ request()->routeIs('admin.ticket-priority.*') ? 'mm-active' : '' }}">
+                                            <li
+                                                class="{{ request()->routeIs('admin.ticket-priority.*') ? 'mm-active' : '' }}">
                                                 <a href="{{ route('admin.ticket-priority.index') }}"
                                                     class="{{ request()->routeIs('admin.ticket-priority.*') ? 'active' : '' }}">
                                                     Ticket Priority

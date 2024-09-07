@@ -42,16 +42,16 @@
                 <div class="col-md-12">
                     <h6>Send Invoice Reminder</h6>
                 </div>
-                <label for="SendInvoiceNotificationsJob" class="col-sm-6 col-form-label">Daily Invoice
+                <label for="DailyInvoiceNotificationJob" class="col-sm-6 col-form-label">Daily Invoice
                     Reminder</label>
                 <div class="col-sm-6">
                     <div class="square-switch">
-                        <input type="hidden" name="SendInvoiceNotificationsJob" value="0">
-                        <input type="checkbox" id="SendInvoiceNotificationsJob" name="SendInvoiceNotificationsJob"
-                            switch="none" value="1" @if (DiligentCreators('SendInvoiceNotificationsJob') == 1) checked @endif>
-                        <label for="SendInvoiceNotificationsJob" data-on-label="On" data-off-label="Off"></label>
+                        <input type="hidden" name="DailyInvoiceNotificationJob" value="0">
+                        <input type="checkbox" id="DailyInvoiceNotificationJob" name="DailyInvoiceNotificationJob"
+                            switch="none" value="1" @if (DiligentCreators('DailyInvoiceNotificationJob') == 1) checked @endif>
+                        <label for="DailyInvoiceNotificationJob" data-on-label="On" data-off-label="Off"></label>
                     </div>
-                    @error('SendInvoiceNotificationsJob')
+                    @error('DailyInvoiceNotificationJob')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

@@ -26,9 +26,9 @@ class CronJobSettingController extends Controller
         $validated = $request->validate([
             'SendTaskReminderJob' => 'required|boolean',
             'SendTaskOverdueReminderJob' => 'required|boolean',
-            
-            'SendInvoiceNotificationsJob' => 'required|boolean',
-            
+
+            'DailyInvoiceNotificationJob' => 'required|boolean',
+
             'SendInvoiceFirstReminderBeforeDueDateJob' => 'required|boolean',
             'SendInvoiceSecondReminderBeforeDueDateJob' => 'required|boolean',
             'SendInvoiceThirdReminderBeforeDueDateJob' => 'required|boolean',
