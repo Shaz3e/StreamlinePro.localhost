@@ -30,12 +30,22 @@ class CronJobSettingController extends Controller
             'DailyInvoiceNotificationJob' => 'required|boolean',
 
             'SendInvoiceFirstReminderBeforeDueDateJob' => 'required|boolean',
+            'invoice_first_reminder_before_due_date' => 'required|min:1|integer',
+
             'SendInvoiceSecondReminderBeforeDueDateJob' => 'required|boolean',
+            'invoice_second_reminder_before_due_date' => 'required|min:1|integer',
+
             'SendInvoiceThirdReminderBeforeDueDateJob' => 'required|boolean',
+            'invoice_third_reminder_before_due_date' => 'required|min:1|integer',
 
             'SendInvoiceFirstOverDueNoticeJob' => 'required|boolean',
+            'invoice_first_overdue_notice' => 'required|min:1|integer',
+
             'SendInvoiceSecondOverDueNoticeJob' => 'required|boolean',
+            'invoice_second_overdue_notice' => 'required|min:1|integer',
+
             'SendInvoiceThirdOverDueNoticeJob' => 'required|boolean',
+            'invoice_third_overdue_notice' => 'required|min:1|integer',
 
             'GenerateRecurringInvoiceJob' => 'required|boolean',
 

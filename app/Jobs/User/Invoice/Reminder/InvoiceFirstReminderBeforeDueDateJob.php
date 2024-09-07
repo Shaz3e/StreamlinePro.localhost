@@ -30,9 +30,7 @@ class InvoiceFirstReminderBeforeDueDateJob implements ShouldQueue
      */
     public function handle(): void
     {
-        // Todo Add dynamic days functionality
-        // $days = DiligentCreators('invoice_first_reminder_before_due_date');
-        $days = 3;
+        $days = DiligentCreators('invoice_first_reminder_before_due_date') ?? 3;
         $reminder = Carbon::now()->addDays($days)->toDateString();
 
         // Find invoices with due_date equal before 3 days and send email

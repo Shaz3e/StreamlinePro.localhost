@@ -30,9 +30,7 @@ class InvoiceThirdOverDueNoticeJob implements ShouldQueue
      */
     public function handle(): void
     {
-        // Todo Add dynamic days functionality
-        // $days = DiligentCreators('invoice_third_overdue_notice');
-        $days = 3;
+        $days = DiligentCreators('invoice_third_overdue_notice') ?? 3;
         $notice = Carbon::now()->subDays($days)->toDateString();
 
         // Find invoices with due_date equal after 1 days and send email
