@@ -79,7 +79,7 @@
                     },
                     data: form.serialize(),
                     success: function(data) {
-                        // Handle success response                        
+                        // Handle success response
                         $('#addPayment').modal('hide');
                         $('#addPaymentFields').show();
                         $('#addingPayment').hide();
@@ -88,8 +88,9 @@
                             text: data.success,
                             icon: 'success',
                             showCancelButton: false
+                        }).then((result) => {
+                            location.reload();
                         });
-                        location.reload();
                     },
                     error: function(error) {
                         // Handle error response

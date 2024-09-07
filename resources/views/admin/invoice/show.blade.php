@@ -633,8 +633,9 @@
                             text: data.success,
                             icon: 'success',
                             showCancelButton: false
+                        }).then((result) => {
+                            location.reload();
                         });
-                        // location.reload();
                     },
                     error: function(error) {
                         // console.error('Error:', error);
