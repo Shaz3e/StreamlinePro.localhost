@@ -3,8 +3,8 @@
 use App\Jobs\Admin\BulkEmail\SendBulkEmailJob;
 use App\Jobs\Admin\BulkEmail\StoreBulkEmailJob;
 use App\Jobs\PaymentMethod\NgeniusGatewayJob;
-use App\Jobs\Staff\Task\OverdueReminderJob;
-use App\Jobs\Staff\Task\ReminderJob;
+use App\Jobs\Staff\Task\TaskOverdueReminderJob;
+use App\Jobs\Staff\Task\TaskReminderJob;
 use App\Jobs\User\Invoice\DailyInvoiceNotificationJob;
 use App\Jobs\User\Invoice\GenerateRecurringInvoiceJob;
 use App\Jobs\User\Invoice\OverdueReminder\InvoiceFirstOverDueNoticeJob;
@@ -54,7 +54,7 @@ use Illuminate\Support\Facades\Schedule;
  * - Every 24 hours
  */
 if (DiligentCreators('SendTaskReminderJob') == 1) {
-    Schedule::job(new ReminderJob)->everyFifteenMinutes();
+    Schedule::job(new TaskReminderJob)->everyFifteenMinutes();
 }
 
 /**
@@ -63,7 +63,7 @@ if (DiligentCreators('SendTaskReminderJob') == 1) {
  * Intervals: Daily
  */
 if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
-    Schedule::job(new OverdueReminderJob)->daily();
+    Schedule::job(new TaskOverdueReminderJob)->daily();
 }
 
 /**
