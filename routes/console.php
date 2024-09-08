@@ -5,6 +5,7 @@ use App\Jobs\Admin\BulkEmail\StoreBulkEmailJob;
 use App\Jobs\PaymentMethod\NgeniusGatewayJob;
 use App\Jobs\Staff\Task\TaskOverdueReminderJob;
 use App\Jobs\Staff\Task\TaskReminderJob;
+use App\Jobs\System\Task\DailyTaskReportJob;
 use App\Jobs\User\Invoice\DailyInvoiceNotificationJob;
 use App\Jobs\User\Invoice\GenerateRecurringInvoiceJob;
 use App\Jobs\User\Invoice\OverdueReminder\InvoiceFirstOverDueNoticeJob;
@@ -145,7 +146,7 @@ if (DiligentCreators('PromotionScheduleJob') == 1) {
  * Intervals: Every Minute
  */
 if (DiligentCreators('NgeniusGatewayJob') == 1) {
-    Schedule::job(new NgeniusGatewayJob)->everyMinute();
+    // Schedule::job(new NgeniusGatewayJob)->everyMinute();
 }
 
 /**
@@ -162,4 +163,12 @@ if (DiligentCreators('StoreBulkEmailJob') == 1) {
  */
 if (DiligentCreators('SendEmailJob') == 1) {
     Schedule::job(new SendBulkEmailJob)->daily();
+}
+
+
+/**
+ * Send daily task report
+ */
+if (DiligentCreators('DailyTaskReportJob') == 1) {
+    Schedule::job(new DailyTaskReportJob)->daily();
 }

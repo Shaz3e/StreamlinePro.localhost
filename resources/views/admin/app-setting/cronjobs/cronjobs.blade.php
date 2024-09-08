@@ -21,6 +21,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                {{-- /.col --}}
                 <label for="SendTaskOverdueReminderJob" class="col-sm-6 col-form-label">Daily Task
                     Reminder</label>
                 <div class="col-sm-6">
@@ -31,6 +32,20 @@
                         <label for="SendTaskOverdueReminderJob" data-on-label="On" data-off-label="Off"></label>
                     </div>
                     @error('SendTaskOverdueReminderJob')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
+                <label for="DailyTaskReportJob" class="col-sm-6 col-form-label">Daily Task
+                    Report</label>
+                <div class="col-sm-6">
+                    <div class="square-switch">
+                        <input type="hidden" name="DailyTaskReportJob" value="0">
+                        <input type="checkbox" id="DailyTaskReportJob" name="DailyTaskReportJob" switch="none"
+                            value="1" @if (DiligentCreators('DailyTaskReportJob') == 1) checked @endif>
+                        <label for="DailyTaskReportJob" data-on-label="On" data-off-label="Off"></label>
+                    </div>
+                    @error('DailyTaskReportJob')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -95,8 +110,8 @@
                 <div class="col-md-2 mt-1">
                     <input type="number" name="invoice_first_reminder_before_due_date"
                         class="form-control form-control-sm"
-                        value="{{ DiligentCreators('invoice_first_reminder_before_due_date') ?? 3 }}" placeholder="days"
-                        min="1">
+                        value="{{ DiligentCreators('invoice_first_reminder_before_due_date') ?? 3 }}"
+                        placeholder="days" min="1">
                 </div>
                 {{-- /.col --}}
 

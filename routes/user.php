@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\CountryController;
-use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 // Admin Auth
@@ -68,9 +67,6 @@ Route::middleware('auth')->group(function () {
     // User Dashboard
     Route::get('/', [DashboardController::class, 'dashboard'])
         ->name('dashboard');
-
-    // Notification
-    Route::get('notification/read/{id}', [NotificationController::class, 'markAsRead'])->name('notification.read');
 
     // Profile
     Route::get('my-profile', [ProfileController::class, 'profile'])
