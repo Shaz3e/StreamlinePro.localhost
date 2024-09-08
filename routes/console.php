@@ -68,6 +68,13 @@ if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
 }
 
 /**
+ * Send daily task report to DiligentCreators('notification_email)
+ */
+if (DiligentCreators('DailyTaskReportJob') == 1) {
+    Schedule::job(new DailyTaskReportJob)->daily();
+}
+
+/**
  * Send Invoice as email when published_date equals today
  * Intervals: Daily
  */
@@ -146,7 +153,7 @@ if (DiligentCreators('PromotionScheduleJob') == 1) {
  * Intervals: Every Minute
  */
 if (DiligentCreators('NgeniusGatewayJob') == 1) {
-    // Schedule::job(new NgeniusGatewayJob)->everyMinute();
+    Schedule::job(new NgeniusGatewayJob)->everyMinute();
 }
 
 /**
@@ -163,12 +170,4 @@ if (DiligentCreators('StoreBulkEmailJob') == 1) {
  */
 if (DiligentCreators('SendEmailJob') == 1) {
     Schedule::job(new SendBulkEmailJob)->daily();
-}
-
-
-/**
- * Send daily task report
- */
-if (DiligentCreators('DailyTaskReportJob') == 1) {
-    Schedule::job(new DailyTaskReportJob)->daily();
 }
