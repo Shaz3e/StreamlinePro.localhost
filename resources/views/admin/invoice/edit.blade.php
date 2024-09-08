@@ -259,29 +259,37 @@
                                     <tr>
                                         <td>Sub Total</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="subTotal">{{ $invoice->sub_total }}</span>
                                             <input type="hidden" name="sub_total" value="{{ $invoice->sub_total }}">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Discount</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="discountTotal">{{ $invoice->discount }}</span>
                                             <input type="hidden" name="discount" value="{{ $invoice->discount }}">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Tax</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="taxTotal">{{ $invoice->tax }}</span>
                                             <input type="hidden" name="tax" value="{{ $invoice->tax }}">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Total</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="total">{{ $invoice->total }}</span>
                                             <input type="hidden" name="total" value="{{ $invoice->total }}">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                 </table>

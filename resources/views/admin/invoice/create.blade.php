@@ -277,29 +277,37 @@
                                     <tr>
                                         <td>Sub Total</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="subTotal">0.00</span>
                                             <input type="hidden" name="sub_total" value="0.00">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Discount</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="discountTotal">0.00</span>
                                             <input type="hidden" name="discount" value="0.00">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Tax</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="taxTotal">0.00</span>
                                             <input type="hidden" name="tax" value="0.00">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Total</td>
                                         <td>
+                                            {{ $currency['symbol'] }}
                                             <span id="total">0.00</span>
                                             <input type="hidden" name="total" value="0.00">
+                                            {{ $currency['name'] }}
                                         </td>
                                     </tr>
                                 </table>

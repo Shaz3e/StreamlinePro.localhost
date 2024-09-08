@@ -10,9 +10,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
 
-class ReminderJob implements ShouldQueue
+class TaskReminderJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -62,7 +61,6 @@ class ReminderJob implements ShouldQueue
     {
 
         $mailable = new ReminderEmail($task, $time);
-        Mail::to($task->assignee->email)->send($mailable);
-        // SendEmailJob::dispatch($mailable, $task->assignee->email);
+        SendEmailJob::dispatch($mailable, $task->assignee->email);
     }
 }

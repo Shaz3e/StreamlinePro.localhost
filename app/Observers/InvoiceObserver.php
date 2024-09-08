@@ -2,11 +2,17 @@
 
 namespace App\Observers;
 
-use App\Mail\User\Invoice\InvoicePublishedEmail;
+use App\Jobs\SendEmailJob;
+use App\Jobs\SystemNotificationJob;
+use App\Mail\System\Invoice\DeletedEmail;
+use App\Mail\System\Invoice\ForceDeletedEmail;
+use App\Mail\System\Invoice\PublishedEmail as InvoicePublishedEmail;
+use App\Mail\System\Invoice\RestoredEmail;
+use App\Mail\User\Invoice\PublishedEmail;
 use App\Models\Invoice;
 use App\Models\RecurringScheduledInvoices;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use PDO;
 
 class InvoiceObserver
 {
@@ -54,15 +60,36 @@ class InvoiceObserver
      */
     public function updated(Invoice $invoice): void
     {
+        if (!$invoice->is_published) {
+        }
+
         // Send invoice pulished notification to user
-        if ($invoice->is_published) {
-            // if ($invoice->user) {
-            //     Mail::to($invoice->user->email)->send(new InvoicePublishedEmail($invoice));
-            // }
-            // // Send invoice pulished notification to company
-            // if ($invoice->company) {
-            //     Mail::to($invoice->company->email)->send(new InvoicePublishedEmail($invoice));
-            // }
+        if ($invoice->is_published && !$invoice->total_paid) {
+
+            // Send email to user only
+            if ($invoice->user) {
+                $mailable = new PublishedEmail($invoice);
+                SendEmailJob::dispatch($mailable, $invoice->user->email);
+            }
+
+            // Send email to company
+            if ($invoice->company) {
+
+                if ($invoice->company->users->count() >= 1) {
+                    // Send invoice pulished notification to all users in company
+                    $invoice->company->users->each(function (User $client) use ($invoice) {
+                        $mailable = new PublishedEmail($invoice);
+                        SendEmailJob::dispatch($mailable, $client->email);
+                    });
+                } else {
+                    // Send invoice published notification to company email
+                    $mailable = new PublishedEmail($invoice);
+                    SendEmailJob::dispatch($mailable, $invoice->company->email);
+                }
+            }
+            // System notification
+            $mailable = new InvoicePublishedEmail($invoice);
+            SystemNotificationJob::dispatch($mailable);
         }
     }
 
@@ -71,7 +98,10 @@ class InvoiceObserver
      */
     public function deleted(Invoice $invoice): void
     {
-        //
+        if (!$invoice->isForceDeleting()) {
+            $mailable = new DeletedEmail($invoice);
+            SystemNotificationJob::dispatch($mailable);
+        }
     }
 
     /**
@@ -79,7 +109,8 @@ class InvoiceObserver
      */
     public function restored(Invoice $invoice): void
     {
-        //
+        $mailable = new RestoredEmail($invoice);
+        SystemNotificationJob::dispatch($mailable);
     }
 
     /**
@@ -87,6 +118,7 @@ class InvoiceObserver
      */
     public function forceDeleted(Invoice $invoice): void
     {
-        //
+        Mail::to(DiligentCreators('notification_email'))
+            ->send(new ForceDeletedEmail($invoice));
     }
 }

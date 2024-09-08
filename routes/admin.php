@@ -94,6 +94,7 @@ use App\Http\Controllers\Admin\RolePermission\RoleController;
 
 // Countries
 use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\NotificationController;
 
 // if route is /admin redirect to admin/dashboard
 
@@ -146,6 +147,10 @@ Route::prefix('/backoffice')->name('admin.')->group(function () {
         // Pulse Dashboard
         Route::get('/pulse', [PulseDashboardController::class, 'dashboard'])
             ->name('pulse.dashboard');
+
+        // Notification
+        Route::get('/notifications', [NotificationController::class, 'index'])
+            ->name('notification.index');
 
         // Profile
         Route::get('my-profile', [ProfileController::class, 'profile'])

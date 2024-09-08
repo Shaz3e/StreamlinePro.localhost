@@ -21,6 +21,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                {{-- /.col --}}
                 <label for="SendTaskOverdueReminderJob" class="col-sm-6 col-form-label">Daily Task
                     Reminder</label>
                 <div class="col-sm-6">
@@ -35,6 +36,20 @@
                     @enderror
                 </div>
                 {{-- /.col --}}
+                <label for="DailyTaskReportJob" class="col-sm-6 col-form-label">Daily Task
+                    Report</label>
+                <div class="col-sm-6">
+                    <div class="square-switch">
+                        <input type="hidden" name="DailyTaskReportJob" value="0">
+                        <input type="checkbox" id="DailyTaskReportJob" name="DailyTaskReportJob" switch="none"
+                            value="1" @if (DiligentCreators('DailyTaskReportJob') == 1) checked @endif>
+                        <label for="DailyTaskReportJob" data-on-label="On" data-off-label="Off"></label>
+                    </div>
+                    @error('DailyTaskReportJob')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- /.col --}}
             </div>
             {{-- /.row --}}
 
@@ -42,16 +57,16 @@
                 <div class="col-md-12">
                     <h6>Send Invoice Reminder</h6>
                 </div>
-                <label for="SendInvoiceNotificationsJob" class="col-sm-6 col-form-label">Daily Invoice
+                <label for="DailyInvoiceNotificationJob" class="col-sm-6 col-form-label">Daily Invoice
                     Reminder</label>
                 <div class="col-sm-6">
                     <div class="square-switch">
-                        <input type="hidden" name="SendInvoiceNotificationsJob" value="0">
-                        <input type="checkbox" id="SendInvoiceNotificationsJob" name="SendInvoiceNotificationsJob"
-                            switch="none" value="1" @if (DiligentCreators('SendInvoiceNotificationsJob') == 1) checked @endif>
-                        <label for="SendInvoiceNotificationsJob" data-on-label="On" data-off-label="Off"></label>
+                        <input type="hidden" name="DailyInvoiceNotificationJob" value="0">
+                        <input type="checkbox" id="DailyInvoiceNotificationJob" name="DailyInvoiceNotificationJob"
+                            switch="none" value="1" @if (DiligentCreators('DailyInvoiceNotificationJob') == 1) checked @endif>
+                        <label for="DailyInvoiceNotificationJob" data-on-label="On" data-off-label="Off"></label>
                     </div>
-                    @error('SendInvoiceNotificationsJob')
+                    @error('DailyInvoiceNotificationJob')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -71,9 +86,11 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                {{-- ./col --}}
+
                 <label for="SendInvoiceFirstReminderBeforeDueDateJob" class="col-sm-6 col-form-label">First
                     Reminder Before Due Date</label>
-                <div class="col-sm-6">
+                <div class="col-md-2">
                     <div class="square-switch">
                         <input type="hidden" name="SendInvoiceFirstReminderBeforeDueDateJob" value="0">
                         <input type="checkbox" id="SendInvoiceFirstReminderBeforeDueDateJob"
@@ -88,9 +105,19 @@
                 </div>
                 {{-- /.col --}}
 
+                <label for="invoice_first_reminder_before_due_date"
+                    class="col-sm-2 col-form-label text-end">Day(s)</label>
+                <div class="col-md-2 mt-1">
+                    <input type="number" name="invoice_first_reminder_before_due_date"
+                        class="form-control form-control-sm"
+                        value="{{ DiligentCreators('invoice_first_reminder_before_due_date') ?? 3 }}"
+                        placeholder="days" min="1">
+                </div>
+                {{-- /.col --}}
+
                 <label for="SendInvoiceSecondReminderBeforeDueDateJob" class="col-sm-6 col-form-label">Second
                     Reminder Before Due Date</label>
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <div class="square-switch">
                         <input type="hidden" name="SendInvoiceSecondReminderBeforeDueDateJob" value="0">
                         <input type="checkbox" id="SendInvoiceSecondReminderBeforeDueDateJob"
@@ -105,9 +132,19 @@
                 </div>
                 {{-- /.col --}}
 
+                <label for="invoice_second_reminder_before_due_date"
+                    class="col-sm-2 col-form-label text-end">Day(s)</label>
+                <div class="col-md-2 mt-1">
+                    <input type="number" name="invoice_second_reminder_before_due_date"
+                        class="form-control form-control-sm"
+                        value="{{ DiligentCreators('invoice_second_reminder_before_due_date') ?? 2 }}"
+                        placeholder="days" min="1">
+                </div>
+                {{-- /.col --}}
+
                 <label for="SendInvoiceThirdReminderBeforeDueDateJob" class="col-sm-6 col-form-label">Third
                     Reminder Before Due Date</label>
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <div class="square-switch">
                         <input type="hidden" name="SendInvoiceThirdReminderBeforeDueDateJob" value="0">
                         <input type="checkbox" id="SendInvoiceThirdReminderBeforeDueDateJob"
@@ -122,10 +159,20 @@
                 </div>
                 {{-- /.col --}}
 
+                <label for="invoice_third_reminder_before_due_date"
+                    class="col-sm-2 col-form-label text-end">Day(s)</label>
+                <div class="col-md-2 mt-1">
+                    <input type="number" name="invoice_third_reminder_before_due_date"
+                        class="form-control form-control-sm"
+                        value="{{ DiligentCreators('invoice_third_reminder_before_due_date') ?? 1 }}"
+                        placeholder="days" min="1">
+                </div>
+                {{-- /.col --}}
+
                 <label for="SendInvoiceFirstOverDueNoticeJob" class="col-sm-6 col-form-label">
                     First Invoice Over Due Notice
                 </label>
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <div class="square-switch">
                         <input type="hidden" name="SendInvoiceFirstOverDueNoticeJob" value="0">
                         <input type="checkbox" id="SendInvoiceFirstOverDueNoticeJob"
@@ -139,10 +186,19 @@
                     @enderror
                 </div>
                 {{-- /.col --}}
+
+                <label for="invoice_first_overdue_notice" class="col-sm-2 col-form-label text-end">Day(s)</label>
+                <div class="col-md-2 mt-1">
+                    <input type="number" name="invoice_first_overdue_notice" class="form-control form-control-sm"
+                        value="{{ DiligentCreators('invoice_first_overdue_notice') ?? 1 }}" placeholder="days"
+                        min="1">
+                </div>
+                {{-- /.col --}}
+
                 <label for="SendInvoiceSecondOverDueNoticeJob" class="col-sm-6 col-form-label">
                     Second Invoice Over Due Notice
                 </label>
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <div class="square-switch">
                         <input type="hidden" name="SendInvoiceSecondOverDueNoticeJob" value="0">
                         <input type="checkbox" id="SendInvoiceSecondOverDueNoticeJob"
@@ -156,10 +212,19 @@
                     @enderror
                 </div>
                 {{-- /.col --}}
+
+                <label for="invoice_second_overdue_notice" class="col-sm-2 col-form-label text-end">Day(s)</label>
+                <div class="col-md-2 mt-1">
+                    <input type="number" name="invoice_second_overdue_notice" class="form-control form-control-sm"
+                        value="{{ DiligentCreators('invoice_second_overdue_notice') ?? 2 }}" placeholder="days"
+                        min="1">
+                </div>
+                {{-- /.col --}}
+
                 <label for="SendInvoiceThirdOverDueNoticeJob" class="col-sm-6 col-form-label">
                     Third Invoice Over Due Notice
                 </label>
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                     <div class="square-switch">
                         <input type="hidden" name="SendInvoiceThirdOverDueNoticeJob" value="0">
                         <input type="checkbox" id="SendInvoiceThirdOverDueNoticeJob"
@@ -171,6 +236,14 @@
                     @error('SendInvoiceThirdOverDueNoticeJob')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
+                </div>
+                {{-- /.col --}}
+
+                <label for="invoice_third_overdue_notice" class="col-sm-2 col-form-label text-end">Day(s)</label>
+                <div class="col-md-2 mt-1">
+                    <input type="number" name="invoice_third_overdue_notice" class="form-control form-control-sm"
+                        value="{{ DiligentCreators('invoice_third_overdue_notice') ?? 3 }}" placeholder="days"
+                        min="1">
                 </div>
                 {{-- /.col --}}
             </div>

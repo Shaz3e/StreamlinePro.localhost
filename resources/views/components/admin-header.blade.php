@@ -137,6 +137,8 @@
                 </button>
             </div>
 
+            @livewire('admin.notification.notification-bell')
+
             {{-- <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon waves-effect"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
