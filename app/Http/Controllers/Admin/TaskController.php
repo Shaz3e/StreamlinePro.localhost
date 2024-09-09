@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Task\StoreTaskRequest;
 use App\Models\Admin;
 use App\Models\Task;
+use App\Models\TaskComment;
 use App\Models\TaskLabel;
 use App\Trait\Admin\FormHelper;
 use App\Trait\Admin\SmsTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use OwenIt\Auditing\Models\Audit;
 
@@ -92,6 +94,10 @@ class TaskController extends Controller
 
         $taskLabels = TaskLabel::where('is_active', 1)->get();
 
+        $taskComments = TaskComment::where('task_id', $task->id)
+            ->orderBy('id', 'asc')
+            ->get();
+
         $audits = $task->audits()
             ->latest()
             ->paginate(10);
@@ -104,6 +110,7 @@ class TaskController extends Controller
         return view('admin.task.show', [
             'task' => $task,
             'taskLabels' => $taskLabels,
+            'taskComments' => $taskComments,
             'audits' => $audits,
         ]);
     }
@@ -189,5 +196,64 @@ class TaskController extends Controller
         $task->task_label_id = $request->task_label_id;
         $task->save();
         return response()->json(['message' => 'Status updated successfully']);
+    }
+
+    /**
+     * Comment on Task
+     */
+    public function comment(Request $request, Task $taskId)
+    {
+        // Check Authorize
+        Gate::authorize('view', $taskId);
+
+        $validated = $request->validate([
+            'message' => 'required|min:10',
+            'attachments' => [
+                'nullable',
+                'array',
+                'validate_each:mimes:jpeg,png',
+                'max:2048',
+            ],
+        ]);
+
+        // Add comment
+        $comment = new TaskComment();
+        $comment->task_id = $taskId->id;
+        $comment->message = $validated['message'];
+        $comment->posted_by = Auth::user()->id;
+
+        // Retrieve all the uploaded images from the session variable
+        $uploadedAttachments = session()->get('uploaded_attachments');
+
+        if (!empty($uploadedAttachments)) {
+            $validated['attachments'] = json_encode($uploadedAttachments);
+            $comment->attachments = implode(',', $uploadedAttachments);
+        }
+
+        $comment->save();
+
+        session()->flash('success', 'Your comment has been updated!');
+
+        // Clear the uploaded_attachments session variable
+        session()->forget('uploaded_attachments');
+
+        return $this->saveAndRedirect($request, 'tasks', $taskId->id);
+    }
+
+    /**
+     * Upload attachments
+     */
+    public function uploadAttachments(Request $request)
+    {
+        // Get the uploaded image
+        $image = $request->file('attachments');
+
+        // File Name
+        $filename = rand(1, 9999) . '-' . time() . '.' . $image->extension();
+
+        // Store the uploaded image in a session variable
+        session()->push('uploaded_attachments', $image->storeAs('tasks/attachments', $filename, 'public'));
+
+        return response()->json(['message' => 'Image uploaded successfully!']);
     }
 }
