@@ -50,6 +50,14 @@ class Task extends Model implements Auditable
     }
 
     /**
+     * Relationship with Admin Table
+     */
+    public function comments()
+    {
+        return $this->hasMany(TaskComment::class, 'task_id');
+    }
+
+    /**
      * Relationship with Task Label Table
      */
     public function label()

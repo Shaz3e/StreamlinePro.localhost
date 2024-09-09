@@ -221,6 +221,14 @@ Route::prefix('/backoffice')->name('admin.')->group(function () {
          */
         Route::resource('tasks', TaskController::class);
 
+        // Task comment
+        Route::post('tasks/comment/{taskId}', [TaskController::class, 'comment'])
+            ->name('task.comment');
+
+        // Upload attachments for task
+        Route::post('tasks/upload-attachments', [TaskController::class, 'uploadAttachments'])
+            ->name('tasks.upload-attachments');
+
         // Update Status
         Route::patch('tasks/{id}/update-status', [TaskController::class, 'updateStatus'])
             ->name('tasks.updatestatus');

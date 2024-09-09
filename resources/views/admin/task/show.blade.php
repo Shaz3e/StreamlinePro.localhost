@@ -154,6 +154,9 @@
     </div>
     {{-- /.row --}}
 
+    @include('admin.task.messages')
+    @include('admin.task.comment-box')
+
     {{-- Show Audit History --}}
     @hasanyrole(['superadmin', 'tester', 'developer'])
         @if (count($audits) > 0)
