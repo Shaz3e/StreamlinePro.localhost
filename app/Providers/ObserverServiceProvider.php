@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
 use App\Models\Task;
+use App\Models\TaskComment;
 use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Observers\InvoiceObserver;
@@ -16,6 +17,7 @@ use App\Observers\PaymentObserver;
 use App\Observers\StaffObserver;
 use App\Observers\SupportTicketObserver;
 use App\Observers\SupportTicketReplyObserver;
+use App\Observers\TaskCommentObserver;
 use App\Observers\TaskObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
@@ -46,6 +48,9 @@ class ObserverServiceProvider extends ServiceProvider
 
         // Task
         Task::observe(TaskObserver::class);
+
+        // Task Comment
+        TaskComment::observe(TaskCommentObserver::class);
 
         // Invoice
         Invoice::observe(InvoiceObserver::class);
