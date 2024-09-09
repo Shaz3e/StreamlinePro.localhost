@@ -100,7 +100,7 @@
                                 @endphp
                                 @foreach ($tasks as $task)
                                     <tr wire:key="{{ $task->id }}">
-                                        <td>{{ $id }}</td>
+                                        <td>{{ $id-- }}</td>
                                         <td>
                                             <h4>{{ $task->title }}</h4>
                                             <span class="badge"
