@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Payment;
-use App\Models\ProductService;
 use App\Models\Promotion;
 use App\Models\SupportTicketReply;
 
@@ -59,6 +58,7 @@ class DashboardController extends Controller
         $supportTicketReplies = SupportTicketReply::with('client')
             ->whereHas('supportTicket', function ($query) {
                 $query->where('is_internal', false);
+                $query->where('user_id', auth()->user()->id);
             })
             ->latest()
             ->take(10)
