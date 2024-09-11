@@ -62,7 +62,7 @@ class SupportTicketController extends Controller
         $validated = $request->validated();
 
         // Generate a Ticket Number
-        $ticketNumber = 'TKT-' . time() . '-' . date('d-m-y');
+        $ticketNumber = 'TKT-' . rand(1000, 9999) . time() . '-' . date('d-m-y');
 
         // Provide a ticket number as generated above
         $validated['ticket_number'] = $ticketNumber;
@@ -81,7 +81,7 @@ class SupportTicketController extends Controller
         session()->forget('uploaded_attachments');
 
         session()->flash('success', 'Support Ticket has been created successfully!');
-        
+
         return $this->saveAndRedirect($request, 'support-tickets', $supportTicket->id);
     }
 
@@ -175,7 +175,7 @@ class SupportTicketController extends Controller
 
         // Clear the uploaded_attachments session variable
         session()->forget('uploaded_attachments');
-        
+
         return $this->saveAndRedirect($request, 'support-tickets', $supportTicket->id);
     }
 
@@ -280,10 +280,10 @@ class SupportTicketController extends Controller
         $supportTicketReply->support_ticket_id = $supportTicketId->id;
         $supportTicketReply->staff_reply_by = auth()->guard('admin')->user()->id;
         $supportTicketReply->message = $request->message;
-        
+
         // Retrieve all the uploaded images from the session variable
         $uploadedAttachments = session()->get('uploaded_attachments');
-        
+
         if (!empty($uploadedAttachments)) {
             $validated['attachments'] = json_encode($uploadedAttachments);
             $supportTicketReply->attachments = implode(',', $uploadedAttachments);
