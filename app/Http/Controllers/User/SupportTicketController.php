@@ -46,7 +46,7 @@ class SupportTicketController extends Controller
         ]);
 
         // Generate a Ticket Number
-        $ticketNumber = 'TKT-' . time() . '-' . date('d-m-y');
+        $ticketNumber = 'TKT-' . rand(1000, 9999) . time() . '-' . date('d-m-y');
 
         // Provide a ticket number as generated above
         $validated['ticket_number'] = $ticketNumber;
