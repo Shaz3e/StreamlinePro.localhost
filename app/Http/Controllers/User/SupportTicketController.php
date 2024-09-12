@@ -42,7 +42,15 @@ class SupportTicketController extends Controller
             'title' => 'required|string|max:255',
             'department_id' => 'nullable|exists:departments,id',
             'message' => 'required',
-            'attachments' => 'nullable|array|validate_each:mimes:jpeg,png|max:2048',
+            'attachments' => [
+                'nullable',
+                'array',
+            ],
+            'attachments.*' => [ // This applies to each file in the attachments array
+                'file',
+                'mimes:jpeg,png,jpg,doc,docx,xls,xlsx,csv,pdf', // Allowed file types
+                'max:20480', // Max file size in kilobytes (20MB)
+            ],
         ]);
 
         // Generate a Ticket Number
@@ -143,8 +151,11 @@ class SupportTicketController extends Controller
             'attachments' => [
                 'nullable',
                 'array',
-                'validate_each:mimes:jpeg,png',
-                'max:2048',
+            ],
+            'attachments.*' => [ // This applies to each file in the attachments array
+                'file',
+                'mimes:jpeg,png,jpg,doc,docx,xls,xlsx,csv,pdf', // Allowed file types
+                'max:20480', // Max file size in kilobytes (20MB)
             ],
         ]);
 

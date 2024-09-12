@@ -90,7 +90,7 @@
     </div>
     <!-- END layout-wrapper -->
 
-    {{-- <x-rightsidebar /> --}}
+    <x-rightsidebar />
 
     <!-- JAVASCRIPT -->
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
@@ -151,38 +151,39 @@
 
     <x-appjs />
 
-    @if (DiligentCreators('tawk_to_property') != '' && DiligentCreators('tawk_to_widget') != '')
-        <script type="text/javascript">
-            var fullname = "{{ auth()->user()->first_name }}" + " " + "{{ auth()->user()->last_name }}";
-            var authEmail = "{{ auth()->user()->email }}";
-            console.log(fullname);
-            var Tawk_API = Tawk_API || {},
-                Tawk_LoadStart = new Date();
-            // Set Client Name and Email as Visitor Screen
-            Tawk_API.visitor = {
-                name: fullname,
-                email: authEmail,
-            };
-            // Load Tawk Script
-            Tawk_API.onLoad = function() {
-                Tawk_API.setAttributes({
-                    'name': fullname,
-                    'email': authEmail,
-                }, function(error) {});
-            };
-            (function() {
-                var s1 = document.createElement("script"),
-                    s0 = document.getElementsByTagName("script")[0];
-                s1.async = true;
-                s1.src = 'https://embed.tawk.to/' + '{{ DiligentCreators('tawk_to_property') }}' + '/' +
-                    '{{ DiligentCreators('tawk_to_widget') }}';
-                s1.charset = 'UTF-8';
-                s1.setAttribute('crossorigin', '*');
-                s0.parentNode.insertBefore(s1, s0);
-            })();
-        </script>
+    @if (auth()->guard('web')->user())
+        @if (DiligentCreators('tawk_to_property') != '' && DiligentCreators('tawk_to_widget') != '')
+            <script type="text/javascript">
+                var fullname = "{{ auth()->user()->first_name }}" + " " + "{{ auth()->user()->last_name }}";
+                var authEmail = "{{ auth()->user()->email }}";
+                // console.log(fullname);
+                var Tawk_API = Tawk_API || {},
+                    Tawk_LoadStart = new Date();
+                // Set Client Name and Email as Visitor Screen
+                Tawk_API.visitor = {
+                    name: fullname,
+                    email: authEmail,
+                };
+                // Load Tawk Script
+                Tawk_API.onLoad = function() {
+                    Tawk_API.setAttributes({
+                        'name': fullname,
+                        'email': authEmail,
+                    }, function(error) {});
+                };
+                (function() {
+                    var s1 = document.createElement("script"),
+                        s0 = document.getElementsByTagName("script")[0];
+                    s1.async = true;
+                    s1.src = 'https://embed.tawk.to/' + '{{ DiligentCreators('tawk_to_property') }}' + '/' +
+                        '{{ DiligentCreators('tawk_to_widget') }}';
+                    s1.charset = 'UTF-8';
+                    s1.setAttribute('crossorigin', '*');
+                    s0.parentNode.insertBefore(s1, s0);
+                })();
+            </script>
+        @endif
     @endif
-
     {{-- Livewire Scripts --}}
     @livewireScripts
 

@@ -1,5 +1,5 @@
-<form action="{{ route('support-tickets.reply', $supportTicket->id) }}" method="POST" class="needs-validation"
-    novalidate enctype="multipart/form-data">
+<form action="{{ route('support-tickets.reply', $supportTicket->id) }}" method="POST" class="needs-validation" novalidate
+    enctype="multipart/form-data">
     @csrf
     <div class="row" id="reply">
         <div class="col-md-12">
@@ -29,7 +29,8 @@
                                     <input type="file" name="attachments[]" id="attachments" class="form-control"
                                         multiple>
                                 </div>
-                                <small class="d-block text-muted">Only JPG, PNG with max 2MB file size allowed.</small>
+                                <small class="d-block text-muted">Only .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .pdf
+                                    with max 20MB file size allowed.</small>
                             </div>
                             @error('attachments')
                                 <span class="text-danger">{{ $message }}</span>

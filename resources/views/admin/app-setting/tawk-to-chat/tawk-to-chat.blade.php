@@ -9,7 +9,7 @@
                 <label for="tawk_to_property" class="col-sm-3 col-form-label">Tawk.to Property ID</label>
                 <div class="col-sm-9">
                     <input type="text" name="tawk_to_property" id="tawk_to_property" class="form-control"
-                        value="{{ old('tawk_to_property', DiligentCreators('tawk_to_property')) }}" required>
+                        value="{{ old('tawk_to_property', DiligentCreators('tawk_to_property')) }}">
                     @error('tawk_to_property')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -20,7 +20,7 @@
                 <label for="tawk_to_widget" class="col-sm-3 col-form-label">Tawk.to Widget ID</label>
                 <div class="col-sm-9">
                     <input type="text" name="tawk_to_widget" id="tawk_to_widget" class="form-control"
-                        value="{{ old('tawk_to_widget', DiligentCreators('tawk_to_widget')) }}" required>
+                        value="{{ old('tawk_to_widget', DiligentCreators('tawk_to_widget')) }}">
                     @error('tawk_to_widget')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
