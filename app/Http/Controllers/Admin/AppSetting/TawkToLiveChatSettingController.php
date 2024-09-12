@@ -24,8 +24,8 @@ class TawkToLiveChatSettingController extends Controller
         Gate::authorize('tawkToChatStore', AppSetting::class);
 
         $validated = $request->validate([
-            'tawk_to_property' => 'required|string|max:255',
-            'tawk_to_widget' => 'required|string|max:255',
+            'tawk_to_property' => 'nullable|string|max:255',
+            'tawk_to_widget' => 'nullable|string|max:255',
         ]);
 
         // Loop through each validated field and update or create the settings
