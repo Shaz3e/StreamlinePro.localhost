@@ -58,16 +58,16 @@
                         </div>
 
                         @if (DiligentCreators('can_user_register') == 1)
-                        <div class="col-12 mb-">
-                            Do not have an account <a href="{{ route('register') }}">Register</a>.
-                        </div>
+                            <div class="col-12 mb-">
+                                Do not have an account <a href="{{ route('register') }}">Register</a>.
+                            </div>
                         @endif
 
                         @if (DiligentCreators('can_user_reset_password') == 1)
-                        <div class="col-12 mb-">
-                            Forgot Password <a href="{{ route('forgot.password') }}">Click here</a> to
-                            reset.
-                        </div>
+                            <div class="col-12 mb-">
+                                Forgot Password <a href="{{ route('forgot.password') }}">Click here</a> to
+                                reset.
+                            </div>
                         @endif
 
                     </div>
@@ -77,19 +77,19 @@
                         <div class="d-grid">
                             @env('local')
                             <div class="mb-2">
-                                <x-login-link label="Login as User 1" email="user1@email.com"
+                                <x-login-link label="Login as User 1" email="user1@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 2" email="user2@email.com"
+                                <x-login-link label="Login as User 2" email="user2@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 3" email="user3@email.com"
+                                <x-login-link label="Login as User 3" email="user3@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 4" email="user4@email.com"
+                                <x-login-link label="Login as User 4" email="user4@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
-                                <x-login-link label="Login as User 5" email="user5@email.com"
+                                <x-login-link label="Login as User 5" email="user5@shaz3e.com"
                                     class="btn btn-success btn-block btn-sm waves-effect waves-light"
                                     redirect-url="{{ route('dashboard') }}" />
                                 @endenv
@@ -106,26 +106,26 @@
 @endsection
 
 @push('styles')
-@if (!is_null(DiligentCreators('login_page_heading_color')) || !is_null(DiligentCreators('login_page_heading_bg_color')))
-    <style>
-        .page-heading {
-            padding:5px 10px;
-            display: inline-block;
-            color: {{ DiligentCreators('login_page_heading_color') }};
-            background-color: {{ DiligentCreators('login_page_heading_bg_color') }};
-        }
-    </style>
-@endif
-@if (!is_null(DiligentCreators('login_page_text_color')) || !is_null(DiligentCreators('login_page_text_bg_color')))
-    <style>
-        .page-text {
-            padding: 5px 10px;
-            display: inline-block;
-            color: {{ DiligentCreators('login_page_text_color') }};
-            background-color: {{ DiligentCreators('login_page_text_bg_color') }};
-        }
-    </style>
-@endif
+    @if (!is_null(DiligentCreators('login_page_heading_color')) || !is_null(DiligentCreators('login_page_heading_bg_color')))
+        <style>
+            .page-heading {
+                padding: 5px 10px;
+                display: inline-block;
+                color: {{ DiligentCreators('login_page_heading_color') }};
+                background-color: {{ DiligentCreators('login_page_heading_bg_color') }};
+            }
+        </style>
+    @endif
+    @if (!is_null(DiligentCreators('login_page_text_color')) || !is_null(DiligentCreators('login_page_text_bg_color')))
+        <style>
+            .page-text {
+                padding: 5px 10px;
+                display: inline-block;
+                color: {{ DiligentCreators('login_page_text_color') }};
+                background-color: {{ DiligentCreators('login_page_text_bg_color') }};
+            }
+        </style>
+    @endif
     @if (!is_null(DiligentCreators('login_page_image')))
         <style>
             .s3-page {
