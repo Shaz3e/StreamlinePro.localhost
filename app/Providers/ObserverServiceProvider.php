@@ -58,6 +58,7 @@ class ObserverServiceProvider extends ServiceProvider
 
         // Support Ticket
         SupportTicket::observe(SupportTicketObserver::class);
+
         // Support Ticket Reply
         SupportTicketReply::observe(SupportTicketReplyObserver::class);
     }

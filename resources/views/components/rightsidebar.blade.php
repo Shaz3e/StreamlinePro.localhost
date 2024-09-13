@@ -37,11 +37,11 @@
                 <img src="{{ asset('assets/images/layouts/layout-3.jpg') }}" class="img-fluid img-thumbnail"
                     alt="layout-3">
             </div> --}}
-            <div class="form-check form-switch mb-5">
+            {{-- <div class="form-check form-switch mb-5">
                 <input class="form-check-input theme-choice" type="checkbox" id="rtl-mode-switch"
                     data-appStyle="assets/css/app-rtl.min.css">
                 <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
-            </div>
+            </div> --}}
 
 
         </div>
