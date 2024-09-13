@@ -1,7 +1,7 @@
 <div wire:poll.visible>
     <div class="row mb-3">
         {{-- Not Started Task --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
                     <div class="d-flex">
@@ -23,7 +23,7 @@
         {{-- /.col --}}
 
         {{-- Not Completed Task --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
                     <div class="d-flex">
@@ -45,7 +45,7 @@
         {{-- /.col --}}
 
         {{-- Not Completed Task --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
                     <div class="d-flex">
@@ -67,7 +67,7 @@
         {{-- /.col --}}
 
         {{-- Total Task --}}
-        <div class="col-3">
+        <div class="col-md-3">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
                     <div class="d-flex">

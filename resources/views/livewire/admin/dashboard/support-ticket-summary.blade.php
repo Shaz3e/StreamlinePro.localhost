@@ -1,7 +1,7 @@
 <div wire:poll.visible>
     <div class="row mb-0">
         {{-- Open Tickets --}}
-        <div class="col-4">
+        <div class="col-md-4">
             <div class="card" style="height: calc(100% - 30px)">
                 <div class="card-body">
                     <div class="d-flex">
@@ -23,7 +23,7 @@
         </div>
         {{-- /.col --}}
         {{-- Current Month Tickets --}}
-        <div class="col-4">
+        <div class="col-md-4">
             <div class="card" style="height: calc(100% - 30px)">
                 <div class="card-body">
                     <div class="d-flex">
@@ -54,7 +54,7 @@
         </div>
         {{-- /.col --}}
         {{-- Last Month Tickets --}}
-        <div class="col-4">
+        <div class="col-md-4">
             <div class="card" style="height: calc(100% - 30px)">
                 <div class="card-body">
                     <div class="d-flex">
