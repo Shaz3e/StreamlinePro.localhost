@@ -13,11 +13,12 @@ class InvoiceSummary extends Component
 
         $unpaid = Invoice::STATUS_UNPAID;
         $partialPaid = Invoice::STATUS_PARTIALLY_PAID;
+        $cancelledInvoices = Invoice::STATUS_CANCELLED;
 
         $unpaidInvoices = Invoice::where('status', $unpaid)->count();
         $partialPaidInvoices = Invoice::where('status', $partialPaid)->count();
 
-        $totalAmount = Invoice::sum('total');
+        $totalAmount = Invoice::whereNot('status', $cancelledInvoices)->sum('total');
         $totalPaidAmount = Invoice::sum('total_paid');
 
         $unpaidInvoiceAmount = $totalAmount - $totalPaidAmount;
