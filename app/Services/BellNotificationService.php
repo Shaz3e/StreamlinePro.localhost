@@ -7,34 +7,69 @@ use App\Models\Notification;
 class BellNotificationService
 {
     /**
-     * Add a notification to the database dynamically for both admins and users.
+     * Notify a specific admin (staff) by their ID.
      *
-     * @param  string  $role      Either 'admin' or 'user' to differentiate the roles
-     * @param  int     $id        The admin_id or user_id based on the role
+     * @param  int     $adminId   The ID of the admin to notify
      * @param  string  $title     Title of the notification
      * @param  string  $message   Message body of the notification
-     * @param  int     $modelId   Model ID for reference (e.g., a post, invoice, etc.)
-     * @param  string  $model     Model name (also used as type, e.g., 'invoice', 'order', etc.)
-     * @param  string  $action    The action (e.g., 'show', 'edit', 'delete')
-     * @return Notification
+     * @param  int     $modelId   Model ID for reference (optional)
+     * @param  string  $model     Model name (optional)
+     * @param  string  $action    The action (optional, default 'index')
      */
-    public function notify($role, $id, $title, $message, $modelId = null, $model = null, $action = 'index')
+    public function notifyStaff($adminId, $title, $message, $modelId = null, $model = null, $action = 'index')
     {
-        // Construct the route name dynamically based on role, model, and action
-        $routeName = ($role === 'admin')
-            ? "admin.{$model}.{$action}" // For admin: 'admin.model.action'
-            : "{$model}.{$action}";      // For user: 'model.action'
+        // Construct the route for admin staff
+        $routeName = "admin.{$model}.{$action}";
 
-        // Create the notification, dynamically setting the admin_id or user_id
-        $notification = Notification::create([
-            ($role === 'admin') ? 'admin_id' : 'user_id' => $id, // Dynamically set ID based on role
+        // Notify the specific admin
+        Notification::create([
+            'admin_id'   => $adminId,
             'title'      => $title,
             'message'    => $message,
-            'type'       => $model, // Use the model name as the type
+            'type'       => $model,
             'model_id'   => $modelId,
             'route_name' => $routeName,
         ]);
+    }
 
-        return $notification;
+    /**
+     * Notify a specific user by their ID.
+     *
+     * @param  int     $userId    The ID of the user to notify
+     * @param  string  $title     Title of the notification
+     * @param  string  $message   Message body of the notification
+     * @param  int     $modelId   Model ID for reference (optional)
+     * @param  string  $model     Model name (optional)
+     * @param  string  $action    The action (optional, default 'index')
+     */
+    public function notifyUser($userId, $title, $message, $modelId = null, $model = null, $action = 'index')
+    {
+        // Construct the route for user
+        $routeName = "{$model}.{$action}";
+
+        // Notify the specific user
+        Notification::create([
+            'user_id'    => $userId,
+            'title'      => $title,
+            'message'    => $message,
+            'type'       => $model,
+            'model_id'   => $modelId,
+            'route_name' => $routeName,
+        ]);
+    }
+
+    /**
+     * Notify the system (superadmin) with a default ID of 1.
+     *
+     * @param  string  $title     Title of the notification
+     * @param  string  $message   Message body of the notification
+     * @param  int     $modelId   Model ID for reference (optional)
+     * @param  string  $model     Model name (optional)
+     * @param  string  $action    The action (optional, default 'index')
+     */
+    public function notifySystem($title, $message, $modelId = null, $model = null, $action = 'index')
+    {
+        // Notify the superadmin with ID = 1
+        $this->notifyStaff(1, $title, $message, $modelId, $model, $action);
     }
 }

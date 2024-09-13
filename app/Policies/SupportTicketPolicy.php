@@ -21,20 +21,24 @@ class SupportTicketPolicy
      */
     public function view(Admin $admin, SupportTicket $supportTicket)
     {
-        // if ($admin->can('support-ticket.read')) {
-        //     return true;
-        // }
-        // if (in_array($supportTicket->department_id, $admin->department_id)) {
-        //     return true;
-        // }
-
-        // return $admin->id === $supportTicket->admin_id;
-
-        if ($supportTicket->department_id === null && $supportTicket->admin_id === $admin->id) {
-            return true;
+        if ($admin->can('support-ticket.read')) {
+            // admin can read only their ticket
+            if ($admin->id === $supportTicket->admin_id) {
+                return true;
+            }
+            // I want to check if admin has assigned to this department
+            // if not I can't read the ticket
+            if ($supportTicket->department) {
+                return $supportTicket->department->admins->contains($admin->id);
+            }
+            return false;
         }
-    
-        return $supportTicket->department_id !== null && in_array($supportTicket->department_id, $admin->department_id);
+
+        // if ($supportTicket->department_id === null && $supportTicket->admin_id === $admin->id) {
+        //     return true;
+        // }
+
+        // return $supportTicket->department_id !== null && in_array($supportTicket->department_id, $admin->department_id);
     }
 
     /**

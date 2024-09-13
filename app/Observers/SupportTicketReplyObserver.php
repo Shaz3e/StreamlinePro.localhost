@@ -8,14 +8,24 @@ use App\Mail\System\SupportTicket\ReplyCreatedEmail;
 use App\Mail\User\SupportTicket\ReplyCreatedEmail as SupportTicketReplyCreatedEmail;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
+use App\Services\BellNotificationService;
 
 class SupportTicketReplyObserver
 {
+    protected $bell;
+    public function __construct(BellNotificationService $bell)
+    {
+        $this->bell = $bell;
+    }
+
     /**
      * Handle the SupportTicketReply "created" event.
      */
     public function created(SupportTicketReply $supportTicketReply): void
     {
+        // Todo
+        // Notify
+
         $supportTicket = SupportTicket::where('id', $supportTicketReply->support_ticket_id)->first();
 
         // Send Mail to User if its not internal ticket

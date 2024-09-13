@@ -12,10 +12,17 @@ use App\Mail\System\SupportTicket\UpdatedEmail;
 use App\Mail\User\SupportTicket\CreatedEmail as SupportTicketCreatedEmail;
 use App\Models\Admin;
 use App\Models\SupportTicket;
+use App\Services\BellNotificationService;
 use Illuminate\Support\Facades\Mail;
 
 class SupportTicketObserver
 {
+    protected $bell;
+    public function __construct(BellNotificationService $bell)
+    {
+        $this->bell = $bell;
+    }
+
     /**
      * Handle the SupportTicket "created" event.
      */
@@ -29,6 +36,16 @@ class SupportTicketObserver
 
         // Send Mail to Staff
         if ($supportTicket->admin && !$supportTicket->department) {
+            // Notify staff
+            $this->bell->notifyStaff(
+                $supportTicket->admin->id,
+                'New Support Ticket',
+                $supportTicket->title,
+                $supportTicket->id,
+                'support-tickets',
+                'show'
+            );
+            // Send email to staff
             $mailable = new CreatedEmail($supportTicket);
             SendEmailJob::dispatch($mailable, $supportTicket->admin->email);
         }
@@ -36,11 +53,32 @@ class SupportTicketObserver
         // Send Email to Department/Staff
         if ($supportTicket->department) {
             $supportTicket->department->admins->each(function (Admin $staff) use ($supportTicket) {
+                // Notify all staff in this department
+                $this->bell->notifyStaff(
+                    $staff->id,
+                    'New Support Ticket',
+                    $supportTicket->title,
+                    $supportTicket->id,
+                    'support-tickets',
+                    'show'
+                );
+                // Send email to all staff in this department
                 $mailable = new CreatedEmail($supportTicket);
                 SendEmailJob::dispatch($mailable, $staff->email);
             });
         }
 
+
+        // System notification
+        $this->bell->notifySystem(
+            'New Support Ticket',
+            $supportTicket->title,
+            $supportTicket->id,
+            'support-tickets',
+            'show'
+        );
+
+        // Send system email
         $mailable = new CreatedEmail($supportTicket);
         SystemNotificationJob::dispatch($mailable);
     }
@@ -50,6 +88,15 @@ class SupportTicketObserver
      */
     public function updated(SupportTicket $supportTicket): void
     {
+        // System notification
+        $this->bell->notifySystem(
+            'Support Ticket Updated',
+            $supportTicket->title,
+            $supportTicket->id,
+            'support-tickets',
+            'show'
+        );
+
         $mailable = new UpdatedEmail($supportTicket);
         SystemNotificationJob::dispatch($mailable);
     }
@@ -70,6 +117,14 @@ class SupportTicketObserver
      */
     public function restored(SupportTicket $supportTicket): void
     {
+        // System notification
+        $this->bell->notifySystem(
+            'Support Restored',
+            $supportTicket->title,
+            $supportTicket->id,
+            'support-tickets',
+            'show'
+        );
         $mailable = new RestoredEmail($supportTicket);
         SystemNotificationJob::dispatch($mailable);
     }
