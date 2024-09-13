@@ -50,7 +50,7 @@
     <div wire:poll.visible class="col-4">
         <div class="row">
             {{-- New Users --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
@@ -80,7 +80,7 @@
             </div>
             {{-- /.col --}}
             {{-- Last Month Users --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
@@ -104,7 +104,7 @@
             </div>
             {{-- /.col --}}
             {{-- Total Users --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
@@ -125,7 +125,7 @@
             </div>
             {{-- /.col --}}
             {{-- Active Company --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
@@ -146,7 +146,7 @@
             </div>
             {{-- /.col --}}
             {{-- Active Users --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
@@ -167,7 +167,7 @@
             </div>
             {{-- /.col --}}
             {{-- Inactive Users --}}
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="card" style="height: calc(100% - 15px)">
                     <div class="card-body">
                         <div class="d-flex">
