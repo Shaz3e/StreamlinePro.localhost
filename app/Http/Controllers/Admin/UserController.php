@@ -191,9 +191,6 @@ class UserController extends Controller
      */
     public function searchUsers(Request $request)
     {
-        // Check Authorize
-        Gate::authorize('create', User::class);
-
         $term = $request->input('term');
         $users = User::where('name', 'like', '%' . $term . '%')
             ->orWhere('email', 'like', '%' . $term . '%')

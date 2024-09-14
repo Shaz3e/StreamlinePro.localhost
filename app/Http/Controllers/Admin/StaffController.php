@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Staff\StoreStaffRequest;
 use App\Models\Admin;
 use App\Models\Department;
+use App\Models\Task;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -62,7 +63,7 @@ class StaffController extends Controller
         $staff = Admin::create($validated);
 
         // Attach department
-        if($request->department_id){
+        if ($request->department_id) {
             $staff->departments()->attach($request->department_id);
         }
 
@@ -162,7 +163,7 @@ class StaffController extends Controller
         $staff->syncRoles($request->roles);
 
         // Attach department
-        if($request->department_id){
+        if ($request->department_id) {
             $staff->departments()->sync($request->department_id);
         }
 
@@ -215,9 +216,6 @@ class StaffController extends Controller
      */
     public function searchStaff(Request $request)
     {
-        // Check Authorize
-        Gate::authorize('create', Admin::class);
-
         $term = $request->input('term');
         $admins = Admin::where('name', 'like', '%' . $term . '%')
             ->select('id', 'name')
