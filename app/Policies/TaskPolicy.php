@@ -21,11 +21,13 @@ class TaskPolicy
      */
     public function view(Admin $admin, Task $task)
     {
-        // if ($admin->can('task.read')) {
-        //     return true;
-        // }
-
-        return $admin->id === $task->assigned_to;
+        if ($admin->can('task.read')) {
+            if ($admin->id === $task->assignee->id) {
+                return true;
+            } else if ($admin->id === $task->createdBy->id) {
+                return true;
+            }
+        }
     }
 
     /**
@@ -43,11 +45,13 @@ class TaskPolicy
      */
     public function update(Admin $admin, Task $task)
     {
-        // if ($admin->can('task.update')) {
-        //     return true;
-        // }
-
-        return $admin->id === $task->assigned_to;
+        if ($admin->can('task.update')) {
+            if ($admin->id === $task->assignee->id) {
+                return true;
+            } else if ($admin->id === $task->createdBy->id) {
+                return true;
+            }
+        }
     }
 
     /**
