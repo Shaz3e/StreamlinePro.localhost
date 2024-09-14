@@ -75,7 +75,7 @@ class InvoiceList extends Component
         $this->cancelledInvoices = Invoice::where('status', $cancelled)->count();
 
         // Total Amount
-        $totalAmount = Invoice::sum('total');
+        $totalAmount = Invoice::whereNot('status', $cancelled)->sum('total');
 
         // Total Paid Amount
         $this->totalPaidAmount = Invoice::sum('total_paid');
