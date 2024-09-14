@@ -175,9 +175,6 @@ class CompanyController extends Controller
      */
     public function searchCompanies(Request $request)
     {
-        // Check Authorize
-        // Gate::authorize('create', Company::class);
-
         $term = $request->input('term');
         $companies = Company::where('name', 'like', '%' . $term . '%')
             ->select('id', 'name')

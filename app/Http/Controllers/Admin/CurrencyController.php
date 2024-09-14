@@ -78,7 +78,7 @@ class CurrencyController extends Controller
         // Check Authorize
         Gate::authorize('update', $currency);
 
-        if(!$currency){
+        if (!$currency) {
             return redirect()->route('admin.settings.currency');
         }
 
@@ -112,9 +112,6 @@ class CurrencyController extends Controller
      */
     public function searchCurrencies(Request $request)
     {
-        // Check Authorize
-        // Gate::authorize('create', Company::class);
-
         $term = $request->input('term');
         $currencies = Currency::where('name', 'like', '%' . $term . '%')
             ->select('id', 'name')

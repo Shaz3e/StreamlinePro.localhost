@@ -107,7 +107,7 @@ class DepartmentController extends Controller
 
         // Flash message
         session()->flash('success', 'Department updated successfully!');
-        
+
         return $this->saveAndRedirect($request, 'departments', $department->id);
     }
 
@@ -154,16 +154,13 @@ class DepartmentController extends Controller
      */
     public function searchDepartments(Request $request)
     {
-        // Check Authorize
-        Gate::authorize('create', Department::class);
-        
         $term = $request->input('term');
         $departments = Department::where('name', 'like', '%' . $term . '%')
             ->select('id', 'name')
             ->get();
-            
+
         return response()->json([
-            'results' => $departments->map(function($department) {
+            'results' => $departments->map(function ($department) {
                 return [
                     'id' => $department->id,
                     'text' => $department->name
