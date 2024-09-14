@@ -102,7 +102,11 @@
                                     <tr wire:key="{{ $task->id }}">
                                         <td>{{ $id-- }}</td>
                                         <td>
-                                            <h4>{{ $task->title }}</h4>
+                                            <h4>
+                                                <a href="{{ route('admin.tasks.show', $task->id) }}" class="text-dark">
+                                                    {{ $task->title }}
+                                                </a>
+                                            </h4>
                                             <span class="badge"
                                                 style="background-color:{{ $task->label->bg_color }}; color:{{ $task->label->text_color }}">
                                                 {{ $task->label->name }}
@@ -110,11 +114,25 @@
                                             <span class="badge bg-success">
                                                 Created By: {{ $task->createdBy->name }}
                                             </span>
-                                            @role('superadmin')
+                                            @hasanyrole(['superadmin', 'developer'])
                                                 <span class="badge bg-info">
                                                     Assigned To: {{ $task->assignee->name }}
                                                 </span>
-                                            @endrole
+                                            @endhasanyrole
+                                            @if (count($task->comments) > 0)
+                                                <span class="badge bg-dark text-light">
+                                                    Total Comments: {{ $task->comments->count() }}
+                                                </span>
+                                                @foreach ($task->comments as $comment)
+                                                    <span class="badge bg-dark text-light">
+                                                        Last Reply By: {{ $comment->postedBy->name }}
+                                                    </span>
+                                                @endforeach
+                                            @else
+                                                <span class="badge bg-dark text-light">
+                                                    No Comments
+                                                </span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($task->is_started)
