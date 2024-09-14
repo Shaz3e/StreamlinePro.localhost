@@ -12,17 +12,10 @@ use App\Mail\System\SupportTicket\UpdatedEmail;
 use App\Mail\User\SupportTicket\CreatedEmail as SupportTicketCreatedEmail;
 use App\Models\Admin;
 use App\Models\SupportTicket;
-use App\Services\BellNotificationService;
 use Illuminate\Support\Facades\Mail;
 
-class SupportTicketObserver
+class SupportTicketObserver extends BaseObserver
 {
-    protected $bell;
-    public function __construct(BellNotificationService $bell)
-    {
-        $this->bell = $bell;
-    }
-
     /**
      * Handle the SupportTicket "created" event.
      */
