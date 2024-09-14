@@ -17,7 +17,7 @@ use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
-class TaskObserver
+class TaskObserver extends BaseObserver
 {
     /**
      * Handle the Task "crating" event.
@@ -32,9 +32,39 @@ class TaskObserver
     public function created(Task $task): void
     {
         if ($task->assignee) {
+            // Notify to assignee
+            $this->bell->notifyStaff(
+                $task->assignee->id,
+                'You have a new task',
+                $task->title,
+                $task->id,
+                'tasks',
+                'show'
+            );
+
+            // Send email to assignee
             $mailable = new StaffCreatedEmail($task);
             SendEmailJob::dispatch($mailable, $task->assignee->email);
         }
+
+        // Notify to createdBy
+        $this->bell->notifyStaff(
+            $task->createdBy->id,
+            'You assigned task to ' . $task->assignee->name,
+            $task->title,
+            $task->id,
+            'tasks',
+            'show'
+        );
+
+        // Notify to system
+        $this->bell->notifySystem(
+            'New Task assigned to ' . $task->assignee->name,
+            $task->title,
+            $task->id,
+            'tasks',
+            'show'
+        );
 
         $mailable = new CreatedEmail($task);
         SystemNotificationJob::dispatch($mailable);
@@ -46,17 +76,63 @@ class TaskObserver
     public function updated(Task $task): void
     {
         if ($task->isDirty('is_started') && !$task->isDirty('is_completed')) {
+            // Notify createdBy
+            $this->bell->notifyStaff(
+                $task->createdBy->id,
+                $task->assignee->name . ' Started task',
+                $task->title,
+                $task->id,
+                'tasks',
+                'show'
+            );
+            // Notify system
+            $this->bell->notifySystem(
+                $task->assignee->name . ' Started task ',
+                $task->title,
+                $task->id,
+                'tasks',
+                'show'
+            );
+            // Send email to system
             $mailable = new StartedEmail($task);
             SystemNotificationJob::dispatch($mailable);
         }
 
         if ($task->isDirty('is_completed')) {
+            // Notify createdBy
+            $this->bell->notifyStaff(
+                $task->createdBy->id,
+                $task->assignee->name . ' Completed task',
+                $task->title,
+                $task->id,
+                'tasks',
+                'show'
+            );
+            // Notify system
+            $this->bell->notifySystem(
+                $task->assignee->name . ' Completed task ',
+                $task->title,
+                $task->id,
+                'tasks',
+                'show'
+            );
+            // Send system email
             $mailable = new CompletedEmail($task);
             SystemNotificationJob::dispatch($mailable);
         }
 
         if (!$task->isDirty('is_started') && !$task->isDirty('is_completed') && !$task->isDirty('task_label_id')) {
             if ($task->isDirty('assigned_to')) {
+                // Notify to assignee
+                $this->bell->notifyStaff(
+                    $task->assignee->id,
+                    'You have a new task',
+                    $task->title,
+                    $task->id,
+                    'tasks',
+                    'show'
+                );
+                // Send email to system
                 $mailable = new StaffUpdatedEmail($task);
                 SendEmailJob::dispatch($mailable, $task->assignee->email);
             }
