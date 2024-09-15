@@ -82,7 +82,7 @@
                 }
             });
             $.ajax({
-                url: `{{ route('admin.support-tickets.upload-attachments') }}`,
+                url: `{{ route('admin.tasks.upload-attachments') }}`,
                 method: 'POST',
                 data: formData,
                 contentType: false,
