@@ -123,16 +123,16 @@
                                                 <span class="badge bg-dark text-light">
                                                     Total Comments: {{ $task->comments->count() }}
                                                 </span>
-                                                @foreach ($task->comments as $comment)
-                                                    <span class="badge bg-dark text-light">
+                                                <span class="badge bg-dark text-light">
+                                                    @if ($comment)
                                                         Last Reply By: {{ $comment->postedBy->name }}
-                                                    </span>
-                                                @endforeach
+                                                    @endif
+                                                </span>
                                             @else
                                                 <span class="badge bg-dark text-light">
                                                     No Comments
-                                                </span>
                                             @endif
+
                                         </td>
                                         <td>
                                             @if ($task->is_started)

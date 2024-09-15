@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Task;
 
 use App\Models\Admin;
 use App\Models\Task;
+use App\Models\TaskComment;
 use App\Models\TaskLabel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -110,11 +111,17 @@ class TaskList extends Component
 
         $tasks = $query->orderBy('id', 'desc')->paginate($this->perPage);
 
+        // Latest task comment
+        $comment = TaskComment::with('postedBy')
+            ->latest()
+            ->first();
+
         $taskLabels = TaskLabel::where('is_active', 1)->get();
 
         return view('livewire.admin.task.task-list', [
             'tasks' => $tasks,
             'taskLabels' => $taskLabels,
+            'comment' => $comment,
         ]);
     }
 
