@@ -3,8 +3,8 @@
         @livewire('admin.dashboard.task-summary')
     @endhasanyrole
 
-    <div class="row mb-3">
-        <div class="col-md-1 col-sm-12 mb-2">
+    <div class="row">
+        <div class="col-md-1 col-sm-12 mb-3">
             <select wire:model.live="perPage" class="form-control form-control-sm form-control-border">
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -13,18 +13,18 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-7 col-sm-12 mb-2">
+        <div class="col-md-7 col-sm-12 mb-3">
             <input type="search" wire:model.live="search" class="form-control form-control-sm" placeholder="Search...">
         </div>
         {{-- .col --}}
-        <div class="col-md-2 col-sm-12 mb-2">
+        <div class="col-md-2 col-sm-12 mb-3">
             <select wire:model.live="filterOverdueTask" class="form-control form-control-sm form-control-border">
                 <option value="" selected>Filter by Overdue</option>
                 <option value="0">Hide Overdue Task</option>
                 <option value="1">Show Overdue Task</option>
             </select>
         </div>
-        <div class="col-md-2 col-sm-12 mb-2">
+        <div class="col-md-2 col-sm-12 mb-3">
             <div class="d-grid">
                 <a href="{{ route('admin.tasks.create') }}" class="btn btn-success btn-sm waves-effect waves-light">
                     <i class="ri-add-fill align-middle me-2"></i> Create
@@ -35,8 +35,8 @@
     </div>
     {{-- /.row --}}
 
-    <div class="row mb-3">
-        <div class="col-md-3 col-sm-12">
+    <div class="row">
+        <div class="col-md-3 col-sm-12 mb-3">
             <select wire:model.live="filterLabel" class="form-control form-control-sm form-control-border">
                 <option value="">Filter by Label</option>
                 <option value="">All</option>
@@ -46,7 +46,7 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-3 col-sm-12 mb-2">
+        <div class="col-md-3 col-sm-12 mb-3">
             <select wire:model.live="filterStartedTask" class="form-control form-control-sm form-control-border">
                 <option value="" selected="selected">Filter by Started/Not Started</option>
                 <option value="0">Show Not Started Task</option>
@@ -54,7 +54,7 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-3 col-sm-12 mb-2">
+        <div class="col-md-3 col-sm-12 mb-3">
             <select wire:model.live="filterCompletedTask" class="form-control form-control-sm form-control-border">
                 <option value="" selected="selected">Filter by Completed/Not Completed</option>
                 <option value="0">Show Not Completed Task</option>
@@ -62,7 +62,7 @@
             </select>
         </div>
         {{-- /.col --}}
-        <div class="col-md-3 col-sm-12 mb-2">
+        <div class="col-md-3 col-sm-12 mb-3">
             <select wire:model.live="showDeleted" class="form-control form-control-sm form-control-border">
                 <option value="" selected="selected">Filter Active/Deleted</option>
                 <option value="">Show Active Record</option>
@@ -123,16 +123,16 @@
                                                 <span class="badge bg-dark text-light">
                                                     Total Comments: {{ $task->comments->count() }}
                                                 </span>
-                                                @foreach ($task->comments as $comment)
-                                                    <span class="badge bg-dark text-light">
+                                                <span class="badge bg-dark text-light">
+                                                    @if ($comment)
                                                         Last Reply By: {{ $comment->postedBy->name }}
-                                                    </span>
-                                                @endforeach
+                                                    @endif
+                                                </span>
                                             @else
                                                 <span class="badge bg-dark text-light">
                                                     No Comments
-                                                </span>
                                             @endif
+
                                         </td>
                                         <td>
                                             @if ($task->is_started)

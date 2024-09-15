@@ -13,10 +13,10 @@
 @hasanyrole(json_decode(DiligentCreators('can_access_support_ticket_summary')))
     @livewire('admin.dashboard.support-ticket-summary')
     <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-md-6">
             @livewire('admin.dashboard.recent-support-ticket')
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
             @livewire('admin.dashboard.recent-support-ticket-reply')
         </div>
     </div>
@@ -27,10 +27,10 @@
     @livewire('admin.dashboard.invoice-summary')
 
     <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-md-6">
             @livewire('admin.dashboard.recent-invoice')
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
             @livewire('admin.dashboard.recent-paid-invoice')
         </div>
     </div>

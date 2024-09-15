@@ -18,7 +18,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="title">Task Title</label>
                                     <input type="text" name="title" class="form-control" id="title"
@@ -28,7 +28,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="task_label_id">Label</label>
                                     <select name="task_label_id" class="form-control select2" id="task_label_id">
@@ -41,7 +41,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="assigned_to">Assign To</label>
                                     <select name="assigned_to" class="form-control" id="assigned_to">
@@ -52,7 +52,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="due_date">Due Date</label>
                                     <input type="datetime-local" class="form-control" name="due_date" id="due_date"
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         {{-- /.row --}}
-                        <div class="row mt-3">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="description">Description</label>
