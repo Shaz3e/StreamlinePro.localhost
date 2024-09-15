@@ -1,6 +1,6 @@
 <div class="row mb-3">
     {{-- New Users --}}
-    <div wire:poll.visible class="col-8">
+    <div wire:poll.visible class="col-md-8 col-sm-12">
         <div class="card" style="height: calc(100% - 15px)">
             <div class="card-body">
                 <h4 class="card-title">Recent User Signup</h4>
@@ -47,7 +47,7 @@
     {{-- /.col --}}
 
     {{-- Users Count --}}
-    <div wire:poll.visible class="col-4">
+    <div wire:poll.visible class="col-md-4">
         <div class="row">
             {{-- New Users --}}
             <div class="col-md-6">

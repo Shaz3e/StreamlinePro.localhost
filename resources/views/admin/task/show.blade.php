@@ -28,7 +28,7 @@
 
     {{-- Show Record Summary --}}
     <div class="row">
-        <div class="col-8">
+        <div class="col-md-8 col-sm-12">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-header">
                     @if (auth()->user()->id === $task->createdBy->id)
@@ -77,7 +77,7 @@
             {{-- /.card --}}
         </div>
         {{-- /.col --}}
-        <div class="col-md-2">
+        <div class="col-md-2 col-sm-6">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
                     <small>Label</small><br>
@@ -104,7 +104,7 @@
             </div>
         </div>
         {{-- /.col --}}
-        <div class="col-md-2">
+        <div class="col-md-2 col-sm-6">
             <div class="card" style="height: calc(100% - 15px)">
                 <div class="card-body">
 
