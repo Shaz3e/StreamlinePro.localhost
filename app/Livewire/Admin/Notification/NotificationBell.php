@@ -20,6 +20,16 @@ class NotificationBell extends Component
     }
     public function render()
     {
+        // Fetch the notifications
+        $notifications = $this->getNotifications();
+
+        return view('livewire.admin.notification.notification-bell', [
+            'notifications' => $notifications,
+        ]);
+    }
+
+    private function getNotifications()
+    {
         // Get Admin as user
         $user = Auth::guard('admin')->user();
 
@@ -32,8 +42,7 @@ class NotificationBell extends Component
             ->take(5)
             ->get();
 
-        return view('livewire.admin.notification.notification-bell', [
-            'notifications' => $notifications,
-        ]);
+        // Fetch notifications logic (e.g., from the database)
+        return $notifications;
     }
 }
