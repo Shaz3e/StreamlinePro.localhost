@@ -18,3 +18,5 @@ yarn-error.log
 /_resource
 /public/storage
 .htaccess
+# Error Pages
+/resources/views/errors

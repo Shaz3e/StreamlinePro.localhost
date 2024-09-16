@@ -29,15 +29,20 @@ class PromotionScheduleJob implements ShouldQueue
     {
         $today = Carbon::now()->toDateString();
 
-        // Promotion is_active true/false based on today
+        // Retrieve all promotions
         $promotions = Promotion::all();
 
         foreach ($promotions as $promotion) {
-            if ($promotion->start_date->toDateString() >= $today) {
+            // Activate promotions where start_date is before or equal to today, and end_date is after or equal to today
+            if ($promotion->start_date->toDateString() <= $today && $promotion->end_date->toDateString() >= $today) {
                 $promotion->is_active = true;
-            } elseif ($promotion->end_date->toDateString() <= $today) {
+            }
+            // Deactivate promotions that have ended or haven't started
+            else {
                 $promotion->is_active = false;
             }
+
+            // Save changes to the promotion
             $promotion->save();
         }
     }

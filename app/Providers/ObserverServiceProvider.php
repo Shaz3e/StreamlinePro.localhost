@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\Promotion;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
 use App\Models\Task;
@@ -14,6 +15,7 @@ use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\PaymentObserver;
+use App\Observers\PromotionObserver;
 use App\Observers\StaffObserver;
 use App\Observers\SupportTicketObserver;
 use App\Observers\SupportTicketReplyObserver;
@@ -61,5 +63,8 @@ class ObserverServiceProvider extends ServiceProvider
 
         // Support Ticket Reply
         SupportTicketReply::observe(SupportTicketReplyObserver::class);
+
+        // Promotion
+        Promotion::observe(PromotionObserver::class);
     }
 }

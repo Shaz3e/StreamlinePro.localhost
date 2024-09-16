@@ -58,9 +58,7 @@
                                     <option value="">Select</option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->id }}"
-                                            @isset($staff->department_id)
-                                                @if (in_array($department->id, $staff->department_id)) selected @endif
-                                            @endisset>
+                                            @if ($staff->departments->pluck('id')->contains($department->id)) selected @endif>
                                             {{ $department->name }}
                                         </option>
                                     @endforeach
