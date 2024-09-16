@@ -16,10 +16,15 @@ class StoreStaffRequest extends BaseFormRequest
     {
         $rules = [
             'name' => [
-                'required', 'string', 'max:255',
+                'required',
+                'string',
+                'max:255',
             ],
             'email' => [
-                'required', 'string', 'email', 'max:255',
+                'required',
+                'string',
+                'email',
+                'max:255',
                 Rule::unique('admins', 'email')->ignore($this->staff),
             ],
             'department_id' => [
@@ -35,31 +40,40 @@ class StoreStaffRequest extends BaseFormRequest
                 Rule::unique('admins', 'mobile')->ignore($this->staff),
             ],
             'roles' => [
-                'required',
+                'nullable',
                 'array',
                 Rule::exists('roles', 'name'),
             ],
             'is_active' => [
-                'required', 'boolean',
+                'required',
+                'boolean',
             ],
         ];
 
         if ($this->method() === 'POST') {
             $rules = array_merge($rules, [
                 'password' => [
-                    'required', 'string', 'min:8', 'max:255',
+                    'required',
+                    'string',
+                    'min:8',
+                    'max:255',
                 ],
                 'confirm_password' => [
-                    'required', 'same:password',
+                    'required',
+                    'same:password',
                 ],
             ]);
         } else {
             $rules = array_merge($rules, [
                 'password' => [
-                    'nullable', 'string', 'min:8', 'max:255',
+                    'nullable',
+                    'string',
+                    'min:8',
+                    'max:255',
                 ],
                 'confirm_password' => [
-                    'nullable', 'same:password',
+                    'nullable',
+                    'same:password',
                 ],
             ]);
         }

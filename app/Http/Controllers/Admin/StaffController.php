@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Staff\StoreStaffRequest;
 use App\Models\Admin;
 use App\Models\Department;
-use App\Models\Task;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -68,7 +67,9 @@ class StaffController extends Controller
         }
 
         // Sync Role
-        $staff->syncRoles($request->roles);
+        if ($request->roles) {
+            $staff->syncRoles($request->roles);
+        }
 
         session()->flash('success', 'Staff created successfully!');
 
@@ -160,7 +161,9 @@ class StaffController extends Controller
         $staff->update($validated);
 
         // Sync Role
-        $staff->syncRoles($request->roles);
+        if ($request->roles) {
+            $staff->syncRoles($request->roles);
+        }
 
         // Attach department
         if ($request->department_id) {
