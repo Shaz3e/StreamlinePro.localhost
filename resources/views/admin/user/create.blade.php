@@ -43,8 +43,8 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control"
-                                        value="{{ old('email') }}" required />
+                                    <input name="email" id="email" class="form-control input-mask"
+                                        data-inputmask="'alias': 'email'" value="{{ old('email') }}" required />
                                 </div>
                                 @error('email')
                                     <div><span class="text-danger">{{ $message }}</span></div>
@@ -193,6 +193,17 @@
         $(document).ready(function() {
             $('.select2').select2();
             $(".input-mask").inputmask();
+            $("#phone").inputmask({
+                mask: '+999999999999',
+                placeholder: '+____________',
+                greedy: false,
+                definations: {
+                    '9': {
+                        validator: '[0-9]',
+                        cardinality: 1
+                    }
+                }
+            });
 
             // Search Companies
             $('#company_id').select2({
