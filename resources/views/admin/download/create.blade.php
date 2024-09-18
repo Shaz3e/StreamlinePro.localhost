@@ -72,18 +72,29 @@
                         {{-- /.row --}}
 
                         <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                                <div class="input-group">
-                                    <input type="file" name="file_path" id="file_path" class="form-control"
-                                        id="customFile">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="file_path">Attachments (optional)</label>
+                                    <div class="input-group">
+                                        <input type="file" name="file_path" id="file_path" class="form-control" multiple>
+                                    </div>
+                                    <small class="d-block text-muted">Allowed Formats: .ZIP, .EXE, .MSI with max 100MB file
+                                        size allowed.
+                                    </small>
                                 </div>
-                                <small class="d-block text-muted">Allowed Formats: .ZIP, .EXE, .MSI with max 100MB file size
-                                    allowed.</small>
                                 @error('file_path')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- /.col --}}
+                            <div class="col-12">
+                                <div id="upload-progress"></div>
+                                <div class="progress">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        <span>0%</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         {{-- /.row --}}
 
@@ -132,6 +143,57 @@
     <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
 
     <script>
+        $('#file_path').change(function() {
+            var file = this.files[0];
+            var formData = new FormData();
+            formData.append('file_path', file); // Add file to formData
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            $.ajax({
+                url: `{{ route('admin.downloads.upload.file') }}`,
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var progress = Math.round(evt.loaded / evt.total * 100);
+                            console.log(progress);
+                            $('#progress-bar').css('width', progress + '%');
+                            $('#progress-bar span').text(progress + '%');
+                            $('#upload-progress').html(''); // Clear previous message
+                            $('#submitButton').prop('disabled',
+                                true); // Disable button during upload
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#progress-bar').css('width', '0%'); // Reset progress bar
+                    $('#upload-progress').html(
+                        '<div class="alert alert-success">Upload successful!</div>'
+                    ); // Show success message
+                    setTimeout(function() {
+                        $('#upload-progress').html(''); // Hide success message after 1 second
+                    }, 1000);
+                    $('#submitButton').prop('disabled', false); // Enable submit button after upload
+                },
+                error: function(error) {
+                    console.error(error);
+                    $('#upload-progress').html(
+                        '<div class="alert alert-danger">Upload failed!</div>'); // Show error message
+                }
+            });
+        });
         $(document).ready(function() {
             // Search Users
             $('#user_id').select2({

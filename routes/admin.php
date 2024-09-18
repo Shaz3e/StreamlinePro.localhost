@@ -324,8 +324,11 @@ Route::prefix('/backoffice')->name('admin.')->group(function () {
          * Downloads
          */
         Route::resource('/downloads', DownloadController::class);
-        // Route::get('download-search', [DownloadController::class, 'searchDownloads'])
-        //     ->name('search.download');
+        Route::post('downloads/upload-file', [DownloadController::class, 'uploadFile'])
+            ->name('downloads.upload.file');
+
+        Route::get('download-search', [DownloadController::class, 'searchDownloads'])
+            ->name('search.download');
 
         /**
          * Products

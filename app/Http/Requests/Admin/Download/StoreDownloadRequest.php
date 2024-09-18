@@ -32,7 +32,7 @@ class StoreDownloadRequest extends BaseFormRequest
             'description' => [
                 'required',
             ],
-            'file_path' => ['nullable', 'mimes:zip,exe,msi', 'max:100000'],
+            'file_path' => 'nullable|file|mimes:zip,exe,msi|max:102400',
             'user_id' => [
                 'nullable',
                 'array',
