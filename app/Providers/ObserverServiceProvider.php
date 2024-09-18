@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Company;
+use App\Models\Download;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Promotion;
@@ -13,6 +14,7 @@ use App\Models\Task;
 use App\Models\TaskComment;
 use App\Models\User;
 use App\Observers\CompanyObserver;
+use App\Observers\DownloadObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\PromotionObserver;
@@ -66,5 +68,8 @@ class ObserverServiceProvider extends ServiceProvider
 
         // Promotion
         Promotion::observe(PromotionObserver::class);
+
+        // Download
+        Download::observe(DownloadObserver::class);
     }
 }

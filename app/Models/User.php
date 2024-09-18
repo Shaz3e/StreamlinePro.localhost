@@ -117,4 +117,12 @@ class User extends Authenticatable implements Auditable
         return $this->belongsToMany(ProductService::class, 'product_service_user')
             ->withTimestamps();
     }
+
+    /**
+     * Dowloads for this user
+     */
+    public function downloads()
+    {
+        return $this->belongsToMany(Download::class, 'download_users');
+    }
 }

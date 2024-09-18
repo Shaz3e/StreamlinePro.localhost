@@ -46,6 +46,15 @@ return [
         'restore',
         'force.delete'
     ],
+    'download' => [
+        'list',
+        'create',
+        'read',
+        'update',
+        'delete',
+        'restore',
+        'force.delete'
+    ],
     'product-service' => [
         'list',
         'create',

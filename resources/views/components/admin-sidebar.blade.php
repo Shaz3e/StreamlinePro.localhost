@@ -118,6 +118,17 @@
                                 </li>
                             @endcan
 
+                            {{-- Downloads --}}
+                            @can('download.list')
+                                <li class="{{ request()->routeIs('admin.downloads.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.downloads.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.downloads.*') ? 'active' : '' }}">
+                                        <i class="ri-download-cloud-line"></i>
+                                        <span>Downloads</span>
+                                    </a>
+                                </li>
+                            @endcan
+
                             {{-- Products --}}
                             @can('product-service.list')
                                 <li class="{{ request()->routeIs('admin.product-service.*') ? 'mm-active' : '' }}">
