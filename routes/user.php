@@ -13,6 +13,7 @@ use App\Http\Controllers\User\Auth\LockController;
 
 // Dashboard
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\DownlaodController;
 // Profile Controller
 use App\Http\Controllers\User\ProfileController;
 
@@ -115,6 +116,12 @@ Route::middleware('auth')->group(function () {
     // Upload attachments for support tickets
     Route::post('support-tickets/upload-attachments', [SupportTicketController::class, 'uploadAttachments'])
         ->name('support-tickets.upload-attachments');
+
+    // Downloads
+    Route::get('/downloads', [DownlaodController::class, 'index'])
+        ->name('downloads.index');
+    Route::get('/downloads/{id}', [DownlaodController::class, 'show'])
+        ->name('downloads.show');
 
     // Knowledgebase prefix
     Route::prefix('knowledgebase')->name('knowledgebase.')->group(function () {

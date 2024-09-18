@@ -43,6 +43,12 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('downloads.index') }}" class="waves-effect">
+                                    <i class="ri-download-cloud-line"></i>
+                                    <span>My Downloads</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('knowledgebase.dashboard') }}" class="waves-effect">
                                     <i class="ri-file-list-3-line"></i>
                                     <span>Knowledgebase</span>

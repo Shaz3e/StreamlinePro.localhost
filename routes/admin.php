@@ -94,6 +94,7 @@ use App\Http\Controllers\Admin\RolePermission\RoleController;
 
 // Countries
 use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\DownloadController;
 use App\Http\Controllers\Admin\NotificationController;
 
 // if route is /admin redirect to admin/dashboard
@@ -318,6 +319,13 @@ Route::prefix('/backoffice')->name('admin.')->group(function () {
             ->name('promotions.audit');
         Route::get('promotions-audit/delete/{id}', [PromotionController::class, 'deleteAudit'])
             ->name('promotions.audit.delete');
+
+        /**
+         * Downloads
+         */
+        Route::resource('/downloads', DownloadController::class);
+        // Route::get('download-search', [DownloadController::class, 'searchDownloads'])
+        //     ->name('search.download');
 
         /**
          * Products
