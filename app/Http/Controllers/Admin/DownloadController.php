@@ -37,6 +37,9 @@ class DownloadController extends Controller
 
         $users = User::all();
 
+        // Forget uploadFile Session
+        session()->forget('uploadFile');
+
         return view('admin.download.create', [
             'users' => $users
         ]);
@@ -53,16 +56,24 @@ class DownloadController extends Controller
         // Validate data
         $validated = $request->validated();
 
-        // Upload logo if provided
-        if ($request->hasFile('file_path')) {
-            $filename = time() . '.' . $request->file('file_path')->extension();
-            $validated['file_path'] = $request->file('file_path')->storeAs('downloads', $filename, 'public');
+        // Retrieve the file path from the session
+        $uploadFile = session()->get('uploadFile');
+
+        // If file was uploaded and exists in session
+        if (!empty($uploadFile)) {
+            // Store only the first file (since it's a single file upload)
+            $validated['file_path'] = $uploadFile[0]; // No need for json_encode since it's a single file
         }
 
         // Update record in database
         $download = Download::create($validated);
 
-        $download->users()->attach($validated['user_id']);
+        // Clear the session variable to avoid duplication
+        session()->forget('uploadFile');
+
+        if ($request->has('user_id')) {
+            $download->users()->attach($validated['user_id']);
+        }
 
         session()->flash('success', 'Download created successfully!');
 
@@ -120,15 +131,24 @@ class DownloadController extends Controller
         // Validate data
         $validated = $request->validated();
 
-        // Upload logo if provided
-        if ($request->hasFile('file_path')) {
+        // Retrieve the file path from the session
+        $uploadFile = session()->get('uploadFile');
+
+        // If file was uploaded and exists in session
+        if (!empty($uploadFile)) {
             // Delete previous download
             if ($download->file_path) {
                 File::delete('storage/' . $download->file_path);
             }
-            $filename = time() . '.' . $request->file('file_path')->extension();
-            $validated['file_path'] = $request->file('file_path')->storeAs('downloads', $filename, 'public');
+            // Store only the first file (since it's a single file upload)
+            $validated['file_path'] = $uploadFile[0]; // No need for json_encode since it's a single file
         }
+
+        // Update record in database
+        $download = Download::create($validated);
+
+        // Clear the session variable to avoid duplication
+        session()->forget('uploadFile');
 
         // Update record in database
         $download->update($validated);
@@ -138,6 +158,28 @@ class DownloadController extends Controller
         session()->flash('success', 'Download updated successfully!');
 
         return $this->saveAndRedirect($request, 'downloads', $download->id);
+    }
+
+    public function uploadFile(Request $request)
+    {
+        // Validate file
+        $request->validate([
+            'file_path' => 'required|file|mimes:zip,exe,msi|max:102400',
+        ]);
+
+        // Get the uploaded image
+        $download = $request->file('file_path');
+
+        // File Name
+        $filename = rand(1, 9999) . '-' . time() . '.' . $download->extension();
+
+        // Store the uploaded file in the 'downloads' directory within 'public' disk
+        $filePath = $download->storeAs('downloads', $filename, 'public');
+
+        // Store the file path in session (optional)
+        session()->push('uploadFile', $filePath);
+
+        return response()->json(['message' => 'File uploaded successfully!']);
     }
 
     /**

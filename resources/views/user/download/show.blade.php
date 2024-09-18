@@ -5,7 +5,8 @@
         'title' => 'My Downloads',
         'breadcrumbs' => [
             ['text' => 'Dashboard', 'link' => route('dashboard')],
-            ['text' => 'Available Downloads List', 'link' => null],
+            ['text' => 'Downloads', 'link' => route('downloads.index')],
+            ['text' => 'View Download', 'link' => null],
         ],
     ])
 
