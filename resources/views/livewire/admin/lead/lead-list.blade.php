@@ -1,4 +1,4 @@
-<div wire:poll.1s>
+<div wire:poll.60s>
     <div class="row mb-3">
         <div class="col-md-1 col-sm-12 mb-2">
             <select wire:model.live="perPage" class="form-control form-control-sm form-control-border">
