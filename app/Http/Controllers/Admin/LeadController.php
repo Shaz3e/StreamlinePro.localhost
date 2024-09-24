@@ -123,10 +123,10 @@ class LeadController extends Controller
         // Validate data
         $validated = $request->validate([
             'status' => 'required|string|max:50',
-            'created_by' => 'required|exists:admins,id',
-            'updated_by' => 'required|exists:admins,id',
-            'assigned_by' => 'required|exists:admins,id',
-            'assigned_to' => 'required|exists:admins,id',
+            'created_by' => 'nullable|exists:admins,id',
+            'updated_by' => 'nullable|exists:admins,id',
+            'assigned_by' => 'nullable|exists:admins,id',
+            'assigned_to' => 'nullable|exists:admins,id',
         ]);
 
         // Update record in database
