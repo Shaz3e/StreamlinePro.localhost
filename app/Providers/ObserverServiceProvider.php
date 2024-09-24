@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Company;
 use App\Models\Download;
 use App\Models\Invoice;
+use App\Models\Lead;
 use App\Models\Payment;
 use App\Models\Promotion;
 use App\Models\SupportTicket;
@@ -16,6 +17,7 @@ use App\Models\User;
 use App\Observers\CompanyObserver;
 use App\Observers\DownloadObserver;
 use App\Observers\InvoiceObserver;
+use App\Observers\LeadObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\PromotionObserver;
 use App\Observers\StaffObserver;
@@ -71,5 +73,8 @@ class ObserverServiceProvider extends ServiceProvider
 
         // Download
         Download::observe(DownloadObserver::class);
+
+        // Lead
+        Lead::observe(LeadObserver::class);
     }
 }

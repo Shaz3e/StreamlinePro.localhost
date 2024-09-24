@@ -190,6 +190,15 @@ return [
         'restore',
         'force.delete'
     ],
+    'lead' => [
+        'list',
+        'create',
+        'read',
+        'update',
+        'delete',
+        'restore',
+        'force.delete'
+    ],
     // 'email' => [
     //     'list', 'create', 'read', 'update', 'delete', 'restore', 'force.delete'
     // ],

@@ -95,6 +95,7 @@ use App\Http\Controllers\Admin\RolePermission\RoleController;
 // Countries
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\DownloadController;
+use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\NotificationController;
 
 // if route is /admin redirect to admin/dashboard
@@ -217,6 +218,16 @@ Route::prefix('/backoffice')->name('admin.')->group(function () {
             ->name('todos.audit');
         Route::get('todos-audit/delete/{id}', [TodoController::class, 'deleteAudit'])
             ->name('todos.audit.delete');
+
+
+
+        /**
+         * Leads
+         */
+        Route::resource('/leads', LeadController::class);
+        Route::put('/leads/updateStatus/{lead}', [LeadController::class, 'updateStatus'])
+            ->name('leads.updateStatus');
+
         /**
          * Tasks
          */
