@@ -18,6 +18,7 @@ use App\Jobs\User\PromotionScheduleJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Schema;
 
 // Artisan::command('inspire', function () {
 //     $this->comment(Inspiring::quote());
@@ -54,7 +55,7 @@ use Illuminate\Support\Facades\Schedule;
  * - Every 12 hours
  * - Every 24 hours
  */
-if (DiligentCreators('SendTaskReminderJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendTaskReminderJob') == 1) {
     Schedule::job(new TaskReminderJob)->everyFifteenMinutes();
 }
 
@@ -63,14 +64,14 @@ if (DiligentCreators('SendTaskReminderJob') == 1) {
  * Send task overdue reminder to assigned_to and created_by
  * Intervals: Daily
  */
-if (DiligentCreators('SendTaskOverdueReminderJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendTaskOverdueReminderJob') == 1) {
     Schedule::job(new TaskOverdueReminderJob)->daily();
 }
 
 /**
  * Send daily task report to DiligentCreators('notification_email)
  */
-if (DiligentCreators('DailyTaskReportJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('DailyTaskReportJob') == 1) {
     Schedule::job(new DailyTaskReportJob)->daily();
 }
 
@@ -78,7 +79,7 @@ if (DiligentCreators('DailyTaskReportJob') == 1) {
  * Send Invoice as email when published_date equals today
  * Intervals: Daily
  */
-if (DiligentCreators('DailyInvoiceNotificationJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('DailyInvoiceNotificationJob') == 1) {
     Schedule::job(new DailyInvoiceNotificationJob)->daily();
 }
 
@@ -86,7 +87,7 @@ if (DiligentCreators('DailyInvoiceNotificationJob') == 1) {
  * Send Invoice First Reminder when due_date 3 days from now
  * Intervals: Daily
  */
-if (DiligentCreators('SendInvoiceFirstReminderBeforeDueDateJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendInvoiceFirstReminderBeforeDueDateJob') == 1) {
     Schedule::job(new InvoiceFirstReminderBeforeDueDateJob)->daily();
 }
 
@@ -94,7 +95,7 @@ if (DiligentCreators('SendInvoiceFirstReminderBeforeDueDateJob') == 1) {
  * Send Invoice First Reminder when due_date 2 days from now
  * Intervals: Daily
  */
-if (DiligentCreators('SendInvoiceSecondReminderBeforeDueDateJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendInvoiceSecondReminderBeforeDueDateJob') == 1) {
     Schedule::job(new InvoiceSecondReminderBeforeDueDateJob)->daily();
 }
 
@@ -102,7 +103,7 @@ if (DiligentCreators('SendInvoiceSecondReminderBeforeDueDateJob') == 1) {
  * Send Invoice First Reminder when due_date 1 days from now
  * Intervals: Daily
  */
-if (DiligentCreators('SendInvoiceThirdReminderBeforeDueDateJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendInvoiceThirdReminderBeforeDueDateJob') == 1) {
     Schedule::job(new InvoiceThirdReminderBeforeDueDateJob)->daily();
 }
 
@@ -110,7 +111,7 @@ if (DiligentCreators('SendInvoiceThirdReminderBeforeDueDateJob') == 1) {
  * Send Invoice First Overdue Reminder when due_date after 1 days from now
  * Intervals: Daily
  */
-if (DiligentCreators('SendInvoiceFirstOverDueNoticeJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendInvoiceFirstOverDueNoticeJob') == 1) {
     Schedule::job(new InvoiceFirstOverDueNoticeJob)->daily();
 }
 
@@ -118,7 +119,7 @@ if (DiligentCreators('SendInvoiceFirstOverDueNoticeJob') == 1) {
  * Send Invoice Second Overdue Reminder when due_date after 2 days from now
  * Intervals: Daily
  */
-if (DiligentCreators('SendInvoiceSecondOverDueNoticeJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendInvoiceSecondOverDueNoticeJob') == 1) {
     Schedule::job(new InvoiceSecondOverDueNoticeJob)->daily();
 }
 
@@ -126,7 +127,7 @@ if (DiligentCreators('SendInvoiceSecondOverDueNoticeJob') == 1) {
  * Send Invoice Third Overdue Reminder when due_date after 3 days from now
  * Intervals: Daily
  */
-if (DiligentCreators('SendInvoiceThirdOverDueNoticeJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendInvoiceThirdOverDueNoticeJob') == 1) {
     Schedule::job(new InvoiceThirdOverDueNoticeJob)->daily();
 }
 
@@ -134,7 +135,7 @@ if (DiligentCreators('SendInvoiceThirdOverDueNoticeJob') == 1) {
  * Generate Recurring Invoice with duplicated data
  * Intervals: Daily
  */
-if (DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
     Schedule::job(new GenerateRecurringInvoiceJob)->daily();
 }
 
@@ -142,7 +143,7 @@ if (DiligentCreators('GenerateRecurringInvoiceJob') == 1) {
  * Update Promotion is_active status based on time
  * Intervals: Daily
  */
-if (DiligentCreators('PromotionScheduleJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('PromotionScheduleJob') == 1) {
     Schedule::job(new PromotionScheduleJob)->daily();
 }
 
@@ -152,7 +153,7 @@ if (DiligentCreators('PromotionScheduleJob') == 1) {
  * do not run if model is empty
  * Intervals: Every Minute
  */
-if (DiligentCreators('NgeniusGatewayJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('NgeniusGatewayJob') == 1) {
     Schedule::job(new NgeniusGatewayJob)->everyMinute();
 }
 
@@ -160,7 +161,7 @@ if (DiligentCreators('NgeniusGatewayJob') == 1) {
  * Store single record from bulk_emails table into emails table
  * Intervals: Every Minute
  */
-if (DiligentCreators('StoreBulkEmailJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('StoreBulkEmailJob') == 1) {
     Schedule::job(new StoreBulkEmailJob)->everyMinute();
 }
 
@@ -168,6 +169,6 @@ if (DiligentCreators('StoreBulkEmailJob') == 1) {
  * Send Emails from emails table
  * Intervals: Daily
  */
-if (DiligentCreators('SendEmailJob') == 1) {
+if (Schema::hasTable('app_settings') && DiligentCreators('SendEmailJob') == 1) {
     Schedule::job(new SendBulkEmailJob)->daily();
 }
