@@ -31,6 +31,17 @@
                                 </a>
                             </li>
 
+                            {{-- Support Tickets --}}
+                            @can('lead.list')
+                                <li class="{{ request()->routeIs('admin.leads.*') ? 'mm-active' : '' }}">
+                                    <a href="{{ route('admin.leads.index') }}"
+                                        class="waves-effect {{ request()->routeIs('admin.leads.*') ? 'active' : '' }}">
+                                        <i class="ri-speak-line"></i>
+                                        <span>Leads</span>
+                                    </a>
+                                </li>
+                            @endcan
+
                             @can('task.list')
                                 <li>
                                     <a href="{{ route('admin.tasks.index') }}" class="waves-effect">
@@ -67,7 +78,8 @@
                                     </a>
                                 </li>
                             @endcan
-                            {{-- Support Tickets --}}
+
+                            {{-- Invoices --}}
                             @can('invoice.list')
                                 <li class="{{ request()->routeIs('admin.invoices.*') ? 'mm-active' : '' }}">
                                     <a href="{{ route('admin.invoices.index') }}"
