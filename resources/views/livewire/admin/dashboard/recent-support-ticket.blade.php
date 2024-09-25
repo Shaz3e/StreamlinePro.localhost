@@ -15,8 +15,14 @@
                         @foreach ($supportTickets as $ticket)
                             <tr wire:key="{{ $ticket->id }}">
                                 <td>
-                                    <a href="{{ route('admin.support-tickets.show', $ticket->id) }}">
-                                        {{ $ticket->ticket_number }}
+                                    <a href="{{ route('admin.support-tickets.show', $ticket->id) }}" class="text-dark">
+                                        <h5>
+                                            {{ $ticket->user->name }}
+                                        </h5>
+                                        <h6>
+                                            {{ optional($ticket->user->company)->name }}
+                                        </h6>
+                                        <small>{{ $ticket->ticket_number }}</small>
                                     </a>
                                 </td>
                                 <td>
