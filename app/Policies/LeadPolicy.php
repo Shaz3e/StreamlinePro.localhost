@@ -21,9 +21,16 @@ class LeadPolicy
      */
     public function view(Admin $admin, Lead $lead)
     {
+        // First, allow if the admin has the 'lead.read' permission
         if ($admin->can('lead.read')) {
             return true;
         }
+
+        // Otherwise, allow if the admin is associated with the lead in any of these fields
+        return $admin->id === $lead->created_by ||
+            $admin->id === $lead->updated_by ||
+            $admin->id === $lead->assigned_by ||
+            $admin->id === $lead->assigned_to;
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Admin\Lead;
 
+use App\Models\Admin;
 use App\Models\Lead;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
@@ -33,7 +35,26 @@ class LeadList extends Component
      */
     public function render()
     {
-        $query = Lead::query();
+        // Get logged in admin/staff
+        $loggedInStaff = Auth::guard('admin')->user();
+
+        // Check if staff is super admin
+        $staff = Admin::find($loggedInStaff->id);
+
+        // Show all records to super admin
+        if ($staff->hasRole(['superadmin', 'developer'])) {
+            $query = Lead::query();
+        } else {
+            // Show only logged in user tasks
+            $query = Lead::query()
+                ->orWhere([
+                    'assigned_to' => $loggedInStaff->id,
+                    'updated_by' => $loggedInStaff->id,
+                    'assigned_by' => $loggedInStaff->id,
+                    'assigned_to' => $loggedInStaff->id,
+                ]);
+        }
+
 
         // Get all columns in the required table
         $columns = Schema::getColumnListing('leads');
