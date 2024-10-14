@@ -86,7 +86,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 mt-2 mb-2">
                                 <div id="upload-progress"></div>
                                 <div class="progress">
                                     <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
@@ -99,7 +99,7 @@
                         {{-- /.row --}}
 
                         <div class="row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mt-2 mb-3">
                                 <div class="form-group">
                                     <label for="user_id">Assign Users</label>
                                     <select class="form-control select2" name="user_id[]" id="user_id"
@@ -119,9 +119,9 @@
                     </div>
                     {{-- /.card-body --}}
                     <div class="card-footer">
-                        <x-form.button />
-                        <x-form.button-save-view />
-                        <x-form.button-save-create-new />
+                        <x-form.button class="submitButton" />
+                        <x-form.button-save-view class="submitButton" />
+                        <x-form.button-save-create-new class="submitButton" />
                     </div>
                     {{-- /.card-footer --}}
                 </form>
@@ -143,8 +143,14 @@
     <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
 
     <script>
+        // File upload
         $('#file_path').change(function() {
             var file = this.files[0];
+            if (!file) {
+                $('#upload-progress').html('<div class="alert alert-danger">No file selected!</div>');
+                return;
+            }
+
             var formData = new FormData();
             formData.append('file_path', file); // Add file to formData
 
@@ -171,7 +177,7 @@
                             $('#progress-bar span').text(progress + '%');
                             $('#upload-progress').html(''); // Clear previous message
                             $('#submitButton').prop('disabled',
-                                true); // Disable button during upload
+                            true); // Disable button during upload
                         }
                     }, false);
                     return xhr;
@@ -181,19 +187,25 @@
                     $('#progress-bar').css('width', '0%'); // Reset progress bar
                     $('#upload-progress').html(
                         '<div class="alert alert-success">Upload successful!</div>'
-                    ); // Show success message
+                        ); // Show success message
                     setTimeout(function() {
                         $('#upload-progress').html(''); // Hide success message after 1 second
                     }, 1000);
                     $('#submitButton').prop('disabled', false); // Enable submit button after upload
                 },
-                error: function(error) {
-                    console.error(error);
-                    $('#upload-progress').html(
-                        '<div class="alert alert-danger">Upload failed!</div>'); // Show error message
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    var errorMessage = 'Upload failed!';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage += ' ' + xhr.responseJSON.message;
+                    }
+                    $('#upload-progress').html('<div class="alert alert-danger">' + errorMessage +
+                        '</div>'); // Show error message
                 }
             });
         });
+
+
         $(document).ready(function() {
             // Search Users
             $('#user_id').select2({

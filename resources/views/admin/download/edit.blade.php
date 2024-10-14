@@ -151,8 +151,14 @@
     <script src="{{ asset('assets/libs/tinymce/tinymce.min.js') }}"></script>
 
     <script>
+        // File upload
         $('#file_path').change(function() {
             var file = this.files[0];
+            if (!file) {
+                $('#upload-progress').html('<div class="alert alert-danger">No file selected!</div>');
+                return;
+            }
+
             var formData = new FormData();
             formData.append('file_path', file); // Add file to formData
 
@@ -195,10 +201,14 @@
                     }, 1000);
                     $('#submitButton').prop('disabled', false); // Enable submit button after upload
                 },
-                error: function(error) {
-                    console.error(error);
-                    $('#upload-progress').html(
-                        '<div class="alert alert-danger">Upload failed!</div>'); // Show error message
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    var errorMessage = 'Upload failed!';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage += ' ' + xhr.responseJSON.message;
+                    }
+                    $('#upload-progress').html('<div class="alert alert-danger">' + errorMessage +
+                        '</div>'); // Show error message
                 }
             });
         });

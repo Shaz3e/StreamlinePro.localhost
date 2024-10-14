@@ -35,6 +35,9 @@ class DownloadController extends Controller
         // Check Authorize
         Gate::authorize('create', Download::class);
 
+        // Clear the session variable to avoid duplication
+        session()->forget('uploadFile');
+
         $users = User::all();
 
         // Forget uploadFile Session
@@ -144,9 +147,6 @@ class DownloadController extends Controller
             $validated['file_path'] = $uploadFile[0]; // No need for json_encode since it's a single file
         }
 
-        // Update record in database
-        $download = Download::create($validated);
-
         // Clear the session variable to avoid duplication
         session()->forget('uploadFile');
 
@@ -164,22 +164,29 @@ class DownloadController extends Controller
     {
         // Validate file
         $request->validate([
-            'file_path' => 'required|file|mimes:zip,exe,msi|max:102400',
+            'file_path' => 'required|file|mimes:zip,exe,msi|max:102400', // 100MB
         ]);
 
-        // Get the uploaded image
+        // Get the uploaded file
         $download = $request->file('file_path');
+        if (!$download) {
+            return response()->json(['message' => 'No file was uploaded.'], 400);
+        }
 
-        // File Name
-        $filename = rand(1, 9999) . '-' . time() . '.' . $download->extension();
+        // Generate a unique file name
+        $filename = uniqid() . '-' . time() . '.' . $download->extension();
 
         // Store the uploaded file in the 'downloads' directory within 'public' disk
-        $filePath = $download->storeAs('downloads', $filename, 'public');
+        try {
+            $filePath = $download->storeAs('downloads', $filename, 'public');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'File storage failed.'], 500);
+        }
 
-        // Store the file path in session (optional)
+        // Store the file path in session
         session()->push('uploadFile', $filePath);
 
-        return response()->json(['message' => 'File uploaded successfully!']);
+        return response()->json(['message' => 'File uploaded successfully!', 'file_path' => $filePath]);
     }
 
     /**
