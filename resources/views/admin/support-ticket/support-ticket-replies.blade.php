@@ -50,7 +50,9 @@
                     </div>
                     <div class="card-body">
                         <div class="card-text">
-                            {!! $reply->message !!}
+                            <div class="table-responsive">
+                                {!! $reply->message !!}
+                            </div>
                         </div>
 
                         @if ($reply->attachments)
