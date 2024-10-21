@@ -53,7 +53,9 @@
                 </div>
                 <div class="card-body">
                     <div class="card-text">
-                        {!! $task->description !!}
+                        <div class="table-responsive">
+                            {!! $task->description !!}
+                        </div>
                     </div>
                 </div>
                 {{-- /.card-body --}}

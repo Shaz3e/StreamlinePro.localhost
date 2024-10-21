@@ -1,9 +1,11 @@
 *
+!downloads/
 !avatars/
 !companies/
 !knowledgebase/
 !promotions/
 !settings/
 !support-tickets/
+!tasks/
 !.htaccess
 !.gitignore

@@ -141,7 +141,9 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            {!! $supportTicket->message !!}
+                            <div class="table-responsive">
+                                {!! $supportTicket->message !!}
+                            </div>
                         </div>
                     </div>
                     {{-- /.row --}}

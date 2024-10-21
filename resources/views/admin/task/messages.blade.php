@@ -8,7 +8,9 @@
                 </div>
                 <div class="card-body">
                     <div class="card-text">
-                        {!! $comment->message !!}
+                        <div class="table-responsive">
+                            {!! $comment->message !!}
+                        </div>
                     </div>
 
                     @if ($comment->attachments)
