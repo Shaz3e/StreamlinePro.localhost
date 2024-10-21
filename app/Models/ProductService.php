@@ -46,9 +46,14 @@ class ProductService extends Model implements Auditable
     /**
      * Knowledgebase Article Relationship
      */
+    // public function articles()
+    // {
+    //     return $this->belongsToMany(KnowledgebaseArticle::class, 'product_service_article')
+    //         ->withTimestamps();
+    // }
+
     public function articles()
     {
-        return $this->belongsToMany(KnowledgebaseArticle::class, 'product_service_article')
-            ->withTimestamps();
+        return $this->belongsToMany(KnowledgebaseArticle::class, 'product_service_article', 'product_service_id', 'knowledgebase_article_id');
     }
 }
