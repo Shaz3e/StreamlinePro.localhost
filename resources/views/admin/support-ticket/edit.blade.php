@@ -178,8 +178,8 @@
                                 <div id="upload-progress"></div>
                                 <div class="progress">
                                     <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
-                                        aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                        <span>0%</span>
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                        <span id="progress-percent">0%</span>
                                     </div>
                                 </div>
                             </div>
@@ -222,6 +222,7 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+
             $.ajax({
                 url: `{{ route('admin.support-tickets.upload-attachments') }}`,
                 method: 'POST',
@@ -235,31 +236,35 @@
                         if (evt.lengthComputable) {
                             var progress = Math.round(evt.loaded / evt.total * 100);
                             console.log(progress);
+
+                            // Update progress bar width and inner text (percentage)
                             $('#progress-bar').css('width', progress + '%');
+                            $('#progress-bar').attr('aria-valuenow', progress);
+                            $('#progress-percent').text(progress + '%');
+
                             $('#upload-progress').html(''); // Clear previous message
-                            // disable submitButton button wile uploading
-                            $('#submitButton').prop('disabled', true);
+                            $('#submitButton').prop('disabled',
+                                true); // Disable submit button while uploading
                         }
                     }, false);
                     return xhr;
                 },
                 success: function(response) {
-                    // console.log(response);
-                    $('#progress-bar').css('width', '0%'); // Hide progress bar
-                    // hide upload successfull after 1 second
+                    // Reset progress bar after successful upload
+                    $('#progress-bar').css('width', '0%');
+                    $('#progress-percent').text('0%');
                     $('#upload-progress').html('Upload successful!');
                     setTimeout(function() {
                         $('#upload-progress').html('');
                     }, 1000);
-                    // enable submitButton when upload finishes
-                    $('#submitButton').prop('disabled', false);
+                    $('#submitButton').prop('disabled', false); // Re-enable submit button
                 },
                 error: function(error) {
-                    // console.error(error);
                     $('#upload-progress').html('Upload failed!');
                 }
             });
         });
+
         // Search
         $(document).ready(function() {
             // init select2
