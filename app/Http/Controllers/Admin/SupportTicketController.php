@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SupportTicket\StoreSupportTicketRequest;
-use App\Models\Admin;
-use App\Models\Department;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketPriority;
 use App\Models\SupportTicketReply;
 use App\Models\SupportTicketStatus;
-use App\Models\User;
 use App\Trait\Admin\FormHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -171,7 +168,7 @@ class SupportTicketController extends Controller
         $supportTicket->update($validated);
 
         // Flash message
-        session()->flash('success', 'Todo Status has been updated successfully!');
+        session()->flash('success', 'Support Ticket has been updated successfully!');
 
         // Clear the uploaded_attachments session variable
         session()->forget('uploaded_attachments');

@@ -148,7 +148,7 @@
                                             multiple>
                                     </div>
                                     <small class="d-block text-muted">Only .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .pdf
-                                        with max 20MB file size allowed.</small>
+                                        with max 50MB file size allowed.</small>
                                 </div>
                                 @error('attachments')
                                     <span class="text-danger">{{ $message }}</span>
@@ -224,7 +224,7 @@
                     return xhr;
                 },
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     $('#progress-bar').css('width', '0%'); // Hide progress bar
                     // hide upload successfull after 1 second
                     $('#upload-progress').html('Upload successful!');
@@ -235,12 +235,11 @@
                     $('#submitButton').prop('disabled', false);
                 },
                 error: function(error) {
-                    console.error(error);
+                    // console.error(error);
                     $('#upload-progress').html('Upload failed!');
                 }
             });
         });
-
         // Search
         $(document).ready(function() {
             // init select2
