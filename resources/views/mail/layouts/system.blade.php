@@ -9,9 +9,7 @@
 </head>
 
 <body>
-    <header>Header</header>
     @yield('content')
-    <footer>Footer</footer>
 </body>
 
 </html>
