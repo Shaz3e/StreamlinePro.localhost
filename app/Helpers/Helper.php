@@ -59,7 +59,14 @@ function currencyFormat($value)
  */
 function shortTextWithOutHtml($text, $limit = 255)
 {
+    // Strip HTML tags
     $plainText = strip_tags($text);
+
+    // Decode HTML entities
+    $plainText = html_entity_decode($plainText, ENT_QUOTES, 'UTF-8');
+
+    // Limit the text length
     $limitedText = (strlen($plainText) > $limit) ? substr($plainText, 0, $limit) . "..." : $plainText;
+
     return $limitedText;
 }
