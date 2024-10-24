@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class MailSettingController extends Controller
 {
@@ -83,6 +84,34 @@ class MailSettingController extends Controller
             }
 
             File::put($envPath, $envContent);
+        }
+
+        // Send Test Email
+        if ($request->has('testMailSmtpSetting')) {
+            // Send test email without mailable
+            // Extract SMTP settings from the request
+            $smtpDetails = $request->only(['smtp_email', 'smtp_password', 'smtp_host', 'smtp_port', 'smtp_encryptions']);
+
+            // Dynamically configure the mail settings
+            config([
+                'mail.mailers.smtp.transport' => 'smtp',
+                'mail.mailers.smtp.host' => $smtpDetails['smtp_host'],
+                'mail.mailers.smtp.port' => $smtpDetails['smtp_port'],
+                'mail.mailers.smtp.encryption' => $smtpDetails['smtp_encryptions'],
+                'mail.mailers.smtp.username' => $smtpDetails['smtp_email'],
+                'mail.mailers.smtp.password' => $smtpDetails['smtp_password'],
+                'mail.from.address' => $smtpDetails['smtp_email'],
+                'mail.from.name' => 'Test Mail',
+            ]);
+
+            // Send test email
+            Mail::raw('This is a test email.', function ($message) use ($smtpDetails) {
+                $message->to($smtpDetails['smtp_email'])
+                    ->from($smtpDetails['smtp_email'], 'Test Mail')
+                    ->subject('Test SMTP Configuration');
+            });
+
+            return back()->with('success', 'Test email sent successfully!');
         }
 
         if ($request->has('mailBackupSmtpSetting')) {
