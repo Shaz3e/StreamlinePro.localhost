@@ -17,17 +17,24 @@ class ForgotPasswordController extends Controller
         if(DiligentCreators('can_admin_reset_password') == 0){
             return redirect()->route('admin.login');
         }
-        
+
         return view('admin.auth.forgot-password');
     }
 
     public function post(ForgotPasswordRequest $request)
     {
         // Validate request
-        $request->validated();
+        $validated = $request->validated();
 
         // Get admin data
         $admin = Admin::where('email', $request->email)->first();
+
+        $tokenExists = DB::table('password_reset_tokens')->where('email', $validated['email'])->first();
+
+        if ($tokenExists) {
+            // Delete token
+            DB::table('password_reset_tokens')->where('email', $validated['email'])->delete();
+        }
 
         // Generate random code with Str
         $token = Str::random(60);
@@ -44,7 +51,7 @@ class ForgotPasswordController extends Controller
             'name' => $admin->name,
             'email' => $admin->email,
             'token' => $token,
-            'url' => config('app.url') . '/admin/reset/' . $admin->email . '/' . $token,
+            'url' => config('app.url') . '/backoffice/reset/' . $admin->email . '/' . $token,
         ];
 
         // Send email to admin
