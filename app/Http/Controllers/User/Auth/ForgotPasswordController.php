@@ -23,10 +23,17 @@ class ForgotPasswordController extends Controller
     public function post(ForgotPasswordRequest $request)
     {
         // Validate request
-        $request->validated();
+        $validated = $request->validated();
 
         // Get user data
         $user = User::where('email', $request->email)->first();
+
+        $tokenExists = DB::table('password_reset_tokens')->where('email', $validated['email'])->first();
+
+        if ($tokenExists) {
+            // Delete token
+            DB::table('password_reset_tokens')->where('email', $validated['email'])->delete();
+        }
 
         // Generate random code with Str
         $token = Str::random(60);

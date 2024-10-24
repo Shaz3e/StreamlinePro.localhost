@@ -59,6 +59,7 @@
         {{-- /.card-body --}}
         <div class="card-footer">
             <x-form.button name="mailSmtpSetting" text="Save Setting" />
+            <x-form.button name="testMailSmtpSetting" class="btn-sm btn-primary" text="Send Test Email" />
         </div>
         {{-- /.card-footer --}}
     </form>
