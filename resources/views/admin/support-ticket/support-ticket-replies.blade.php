@@ -48,7 +48,7 @@
                             <span class="badge bg-success">{{ $reply->staff->name }}</span>
                         </h5>
                     </div>
-                    <div class="card-body">w
+                    <div class="card-body">
                         <div class="card-text">
                             <div class="table-responsive">
                                 {!! $reply->message !!}
