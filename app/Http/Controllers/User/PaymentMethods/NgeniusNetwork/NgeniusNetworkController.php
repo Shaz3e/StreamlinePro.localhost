@@ -20,13 +20,16 @@ class NgeniusNetworkController extends Controller
         }
 
         // Get currency
-        $currency = currency(DiligentCreators('currency'), ['name'])['name'];
+        $currency = 'AED'; //currency(DiligentCreators('currency'), ['name'])['name'];
 
         // Get max amount
         $maxAmount = $invoice->total - $invoice->total_paid;
 
         // Convert amount to cents
-        $amountInCents = $maxAmount * 100;
+        $amountInCent = $maxAmount * 100;
+        $amountInCents = $amountInCent * 3.67;
+
+        // return $amountInCents;
 
         $apikey = config('ngenius.api_key');
         $outlet = config('ngenius.outlet');
@@ -80,7 +83,7 @@ class NgeniusNetworkController extends Controller
                     "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
                     // "offerOnly" => "VISA", // Only visa card accepted // https://docs.ngenius-payments.com/reference/pre-populate-cardholders-name-on-pay-page
                     // "showPayerName" => true, // Payer can enter name
-                    // "maskPaymentInfo" => true 
+                    // "maskPaymentInfo" => true
                 ],
             ],
             'headers' => [
@@ -108,7 +111,7 @@ class NgeniusNetworkController extends Controller
                     'amount' => $maxAmount,
                 ]);
             } else {
-                // Add data into ngenius_gateways table                
+                // Add data into ngenius_gateways table
                 $ngenius = new NgeniusGateway();
                 $ngenius->invoice_id = $invoice->id;
                 $ngenius->reference = $output['_embedded']['payment'][0]['orderReference'];
