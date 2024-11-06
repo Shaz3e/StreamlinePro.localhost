@@ -271,7 +271,7 @@ class SupportTicketController extends Controller
             'attachments.*' => [ // This applies to each file in the attachments array
                 'file',
                 'mimes:jpeg,png,jpg,doc,docx,xls,xlsx,csv,pdf', // Allowed file types
-                'max:51200', // Max file size in kilobytes (20MB)
+                'max:102400', // Max file size in kilobytes (100MB)
             ],
         ]);
 

@@ -148,7 +148,7 @@
                                             multiple>
                                     </div>
                                     <small class="d-block text-muted">Only .jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .pdf
-                                        with max 50MB file size allowed.</small>
+                                        with max 100MB file size allowed.</small>
                                 </div>
                                 @error('attachments')
                                     <span class="text-danger">{{ $message }}</span>
