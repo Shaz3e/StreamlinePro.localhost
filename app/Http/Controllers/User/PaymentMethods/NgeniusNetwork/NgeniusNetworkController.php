@@ -11,6 +11,8 @@ use Jeybin\Networkintl\Ngenius;
 
 class NgeniusNetworkController extends Controller
 {
+    protected $conversionAmount = 3.67;
+
     public function hostedCheckout(Request $request)
     {
         $invoice = Invoice::find($request->invoice_id);
@@ -27,7 +29,7 @@ class NgeniusNetworkController extends Controller
 
         // Convert amount to cents
         $amountInCent = $maxAmount * 100;
-        $amountInCents = $amountInCent * 3.67;
+        $amountInCents = $amountInCent * $this->conversionAmount;
 
         // return $amountInCents;
 
@@ -182,7 +184,7 @@ class NgeniusNetworkController extends Controller
             $orderReference = $responseData['_embedded']['payment'][0]['orderReference'];
             $reference = $responseData['_embedded']['payment'][0]['reference'];
             $resultCode = $responseData['_embedded']['payment'][0]['authResponse']['resultCode'];
-            $amount = $responseData['amount']['value'];
+            $amount = $responseData['amount']['value'] / $this->conversionAmount;
 
             if ($resultCode == '00') {
                 // Create new payment instance and save
@@ -193,6 +195,7 @@ class NgeniusNetworkController extends Controller
                     $payment->transaction_number = $reference;
                     $payment->invoice_id = $merchantOrderReference;
                     $payment->transaction_date = now();
+
                     $payment->amount = $amount / 100;
                     $payment->payment_method = DiligentCreators('ngenius_hosted_checkout_display_name');
                     $payment->save();
