@@ -11,6 +11,8 @@ use Jeybin\Networkintl\Ngenius;
 
 class NgeniusNetworkController extends Controller
 {
+    protected $conversionAmount = 3.67;
+
     public function hostedCheckout(Request $request)
     {
         $invoice = Invoice::find($request->invoice_id);
@@ -20,13 +22,16 @@ class NgeniusNetworkController extends Controller
         }
 
         // Get currency
-        $currency = currency(DiligentCreators('currency'), ['name'])['name'];
+        $currency = 'AED'; //currency(DiligentCreators('currency'), ['name'])['name'];
 
         // Get max amount
         $maxAmount = $invoice->total - $invoice->total_paid;
 
         // Convert amount to cents
-        $amountInCents = $maxAmount * 100;
+        $amountInCent = $maxAmount * 100;
+        $amountInCents = $amountInCent * $this->conversionAmount;
+
+        // return $amountInCents;
 
         $apikey = config('ngenius.api_key');
         $outlet = config('ngenius.outlet');
@@ -80,7 +85,7 @@ class NgeniusNetworkController extends Controller
                     "redirectUrl" => config('ngenius.domain') . "/payment-method/ngenius-network?",
                     // "offerOnly" => "VISA", // Only visa card accepted // https://docs.ngenius-payments.com/reference/pre-populate-cardholders-name-on-pay-page
                     // "showPayerName" => true, // Payer can enter name
-                    // "maskPaymentInfo" => true 
+                    // "maskPaymentInfo" => true
                 ],
             ],
             'headers' => [
@@ -108,7 +113,7 @@ class NgeniusNetworkController extends Controller
                     'amount' => $maxAmount,
                 ]);
             } else {
-                // Add data into ngenius_gateways table                
+                // Add data into ngenius_gateways table
                 $ngenius = new NgeniusGateway();
                 $ngenius->invoice_id = $invoice->id;
                 $ngenius->reference = $output['_embedded']['payment'][0]['orderReference'];
@@ -179,7 +184,7 @@ class NgeniusNetworkController extends Controller
             $orderReference = $responseData['_embedded']['payment'][0]['orderReference'];
             $reference = $responseData['_embedded']['payment'][0]['reference'];
             $resultCode = $responseData['_embedded']['payment'][0]['authResponse']['resultCode'];
-            $amount = $responseData['amount']['value'];
+            $amount = $responseData['amount']['value'] / $this->conversionAmount;
 
             if ($resultCode == '00') {
                 // Create new payment instance and save
@@ -190,6 +195,7 @@ class NgeniusNetworkController extends Controller
                     $payment->transaction_number = $reference;
                     $payment->invoice_id = $merchantOrderReference;
                     $payment->transaction_date = now();
+
                     $payment->amount = $amount / 100;
                     $payment->payment_method = DiligentCreators('ngenius_hosted_checkout_display_name');
                     $payment->save();
