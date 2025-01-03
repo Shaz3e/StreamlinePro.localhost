@@ -16,12 +16,15 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">{{ $article->title }}</h4>
-                    <h6 class="card-subtitle font-14 text-muted">{{ $article->slug }}</h6>
+                    <h6 class="card-subtitle font-14 text-muted">
+                        <span id="route-to-copy">{{ route('knowledgebase.article', $article->slug) }}</span>
+                        <button class="btn btn-sm btn-success" onclick="copyToClipboard()">Click to Copy</button>
+                    </h6>
                 </div>
                 {{-- /.card-body --}}
                 @if (!is_null($article->featured_image))
-                    <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->slug }}" class="img-fluid"
-                        alt="{{ $article->title }}">
+                    <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->slug }}"
+                        class="img-fluid" alt="{{ $article->title }}">
                 @endif
                 <div class="card-body">
                     <div class="card-text">
@@ -216,4 +219,35 @@
             });
         </script>
     @endhasrole
+
+    <script>
+        function copyToClipboard() {
+            // Get the text to copy
+            const textToCopy = document.getElementById('route-to-copy').textContent;
+
+            if (!navigator.clipboard) {
+                // Fallback for browsers that don't support navigator.clipboard
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Route copied to clipboard!');
+                } catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+                document.body.removeChild(textArea);
+            } else {
+                // Copy the text to the clipboard
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        alert('Route copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            }
+        }
+    </script>
 @endpush
