@@ -11,10 +11,15 @@ class Lead extends Model
     use HasFactory, SoftDeletes;
 
     const STATUS_NEW = 'New';
+
     const STATUS_CONTACTED = 'Contacted';
+
     const STATUS_QUALIFIED = 'Qualified';
+
     const STATUS_CONVERTED = 'Converted';
+
     const STATUS_CLOSED = 'Closed';
+
     const STATUS_CANCELLED = 'Cancelled';
 
     protected $fillable = [
@@ -93,6 +98,11 @@ class Lead extends Model
                 ->groupBy('phone')
                 ->havingRaw('COUNT(*) > 1');
         });
+    }
+
+    public function getPhoneAttribute($value)
+    {
+        return '+'.$value;
     }
 
     /**

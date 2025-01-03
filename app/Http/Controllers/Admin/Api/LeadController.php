@@ -19,21 +19,15 @@ class LeadController extends Controller
                 'company' => 'nullable|string|max:50',
                 'country' => 'nullable|string|max:50',
                 'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:50',
+                'phone' => ['required', 'string', 'min:9', 'max:16', 'regex:/^\d+$/'], // Only digits allowed
                 'product' => 'nullable|string|max:255',
                 'message' => 'nullable|string|max:1000',
+            ], [
+                'phone.min' => 'Please enter a valid phone number.',
+                'phone.max' => 'Please enter a valid phone number.',
             ]);
 
-            $lead = new Lead();
-            $lead->name = $request->name;
-            $lead->company = $request->company;
-            $lead->country = $request->country;
-            $lead->email = $request->email;
-            $lead->phone = $request->phone;
-            $lead->product = $request->product;
-            $lead->message = $request->message;
-
-            $lead->save();
+            Lead::create($validated);
 
             return response()->json([
                 'message' => 'We have received your information and will contact you shortly.',
