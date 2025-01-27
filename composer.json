@@ -14,7 +14,7 @@
         "owen-it/laravel-auditing": "^13.6",
         "spatie/laravel-login-link": "^1.2",
         "spatie/laravel-permission": "^6.7",
-        "stripe/stripe-php": "^14.7",
+        "stripe/stripe-php": "^16.5",
         "twilio/sdk": "^8.0"
     },
     "require-dev": {
