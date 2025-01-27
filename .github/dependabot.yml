@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # PHP dependencies
+  - package-ecosystem: "composer"
+    directory: "/" # Directory where the composer.json file is located
+    schedule:
+      interval: "daily" # Options: daily, weekly, monthly
+
+  # JavaScript (Node.js) dependencies
+  - package-ecosystem: "npm"
+    directory: "/" # Directory where package.json is located
+    schedule:
+      interval: "daily"
+
+  # GitHub Actions updates
+  - package-ecosystem: "github-actions"
+    directory: "/" # Root directory for GitHub Actions workflows
+    schedule:
+      interval: "weekly" # Weekly is recommended for Actions updates
